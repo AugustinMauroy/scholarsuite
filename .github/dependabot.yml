@@ -6,7 +6,7 @@ updates:
   - package-ecosystem: github-actions
     directory: '/'
     schedule:
-#      interval: weekly
+      #      interval: weekly
       interval: monthly
     commit-message:
       prefix: meta
@@ -15,7 +15,7 @@ updates:
     directory: '/'
     versioning-strategy: increase
     schedule:
-#      interval: weekly
+      #      interval: weekly
       interval: monthly
     commit-message:
       prefix: meta
