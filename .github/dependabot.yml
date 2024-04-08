@@ -1,9 +1,13 @@
+# Why interval is set to monthly?
+# Because the project is under development and the dependencies so we don't want to update the dependencies frequently.
+
 version: 2
 updates:
   - package-ecosystem: github-actions
     directory: '/'
     schedule:
-      interval: weekly
+#      interval: weekly
+      interval: monthly
     commit-message:
       prefix: meta
     open-pull-requests-limit: 10
@@ -11,7 +15,8 @@ updates:
     directory: '/'
     versioning-strategy: increase
     schedule:
-      interval: weekly
+#      interval: weekly
+      interval: monthly
     commit-message:
       prefix: meta
     groups:
