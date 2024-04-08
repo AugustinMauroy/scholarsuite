@@ -29,7 +29,7 @@
     "@storybook/addon-themes": "~8.0.5",
     "@storybook/nextjs": "~8.0.5",
     "@storybook/react": "~8.0.5",
-    "@types/node": "~20.12.2",
+    "@types/node": "~20.12.5",
     "@types/react": "~18.2.73",
     "@types/react-dom": "~18.2.23",
     "autoprefixer": "~10.4.16",
