@@ -1,0 +1,41 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "pipeline": {
+    "build": {
+      "cache": true,
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "lint:js": {
+      "cache": true,
+      "outputs": [".eslintjscache"]
+    },
+    "lint:css": {
+      "cache": true,
+      "outputs": [".stylelintcache"]
+    },
+    "prettier": {
+      "cache": true,
+      "outputs": [".prettiercache"]
+    },
+    "prettier:check": {
+      "cache": true,
+      "outputs": [".prettiercache"]
+    },
+    "format": {
+      "cache": true,
+      "outputs": [".eslintjscache", ".stylelintcache", ".prettiercache"]
+    },
+    "type-check": {
+      "cache": true,
+      "outputs": ["tsconfig.tsbuildinfo"]
+    },
+    "storybook": {
+      "cache": false,
+      "persistent": true
+    }
+  }
+}
