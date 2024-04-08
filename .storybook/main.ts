@@ -8,6 +8,7 @@ const config: StorybookConfig = {
     '@storybook/addon-essentials',
     '@storybook/addon-themes',
     '@storybook/addon-interactions',
+    '@storybook/addon-a11y'
   ],
   logLevel: 'error',
   // enable when you have a public folder with assets
