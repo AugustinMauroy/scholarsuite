@@ -4,6 +4,7 @@
     "bradlc.vscode-tailwindcss",
     "stylelint.vscode-stylelint",
     "dbaeumer.vscode-eslint",
-    "editorconfig.editorconfig"
+    "editorconfig.editorconfig",
+    "prisma.prisma"
   ]
 }
