@@ -7,9 +7,9 @@ const nextAuthConfig = {
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        firstName: { label: 'First Name', type: 'text' },
-        lastName: { label: 'Last Name', type: 'text' },
-        password: { label: 'Password', type: 'password' },
+        firstName: {},
+        lastName: {},
+        password: {},
       },
       async authorize(credentials) {
         if (
@@ -56,6 +56,9 @@ const nextAuthConfig = {
 
       return Promise.resolve(session);
     },
+  },
+  pages: {
+    signIn: '/signin',
   },
 } as NextAuthOptions;
 

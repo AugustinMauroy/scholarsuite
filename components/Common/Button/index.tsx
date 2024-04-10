@@ -6,9 +6,9 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   kind?: 'solid' | 'outline' | 'danger';
 };
 
-const Button: FC<ButtonProps> = ({ children, kind, ...props }) => (
+const Button: FC<ButtonProps> = ({ children, kind = "solid", className, ...props }) => (
   <button
-    className={classNames(styles.button, styles[kind ?? 'solid'])}
+    className={classNames(styles.button, styles[kind], className)}
     {...props}
   >
     {children}
