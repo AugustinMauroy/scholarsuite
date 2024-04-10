@@ -9,10 +9,10 @@
 }
 
 .solid {
-  @apply dark:text-gray-950
-    bg-brand-500
+  @apply bg-brand-500
     text-gray-50
-    dark:bg-brand-600;
+    dark:bg-brand-600
+    dark:text-gray-950;
 }
 
 .outline {
