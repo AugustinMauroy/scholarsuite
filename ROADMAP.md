@@ -45,6 +45,19 @@
   - Valeur
   - Date de création (usage interne)
   - Date de modification (usage interne)
+- [ ] Gestion des présences
+      Il faut que l'application permette de gérer les présences. Une présence est définie par:
+  - Elève
+  - Date/heure
+  - utilisateur (enseignant, ou administrateur)
+  - matière
+- [ ] Gestion des rapports disciplinaires
+      Il faut que l'application permette de gérer les rapports disciplinaires. Un rapport disciplinaire est défini par:
+  - Elève
+  - Date
+  - Description
+  - Date de création (usage interne)
+  - Date de modification (usage interne)
 
 ## Points techniques
 
