@@ -1,4 +1,4 @@
-import { green } from 'tailwindcss/colors';
+import { cyan } from 'tailwindcss/colors';
 import { generateColorVariations } from './utils/styles';
 import type { Config } from 'tailwindcss';
 
@@ -9,7 +9,7 @@ export default {
       colors: {
         brand: process.env.CUSTOM_COLOR
           ? generateColorVariations(process.env.CUSTOM_COLOR)
-          : green,
+          : cyan,
       },
     },
   },
