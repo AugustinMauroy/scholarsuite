@@ -19,5 +19,4 @@ const Input: FC<InputProps> = ({ label, inline, type, ...inputProps }) => (
   </div>
 );
 
-
 export default Input;
