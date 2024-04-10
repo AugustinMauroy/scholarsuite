@@ -61,7 +61,7 @@
 
 ## Points techniques
 
-- [ ] Authentification
+- [X] Authentification
       Il faut que l'application permette de s'authentifier. L'authentification se fait par email et mot de passe
 - [ ] API REST pour pouvoir plugger l'application à d'autres services.
 - [ ] Base de données
