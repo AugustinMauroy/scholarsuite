@@ -4,3 +4,8 @@ ScholarSuite est une application de gestion de notes pour les écoles. Elle perm
 
 > [!IMPORTANT]
 > Cette application n'est qu'au stade de la conception. Elle n'est pas encore développée. Mais les contributions sont les bienvenues 😁.
+
+## Docs
+
+- [Roadmap](./ROADMAP.md)
+- [Documentation technique](./docs/Technical.md)
