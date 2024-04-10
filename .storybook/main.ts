@@ -11,8 +11,7 @@ const config: StorybookConfig = {
     '@storybook/addon-a11y',
   ],
   logLevel: 'error',
-  // enable when you have a public folder with assets
-  //staticDirs: ['../public'],
+  staticDirs: ['../public'],
   typescript: { reactDocgen: false, check: false },
   core: { disableTelemetry: true, disableWhatsNewNotifications: true },
   framework: {

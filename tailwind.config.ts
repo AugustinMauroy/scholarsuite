@@ -11,6 +11,10 @@ export default {
           ? generateColorVariations(process.env.CUSTOM_COLOR)
           : cyan,
       },
+      aspectRatio: {
+        '9/16': 'aspect-ratio-9/16',
+        '16/9': 'aspect-ratio-16/9',
+      },
     },
   },
   darkMode:

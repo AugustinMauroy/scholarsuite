@@ -1,0 +1,58 @@
+.card {
+  @apply w-40
+  rounded-xl
+  bg-white
+  shadow-lg
+  dark:border
+  dark:border-gray-50
+  dark:bg-black
+  dark:shadow-none;
+
+  .imgWrapper {
+    @apply h-60
+      w-full
+      overflow-hidden
+      rounded-t-xl;
+
+    img {
+      @apply h-full
+        w-full
+        object-cover;
+    }
+  }
+
+  .state {
+    @apply inline-flex
+      h-8
+      w-full
+      flex-row
+      items-center
+      justify-center
+      text-center
+      text-lg
+      font-semibold
+      text-white
+      dark:text-black;
+
+    &.present {
+      @apply bg-green-600
+        dark:bg-green-500;
+    }
+
+    &.absent {
+      @apply bg-red-600
+        dark:bg-red-500;
+    }
+
+    &.late {
+      @apply bg-orange-600
+        dark:bg-orange-500;
+    }
+  }
+
+  .name {
+    @apply py-2
+      text-center
+      font-semibold;
+  }
+}
