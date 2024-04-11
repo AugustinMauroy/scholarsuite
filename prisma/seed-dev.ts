@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const users = await prisma.user.findMany();
 
-if (users.length) {
+if (/*users.length*/ false) {
   if (platform() === 'win32')
     console.log('⨯ Users already exist in the database');
   else console.log('\x1b[31m⨯\x1b[0m Users already exist in the database');
@@ -45,10 +45,50 @@ if (users.length) {
     ],
   });
 
+  await prisma.class.createMany({
+    data: [
+      { name: '1A', schoolLevelId: 1 },
+      { name: '2A', schoolLevelId: 2 },
+      { name: '3A', schoolLevelId: 3 },
+    ],
+  });
+  const classes = await prisma.class.findMany();
+
+  await prisma.student.createMany({
+    data: [
+      {
+        firstName: 'Alice',
+        lastName: 'Dubois',
+        dateOfBirth: new Date(),
+        classId: classes[0].id,
+      },
+      {
+        firstName: 'Bob',
+        lastName: 'Martin',
+        dateOfBirth: new Date(),
+        classId: classes[1].id,
+      },
+      {
+        firstName: 'Charlie',
+        lastName: 'Brown',
+        dateOfBirth: new Date(),
+        classId: classes[2].id,
+      },
+    ],
+  });
+
+  await prisma.subject.createMany({
+    data: [{ name: 'Mathematics' }, { name: 'Science' }, { name: 'History' }],
+  });
+
   await prisma.$disconnect();
 
-  // this will not necessari when we will use node V21
-  // because v21 have styleText
-  if (platform() === 'win32') console.log('✓ Seeded database with users');
-  else console.log('\x1b[32m✓\x1b[0m Seeded database with users');
+  if (platform() === 'win32')
+    console.log(
+      '✓ Seeded database with users, classes, students, and subjects'
+    );
+  else
+    console.log(
+      '\x1b[32m✓\x1b[0m Seeded database with users, classes, students, and subjects'
+    );
 }

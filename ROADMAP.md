@@ -72,7 +72,7 @@
       Il faut que l'application soit testée visuellement.
 - [ ] Documentation
       Il faut que l'application soit documentée. La documentation doit être écrite en markdown.
-- [X] Internationalisation
+- [x] Internationalisation
       Il faut que l'application soit internationalisée. La langue par défaut est le français ou défini par un configuration.
 - [ ] Docker (à discuter)
 

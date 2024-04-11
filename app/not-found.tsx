@@ -1,11 +1,12 @@
-import { getTranslations } from 'next-intl/server';
+'use client';
+import { useTranslations } from 'next-intl';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 import style from './not-found.module.css';
 import type { FC } from 'react';
 
-const NotFoundPage: FC = async () => {
-  const t = await getTranslations('app.notFound');
+const NotFoundPage: FC = () => {
+  const t = useTranslations('app.notFound');
 
   return (
     <main className={style.notFound}>

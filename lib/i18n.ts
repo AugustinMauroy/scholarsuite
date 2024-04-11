@@ -1,23 +1,6 @@
 import { headers } from 'next/headers';
 import localeConfig from '@/i18n/config.json' assert { type: 'json' };
 
-export const getLanguage = () => {
-  const headersList = headers();
-  const acceptLanguage = headersList.get('accept-language');
-  const languages = acceptLanguage
-    ?.split(',')
-    .map(lang => lang.split(';')[0])[1];
-
-  return languages || 'en';
-};
-
-export const getTimeZone = () => {
-  const headersList = headers();
-  const timeZone = headersList.get('time-zone');
-
-  return timeZone || 'UTC';
-};
-
 // As set of available and enabled locales for the website
 // This is used for allowing us to redirect the user to any
 // of the available locales that we have enabled on the website
@@ -54,4 +37,25 @@ export const getMessages = (locale: string) => {
   }
 
   throw new Error(`Unsupported locale: ${locale}`);
+};
+
+export const getLanguage = () => {
+  const headersList = headers();
+  const acceptLanguage = headersList.get('accept-language');
+  const languages = acceptLanguage
+    ?.split(',')
+    .map(lang => lang.split(';')[0])[1];
+
+  if (languages && availableLocaleCodes.includes(languages)) {
+    return languages;
+  }
+
+  return defaultLocale?.code ?? 'en';
+};
+
+export const getTimeZone = () => {
+  const headersList = headers();
+  const timeZone = headersList.get('time-zone');
+
+  return timeZone || 'UTC';
 };

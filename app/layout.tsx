@@ -1,17 +1,19 @@
-import { getTranslations } from 'next-intl/server';
+import { getServerSession } from 'next-auth/next';
 import AuthProvider from '@/providers/auth';
 import LocaleProvider from '@/providers/locale';
 import { getLanguage, getTimeZone, getMessages } from '@/lib/i18n';
+import nextAuthConfig from '@/lib/auth';
 import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
 import '@/styles/globals.css';
 
 const generateMetadata = async (): Promise<Metadata> => {
-  const t = await getTranslations('app.metadata');
+  const language = getLanguage();
+  const messages = await getMessages(language);
 
   return {
-    title: t('title'),
-    description: t('description'),
+    title: messages.app.metadata.title,
+    description: messages.app.metadata.description,
     // @TODO use .env to set the base URL
     metadataBase: new URL(`http://localhost:3000`),
   };
@@ -21,6 +23,7 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
   const language = getLanguage();
   const timeZone = getTimeZone();
   const messages = await getMessages(language);
+  const sessionData = await getServerSession(nextAuthConfig);
 
   return (
     <html lang={language}>
@@ -31,7 +34,7 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
             messages={messages}
             timeZone={timeZone}
           >
-            {children}
+            {sessionData ? children : children}
           </LocaleProvider>
         </AuthProvider>
       </body>

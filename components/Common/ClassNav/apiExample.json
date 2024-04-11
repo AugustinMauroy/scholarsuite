@@ -1,0 +1,217 @@
+{
+  "data": [
+    {
+      "id": 1,
+      "name": "1Ã¨re primaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": [
+        {
+          "id": 1,
+          "name": "1A",
+          "schoolLevelId": 1,
+          "createdAt": "2024-04-12T09:36:19.029Z",
+          "updatedAt": "2024-04-12T09:36:19.029Z"
+        },
+        {
+          "id": 4,
+          "name": "1A",
+          "schoolLevelId": 1,
+          "createdAt": "2024-04-12T09:37:25.266Z",
+          "updatedAt": "2024-04-12T09:37:25.266Z"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "name": "2Ã¨me primaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": [
+        {
+          "id": 2,
+          "name": "2A",
+          "schoolLevelId": 2,
+          "createdAt": "2024-04-12T09:36:19.029Z",
+          "updatedAt": "2024-04-12T09:36:19.029Z"
+        },
+        {
+          "id": 5,
+          "name": "2A",
+          "schoolLevelId": 2,
+          "createdAt": "2024-04-12T09:37:25.266Z",
+          "updatedAt": "2024-04-12T09:37:25.266Z"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "name": "3Ã¨me primaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": [
+        {
+          "id": 3,
+          "name": "3A",
+          "schoolLevelId": 3,
+          "createdAt": "2024-04-12T09:36:19.029Z",
+          "updatedAt": "2024-04-12T09:36:19.029Z"
+        },
+        {
+          "id": 6,
+          "name": "3A",
+          "schoolLevelId": 3,
+          "createdAt": "2024-04-12T09:37:25.266Z",
+          "updatedAt": "2024-04-12T09:37:25.266Z"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "name": "4Ã¨me primaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": []
+    },
+    {
+      "id": 5,
+      "name": "5Ã¨me primaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": []
+    },
+    {
+      "id": 6,
+      "name": "6Ã¨me primaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": []
+    },
+    {
+      "id": 7,
+      "name": "1Ã¨re secondaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": []
+    },
+    {
+      "id": 8,
+      "name": "2Ã¨me secondaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": []
+    },
+    {
+      "id": 9,
+      "name": "3Ã¨me secondaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": []
+    },
+    {
+      "id": 10,
+      "name": "4Ã¨me secondaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": []
+    },
+    {
+      "id": 11,
+      "name": "5Ã¨me secondaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": []
+    },
+    {
+      "id": 12,
+      "name": "6Ã¨me secondaire",
+      "createdAt": "2024-04-12T09:36:19.023Z",
+      "updatedAt": "2024-04-12T09:36:19.023Z",
+      "classes": []
+    },
+    {
+      "id": 13,
+      "name": "1Ã¨re primaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 14,
+      "name": "2Ã¨me primaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 15,
+      "name": "3Ã¨me primaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 16,
+      "name": "4Ã¨me primaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 17,
+      "name": "5Ã¨me primaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 18,
+      "name": "6Ã¨me primaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 19,
+      "name": "1Ã¨re secondaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 20,
+      "name": "2Ã¨me secondaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 21,
+      "name": "3Ã¨me secondaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 22,
+      "name": "4Ã¨me secondaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 23,
+      "name": "5Ã¨me secondaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    },
+    {
+      "id": 24,
+      "name": "6Ã¨me secondaire",
+      "createdAt": "2024-04-12T09:37:25.264Z",
+      "updatedAt": "2024-04-12T09:37:25.264Z",
+      "classes": []
+    }
+  ]
+}

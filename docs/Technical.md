@@ -10,7 +10,7 @@ Cette documentation concerne les aspects techniques du projet. Elle inclut l'arc
 - [PostCSS][]
 - [TypeScript][]
 - [Storybook][]
-- [prisma][]
+- [prisma][], pour en savoir plus sur notre base de données et nos modèles de données, consultez [la documentation Prisma](./Prisma.md)
 
 ## Outils Utilisés
 

@@ -11,15 +11,17 @@ datasource db {
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  firstName String
-  lastName  String
-  email     String?    @unique
-  password  String
-  role      Int
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Presence  Presence[]
+  id                 Int                  @id @default(autoincrement())
+  firstName          String
+  lastName           String
+  email              String?              @unique
+  password           String
+  role               Int
+  createdAt          DateTime             @default(now())
+  updatedAt          DateTime             @updatedAt
+  Class              Class[]
+  Presence           Presence[]
+  DisciplinaryReport DisciplinaryReport[]
 }
 
 model SchoolLevel {
@@ -38,6 +40,8 @@ model Class {
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
   students      Student[]
+  User          User?       @relation(fields: [userId], references: [id])
+  userId        Int?
 }
 
 model Student {
@@ -89,6 +93,8 @@ model DisciplinaryReport {
   id          Int      @id @default(autoincrement())
   student     Student  @relation(fields: [studentId], references: [id])
   studentId   Int
+  createdById Int
+  createdBy   User     @relation(fields: [createdById], references: [id])
   date        DateTime
   description String
   createdAt   DateTime @default(now())
