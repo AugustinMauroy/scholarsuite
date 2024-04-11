@@ -1,4 +1,5 @@
 'use client';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 import Input from '@/components/Common/Input';
@@ -6,6 +7,7 @@ import Button from '@/components/Common/Button';
 import type { FC, FormEvent } from 'react';
 
 const Page: FC = () => {
+  const t = useTranslations('app.signin');
   const router = useRouter();
   const { data: session } = useSession();
 
@@ -24,23 +26,29 @@ const Page: FC = () => {
 
   return (
     <main className="flex h-screen w-screen flex-col items-center justify-center gap-8">
-      <h1 className="text-center text-6xl font-bold">
-        Veillez-vous authentifier
-      </h1>
+      <h1 className="text-center text-6xl font-bold">{t('title')}</h1>
       <form
         className="flex w-2/3 flex-col gap-2 lg:w-1/3 lg:gap-4"
         onSubmit={handleSubmit}
       >
-        <Input label="First Name" placeholder="First Name" name="firstName" />
-        <Input label="Last Name" placeholder="Last Name" name="lastName" />
         <Input
-          label="Password"
-          placeholder="Password"
+          label={t('firstName')}
+          placeholder={t('firstName')}
+          name="firstName"
+        />
+        <Input
+          label={t('lastName')}
+          placeholder={t('lastName')}
+          name="lastName"
+        />
+        <Input
+          label={t('password')}
+          placeholder={t('password')}
           type="password"
           name="password"
         />
         <Button type="submit" className="mt-4">
-          Connexion
+          {t('submit')}
         </Button>
       </form>
     </main>
