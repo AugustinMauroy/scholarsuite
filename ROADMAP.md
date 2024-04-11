@@ -61,7 +61,7 @@
 
 ## Points techniques
 
-- [X] Authentification
+- [x] Authentification
       Il faut que l'application permette de s'authentifier. L'authentification se fait par email et mot de passe
 - [ ] API REST pour pouvoir plugger l'application à d'autres services.
 - [ ] Base de données
@@ -72,7 +72,7 @@
       Il faut que l'application soit testée visuellement.
 - [ ] Documentation
       Il faut que l'application soit documentée. La documentation doit être écrite en markdown.
-- [ ] Internationalisation
+- [X] Internationalisation
       Il faut que l'application soit internationalisée. La langue par défaut est le français ou défini par un configuration.
 - [ ] Docker (à discuter)
 

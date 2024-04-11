@@ -1,0 +1,20 @@
+{
+  "app": {
+    "metadata": {
+      "title": "SchoolarSuite",
+      "description": ""
+    },
+    "notFound": {
+      "title": "404 - Not Found",
+      "description": "The page you requested could not be found.",
+      "backHome": "Go back home"
+    },
+    "signin": {
+      "title": "Please authenticate",
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "password": "Password",
+      "submit": "Sign In"
+    }
+  }
+}
