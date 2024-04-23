@@ -9,6 +9,7 @@
     font-medium
     transition-colors
     duration-200
+    focus:outline-none
     disabled:cursor-not-allowed;
 }
 

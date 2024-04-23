@@ -34,6 +34,9 @@ const nextAuthConfig = {
         return {
           id: user.id.toString(),
           name: user.firstName,
+          // temporary image, will be replaced by the real one
+          // using the `content/profile-picture/username`
+          image: `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}`,
         };
       },
     }),

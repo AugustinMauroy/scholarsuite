@@ -2,6 +2,8 @@ import { getServerSession } from 'next-auth/next';
 import AuthProvider from '@/providers/auth';
 import LocaleProvider from '@/providers/locale';
 import { getLanguage, getTimeZone, getMessages } from '@/lib/i18n';
+import ClassNav from '@/components/Common/ClassNav';
+import Header from '@/components/Layout/Header';
 import nextAuthConfig from '@/lib/auth';
 import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
@@ -34,7 +36,17 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
             messages={messages}
             timeZone={timeZone}
           >
-            {sessionData ? children : children}
+            {sessionData ? (
+              <div className="flex h-full flex-row">
+                <ClassNav />
+                <div className="flex size-full flex-col">
+                  <Header />
+                  <main className="flex-grow">{children}</main>
+                </div>
+              </div>
+            ) : (
+              children
+            )}
           </LocaleProvider>
         </AuthProvider>
       </body>

@@ -4,7 +4,7 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 const users = await prisma.user.findMany();
 
-if (/*users.length*/ false) {
+if (users.length) {
   if (platform() === 'win32')
     console.log('⨯ Users already exist in the database');
   else console.log('\x1b[31m⨯\x1b[0m Users already exist in the database');
@@ -45,38 +45,61 @@ if (/*users.length*/ false) {
     ],
   });
 
+  /* Create 3 classes for each secondary school level */
   await prisma.class.createMany({
     data: [
-      { name: '1A', schoolLevelId: 1 },
-      { name: '2A', schoolLevelId: 2 },
-      { name: '3A', schoolLevelId: 3 },
+      { name: '1A', schoolLevelId: 7 },
+      { name: '1B', schoolLevelId: 7 },
+      { name: '1C', schoolLevelId: 7 },
+      { name: '2A', schoolLevelId: 8 },
+      { name: '2B', schoolLevelId: 8 },
+      { name: '2C', schoolLevelId: 8 },
+      { name: '3A', schoolLevelId: 9 },
+      { name: '3B', schoolLevelId: 9 },
+      { name: '3C', schoolLevelId: 9 },
+      { name: '4A', schoolLevelId: 10 },
+      { name: '4B', schoolLevelId: 10 },
+      { name: '4C', schoolLevelId: 10 },
+      { name: '5A', schoolLevelId: 11 },
+      { name: '5B', schoolLevelId: 11 },
+      { name: '5C', schoolLevelId: 11 },
+      { name: '6A', schoolLevelId: 12 },
+      { name: '6B', schoolLevelId: 12 },
+      { name: '6C', schoolLevelId: 12 },
     ],
   });
-  const classes = await prisma.class.findMany();
 
+  /* Create stutend for one class */
   await prisma.student.createMany({
     data: [
       {
         firstName: 'Alice',
         lastName: 'Dubois',
         dateOfBirth: new Date(),
-        classId: classes[0].id,
+        classId: 1,
       },
       {
         firstName: 'Bob',
         lastName: 'Martin',
         dateOfBirth: new Date(),
-        classId: classes[1].id,
+        classId: 1,
       },
       {
         firstName: 'Charlie',
         lastName: 'Brown',
         dateOfBirth: new Date(),
-        classId: classes[2].id,
+        classId: 1,
       },
     ],
   });
 
+  // assing class to teacher
+  await prisma.class.update({
+    where: { id: 1 },
+    data: { userId: 1 },
+  });
+
+  // create subjects
   await prisma.subject.createMany({
     data: [{ name: 'Mathematics' }, { name: 'Science' }, { name: 'History' }],
   });
