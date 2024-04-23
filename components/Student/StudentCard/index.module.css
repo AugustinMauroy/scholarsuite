@@ -3,22 +3,22 @@
   rounded-xl
   bg-white
   shadow-lg
-  dark:border
+  dark:border-2
   dark:border-gray-50
   dark:bg-black
   dark:shadow-none;
 
-  .imgWrapper {
-    @apply h-60
-      w-full
-      overflow-hidden
-      rounded-t-xl;
-
-    img {
-      @apply h-full
-        w-full
-        object-cover;
-    }
+  .avatar {
+    @apply flex
+      h-60
+      w-40
+      flex-col
+      items-center
+      justify-center
+      rounded-t-xl
+      bg-gray-200
+      text-6xl
+      dark:bg-gray-800;
   }
 
   .state {
@@ -50,9 +50,18 @@
     }
   }
 
-  .name {
-    @apply py-2
+  .firstName {
+    @apply pt-2
       text-center
       font-semibold;
+  }
+
+  .lastName {
+    @apply pb-2
+      text-center
+      text-sm
+      font-medium
+      text-gray-500
+      dark:text-gray-400;
   }
 }

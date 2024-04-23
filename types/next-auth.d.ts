@@ -4,7 +4,7 @@ import type { User } from '@prisma/client';
 declare module 'next-auth' {
   interface Session {
     user: {
-      name?: string | null;
+      name: string;
       email?: string | null;
       image?: string | null;
     } & User;

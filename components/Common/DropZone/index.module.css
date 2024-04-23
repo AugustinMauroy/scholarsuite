@@ -1,0 +1,15 @@
+.dropZone {
+  @apply flex
+    flex-col
+    items-center
+    justify-center
+    gap-4
+    rounded-lg
+    border-2
+    border-dashed
+    p-4;
+}
+
+.hiddenInput {
+  @apply hidden;
+}

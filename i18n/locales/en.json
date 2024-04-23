@@ -15,6 +15,23 @@
       "lastName": "Last Name",
       "password": "Password",
       "submit": "Sign In"
+    },
+    "profile": {
+      "title": "Profile",
+      "name": "Name: {firstName} {lastName}",
+      "edit": "Edit Profile",
+      "update": "Update Profile",
+      "dropzone": {
+        "title": "Drop your profile picture here"
+      }
+    }
+  },
+  "components": {
+    "layout": {
+      "header": {
+        "profile": "Profile",
+        "signout": "Sign Out"
+      }
     }
   }
 }

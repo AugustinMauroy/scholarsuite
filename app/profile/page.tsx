@@ -1,93 +1,76 @@
-// @todo: need to add logic to update the user profile
-// for file there are routes `content/profile-picture/username`
 'use client';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import { getAcronymFromString } from '@/utils/string';
 import Avatar from '@/components/Common/Avatar';
 import Button from '@/components/Common/Button';
-import type { FC, DragEvent } from 'react';
-
-/**
- * @deprecated use it separate components
- */
-const DropZone: FC = () => {
-  const [file, setFile] = useState<File | null>(null);
-
-  const handleDrop = (event: DragEvent<HTMLDivElement>) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    setFile(file);
-    console.log(file);
-  };
-
-  const handleClick = () => {
-    const input = document.createElement('input');
-    input.type = 'file';
-    input.accept = 'image/*';
-    input.onchange = event => {
-      const file = (event.target as HTMLInputElement).files?.[0];
-      if (file) {
-        setFile(file);
-        console.log(file);
-      }
-    };
-    input.click();
-  };
-
-  return (
-    <div
-      onDragOver={event => event.preventDefault()}
-      onDrop={handleDrop}
-      onClick={handleClick}
-      className="flex flex-col items-center justify-center gap-4 rounded-lg border-2 border-dashed p-4"
-    >
-      <h1>Drop Image Here</h1>
-      {file && <p>{file.name}</p>}
-    </div>
-  );
-};
+import DropZone from '@/components/Common/DropZone';
+import styles from './page.module.css';
+import type { FC } from 'react';
 
 const Page: FC = () => {
   const sessionData = useSession();
+  const t = useTranslations('app.profile');
+  const [file, setFile] = useState<File | null>(null);
+  const alt = getAcronymFromString(sessionData.data?.user.name || '');
 
-  const alt = getAcronymFromString(
-    sessionData.data?.user?.firstName + ' ' + sessionData.data?.user?.lastName
-  );
+  const handleUpdate = async () => {
+    if (!file) return;
+    await fetch(
+      `/api/content/profile-picture/${sessionData.data?.user.name.replace(' ', '')}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': file.type,
+        },
+        body: file,
+      }
+    ).then(response => {
+      if (response.ok) {
+        console.log('Updated');
+        setFile(null);
+      }
+    });
+  };
 
   return (
     <DialogPrimitive.Root>
-      <section className="flex w-full flex-col items-center justify-center gap-4">
-        <h1 className="text-4xl font-bold">Profile</h1>
-        <div className="flex flex-col items-center justify-center gap-4">
+      <main className={styles.page}>
+        <h1>{t('title')}</h1>
+        <div className={styles.profileInfo}>
           <Avatar
-            src={sessionData.data?.user?.image || ''}
+            src={sessionData.data?.user.image || ''}
             alt={alt}
-            className="!size-24 !text-3xl"
+            className={styles.avatar}
           />
-          <p className="text-xl font-bold">
-            Name: {sessionData.data?.user?.firstName}{' '}
-            {sessionData.data?.user?.lastName}
+          <p className={styles.name}>
+            {t('name', {
+              firstName: sessionData.data?.user.firstName,
+              lastName: sessionData.data?.user.lastName,
+            })}
           </p>
           <DialogPrimitive.Trigger asChild>
-            <Button>Edit</Button>
+            <Button>{t('edit')}</Button>
           </DialogPrimitive.Trigger>
         </div>
-      </section>
+      </main>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 bg-black bg-opacity-50" />
-        <DialogPrimitive.Content className="fixed left-1/2 top-1/2 flex w-96 -translate-x-1/2 -translate-y-1/2 transform flex-col gap-4 rounded-lg bg-white p-4 shadow-lg dark:bg-gray-800">
+        <DialogPrimitive.Overlay className={styles.modalOverlay} />
+        <DialogPrimitive.Content className={styles.modalContent}>
           <DialogPrimitive.Close asChild>
-            <XMarkIcon className="absolute right-4 top-4 size-8 cursor-pointer hover:text-red-500" />
+            <XMarkIcon className={styles.closeIcon} />
           </DialogPrimitive.Close>
           <DialogPrimitive.Title asChild>
-            <h2 className="text-2xl font-bold">Edit Profile</h2>
+            <h2>{t('edit')}</h2>
           </DialogPrimitive.Title>
-          <DropZone />
+          <DropZone file={file} setFile={setFile} title={t('dropzone.title')} />
           <DialogPrimitive.Close asChild>
-            <Button kind="outline">Update</Button>
+            <Button kind="outline" onClick={handleUpdate}>
+              {t('update')}
+            </Button>
           </DialogPrimitive.Close>
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>

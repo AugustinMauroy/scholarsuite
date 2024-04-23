@@ -5,6 +5,7 @@ import { getLanguage, getTimeZone, getMessages } from '@/lib/i18n';
 import ClassNav from '@/components/Common/ClassNav';
 import Header from '@/components/Layout/Header';
 import nextAuthConfig from '@/lib/auth';
+import styles from './layout.module.css';
 import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';
 import '@/styles/globals.css';
@@ -29,27 +30,25 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
 
   return (
     <html lang={language}>
-      <body>
-        <AuthProvider>
-          <LocaleProvider
-            locale={language}
-            messages={messages}
-            timeZone={timeZone}
-          >
-            {sessionData ? (
-              <div className="flex h-full flex-row">
-                <ClassNav />
-                <div className="flex size-full flex-col">
-                  <Header />
-                  <main className="flex-grow">{children}</main>
-                </div>
+      <AuthProvider>
+        <LocaleProvider
+          locale={language}
+          messages={messages}
+          timeZone={timeZone}
+        >
+          {sessionData ? (
+            <body className={styles.body}>
+              <ClassNav />
+              <div className={styles.wrapper}>
+                <Header />
+                {children}
               </div>
-            ) : (
-              children
-            )}
-          </LocaleProvider>
-        </AuthProvider>
-      </body>
+            </body>
+          ) : (
+            <body>{children}</body>
+          )}
+        </LocaleProvider>
+      </AuthProvider>
     </html>
   );
 };

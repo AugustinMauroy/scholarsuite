@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
+import styles from './page.module.css';
 import type { FC, FormEvent } from 'react';
 
 const Page: FC = () => {
@@ -25,12 +26,9 @@ const Page: FC = () => {
   };
 
   return (
-    <main className="flex h-screen w-screen flex-col items-center justify-center gap-8">
-      <h1 className="text-center text-6xl font-bold">{t('title')}</h1>
-      <form
-        className="flex w-2/3 flex-col gap-2 lg:w-1/3 lg:gap-4"
-        onSubmit={handleSubmit}
-      >
+    <main className={styles.wrapper}>
+      <h1>{t('title')}</h1>
+      <form onSubmit={handleSubmit}>
         <Input
           label={t('firstName')}
           placeholder={t('firstName')}

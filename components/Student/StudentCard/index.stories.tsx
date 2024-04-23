@@ -6,14 +6,16 @@ type Meta = MetaObj<typeof StudentCardProps>;
 
 export const Default: Story = {
   args: {
-    name: 'John Doe',
+    firstName: 'John',
+    lastName: 'Doe',
     image: '/static/placeholder-portrait-9-16.jpg',
   },
 };
 
 export const Present: Story = {
   args: {
-    name: 'John Doe',
+    firstName: 'John',
+    lastName: 'Doe',
     image: '/static/placeholder-portrait-9-16.jpg',
     state: 'present',
   },
@@ -21,7 +23,8 @@ export const Present: Story = {
 
 export const Absent: Story = {
   args: {
-    name: 'John Doe',
+    firstName: 'John',
+    lastName: 'Doe',
     image: '/static/placeholder-portrait-9-16.jpg',
     state: 'absent',
   },
@@ -29,9 +32,17 @@ export const Absent: Story = {
 
 export const Late: Story = {
   args: {
-    name: 'John Doe',
+    firstName: 'John',
+    lastName: 'Doe',
     image: '/static/placeholder-portrait-9-16.jpg',
     state: 'late',
+  },
+};
+
+export const NoImage: Story = {
+  args: {
+    firstName: 'John',
+    lastName: 'Doe',
   },
 };
 

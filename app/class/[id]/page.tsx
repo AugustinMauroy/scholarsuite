@@ -1,5 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
+import StudentCard from '@/components/Student/StudentCard';
+import styles from './page.module.css';
 import type { FC } from 'react';
 import type { Student, Class } from '@prisma/client';
 
@@ -25,17 +27,20 @@ const Page: FC<PageProps> = ({ params }) => {
       .then(data => setData(data.data));
   }, []);
 
-  if (!data) return <div>Loading...</div>;
-
   return (
-    <div>
-      {data.name}
-      <div>
-        {data.students.map(student => (
-          <div key={student.id}>{student.firstName}</div>
+    <main className={styles.page}>
+      <h1>{data?.name ?? 'Loading...'}</h1>
+      <section className={styles.studentList}>
+        {data?.students.map(student => (
+          <StudentCard
+            key={student.id}
+            firstName={student.firstName}
+            lastName={student.lastName}
+            image={`http://localhost:3000/api/content/student-picture/${student.id}`}
+          />
         ))}
-      </div>
-    </div>
+      </section>
+    </main>
   );
 };
 

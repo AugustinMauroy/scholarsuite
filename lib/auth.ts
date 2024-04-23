@@ -33,29 +33,26 @@ const nextAuthConfig = {
 
         return {
           id: user.id.toString(),
-          name: user.firstName,
-          // temporary image, will be replaced by the real one
-          // using the `content/profile-picture/username`
-          image: `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}`,
+          name: user.firstName + ' ' + user.lastName,
+          image: `http://localhost:3000/api/content/profile-picture/${user.firstName + user.lastName}`,
         };
       },
     }),
   ],
   callbacks: {
     session: async ({ session }) => {
-      // function to transform session object
-      // next-auth to our custom schema
-      if (!session.user.name) return null;
-
       const userFound = await prisma.user.findFirst({
         where: {
-          firstName: session.user.name,
+          id: session.user.id,
         },
       });
 
       if (!userFound) return null;
 
-      session = { ...session, user: { ...userFound } };
+      session.user = {
+        ...session.user,
+        ...userFound,
+      };
 
       return Promise.resolve(session);
     },

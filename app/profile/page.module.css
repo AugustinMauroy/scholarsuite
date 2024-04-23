@@ -1,0 +1,71 @@
+.page {
+  @apply flex
+    w-full
+    flex-col
+    items-center
+    justify-center
+    gap-4;
+
+  h1 {
+    @apply text-4xl
+      font-bold;
+  }
+
+  .profileInfo {
+    @apply flex
+      flex-col
+      items-center
+      justify-center
+      gap-4;
+
+    .avatar {
+      @apply size-24
+      text-3xl;
+    }
+
+    .name {
+      @apply text-xl
+    font-bold
+    capitalize;
+    }
+  }
+}
+
+.modalOverlay {
+  @apply fixed
+  inset-0
+  bg-black
+  bg-opacity-50;
+}
+
+.modalContent {
+  @apply fixed
+    left-1/2
+    top-1/2
+    flex
+    w-96
+    -translate-x-1/2
+    -translate-y-1/2
+    transform flex-col
+    gap-4
+    rounded-lg
+    bg-white
+    p-4
+    shadow-lg
+    dark:bg-gray-800
+    dark:shadow-none;
+
+  .closeIcon {
+    @apply absolute
+    right-4
+    top-4
+    size-8
+    cursor-pointer
+    hover:text-red-500;
+  }
+
+  h2 {
+    @apply text-2xl
+      font-bold;
+  }
+}

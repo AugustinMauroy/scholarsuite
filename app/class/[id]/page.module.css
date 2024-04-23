@@ -1,0 +1,17 @@
+.page {
+  @apply px-4;
+
+  h1 {
+    @apply mb-4
+    border-b-2
+    border-gray-200
+    pb-2 text-2xl
+    font-bold;
+  }
+
+  .studentList {
+    @apply flex
+      flex-wrap
+      gap-4;
+  }
+}
