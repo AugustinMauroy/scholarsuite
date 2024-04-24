@@ -48,9 +48,9 @@ model Student {
   id                  Int                  @id @default(autoincrement())
   firstName           String
   lastName            String
-  dateOfBirth         DateTime
-  class               Class                @relation(fields: [classId], references: [id])
-  classId             Int
+  dateOfBirth         DateTime?
+  class               Class?               @relation(fields: [classId], references: [id])
+  classId             Int?
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
   grades              Grade[]
