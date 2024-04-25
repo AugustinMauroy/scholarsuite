@@ -19,7 +19,7 @@ export const GET = async (req: Request, { params }: Params) => {
 
   const directory = join(process.cwd(), 'content', 'student-picture');
 
-  const files = await readdir(directory);
+  const files = await readdir(directory).catch(() => []);
 
   const file = files.find(file => file.startsWith(params.id));
 

@@ -7,7 +7,7 @@ type Params = {
 
 export const GET = async (req: Request, { params }: Params) => {
   const directory = join(process.cwd(), 'content', 'profile-picture');
-  const files = await readdir(directory);
+  const files = await readdir(directory).catch(() => []);
   const file = files.find(file => file.startsWith(params.slug));
 
   if (!file) {
@@ -37,7 +37,7 @@ export const POST = async (req: Request, { params }: Params) => {
   }
 
   const directory = join(process.cwd(), 'content', 'profile-picture');
-  const files = await readdir(directory);
+  const files = await readdir(directory).catch(() => []);
   const alreadyExists = files.some(file => file.startsWith(params.slug));
 
   if (alreadyExists) {
