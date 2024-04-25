@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import Table from '@/components/Student/Table';
 import styles from './page.module.css';
 import type { FC } from 'react';
 
@@ -9,6 +10,8 @@ const Page: FC = async () => {
     },
   });
 
+  const possibleClasses = await prisma.class.findMany();
+
   return (
     <main className={styles.page}>
       <header>
@@ -16,24 +19,7 @@ const Page: FC = async () => {
         <p>List of students</p>
       </header>
       <section>
-        <table className={styles.table}>
-          <thead>
-            <tr>
-              <th>First Name</th>
-              <th>Last Name</th>
-              <th>Class</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map(student => (
-              <tr key={student.id}>
-                <td>{student.firstName}</td>
-                <td>{student.lastName}</td>
-                <td>{student.class?.name ?? 'N/A'}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <Table students={students} possibleClasses={possibleClasses} />
       </section>
     </main>
   );
