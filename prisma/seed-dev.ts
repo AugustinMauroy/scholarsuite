@@ -16,13 +16,13 @@ if (users.length) {
         firstName: 'augustin',
         lastName: 'mauroy',
         password: 'password',
-        role: 1,
+        role: 0, // administrator
       },
       {
         firstName: 'jean',
         lastName: 'dupont',
         password: 'password',
-        role: 0,
+        role: 1, // teacher
       },
     ],
   });

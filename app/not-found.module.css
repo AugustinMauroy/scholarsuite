@@ -1,6 +1,6 @@
 .notFound {
   @apply flex
-    size-full
+    h-full
     flex-col
     items-center
     justify-center

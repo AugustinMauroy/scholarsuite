@@ -35,8 +35,9 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
     });
 
     if (response.ok) {
+      const updatedStudent = (await response.json()).student as StudentState;
       setStudentList(prevList =>
-        prevList.map(s => (s.id === selectedStudent.id ? selectedStudent : s))
+        prevList.map(s => (s.id === updatedStudent.id ? updatedStudent : s))
       );
       setSelectedStudent(null);
     }
@@ -84,7 +85,6 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
           <DialogPrimitive.Description>
             Update the student&apos;s information
           </DialogPrimitive.Description>
-
           <Input
             label="First Name"
             name="firstName"
@@ -113,12 +113,11 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
               value: c.id.toString(),
               label: c.name,
             }))}
-            defaultValue={selectedStudent?.class?.id.toString() || ''}
+            defaultValue={selectedStudent?.class?.id.toString()}
             onChange={v =>
               setSelectedStudent(prevStudent => ({
                 ...(prevStudent as StudentState),
-                class:
-                  possibleClasses.find(c => c.id === parseInt(v, 10)) || null,
+                classId: parseInt(v),
               }))
             }
           />

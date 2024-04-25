@@ -1,6 +1,5 @@
 .table {
-  @apply mt-4
-      w-full
+  @apply w-full
       border-collapse
       rounded
       border

@@ -11,7 +11,7 @@
     "prettier": "prettier --write . --cache --cache-strategy=content --cache-location=.prettiercache",
     "prettier:check": "prettier --check . --cache --cache-strategy=content --cache-location=.prettiercache",
     "type-check": "tsc --noEmit",
-    "format": "npm run lint:js -- --fix && npm run lint:css -- --fix && npm run prettier",
+    "format": "turbo run lint:js lint:css -- --fix && turbo run prettier -- --write",
     "storybook": "BUILD_ENV=storybook storybook dev -p 6006 --quiet --no-open",
     "storybook:build": "BUILD_ENV=storybook storybook build",
     "db:generate": "prisma generate",

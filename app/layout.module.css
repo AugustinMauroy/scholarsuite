@@ -4,7 +4,8 @@
 
   .wrapper {
     @apply flex
-      size-full
+      min-h-screen
+      w-full
       flex-col;
   }
 }

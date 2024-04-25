@@ -31,7 +31,7 @@ const Nav: FC<NavProps> = ({ items }) => {
   return (
     <AnimatePresence>
       <motion.nav
-        className="h-full bg-white shadow-lg dark:border-r dark:border-gray-700 dark:bg-gray-800 dark:shadow-none"
+        className="bg-white shadow-lg dark:border-r dark:border-gray-700 dark:bg-gray-800 dark:shadow-none"
         initial={{ width: 240 }}
         animate={{ width: isOpen ? 240 : 'auto' }}
         exit={{ width: 240 }}

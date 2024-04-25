@@ -9,6 +9,7 @@ export const PATCH = async (req: Request, { params }: Params) => {
   const { firstName, lastName, classId } = await req.json();
 
   const student = await prisma.student.update({
+    include: { class: true },
     where: { id: parseInt(id, 10) },
     data: { firstName, lastName, classId: parseInt(classId, 10) },
   });
