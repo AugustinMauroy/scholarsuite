@@ -1,0 +1,58 @@
+.page {
+  @apply px-4;
+
+  header {
+    @apply mb-2
+      border-b-2
+      border-gray-200
+      pb-2;
+
+    h1 {
+      @apply text-2xl
+        font-bold;
+    }
+
+    p {
+      @apply text-gray-500
+        dark:text-gray-400;
+    }
+  }
+
+  .table {
+    @apply mt-4
+      w-full
+      border-collapse
+      rounded
+      border
+      border-gray-200
+      dark:bg-gray-800;
+
+    th {
+      @apply border
+        border-gray-200
+        bg-gray-100
+        p-2
+        font-bold
+        dark:bg-gray-700
+        dark:text-gray-200;
+    }
+
+    td {
+      @apply border
+        border-gray-200
+        p-2
+        dark:bg-gray-700;
+    }
+
+    tr {
+      @apply border
+        border-gray-200
+        dark:border-gray-700;
+    }
+
+    tr:nth-child(even) {
+      @apply bg-gray-100
+        dark:bg-gray-700;
+    }
+  }
+}

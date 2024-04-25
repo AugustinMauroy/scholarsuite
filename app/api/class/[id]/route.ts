@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 
-type Parmas = {
+type Params = {
   params: {
     id: string;
   };
@@ -8,7 +8,7 @@ type Parmas = {
 
 export const GET = async (
   req: Request,
-  { params }: Parmas
+  { params }: Params
 ): Promise<Response> => {
   const { id } = params;
 
@@ -26,4 +26,19 @@ export const GET = async (
   }
 
   return Response.json({ data: classData }, { status: 200 });
+};
+
+export const PATCH = async (
+  req: Request,
+  { params }: Params
+): Promise<Response> => {
+  const { id } = params;
+  const { name } = await req.json();
+
+  const updatedClass = await prisma.class.update({
+    where: { id: parseInt(id, 10) },
+    data: { name },
+  });
+
+  return Response.json({ class: updatedClass }, { status: 200 });
 };
