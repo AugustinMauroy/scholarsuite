@@ -8,12 +8,14 @@ import { getAcronymFromString } from '@/utils/string';
 import Avatar from '@/components/Common/Avatar';
 import Button from '@/components/Common/Button';
 import DropZone from '@/components/Common/DropZone';
+import { useToast } from '@/hooks/useToast';
 import styles from './page.module.css';
 import type { FC } from 'react';
 
 const Page: FC = () => {
   const sessionData = useSession();
   const t = useTranslations('app.profile');
+  const toast = useToast();
   const [file, setFile] = useState<File | null>(null);
   const alt = getAcronymFromString(sessionData.data?.user.name || '');
 
@@ -28,12 +30,22 @@ const Page: FC = () => {
         },
         body: file,
       }
-    ).then(response => {
-      if (response.ok) {
-        console.log('Updated');
-        setFile(null);
-      }
-    });
+    )
+      .then(response => {
+        if (response.ok) {
+          setFile(null);
+          toast({
+            message: 'Profile picture updated successfully',
+            kind: 'success',
+          });
+        }
+      })
+      .catch(() => {
+        toast({
+          message: 'An error occurred',
+          kind: 'error',
+        });
+      });
   };
 
   return (

@@ -21,7 +21,7 @@ const config: StorybookConfig = {
   previewBody:
     '<style>:root { color-scheme: light; } html[data-theme="dark"] { color-scheme: dark; }</style>' +
     // Warning: this should be same as the one in `src/styles/globals.css`
-    '<body class="bg-gray-50 text-gray-950 dark:bg-gray-950 transition-colors dark:text-gray-50"></body>',
+    '<body class="bg-white text-gray-950 dark:bg-gray-950 transition-colors dark:text-gray-50"></body>',
   webpack: async config => ({
     ...config,
     // Performance Hints do not make sense on Storybook as it is bloated by design

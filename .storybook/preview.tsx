@@ -1,4 +1,6 @@
+import * as React from 'react';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
+import { ToastProvider } from '../providers/toastProvider';
 import type { Preview, ReactRenderer } from '@storybook/react';
 import '../styles/globals.css';
 
@@ -19,6 +21,11 @@ const preview: Preview = {
       defaultTheme: 'light',
       attributeName: 'data-theme',
     }),
+    Story => (
+      <ToastProvider viewportClassName="absolute bottom-0 right-0 list-none">
+        <Story />
+      </ToastProvider>
+    ),
   ],
 };
 

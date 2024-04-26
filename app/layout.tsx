@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth/next';
 import AuthProvider from '@/providers/auth';
 import LocaleProvider from '@/providers/locale';
+import { ToastProvider } from '@/providers/toastProvider';
 import { getLanguage, getTimeZone, getMessages } from '@/lib/i18n';
 import ClassNav from '@/components/Common/ClassNav';
 import Header from '@/components/Layout/Header';
@@ -30,25 +31,29 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
 
   return (
     <html lang={language}>
-      <AuthProvider>
-        <LocaleProvider
-          locale={language}
-          messages={messages}
-          timeZone={timeZone}
-        >
-          {sessionData ? (
-            <body className={styles.body}>
-              <ClassNav />
-              <div className={styles.wrapper}>
-                <Header />
-                {children}
-              </div>
-            </body>
-          ) : (
-            <body>{children}</body>
-          )}
-        </LocaleProvider>
-      </AuthProvider>
+      <body className={sessionData ? styles.body : ''}>
+        <AuthProvider>
+          <LocaleProvider
+            locale={language}
+            messages={messages}
+            timeZone={timeZone}
+          >
+            <ToastProvider viewportClassName="absolute bottom-0 right-0 list-none">
+              {sessionData ? (
+                <>
+                  <ClassNav />
+                  <div className={styles.wrapper}>
+                    <Header />
+                    {children}
+                  </div>
+                </>
+              ) : (
+                children
+              )}
+            </ToastProvider>
+          </LocaleProvider>
+        </AuthProvider>
+      </body>
     </html>
   );
 };

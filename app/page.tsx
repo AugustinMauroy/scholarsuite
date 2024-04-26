@@ -6,13 +6,13 @@ import type { FC } from 'react';
 
 const Page: FC = () => {
   const { data: session } = useSession();
-
   if (!session) return null;
 
   // way to display a/an based on the role
-  const displayRole = userRoles[session.user.role].startsWith('a')
-    ? 'an'
-    : 'a' + ' ' + userRoles[session.user.role];
+  const displayRole =
+    (userRoles[session.user.role].startsWith('a') ? 'an' : 'a') +
+    ' ' +
+    userRoles[session.user.role];
 
   return (
     <main className="m-4">
@@ -31,6 +31,14 @@ const Page: FC = () => {
             </Link>
           </li>
         )}
+        <li>
+          <Link
+            href="/disciplinaryReport"
+            className="text-lg text-blue-500 hover:underline"
+          >
+            Disciplinary Dashboard
+          </Link>
+        </li>
       </ul>
     </main>
   );

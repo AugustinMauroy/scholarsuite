@@ -104,6 +104,15 @@ if (users.length) {
     data: [{ name: 'Mathematics' }, { name: 'Science' }, { name: 'History' }],
   });
 
+  await prisma.disciplinaryReport.create({
+    data: {
+      description: 'Student was caught cheating during the exam',
+      date: new Date(),
+      createdBy: { connect: { id: 1 } },
+      student: { connect: { id: 1 } },
+    },
+  });
+
   await prisma.$disconnect();
 
   if (platform() === 'win32')

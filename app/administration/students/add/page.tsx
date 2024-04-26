@@ -15,6 +15,7 @@ const Page: FC = () => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
   const [displayRemove, setDisplayRemove] = useState(false);
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -27,6 +28,7 @@ const Page: FC = () => {
     formData.append('firstName', firstName);
     formData.append('lastName', lastName);
     formData.append('file', file);
+    formData.append('email', email);
 
     try {
       const response = await fetch('/api/student', {
@@ -37,6 +39,7 @@ const Page: FC = () => {
       if (response.ok) {
         setFirstName('');
         setLastName('');
+        setEmail('');
         setFile(null);
         setImagePreview(null);
       } else {
@@ -93,13 +96,21 @@ const Page: FC = () => {
           )}
           <Input
             label="Prénom"
+            type="text"
             value={firstName}
             onChange={e => setFirstName(e.target.value)}
           />
           <Input
             label="Nom"
+            type="text"
             value={lastName}
             onChange={e => setLastName(e.target.value)}
+          />
+          <Input
+            label="Email"
+            type="email"
+            value={email}
+            onChange={e => setEmail(e.target.value)}
           />
           <Button type="submit">Ajouter</Button>
         </form>

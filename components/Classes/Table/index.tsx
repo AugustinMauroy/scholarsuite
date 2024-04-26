@@ -1,9 +1,15 @@
 'use client';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useState } from 'react';
-import { PencilIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import {
+  PencilIcon,
+  XMarkIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+} from '@heroicons/react/24/solid';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
+import { useToast } from '@/hooks/useToast';
 import styles from './index.module.css';
 import type { FC } from 'react';
 import type { Class, SchoolLevel } from '@prisma/client';
@@ -15,6 +21,7 @@ type TableProps = {
 };
 
 const ClassTable: FC<TableProps> = ({ classes }) => {
+  const toast = useToast();
   const [classList, setClassList] = useState<ClassState[]>(classes);
   const [selectedClass, setSelectedClass] = useState<ClassState | null>(null);
 
@@ -22,8 +29,19 @@ const ClassTable: FC<TableProps> = ({ classes }) => {
     if (
       !selectedClass ||
       selectedClass === classList.find(c => c.id === selectedClass.id)
-    )
+    ) {
+      toast({
+        message: (
+          <>
+            <ExclamationTriangleIcon />
+            Please select a class to edit
+          </>
+        ),
+        kind: 'warning',
+      });
+
       return;
+    }
 
     const response = await fetch(`/api/class/${selectedClass.id}`, {
       method: 'PATCH',
@@ -35,6 +53,16 @@ const ClassTable: FC<TableProps> = ({ classes }) => {
         prevList.map(c => (c.id === selectedClass.id ? selectedClass : c))
       );
       setSelectedClass(null);
+
+      toast({
+        message: (
+          <>
+            <CheckCircleIcon />
+            Class updated successfully
+          </>
+        ),
+        duration: 5000,
+      });
     }
   };
 

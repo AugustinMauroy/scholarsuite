@@ -1,0 +1,42 @@
+.tabsRoot {
+  @apply max-w-full;
+
+  .tabsList {
+    @apply flex
+      gap-2
+      overflow-x-auto
+      border-b
+      border-b-gray-200
+      dark:border-b-gray-800;
+
+    .tabsTrigger {
+      @apply whitespace-nowrap
+        border-b-2
+        border-b-transparent
+        px-1
+        pb-[11px]
+        text-sm
+        font-semibold
+        text-gray-800
+        dark:text-gray-200;
+
+      .tabSecondaryLabel {
+        @apply pl-1
+          text-gray-500
+          dark:text-gray-800;
+      }
+
+      &[data-state='active'] {
+        @apply border-b-brand-600
+          text-brand-600
+          dark:border-b-brand-400
+          dark:text-brand-400;
+
+        .tabSecondaryLabel {
+          @apply text-brand-800
+          dark:text-brand-600;
+        }
+      }
+    }
+  }
+}

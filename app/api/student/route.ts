@@ -16,6 +16,7 @@ export const PUT = async (req: Request) => {
   const formData = await req.formData();
   const firstName = formData.get('firstName') as string;
   const lastName = formData.get('lastName') as string;
+  const email = formData.get('email') as string;
   const file = formData.get('file') as File;
 
   if (!firstName || !lastName || !file) {
@@ -26,6 +27,7 @@ export const PUT = async (req: Request) => {
     data: {
       firstName,
       lastName,
+      contactEmail: email.length > 0 ? email : null,
     },
   });
 

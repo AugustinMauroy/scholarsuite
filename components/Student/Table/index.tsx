@@ -1,10 +1,18 @@
 'use client';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useState } from 'react';
-import { PencilIcon, XMarkIcon } from '@heroicons/react/24/solid';
+import {
+  PencilIcon,
+  XMarkIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+} from '@heroicons/react/24/solid';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
+import { useToast } from '@/hooks/useToast';
+import Avatar from '@/components/Common/Avatar';
+import { getAcronymFromString } from '@/utils/string';
 import styles from './index.module.css';
 import type { FC } from 'react';
 import type { Student, Class } from '@prisma/client';
@@ -17,6 +25,7 @@ type TableProps = {
 };
 
 const Table: FC<TableProps> = ({ students, possibleClasses }) => {
+  const toast = useToast();
   const [studentList, setStudentList] = useState<StudentState[]>(students);
   const [selectedStudent, setSelectedStudent] = useState<StudentState | null>(
     null
@@ -26,8 +35,19 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
     if (
       !selectedStudent ||
       selectedStudent === studentList.find(s => s.id === selectedStudent.id)
-    )
+    ) {
+      toast({
+        message: (
+          <>
+            <ExclamationTriangleIcon />
+            Anything was changed
+          </>
+        ),
+        kind: 'warning',
+      });
+
       return;
+    }
 
     const response = await fetch(`/api/student/${selectedStudent.id}`, {
       method: 'PATCH',
@@ -40,6 +60,16 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
         prevList.map(s => (s.id === updatedStudent.id ? updatedStudent : s))
       );
       setSelectedStudent(null);
+
+      toast({
+        message: (
+          <>
+            <CheckCircleIcon />
+            Student updated successfully
+          </>
+        ),
+        kind: 'success',
+      });
     }
   };
 
@@ -48,18 +78,29 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
       <table className={styles.table}>
         <thead>
           <tr>
+            <th />
             <th>First Name</th>
             <th>Last Name</th>
             <th>Class</th>
+            <th>Contact Email</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
           {studentList.map(student => (
             <tr key={student.id}>
+              <td>
+                <Avatar
+                  src={`http://localhost:3000/api/content/student-picture/${student.id}`}
+                  alt={getAcronymFromString(
+                    `${student.firstName} ${student.lastName}`
+                  )}
+                />
+              </td>
               <td>{student.firstName}</td>
               <td>{student.lastName}</td>
               <td>{student.class?.name}</td>
+              <td>{student.contactEmail}</td>
               <td>
                 <DialogPrimitive.Trigger asChild>
                   <Button onClick={() => setSelectedStudent(student)}>
@@ -118,6 +159,17 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
               setSelectedStudent(prevStudent => ({
                 ...(prevStudent as StudentState),
                 classId: parseInt(v),
+              }))
+            }
+          />
+          <Input
+            label="Contact Email"
+            name="email"
+            value={selectedStudent?.contactEmail || ''}
+            onChange={e =>
+              setSelectedStudent(prevStudent => ({
+                ...(prevStudent as StudentState),
+                contactEmail: e.target.value,
               }))
             }
           />

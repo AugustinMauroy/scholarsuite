@@ -33,7 +33,7 @@ const nextAuthConfig = {
 
         return {
           id: user.id.toString(),
-          name: user.firstName + ' ' + user.lastName,
+          name: user.firstName + '/' + user.lastName,
           image: `http://localhost:3000/api/content/profile-picture/${user.firstName + user.lastName}`,
         };
       },
@@ -41,9 +41,12 @@ const nextAuthConfig = {
   ],
   callbacks: {
     session: async ({ session }) => {
+      const fistName = session.user.name.split('/')[0];
+      const lastName = session.user.name.split('/')[1];
       const userFound = await prisma.user.findFirst({
         where: {
-          id: session.user.id,
+          firstName: fistName,
+          lastName: lastName,
         },
       });
 
