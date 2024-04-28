@@ -24,6 +24,9 @@ export const POST = async (req: Request) => {
         },
       ],
     },
+    include: {
+      class: true,
+    },
   });
 
   return Response.json(response);

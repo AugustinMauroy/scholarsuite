@@ -1,17 +1,21 @@
 import { useState, useEffect } from 'react';
 import Input from '@/components/Common/Input';
 import type { FC } from 'react';
-import type { Student } from '@prisma/client';
+import type { Student, Class } from '@prisma/client';
+
+type StudentsState = Student & {
+  class: Class;
+};
 
 type StudentSearchProps = {
-  studentId: number;
+  studentId?: number;
   setStudentId: (id: number) => void;
 };
 
 const StudentSearch: FC<StudentSearchProps> = ({ studentId, setStudentId }) => {
   const [focused, setFocused] = useState(false);
   const [search, setSearch] = useState('');
-  const [students, setStudents] = useState<Student[]>([]);
+  const [students, setStudents] = useState<StudentsState[]>([]);
 
   useEffect(() => {
     const fetchStudents = async () => {
@@ -42,6 +46,12 @@ const StudentSearch: FC<StudentSearchProps> = ({ studentId, setStudentId }) => {
     return () => clearTimeout(debounced);
   }, [search]);
 
+  useEffect(() => {
+    if (!studentId) {
+      setSearch('');
+    }
+  }, [studentId]);
+
   return (
     <div className="relative w-full">
       <Input
@@ -54,7 +64,7 @@ const StudentSearch: FC<StudentSearchProps> = ({ studentId, setStudentId }) => {
         }}
       />
       {focused && students.length > 0 && (
-        <ul className="absolute mt-1 w-full rounded border border-gray-300 bg-white">
+        <ul className="absolute mt-2 w-full divide-y divide-gray-300 rounded border border-gray-300 bg-white dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800">
           {students.map(student => (
             <li
               key={student.id}
@@ -62,9 +72,12 @@ const StudentSearch: FC<StudentSearchProps> = ({ studentId, setStudentId }) => {
                 setStudentId(student.id);
                 setSearch(`${student.firstName} ${student.lastName}`);
               }}
-              className="cursor-pointer p-2 hover:bg-gray-100"
+              className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
-              {student.firstName} {student.lastName}
+              {student.firstName} {student.lastName}{' '}
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                ({student.class.name})
+              </span>
             </li>
           ))}
         </ul>

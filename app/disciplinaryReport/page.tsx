@@ -1,19 +1,20 @@
 'use client';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { useState, useEffect } from 'react';
+import { useToast } from '@/hooks/useToast';
 import Tabs from '@/components/Common/Tabs';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
 import StudentSearch from '@/components/Student/Search';
 import type { FC, FormEvent } from 'react';
 import type { DisciplinaryReport, User, Student } from '@prisma/client';
-
 type DisciplinaryState = DisciplinaryReport & {
   createdBy: User;
   student: Student;
 };
 
 const Page: FC = () => {
+  const toast = useToast();
   const [disciplinaryReports, setDisciplinaryReports] = useState<
     DisciplinaryState[] | null
   >(null);
@@ -47,12 +48,19 @@ const Page: FC = () => {
       .then(res => res.json())
       .then(data => {
         if (data.error) {
-          alert(data.error);
+          toast({
+            message: data.error,
+            kind: 'error',
+          });
         } else {
           setDisciplinaryReports(data.disciplinaryReports);
           setStudentId(undefined);
           setDescription('');
           setDate('');
+          toast({
+            message: 'Disciplinary report created',
+            kind: 'success',
+          });
         }
       });
   };
@@ -95,7 +103,7 @@ const Page: FC = () => {
         <TabsPrimitive.Content key="create" value="create" asChild>
           <form className="space-y-4 py-4">
             <StudentSearch
-              studentId={studentId || 0}
+              studentId={studentId}
               setStudentId={id => setStudentId(id)}
             />
             <Input
