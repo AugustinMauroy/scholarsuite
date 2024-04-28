@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import nextAuthConfig from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import Table from '@/components/Classes/Table';
-import styles from './page.module.css';
+import BaseLayout from '@/components/Layout/base';
 import type { FC } from 'react';
 
 const Page: FC = async () => {
@@ -17,15 +17,9 @@ const Page: FC = async () => {
   });
 
   return (
-    <main className={styles.page}>
-      <header>
-        <h1>Administration</h1>
-        <p>List of classes</p>
-      </header>
-      <section>
-        <Table classes={classes} />
-      </section>
-    </main>
+    <BaseLayout title="Administration" description="Manage your school">
+      <Table classes={classes} />
+    </BaseLayout>
   );
 };
 

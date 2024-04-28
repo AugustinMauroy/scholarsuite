@@ -66,15 +66,16 @@ ScholarSuite permet de gérer les notes des élèves.
 - Relation avec la matière (`subject`) et son identifiant (`subjectId`)
 - Dates de création et de mise à jour (`createdAt`, `updatedAt`) pour un usage interne
 
-### 7. `Presence`
+### 7. Presence
 
 La gestion des présences est une fonctionnalité clé de ScholarSuite.
 
-- Identifiant unique (`id`)
-- Relation avec l'élève (`student`) et son identifiant (`studentId`)
-- Date et heure (`datetime`)
-- Relation avec l'utilisateur responsable de l'enregistrement (`user`) et son identifiant (`userId`)
-- Relation avec la matière (`subject`) et son identifiant (`subjectId`)
+- Identifiant unique (id)
+- Relation avec l'élève (student) et son identifiant (studentId)
+- Date et heure (datetime)
+- Relation avec l'utilisateur responsable de l'enregistrement (user) et son identifiant (userId)
+- Relation avec la matière (subject) et son identifiant (subjectId)
+- Relation avec la tranche horaire (timeSlot) et son identifiant (timeSlotId)
 
 ### 8. `DisciplinaryReport`
 
@@ -85,3 +86,14 @@ ScholarSuite permet de gérer les rapports disciplinaires des élèves.
 - Date du rapport (`date`)
 - Description du rapport (`description`)
 - Dates de création et de mise à jour (`createdAt`, `updatedAt`) pour un usage interne
+
+### 9. TimeSlot
+
+La gestion des tranches horaires est une fonctionnalité ajoutée à ScholarSuite.
+
+- Identifiant unique (id)
+- Heure de début (startTime)
+- Heure de fin (endTime)
+- Relation avec le niveau scolaire (schoolLevel) et son identifiant (schoolLevelId)
+- Dates de création et de mise à jour (createdAt, updatedAt) pour un usage interne
+- Relation avec les enregistrements de présence (Presence)

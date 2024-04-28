@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import StudentCard from '@/components/Student/StudentCard';
+import BaseLayout from '@/components/Layout/base';
 import styles from './page.module.css';
 import type { FC } from 'react';
 import type { Student, Class } from '@prisma/client';
@@ -28,19 +29,19 @@ const Page: FC<PageProps> = ({ params }) => {
   }, []);
 
   return (
-    <main className={styles.page}>
-      <h1>{data?.name ?? 'Loading...'}</h1>
-      <section className={styles.studentList}>
-        {data?.students.map(student => (
-          <StudentCard
-            key={student.id}
-            firstName={student.firstName}
-            lastName={student.lastName}
-            image={`http://localhost:3000/api/content/student-picture/${student.id}`}
-          />
-        ))}
-      </section>
-    </main>
+    <BaseLayout
+      title={data?.name ?? 'Loading...'}
+      sectionClassName={styles.studentList}
+    >
+      {data?.students.map(student => (
+        <StudentCard
+          key={student.id}
+          firstName={student.firstName}
+          lastName={student.lastName}
+          image={`http://localhost:3000/api/content/student-picture/${student.id}`}
+        />
+      ))}
+    </BaseLayout>
   );
 };
 

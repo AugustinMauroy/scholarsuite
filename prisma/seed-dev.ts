@@ -113,6 +113,57 @@ if (users.length) {
     },
   });
 
+  /* Create the Create schedule (timeslot) */
+  await prisma.timeSlot.createMany({
+    data: [
+      {
+        name: '08:25 - 09:15',
+        startTime: '08:25',
+        endTime: '09:15',
+      },
+      {
+        name: '09:15 - 10:05',
+        startTime: '09:15',
+        endTime: '10:05',
+      },
+      {
+        name: '10:05 - 10:55',
+        startTime: '10:05',
+        endTime: '10:55',
+      },
+      {
+        name: '10:55 - 11:10',
+        startTime: '11:10',
+        endTime: '12:00',
+      },
+      {
+        name: '12:00 - 12:50',
+        startTime: '12:00',
+        endTime: '12:50',
+      },
+      {
+        name: '12:50 - 13:40',
+        startTime: '12:50',
+        endTime: '13:40',
+      },
+      {
+        name: '13:40 - 14:30',
+        startTime: '13:40',
+        endTime: '14:30',
+      },
+      {
+        name: '14:30 - 15:20',
+        startTime: '14:30',
+        endTime: '15:20',
+      },
+      {
+        name: '15:20 - 16:10',
+        startTime: '15:20',
+        endTime: '16:10',
+      },
+    ],
+  });
+
   await prisma.$disconnect();
 
   if (platform() === 'win32')

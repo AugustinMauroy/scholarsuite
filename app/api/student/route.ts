@@ -2,16 +2,6 @@ import { join } from 'node:path';
 import { writeFile, mkdir } from 'node:fs/promises';
 import prisma from '@/lib/prisma';
 
-export const GET = async (req: Request) => {
-  const students = await prisma.student.findMany();
-
-  return new Response(JSON.stringify(students), {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-};
-
 export const PUT = async (req: Request) => {
   const formData = await req.formData();
   const firstName = formData.get('firstName') as string;

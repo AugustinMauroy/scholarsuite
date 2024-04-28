@@ -68,7 +68,7 @@ const ClassTable: FC<TableProps> = ({ classes }) => {
 
   return (
     <DialogPrimitive.Root>
-      <table className={styles.table}>
+      <table>
         <thead>
           <tr>
             <th>Name</th>
@@ -84,7 +84,7 @@ const ClassTable: FC<TableProps> = ({ classes }) => {
               <td>
                 <DialogPrimitive.Trigger asChild>
                   <Button onClick={() => setSelectedClass(classItem)}>
-                    <PencilIcon className="size-5" />
+                    <PencilIcon />
                     Edit
                   </Button>
                 </DialogPrimitive.Trigger>

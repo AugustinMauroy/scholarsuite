@@ -25,11 +25,12 @@ model User {
 }
 
 model SchoolLevel {
-  id        Int      @id @default(autoincrement())
+  id        Int        @id @default(autoincrement())
   name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
   classes   Class[]
+  TimeSlot  TimeSlot[]
 }
 
 model Class {
@@ -79,15 +80,31 @@ model Grade {
   updatedAt DateTime @updatedAt
 }
 
+model TimeSlot {
+  id            Int          @id @default(autoincrement())
+  name          String?
+  // startTime and endTime is string
+  // because we don't need to know the date
+  startTime     String
+  endTime       String
+  Presence      Presence[]
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  SchoolLevel   SchoolLevel? @relation(fields: [schoolLevelId], references: [id])
+  schoolLevelId Int?
+}
+
 model Presence {
-  id        Int      @id @default(autoincrement())
-  student   Student  @relation(fields: [studentId], references: [id])
-  studentId Int
-  datetime  DateTime
-  user      User     @relation(fields: [userId], references: [id])
-  userId    Int
-  subject   Subject  @relation(fields: [subjectId], references: [id])
-  subjectId Int
+  id         Int      @id @default(autoincrement())
+  student    Student  @relation(fields: [studentId], references: [id])
+  studentId  Int
+  date       DateTime
+  user       User     @relation(fields: [userId], references: [id])
+  userId     Int
+  subject    Subject  @relation(fields: [subjectId], references: [id])
+  subjectId  Int
+  timeSlot   TimeSlot @relation(fields: [timeSlotId], references: [id])
+  timeSlotId Int
 }
 
 model DisciplinaryReport {

@@ -7,6 +7,7 @@ import { useState } from 'react';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
 import DropZone from '@/components/Common/DropZone';
+import BaseLayout from '@/components/Layout/base';
 import styles from './page.module.css';
 import type { FC, FormEvent } from 'react';
 
@@ -51,71 +52,69 @@ const Page: FC = () => {
   };
 
   return (
-    <main className={styles.page}>
-      <header>
-        <h1>Administration</h1>
-        <p>Ajouter un étudiant</p>
-      </header>
-      <section className={styles.formWrapper}>
-        <form onSubmit={handleSubmit}>
-          {imagePreview ? (
-            <AvatarPrimitive.Root
-              className={styles.avatarRoot}
-              onMouseEnter={() => setDisplayRemove(true)}
-              onMouseLeave={() => setDisplayRemove(false)}
-            >
-              <AvatarPrimitive.Image
-                src={imagePreview}
-                alt="Photo de l’étudiant"
-                className={styles.avatar}
-              />
-              <AvatarPrimitive.Fallback className={styles.avatar}>
-                {`${firstName.charAt(0)}${lastName.charAt(0)}`}
-              </AvatarPrimitive.Fallback>
-              {displayRemove && (
-                <button
-                  className={styles.avatarRemove}
-                  onClick={() => {
-                    setFile(null);
-                    setImagePreview(null);
-                  }}
-                >
-                  Supprimer
-                </button>
-              )}
-            </AvatarPrimitive.Root>
-          ) : (
-            <DropZone
-              file={file}
-              setFile={(file: File) => {
-                setFile(file);
-                setImagePreview(URL.createObjectURL(file));
-              }}
-              title="Photo de l’étudiant"
+    <BaseLayout
+      title="Administration"
+      description="Manage your school"
+      sectionClassName={styles.formWrapper}
+    >
+      <form onSubmit={handleSubmit}>
+        {imagePreview ? (
+          <AvatarPrimitive.Root
+            className={styles.avatarRoot}
+            onMouseEnter={() => setDisplayRemove(true)}
+            onMouseLeave={() => setDisplayRemove(false)}
+          >
+            <AvatarPrimitive.Image
+              src={imagePreview}
+              alt="Photo de l’étudiant"
+              className={styles.avatar}
             />
-          )}
-          <Input
-            label="Prénom"
-            type="text"
-            value={firstName}
-            onChange={e => setFirstName(e.target.value)}
+            <AvatarPrimitive.Fallback className={styles.avatar}>
+              {`${firstName.charAt(0)}${lastName.charAt(0)}`}
+            </AvatarPrimitive.Fallback>
+            {displayRemove && (
+              <button
+                className={styles.avatarRemove}
+                onClick={() => {
+                  setFile(null);
+                  setImagePreview(null);
+                }}
+              >
+                Supprimer
+              </button>
+            )}
+          </AvatarPrimitive.Root>
+        ) : (
+          <DropZone
+            file={file}
+            setFile={(file: File) => {
+              setFile(file);
+              setImagePreview(URL.createObjectURL(file));
+            }}
+            title="Photo de l’étudiant"
           />
-          <Input
-            label="Nom"
-            type="text"
-            value={lastName}
-            onChange={e => setLastName(e.target.value)}
-          />
-          <Input
-            label="Email"
-            type="email"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
-          />
-          <Button type="submit">Ajouter</Button>
-        </form>
-      </section>
-    </main>
+        )}
+        <Input
+          label="Prénom"
+          type="text"
+          value={firstName}
+          onChange={e => setFirstName(e.target.value)}
+        />
+        <Input
+          label="Nom"
+          type="text"
+          value={lastName}
+          onChange={e => setLastName(e.target.value)}
+        />
+        <Input
+          label="Email"
+          type="email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+        />
+        <Button type="submit">Ajouter</Button>
+      </form>
+    </BaseLayout>
   );
 };
 

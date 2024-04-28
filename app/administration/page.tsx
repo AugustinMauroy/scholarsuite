@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import BaseLayout from '@/components/Layout/base';
 import nextAuthConfig from '@/lib/auth';
 import type { FC } from 'react';
 
@@ -9,12 +10,8 @@ const Page: FC = async () => {
   if (session?.user.role !== 0) notFound();
 
   return (
-    <main className="px-4">
-      <header className="mb-2 border-b-2 border-gray-200 pb-2">
-        <h1 className="text-2xl font-bold">Administration</h1>
-        <p className="text-gray-500">Manage your school</p>
-      </header>
-      <section className="flex flex-wrap gap-4">
+    <BaseLayout title="Administration" description="Manage your school">
+      <div className="flex flex-wrap space-x-4">
         <div className="rounded bg-white p-4 shadow dark:bg-gray-800 dark:shadow-none">
           <h2 className="text-xl font-bold">Manage Students</h2>
           <Link
@@ -45,8 +42,8 @@ const Page: FC = async () => {
             Add Class
           </Link>
         </div>
-      </section>
-    </main>
+      </div>
+    </BaseLayout>
   );
 };
 

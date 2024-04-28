@@ -12,6 +12,11 @@
     duration-200
     focus:outline-none
     disabled:cursor-not-allowed;
+
+  svg {
+    @apply size-5
+      fill-current;
+  }
 }
 
 .solid:enabled {

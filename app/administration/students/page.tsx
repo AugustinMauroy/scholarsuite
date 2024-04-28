@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import Table from '@/components/Student/Table';
 import nextAuthConfig from '@/lib/auth';
-import styles from './page.module.css';
+import BaseLayout from '@/components/Layout/base';
 import type { FC } from 'react';
 
 const Page: FC = async () => {
@@ -19,15 +19,9 @@ const Page: FC = async () => {
   const possibleClasses = await prisma.class.findMany();
 
   return (
-    <main className={styles.page}>
-      <header>
-        <h1>Administration</h1>
-        <p>List of students</p>
-      </header>
-      <section>
-        <Table students={students} possibleClasses={possibleClasses} />
-      </section>
-    </main>
+    <BaseLayout title="Administration" description="Manage your school">
+      <Table students={students} possibleClasses={possibleClasses} />
+    </BaseLayout>
   );
 };
 

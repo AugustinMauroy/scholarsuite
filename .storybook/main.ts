@@ -28,7 +28,7 @@ const config: StorybookConfig = {
     performance: { hints: false },
     // Removes Pesky Critical Dependency Warnings due to `next/font`
     ignoreWarnings: [e => e.message.includes('Critical dep')],
-    // allows to use `@/` as a shortcut to the `src/` folder
+    // allows to use `@/` as a shortcut to the root directory
     resolve: {
       ...config.resolve,
       // @ts-ignore

@@ -18,7 +18,7 @@
     }
   }
 
-  section {
+  .section {
     @apply p-4;
   }
 }
