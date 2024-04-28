@@ -39,6 +39,15 @@ export const Late: Story = {
   },
 };
 
+export const Excused: Story = {
+  args: {
+    firstName: 'John',
+    lastName: 'Doe',
+    image: '/static/placeholder-portrait-9-16.jpg',
+    state: 'excused',
+  },
+};
+
 export const NoImage: Story = {
   args: {
     firstName: 'John',

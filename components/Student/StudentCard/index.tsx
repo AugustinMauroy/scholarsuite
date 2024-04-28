@@ -5,7 +5,7 @@ import styles from './index.module.css';
 import type { FC } from 'react';
 
 type StudentCardProps = {
-  state?: 'present' | 'absent' | 'late';
+  state?: 'present' | 'absent' | 'late' | 'excused';
   firstName: string;
   lastName: string;
   image?: string;

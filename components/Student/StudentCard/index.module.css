@@ -48,6 +48,11 @@
       @apply bg-orange-600
         dark:bg-orange-500;
     }
+
+    &.excused {
+      @apply bg-blue-600
+        dark:bg-blue-500;
+    }
   }
 
   .firstName {
