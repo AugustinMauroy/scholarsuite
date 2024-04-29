@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import BaseLayout from '@/components/Layout/base';
+import BaseLayout from '@/components/Layout/Base';
 import nextAuthConfig from '@/lib/auth';
 import type { FC } from 'react';
 

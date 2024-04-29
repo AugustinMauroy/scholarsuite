@@ -5,7 +5,7 @@ import { notFound } from 'next/navigation';
 import Select from '@/components/Common/Select';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
-import BaseLayout from '@/components/Layout/base';
+import BaseLayout from '@/components/Layout/Base';
 import styles from './page.module.css';
 import type { FC, FormEvent } from 'react';
 import type { SchoolLevel } from '@prisma/client';

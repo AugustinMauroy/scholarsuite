@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation';
 import nextAuthConfig from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import Table from '@/components/Classes/Table';
-import BaseLayout from '@/components/Layout/base';
+import BaseLayout from '@/components/Layout/Base';
 import type { FC } from 'react';
 
 const Page: FC = async () => {

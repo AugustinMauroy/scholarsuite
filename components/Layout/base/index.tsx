@@ -1,11 +1,12 @@
 import classNames from 'classnames';
 import styles from './index.module.css';
-import type { FC, PropsWithChildren } from 'react';
+import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 type BaseLayoutProps = PropsWithChildren<{
   title: string;
   description?: string;
   sectionClassName?: string;
+  actions?: ReactNode;
 }>;
 
 const BaseLayout: FC<BaseLayoutProps> = ({
@@ -13,11 +14,15 @@ const BaseLayout: FC<BaseLayoutProps> = ({
   title,
   description,
   sectionClassName,
+  actions,
 }) => (
   <main className={styles.page}>
     <header>
-      <h1>{title}</h1>
-      {description && <p>{description}</p>}
+      <div>
+        <h1>{title}</h1>
+        {description && <p>{description}</p>}
+      </div>
+      {actions && <div>{actions}</div>}
     </header>
     <section className={classNames(styles.section, sectionClassName)}>
       {children}

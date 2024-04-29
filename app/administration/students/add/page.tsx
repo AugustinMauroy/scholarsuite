@@ -7,7 +7,7 @@ import { useState } from 'react';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
 import DropZone from '@/components/Common/DropZone';
-import BaseLayout from '@/components/Layout/base';
+import BaseLayout from '@/components/Layout/Base';
 import styles from './page.module.css';
 import type { FC, FormEvent } from 'react';
 

@@ -1,0 +1,27 @@
+.wrapper {
+  @apply flex
+    items-center
+    justify-between
+    gap-4;
+
+  .button {
+    @apply rounded
+    p-2
+    transition-colors
+    duration-200
+    enabled:hover:bg-gray-200
+    disabled:cursor-not-allowed
+    disabled:opacity-50 enabled:dark:hover:bg-gray-800
+    dark:disabled:opacity-70;
+
+    svg {
+      @apply size-6
+        fill-current;
+    }
+  }
+
+  .name {
+    @apply text-2xl
+      font-bold;
+  }
+}

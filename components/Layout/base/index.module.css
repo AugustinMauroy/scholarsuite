@@ -3,6 +3,10 @@
 
   header {
     @apply mb-2
+      flex
+      flex-row
+      items-center
+      justify-between
       border-b-2
       border-gray-200
       pb-2;

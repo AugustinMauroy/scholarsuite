@@ -1,5 +1,5 @@
-import BaseLayout from '@/components/Layout/base';
-import Table from '@/components/timeSlot/Table';
+import BaseLayout from '@/components/Layout/Base';
+import Table from '@/components/TimeSlot/Table';
 import type { FC } from 'react';
 
 const Page: FC = () => (
