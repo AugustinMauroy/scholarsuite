@@ -1,5 +1,6 @@
 .card {
   @apply w-40
+  select-none
   rounded-xl
   bg-white
   shadow-lg
@@ -22,7 +23,7 @@
   }
 
   .state {
-    @apply inline-flex
+    @apply flex
       h-8
       w-full
       flex-row

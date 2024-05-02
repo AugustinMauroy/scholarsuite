@@ -1,4 +1,4 @@
-import { platform } from 'os';
+import { platform } from 'node:os';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
@@ -6,8 +6,9 @@ const users = await prisma.user.findMany();
 
 if (users.length) {
   if (platform() === 'win32')
-    console.log('⨯ Users already exist in the database');
-  else console.log('\x1b[31m⨯\x1b[0m Users already exist in the database');
+    console.log('⨯ There are already entries in the database');
+  else
+    console.log('\x1b[31m⨯\x1b[0m There are already entries in the database');
   process.exit(0);
 } else {
   await prisma.user.createMany({
@@ -166,12 +167,6 @@ if (users.length) {
 
   await prisma.$disconnect();
 
-  if (platform() === 'win32')
-    console.log(
-      '✓ Seeded database with users, classes, students, and subjects'
-    );
-  else
-    console.log(
-      '\x1b[32m✓\x1b[0m Seeded database with users, classes, students, and subjects'
-    );
+  if (platform() === 'win32') console.log('✓ Seeded database for developement');
+  else console.log('\x1b[32m✓\x1b[0m Seeded database for developement');
 }

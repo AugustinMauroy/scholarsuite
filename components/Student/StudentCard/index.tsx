@@ -3,9 +3,10 @@ import classNames from 'classnames';
 import { getAcronymFromString } from '@/utils/string';
 import styles from './index.module.css';
 import type { FC } from 'react';
+import type { PresenceState } from '@/utils/presence';
 
 type StudentCardProps = {
-  state?: 'present' | 'absent' | 'late' | 'excused';
+  state?: PresenceState;
   firstName: string;
   lastName: string;
   image?: string;
@@ -21,7 +22,14 @@ const StudentCard: FC<StudentCardProps> = ({
   onClick,
   image,
 }) => (
-  <div className={styles.card} onContextMenu={onContextMenu} onClick={onClick}>
+  <div
+    className={styles.card}
+    onClick={onClick}
+    onContextMenu={e => {
+      e.preventDefault();
+      onContextMenu && onContextMenu();
+    }}
+  >
     <AvatarPrimitive.Root className={styles.avatar}>
       <AvatarPrimitive.Image
         loading="lazy"
@@ -35,9 +43,7 @@ const StudentCard: FC<StudentCardProps> = ({
         {getAcronymFromString(firstName + ' ' + lastName)}
       </AvatarPrimitive.Fallback>
     </AvatarPrimitive.Root>
-    <div className={classNames(styles.state, state && styles[state])}>
-      {state}
-    </div>
+    <p className={classNames(styles.state, state && styles[state])}>{state}</p>
     <p className={styles.firstName}>{firstName}</p>
     <p className={styles.lastName}>{lastName}</p>
   </div>
