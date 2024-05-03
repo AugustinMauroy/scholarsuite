@@ -20,8 +20,37 @@
     }
   }
 
-  .name {
-    @apply text-2xl
-      font-bold;
+  .selector {
+    @apply flex
+    flex-col
+    items-center;
+
+    .name {
+      @apply inline-flex
+      items-center
+      justify-center
+      gap-2
+      text-2xl
+      font-bold
+      transition-colors
+      duration-200;
+
+      svg {
+        @apply size-6
+          fill-current;
+      }
+
+      &:hover:not([aria-expanded='true']) {
+        @apply text-gray-500
+        dark:text-gray-400;
+      }
+    }
+
+    .date {
+      @apply text-sm
+      font-medium
+      text-gray-500
+      dark:text-gray-400;
+    }
   }
 }

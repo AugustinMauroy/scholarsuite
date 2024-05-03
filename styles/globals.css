@@ -51,3 +51,8 @@ table {
         dark:bg-gray-700;
   }
 }
+
+*:focus {
+  @apply outline-2
+    outline-brand-500;
+}

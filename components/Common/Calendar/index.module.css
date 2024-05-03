@@ -1,0 +1,83 @@
+.wrapper {
+  @apply flex
+    h-fit
+    w-96
+    flex-col
+    rounded
+    bg-white
+    shadow
+    dark:bg-gray-900
+    dark:shadow-lg;
+
+  .header {
+    @apply flex
+      items-center
+      justify-between
+      border-b
+      border-gray-200
+      px-2
+      py-1
+      dark:border-gray-800;
+
+    .button {
+      @apply rounded
+      p-2
+      transition-colors
+      duration-200
+      enabled:hover:bg-gray-200
+      disabled:cursor-not-allowed
+      disabled:opacity-50 enabled:dark:hover:bg-gray-800
+      dark:disabled:opacity-70;
+
+      svg {
+        @apply size-5
+          fill-current;
+      }
+    }
+  }
+
+  .daysList {
+    @apply flex
+      flex-row
+      items-center
+      justify-between
+      px-2
+      py-1;
+
+    span,
+    button {
+      @apply flex
+        size-5
+        items-center
+        justify-center
+        rounded
+        p-4
+        text-center
+        text-sm;
+
+      &.dayName {
+        @apply font-semibold
+          text-gray-600
+          dark:text-gray-400;
+      }
+
+      &:not(.dayName, .selected, :disabled):hover {
+        @apply bg-gray-200
+          dark:bg-gray-800;
+      }
+
+      &.today {
+        @apply font-semibold
+          text-brand-700
+          dark:text-brand-300;
+      }
+
+      &.selected {
+        @apply bg-brand-500
+          text-white
+          dark:bg-brand-300
+          dark:text-gray-900;
+      }
+    }
+  }
+}

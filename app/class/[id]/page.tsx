@@ -23,11 +23,12 @@ const Page: FC<PageProps> = ({ params }) => {
   const [classData, setClassData] = useState<ClassWithStudents | null>(null);
   const [timeSlot, setTimeSlot] = useState<TimeSlot[] | null>(null);
   const [currentTimeslot, setCurrentTimeslot] = useState<TimeSlot | null>(null);
+  const [currentDate, setCurrentDate] = useState<Date>(new Date());
   const [patch, setPatch] = useState<PatchBody>({
     data: [],
     timeSlotId: -1,
     userId: 1,
-    date: new Date(),
+    date: currentDate,
   });
 
   const getPresence = (student: StudentWithPresence): Number | undefined => {
@@ -76,12 +77,15 @@ const Page: FC<PageProps> = ({ params }) => {
   useEffect(() => {
     setPatch({
       ...patch,
+      data: [],
+      date: currentDate,
       timeSlotId: currentTimeslot?.id ?? -1,
     });
 
     fetch(`/api/class/${params.id}`, {
       body: JSON.stringify({
         currentTimeslot,
+        date: currentDate,
       }),
       method: 'POST',
     })
@@ -92,7 +96,7 @@ const Page: FC<PageProps> = ({ params }) => {
         }
         setClassData(data.data);
       });
-  }, [currentTimeslot]);
+  }, [currentTimeslot, currentDate]);
 
   useEffect(() => {
     if (!patch.data.length || patch.timeSlotId === -1) return;
@@ -239,6 +243,8 @@ const Page: FC<PageProps> = ({ params }) => {
               currentTimeslot?.id === timeSlot[timeSlot.length - 1].id
             }
             disabledPrev={currentTimeslot?.id === timeSlot[0].id}
+            onDateChange={date => setCurrentDate(date)}
+            selectedDate={currentDate}
           />
         )
       }

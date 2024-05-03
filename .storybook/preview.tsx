@@ -1,6 +1,8 @@
 import * as React from 'react';
 import { withThemeByDataAttribute } from '@storybook/addon-themes';
 import { ToastProvider } from '../providers/toastProvider';
+import LocaleProvider from '../providers/locale';
+import messages from '../i18n/locales/en.json';
 import type { Preview, ReactRenderer } from '@storybook/react';
 import '../styles/globals.css';
 
@@ -22,9 +24,11 @@ const preview: Preview = {
       attributeName: 'data-theme',
     }),
     Story => (
-      <ToastProvider viewportClassName="absolute bottom-0 right-0 list-none">
-        <Story />
-      </ToastProvider>
+      <LocaleProvider locale="en" messages={messages} timeZone="UTC">
+        <ToastProvider viewportClassName="absolute bottom-0 right-0 list-none">
+          <Story />
+        </ToastProvider>
+      </LocaleProvider>
     ),
   ],
 };

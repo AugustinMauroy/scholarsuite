@@ -63,7 +63,7 @@ export const POST = async (
   }
 
   const timeSlots = await prisma.timeSlot.findMany();
-  const now = new Date();
+  const now = data.date ? new Date(data.date) : new Date();
   const currentTimeslot =
     data.currentTimeslot ||
     timeSlots.find((slot: TimeSlot) => {
@@ -88,6 +88,14 @@ export const POST = async (
         include: {
           Presence: {
             where: {
+              date: {
+                gte: new Date(now.getFullYear(), now.getMonth(), now.getDate()),
+                lt: new Date(
+                  now.getFullYear(),
+                  now.getMonth(),
+                  now.getDate() + 1
+                ),
+              },
               timeSlotId: currentTimeslot.id,
             },
           },
