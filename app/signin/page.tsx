@@ -33,17 +33,20 @@ const Page: FC = () => {
           label={t('firstName')}
           placeholder={t('firstName')}
           name="firstName"
+          required
         />
         <Input
           label={t('lastName')}
           placeholder={t('lastName')}
           name="lastName"
+          required
         />
         <Input
           label={t('password')}
           placeholder={t('password')}
           type="password"
           name="password"
+          required
         />
         <Button type="submit" className="mt-4">
           {t('submit')}
