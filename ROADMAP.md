@@ -19,13 +19,13 @@
   - Nom
   - Date de création (usage interne)
   - Date de modification (usage interne)
-- [ ] gestion des classes
+- [x] gestion des classes
       Il faut que l'application permette de gérer les classes. Une classe est définie par:
   - Nom
   - Niveau scolaire
   - Date de création (usage interne)
   - Date de modification (usage interne)
-- [ ] Gestion des élèves
+- [x] Gestion des élèves
       Il faut que l'application permette de gérer les élèves. Un élève est défini par:
   - Nom
   - Prénom
@@ -45,13 +45,12 @@
   - Valeur
   - Date de création (usage interne)
   - Date de modification (usage interne)
-- [ ] Gestion des présences
+- [x] Gestion des présences
       Il faut que l'application permette de gérer les présences. Une présence est définie par:
   - Elève
   - Date/heure
   - utilisateur (enseignant, ou administrateur)
-  - matière
-- [ ] Gestion des rapports disciplinaires
+- [x] Gestion des rapports disciplinaires
       Il faut que l'application permette de gérer les rapports disciplinaires. Un rapport disciplinaire est défini par:
   - Elève
   - Date
@@ -64,7 +63,7 @@
 - [x] Authentification
       Il faut que l'application permette de s'authentifier. L'authentification se fait par email et mot de passe
 - [ ] API REST pour pouvoir plugger l'application à d'autres services.
-- [ ] Base de données
+- [x] Base de données
       Il faut que l'application utilise une base de données pour stocker les données. La base de données doit être relationnelle.
 - [ ] Tests unitaires
       Il faut que l'application soit testée.
