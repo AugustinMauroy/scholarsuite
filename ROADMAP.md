@@ -14,7 +14,7 @@
   - Rôle (enseignant ou administrateur représenté par un entier)
   - Date de création (usage interne)
   - Date de modification (usage interne)
-- [ ] Gestion des niveau scolaire
+- [x] Gestion des niveau scolaire
       Il faut que l'application permette de gérer les niveaux scolaires. Un niveau scolaire est un ensemble de classes. Un niveau scolaire est défini par:
   - Nom
   - Date de création (usage interne)
