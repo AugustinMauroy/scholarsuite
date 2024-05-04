@@ -1,8 +1,10 @@
 .page {
-  @apply px-4;
+  @apply flex
+    flex-col
+    px-4;
 
   header {
-    @apply mb-2
+    @apply mb-4
       flex
       flex-row
       items-center
@@ -23,6 +25,6 @@
   }
 
   .section {
-    @apply p-4;
+    @apply flex-1;
   }
 }

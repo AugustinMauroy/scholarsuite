@@ -4,7 +4,7 @@
 
 ## Fonctionnalités
 
-- [ ] Gestion des utilisateurs
+- [x] Gestion des utilisateurs
       Il faut que l'application permette de gérer les utilisateurs. Un utilisateur peut être un enseignant ou un administrateur
       Voci les éléments d'un utilisateur:
   - Nom

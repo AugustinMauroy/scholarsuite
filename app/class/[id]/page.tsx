@@ -1,8 +1,8 @@
 'use client';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import StudentCard from '@/components/Student/StudentCard';
 import BaseLayout from '@/components/Layout/Base';
-import Selector from '@/components/TimeSlot/Selector';
+import Selector from '@/components/timeSlot/Selector';
 import { presenceState } from '@/utils/presence';
 import styles from './page.module.css';
 import type { FC } from 'react';
