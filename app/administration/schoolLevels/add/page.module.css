@@ -1,0 +1,51 @@
+.formWrapper {
+  @apply flex
+    h-full
+    items-center
+    justify-center;
+
+  form {
+    @apply flex
+      w-full
+      max-w-lg
+      flex-col
+      gap-4;
+
+    .avatarRoot {
+      @apply relative;
+
+      .avatar {
+        @apply mx-auto
+          flex
+          h-60
+          w-40
+          flex-col
+          items-center
+          justify-center
+          overflow-hidden
+          rounded-lg
+          border
+          border-gray-300
+          bg-gray-200
+          object-cover
+          text-6xl
+          dark:border-gray-700
+          dark:bg-gray-800;
+      }
+
+      .avatarRemove {
+        @apply absolute
+          left-1/2
+          top-1/2
+          -translate-x-1/2
+          -translate-y-1/2
+          transform
+          rounded-md
+          bg-red-500
+          px-2
+          py-1
+          text-white;
+      }
+    }
+  }
+}

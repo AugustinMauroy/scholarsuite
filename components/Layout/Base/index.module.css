@@ -4,8 +4,7 @@
     px-4;
 
   header {
-    @apply mb-4
-      flex
+    @apply flex
       flex-row
       items-center
       justify-between
@@ -25,6 +24,7 @@
   }
 
   .section {
-    @apply flex-1;
+    @apply my-4
+      flex-1;
   }
 }
