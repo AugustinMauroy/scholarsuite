@@ -12,8 +12,8 @@ import type { FC, FormEvent } from 'react';
 const Page: FC = () => {
   const { data: session } = useSession();
   if (!session || session.user.role !== 0) notFound();
-  const toast = useToast();
 
+  const toast = useToast();
   const [name, setName] = useState('');
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {

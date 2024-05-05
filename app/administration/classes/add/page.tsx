@@ -12,13 +12,13 @@ import type { SchoolLevel } from '@prisma/client';
 
 const Page: FC = () => {
   const { data: session } = useSession();
+  if (session?.user.role !== 0) notFound();
+
   const [schoolLevel, setSchoolLevel] = useState<SchoolLevel[] | null>(null);
   const [name, setName] = useState('');
   const [selectedSchoolLevel, setSelectedSchoolLevel] = useState<number | null>(
     null
   );
-
-  if (session?.user.role !== 0) notFound();
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();

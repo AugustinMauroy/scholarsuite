@@ -83,7 +83,6 @@ const Page: FC = async () => {
         >
           Add Level
         </Link>
-        <small className="text-red-500">Not implemented yet</small>
       </div>
     </BaseLayout>
   );

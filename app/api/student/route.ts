@@ -9,17 +9,27 @@ export const PUT = async (req: Request) => {
   const email = formData.get('email') as string;
   const file = formData.get('file') as File;
 
-  if (!firstName || !lastName || !file) {
-    return new Response('Missing required fields', { status: 400 });
-  }
+  if (!firstName || !lastName)
+    return Response.json({ error: 'Missing required fields' }, { status: 400 });
 
   const student = await prisma.student.create({
     data: {
-      firstName,
-      lastName,
+      firstName:
+        firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase(),
+      lastName:
+        lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase(),
       contactEmail: email.length > 0 ? email : null,
     },
   });
+
+  if (!file) {
+    return Response.json(
+      {
+        data: student,
+      },
+      { status: 201 }
+    );
+  }
 
   const directory = join(process.cwd(), 'content', 'student-picture');
 
@@ -35,12 +45,8 @@ export const PUT = async (req: Request) => {
 
     await writeFile(filepath, Buffer.from(await file.arrayBuffer()));
 
-    return new Response(JSON.stringify(student), {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    return Response.json({ data: student }, { status: 201 });
   } catch {
-    return new Response('Internal Server Error', { status: 500 });
+    return Response.json({ error: 'Error saving file' }, { status: 500 });
   }
 };

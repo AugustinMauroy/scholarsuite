@@ -3,7 +3,10 @@
 // - [ ] use translation
 // - [ ] handle errors such as missing fields ...
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
+import { notFound } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 import { useState } from 'react';
+import { useToast } from '@/hooks/useToast';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
 import DropZone from '@/components/Common/DropZone';
@@ -12,6 +15,10 @@ import styles from './page.module.css';
 import type { FC, FormEvent } from 'react';
 
 const Page: FC = () => {
+  const { data: session } = useSession();
+  if (!session || session.user.role !== 0) notFound();
+
+  const toast = useToast();
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [firstName, setFirstName] = useState('');
@@ -21,14 +28,19 @@ const Page: FC = () => {
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!firstName || !lastName || !file) {
+    if (!firstName || !lastName) {
+      toast({
+        message: 'Veuillez renseigner le prénom et le nom de l’étudiant',
+        kind: 'error',
+      });
+
       return;
     }
 
     const formData = new FormData();
     formData.append('firstName', firstName);
     formData.append('lastName', lastName);
-    formData.append('file', file);
+    file && formData.append('file', file);
     formData.append('email', email);
 
     try {
@@ -36,15 +48,15 @@ const Page: FC = () => {
         method: 'PUT',
         body: formData,
       });
-
-      if (response.ok) {
+      const data = await response.json();
+      if (data.error) toast({ message: data.error, kind: 'error' });
+      else {
+        toast({ message: 'Étudiant ajouté', kind: 'success' });
         setFirstName('');
         setLastName('');
         setEmail('');
         setFile(null);
         setImagePreview(null);
-      } else {
-        console.error('Failed to add student:', response.statusText);
       }
     } catch (error) {
       console.error('Error adding student:', error);

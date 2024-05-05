@@ -21,7 +21,7 @@ type NavProps = {
 };
 
 const Nav: FC<NavProps> = ({ items }) => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(items.length !== 0);
   const pathname = usePathname();
 
   const toggleMenu = () => {
