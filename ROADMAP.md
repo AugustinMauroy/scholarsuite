@@ -2,6 +2,8 @@
 
 ## ScholarSuite 1.0
 
+ScholarSuite 1.0 est la première version de ScholarSuite. Elle est une application de gestion scolaire. Elle permet de gérer les utilisateurs, les niveaux scolaires, les classes, les élèves, les présences et les rapports disciplinaires.
+
 ## Fonctionnalités
 
 - [x] Gestion des utilisateurs
@@ -38,13 +40,18 @@
   - Nom
   - Date de création (usage interne)
   - Date de modification (usage interne)
-- [ ] Gestion des notes
-      Il faut que l'application permette de gérer les notes. Une note est définie par:
-  - Elève
-  - Matière
-  - Valeur
-  - Date de création (usage interne)
-  - Date de modification (usage interne)
+- [ ] Gestion des notes :
+      Les notes peuvent être introduites dans l'application grâce à une interface utilisateur. Ou bien, elles peuvent être importées depuis un fichier CSV dont le template peut être fourni.
+  - [ ] Gestion du template de fichier CSV:
+    - Nom prénom élève
+    - Valeur note
+  - [ ] Importation des notes depuis un fichier CSV
+  - [ ] Interface utilisateur pour introduire les notes
+        La note est définie par:
+    - Un identifiant
+    - Une valeur
+    - Un élève
+    - Une matière
 - [x] Gestion des présences
       Il faut que l'application permette de gérer les présences. Une présence est définie par:
   - Elève
@@ -62,20 +69,23 @@
 
 ## Points techniques
 
+- [ ] Avoir un semblant de design system
+- [ ] Faire des composant réutilisable
+- [ ] Ne pas avoir de code dupliqué. Si un code est dupliqué, il faut le factoriser.
 - [x] Authentification
       Il faut que l'application permette de s'authentifier. L'authentification se fait par email et mot de passe
 - [ ] API REST pour pouvoir plugger l'application à d'autres services.
 - [x] Base de données
       Il faut que l'application utilise une base de données pour stocker les données. La base de données doit être relationnelle.
 - [ ] Tests unitaires
-      Il faut que l'application soit testée.
+- [ ] Tests d'intégration (E2E)
 - [ ] Test visuel
-      Il faut que l'application soit testée visuellement.
 - [ ] Documentation
       Il faut que l'application soit documentée. La documentation doit être écrite en markdown.
 - [x] Internationalisation
       Il faut que l'application soit internationalisée. La langue par défaut est le français ou défini par un configuration.
 - [ ] Docker (à discuter)
+- [ ] SSO avec
 
 ## Technologies
 
@@ -89,3 +99,5 @@
 - [storybook](https://storybook.js.org/) est un outil de développement pour les composants React. Il permet de visualiser les composants et de les tester.
 - [react-pdf](https://react-pdf.org/) est une bibliothèque pour générer des fichiers PDF en React.
 - [react-pdf-tailwind](https://www.npmjs.com/package/react-pdf-tailwind) est une bibliothèque pour générer des fichiers PDF en React avec TailwindCSS.
+- [nodemailer](https://nodemailer.com/) est une bibliothèque pour envoyer des emails en Node.js. Elle est utilisée pour envoyer des emails de réinitialisation de mot de passe.
+- [react-email](https://nodemailer.com) est une bibliothèque pour envoyer des emails en React. Elle est utilisée pour envoyer des emails de réinitialisation de mot de passe. Elle support tailwindcss sans problème.

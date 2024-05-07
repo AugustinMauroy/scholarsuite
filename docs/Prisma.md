@@ -1,99 +1,116 @@
 # ScholarSuite Prisma Documentation
 
+> [!NOTE]
+> Cette documentation est à destination des mainteneurs du projet ScholarSuite. Elle fournit des informations sur les modèles de données utilisés dans ScholarSuite et comment les gérer avec Prisma.
+
 ## Modèles
 
 ScholarSuite utilise Prisma pour gérer la couche d'accès aux données. Voici les modèles de données utilisés dans ScholarSuite :
 
 ### 1. `User`
 
-La gestion des utilisateurs est une fonctionnalité clé de ScholarSuite. Un utilisateur peut être un enseignant ou un administrateur.
-
-- Identifiant unique (`id`)
-- Prénom (`firstName`)
-- Nom (`lastName`)
-- Adresse e-mail optionnelle (`email`)
-- Mot de passe haché (`password`)
-- Rôle (`role`) : entier représentant le rôle de l'utilisateur (enseignant ou administrateur)
-- Dates de création et de mise à jour (`createdAt`, `updatedAt`) pour un usage interne
+- `id` : identifiant unique de l'utilisateur
+- `firstName` : prénom de l'utilisateur
+- `lastName` : nom de l'utilisateur
+- `email` : adresse e-mail optionnelle de l'utilisateur
+- `password` : mot de passe haché de l'utilisateur
+- `role` : rôle de l'utilisateur (enseignant ou administrateur représenté par un entier)
+- `createdAt` : date de création de l'utilisateur pour un usage interne
+- `updatedAt` : date de modification de l'utilisateur pour un usage interne
+- `Class` : relation avec les classes de l'utilisateur
+- `Presence` : relation avec les présences de l'utilisateur
+- `DisciplinaryReport` : relation avec les rapports disciplinaires de l'utilisateur
 
 ### 2. `SchoolLevel`
 
-ScholarSuite permet de gérer les niveaux scolaires, qui sont des ensembles de classes.
-
-- Identifiant unique (`id`)
-- Nom (`name`)
-- Dates de création et de mise à jour (`createdAt`, `updatedAt`) pour un usage interne
-- Relation avec les classes (`classes`)
+- `id` : identifiant unique du niveau scolaire
+- `name` : nom du niveau scolaire
+- `createdAt` : date de création du niveau scolaire pour un usage interne
+- `updatedAt` : date de modification du niveau scolaire pour un usage interne
+- `classes` : relation avec les classes du niveau scolaire
+- `TimeSlot` : relation avec les tranches horaires du niveau scolaire
 
 ### 3. `Class`
 
-La gestion des classes fait partie des fonctionnalités de ScholarSuite.
-
-- Identifiant unique (`id`)
-- Nom (`name`)
-- Relation avec le niveau scolaire (`schoolLevel`) et son identifiant (`schoolLevelId`)
-- Dates de création et de mise à jour (`createdAt`, `updatedAt`) pour un usage interne
-- Relation avec les étudiants (`students`)
+- `id` : identifiant unique de la classe
+- `name` : nom de la classe
+- `schoolLevel` : relation avec le niveau scolaire de la classe
+- `schoolLevelId` : identifiant du niveau scolaire de la classe
+- `createdAt` : date de création de la classe pour un usage interne
+- `updatedAt` : date de modification de la classe pour un usage interne
+- `students` : relation avec les élèves de la classe
+- `User` : relation avec l'utilisateur de la classe (enseignant ou administrateur)
+- `userId` : identifiant de l'utilisateur de la classe (enseignant ou administrateur)
 
 ### 4. `Student`
 
-ScholarSuite permet de gérer les élèves.
-
-- Identifiant unique (`id`)
-- Prénom (`firstName`)
-- Nom (`lastName`)
-- Date de naissance (`dateOfBirth`)
-- Relation avec la classe (`class`) et son identifiant (`classId`)
-- Dates de création et de mise à jour (`createdAt`, `updatedAt`) pour un usage interne
-- Relation avec les notes (`grades`), les enregistrements de présence (`presences`) et les rapports disciplinaires (`disciplinaryReports`)
+- `id` : identifiant unique de l'élève
+- `firstName` : prénom de l'élève
+- `lastName` : nom de l'élève
+- `dateOfBirth` : date de naissance de l'élève
+- `class` : relation avec la classe de l'élève
+- `classId` : identifiant de la classe de l'élève
+- `contactEmail` : adresse e-mail de contact optionnelle de l'élève
+- `createdAt` : date de création de l'élève pour un usage interne
+- `updatedAt` : date de modification de l'élève pour un usage interne
+- `grades` : relation avec les notes de l'élève
+- `disciplinaryReports` : relation avec les rapports disciplinaires de l'élève
+- `Presence` : relation avec les présences de l'élève
 
 ### 5. `Subject`
 
-La gestion des matières est une fonctionnalité de ScholarSuite.
-
-- Identifiant unique (`id`)
-- Nom (`name`)
-- Dates de création et de mise à jour (`createdAt`, `updatedAt`) pour un usage interne
-- Relation avec les notes (`grades`) et les enregistrements de présence (`presences`)
+- `id` : identifiant unique de la matière
+- `name` : nom de la matière
+- `createdAt` : date de création de la matière pour un usage interne
+- `updatedAt` : date de modification de la matière pour un usage interne
+- `grades` : relation avec les notes de la matière
+- `Presence` : relation avec les présences de la matière
 
 ### 6. `Grade`
 
-ScholarSuite permet de gérer les notes des élèves.
+- `id` : identifiant unique de la note
+- `value` : valeur de la note
+- `student` : relation avec l'élève de la note
+- `studentId` : identifiant de l'élève de la note
+- `subject` : relation avec la matière de la note
+- `subjectId` : identifiant de la matière de la note
+- `createdAt` : date de création de la note pour un usage interne
+- `updatedAt` : date de modification de la note pour un usage interne
 
-- Identifiant unique (`id`)
-- Valeur de la note (`value`)
-- Relation avec l'élève (`student`) et son identifiant (`studentId`)
-- Relation avec la matière (`subject`) et son identifiant (`subjectId`)
-- Dates de création et de mise à jour (`createdAt`, `updatedAt`) pour un usage interne
+### 7. `Presence`
 
-### 7. Presence
-
-La gestion des présences est une fonctionnalité clé de ScholarSuite.
-
-- Identifiant unique (id)
-- Relation avec l'élève (student) et son identifiant (studentId)
-- Date et heure (datetime)
-- Relation avec l'utilisateur responsable de l'enregistrement (user) et son identifiant (userId)
-- Relation avec la matière (subject) et son identifiant (subjectId)
-- Relation avec la tranche horaire (timeSlot) et son identifiant (timeSlotId)
+- `id` : identifiant unique de la présence
+- `student` : relation avec l'élève de la présence
+- `studentId` : identifiant de l'élève de la présence
+- `state` : état de la présence (présent, absent, etc.)
+- `date` : date et heure de la présence
+- `user` : relation avec l'utilisateur responsable de l'enregistrement de la présence
+- `userId` : identifiant de l'utilisateur responsable de l'enregistrement de la présence
+- `timeSlot` : relation avec la tranche horaire de la présence
+- `timeSlotId` : identifiant de la tranche horaire de la présence
+- `subject` : relation avec la matière de la présence (optionnel)
+- `subjectId` : identifiant de la matière de la présence (optionnel)
 
 ### 8. `DisciplinaryReport`
 
-ScholarSuite permet de gérer les rapports disciplinaires des élèves.
+- `id` : identifiant unique du rapport disciplinaire
+- `student` : relation avec l'élève concerné par le rapport disciplinaire
+- `studentId` : identifiant de l'élève concerné par le rapport disciplinaire
+- `createdById` : identifiant de l'utilisateur ayant créé le rapport disciplinaire
+- `createdBy` : relation avec l'utilisateur ayant créé le rapport disciplinaire
+- `date` : date du rapport disciplinaire
+- `description` : description du rapport disciplinaire
+- `createdAt` : date de création du rapport disciplinaire pour un usage interne
+- `updatedAt` : date de modification du rapport disciplinaire pour un usage interne
 
-- Identifiant unique (`id`)
-- Relation avec l'élève concerné (`student`) et son identifiant (`studentId`)
-- Date du rapport (`date`)
-- Description du rapport (`description`)
-- Dates de création et de mise à jour (`createdAt`, `updatedAt`) pour un usage interne
+### 9. `TimeSlot`
 
-### 9. TimeSlot
-
-La gestion des tranches horaires est une fonctionnalité ajoutée à ScholarSuite.
-
-- Identifiant unique (id)
-- Heure de début (startTime)
-- Heure de fin (endTime)
-- Relation avec le niveau scolaire (schoolLevel) et son identifiant (schoolLevelId)
-- Dates de création et de mise à jour (createdAt, updatedAt) pour un usage interne
-- Relation avec les enregistrements de présence (Presence)
+- `id` : identifiant unique de la tranche horaire
+- `name` : nom optionnel de la tranche horaire
+- `startTime` : heure de début de la tranche horaire (au format chaîne de caractères)
+- `endTime` : heure de fin de la tranche horaire (au format chaîne de caractères)
+- `createdAt` : date de création de la tranche horaire pour un usage interne
+- `updatedAt` : date de modification de la tranche horaire pour un usage interne
+- `SchoolLevel` : relation avec le niveau scolaire de la tranche horaire (optionnel)
+- `schoolLevelId` : identifiant du niveau scolaire de la tranche horaire (optionnel)
+- `Presence` : relation avec les présences de la tranche horaire

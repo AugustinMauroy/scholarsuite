@@ -1,7 +1,7 @@
-import { platform } from 'node:os';
+import { styleText } from 'node:util';
 import readline from 'node:readline';
 import { PrismaClient } from '@prisma/client';
-import { encode } from '@/utils/crypto';
+import { encode } from '@/utils/crypto.ts';
 
 const BELGIAN_SCHOOL_LEVELS = [
   { name: '1ère primaire' },
@@ -18,6 +18,21 @@ const BELGIAN_SCHOOL_LEVELS = [
   { name: '6ème secondaire' },
 ];
 
+const FRENCH_SCHOOL_LEVELS = [
+  { name: 'CP' },
+  { name: 'CE1' },
+  { name: 'CE2' },
+  { name: 'CM1' },
+  { name: 'CM2' },
+  { name: '6ème' },
+  { name: '5ème' },
+  { name: '4ème' },
+  { name: '3ème' },
+  { name: '2nde' },
+  { name: '1ère' },
+  { name: 'Terminale' },
+];
+
 const rl = readline.createInterface({
   input: process.stdin,
   output: process.stdout,
@@ -26,10 +41,9 @@ const prisma = new PrismaClient();
 const users = await prisma.user.findMany();
 
 if (users.length) {
-  if (platform() === 'win32')
-    console.log('⨯ There are already entries in the database');
-  else
-    console.log('\x1b[31m⨯\x1b[0m There are already entries in the database');
+  console.log(
+    styleText('red', '⨯') + ' There are already entries in the database'
+  );
   process.exit(0);
 } else {
   await prisma.user.createMany({
@@ -47,16 +61,32 @@ if (users.length) {
     'Do you want to use the default preset? (yes/no): ',
     async answer => {
       if (answer === 'yes') {
-        await prisma.schoolLevel.createMany({
-          data: BELGIAN_SCHOOL_LEVELS,
-        });
+        rl.question(
+          'Do you want to use the Belgian school levels? (yes/no): ',
+          async answer => {
+            if (answer === 'yes') {
+              await prisma.schoolLevel.createMany({
+                data: BELGIAN_SCHOOL_LEVELS,
+              });
+            } else {
+              await prisma.schoolLevel.createMany({
+                data: FRENCH_SCHOOL_LEVELS,
+              });
+            }
+            rl.close();
+
+            await prisma.$disconnect();
+
+            console.log(styleText('green', '✓') + ' Seed completed');
+          }
+        );
+      } else {
+        rl.close();
+
+        await prisma.$disconnect();
+
+        console.log(styleText('green', '✓') + ' Seed completed');
       }
-      rl.close();
-
-      await prisma.$disconnect();
-
-      if (platform() === 'win32') console.log('✓ Seed completed');
-      else console.log('\x1b[32m✓\x1b[0m Seed completed');
     }
   );
 }

@@ -1,6 +1,7 @@
 # Documentation Technique
 
-Cette documentation concerne les aspects techniques du projet. Elle inclut l'architecture, la conception, la mise en œuvre et les tests du projet.
+> [!NOTE]
+> Cette documentation concerne les aspects techniques du projet. Elle inclut l'architecture, la conception, la mise en œuvre et les tests du projet. Elle est destinée aux développeurs et aux mainteneurs du projet.
 
 ## Technologies Utilisées
 
@@ -120,6 +121,7 @@ export default NameOfComponent;
 - Évitez d'utiliser les API DOM/Web/accès à `document`/API `window` à l'intérieur d'un Composant React.
   Utilisez des utilitaires ou des Hooks lorsque vous avez besoin d'un état réactif
 - Évitez de rendre votre Composant trop gros. Décomposez-le en plus petits Composants/Hooks chaque fois que possible
+- Ne pas faire d'appels à une API rest interne dans un composant server privilégier de directement faire la query dans le composant. Car si non l'app doit calculé le composant et l'API.
 
 ## Test des Composants React
 
@@ -157,11 +159,32 @@ export default { component: NomDuComposant } as Meta;
 - Nous recommandons de lire les Storybooks précédents du codebase pour inspiration et directives de code.
 - Si vous avez besoin de décorer/envelopper votre composant/histoire avec un conteneur/fournisseur, veuillez utiliser les [Décorateurs Storybook](https://storybook.js.org/docs/react/writing-stories/decorators)
 
-## Choix d'Infrastructure
+## Gestion des API REST
+
+Nous utilisons [prisma][] pour gérer notre base de données et nos modèles de données. Pour en savoir plus sur la gestion de la base de données, consultez [la documentation Prisma](./Prisma.md). Et pour la partie API REST, nous utilisons Next.js avec ça fonctionnalité de [route handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers).
+
+### Quelques Directives Générales
+
+- Les fichiers de route doivent être placés dans le dossier `app/api`
+- Les fonciton dans le fichier doivent être dans l'ordre suivant : `GET` -> `POST` -> `PUT` -> `PATCH` -> `DELETE` -> `HEAD` -> `OPTIONS`
+- Les fonctions doivent être exportées à leur définition:
+
+```ts
+export const GET = async (req: Request) => {
+  // code here
+};
+```
+
+- Toutes les routes doivent retourné des Objets [Response](https://developer.mozilla.org/fr/docs/Web/API/Response).
+- Les routes doivent renvoyé des JSON. `data` pour les données et `message` pour les messages et `error` pour les erreurs.
+
+## FAQ
+
+### Choix d'Infrastructure
 
 Une brève explication de pourquoi nous avons choisi les technologies que nous utilisons.
 
-## Pourquoi React?
+### Pourquoi React?
 
 React est une bibliothèque moderne et à la mode pour construire des interfaces utilisateur. Elle nous permet de créer des composants réutilisables et de gérer l'état de notre application de manière plus prévisible.
 
@@ -169,11 +192,11 @@ Nous avons choisi React car c'est une bibliothèque largement utilisée et a une
 
 Aussi pour générer des PDF, nous utiliserons la bibliothèque `react-pdf`. Ainsi, nous aurons la même syntaxe pour générer des PDF que nous avons pour générer du HTML côté client et côté serveur.
 
-## Pourquoi utiliser npm?
+### Pourquoi utiliser npm?
 
 npm est le gestionnaire de paquets par défaut de Node.js. Il nous permet d'installer et de gérer les dépendances de notre projet. Il nous permet également d'exécuter des scripts et de publier nos packages. Nous l'avons sélectionné car les développeurs ne devraient pas avoir à installer un autre gestionnaire de paquets.
 
-## Bon à savoir
+### Bon à savoir
 
 - Nous avons un fichier `.nvmrc` à la racine du projet. Ce fichier est utilisé par [`nvm`][] pour définir la version correcte de Node.js pour le projet. Si vous avez [`nvm`][] installé, vous pouvez exécuter `nvm use` pour définir la bonne version de Node.js pour le projet.
 - Nous utilisons [turbo][] pour accélérer le processus de développement en utilisant la mise en cache et les constructions incrémentales.

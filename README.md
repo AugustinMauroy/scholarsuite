@@ -9,6 +9,11 @@ ScholarSuite est une application de gestion de notes pour les écoles. Elle perm
 
 ## Avoir son instance de ✨ ScholarSuite ✨
 
+**Prérequis :**
+
+- Node.js (LTS) et npm _(fournis avec Node.js)_
+- MySQL
+
 1. Cloner le dépôt
 2. Installer les dépendances (sans les dépendances de développement)
 

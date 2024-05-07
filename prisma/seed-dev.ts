@@ -1,15 +1,14 @@
-import { platform } from 'node:os';
+import { styleText } from 'node:util';
 import { PrismaClient } from '@prisma/client';
-import { encode } from '@/utils/crypto';
+import { encode } from '@/utils/crypto.ts';
 
 const prisma = new PrismaClient();
 const users = await prisma.user.findMany();
 
 if (users.length) {
-  if (platform() === 'win32')
-    console.log('⨯ There are already entries in the database');
-  else
-    console.log('\x1b[31m⨯\x1b[0m There are already entries in the database');
+  console.log(
+    styleText('red', '⨯') + ' There are already entries in the database'
+  );
   process.exit(0);
 } else {
   await prisma.user.createMany({
@@ -167,7 +166,5 @@ if (users.length) {
   });
 
   await prisma.$disconnect();
-
-  if (platform() === 'win32') console.log('✓ Seeded database for developement');
-  else console.log('\x1b[32m✓\x1b[0m Seeded database for developement');
+  console.log(styleText('green', '✓') + ' Seeded database for developement');
 }
