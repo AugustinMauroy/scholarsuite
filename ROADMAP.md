@@ -6,40 +6,43 @@ ScholarSuite 1.0 est la première version de ScholarSuite. Elle est une applicat
 
 ## Fonctionnalités
 
-- [x] Gestion des utilisateurs
-      Il faut que l'application permette de gérer les utilisateurs. Un utilisateur peut être un enseignant ou un administrateur
+- [ ] Gestion des utilisateurs
+      Il faut que l'application permette de gérer les utilisateurs. Un utilisateur peut être un enseignant ou un administrateur. Un utilisateur peut avoir une photo de profil qui n'est pas stockée dans la base de données.
       Voci les éléments d'un utilisateur:
-  - Nom
-  - Prénom
-  - Email (optionnel)
-  - Mot de passe (hashé)
-  - Rôle (enseignant ou administrateur représenté par un entier)
-  - Date de création (usage interne)
-  - Date de modification (usage interne)
-- [x] Gestion des niveau scolaire
+  - [x] Nom
+  - [x] Prénom
+  - [x] Email (optionnel)
+  - [x] Mot de passe (hashé)
+  - [x] Rôle (enseignant ou administrateur représenté par un entier)
+  - [ ] Etat (activé ou désactivé)
+  - [x] Date de création (usage interne)
+  - [x] Date de modification (usage interne)
+- [ ] Gestion des niveau scolaire
       Il faut que l'application permette de gérer les niveaux scolaires. Un niveau scolaire est un ensemble de classes. Un niveau scolaire est défini par:
-  - Nom
-  - Date de création (usage interne)
-  - Date de modification (usage interne)
+  - [x] Nom
+  - [ ] Ordre, premettant de donné un ordre aux niveaux scolaires
+  - [x] Date de création (usage interne)
+  - [x] Date de modification (usage interne)
 - [x] gestion des classes
       Il faut que l'application permette de gérer les classes. Une classe est définie par:
-  - Nom
-  - Niveau scolaire
-  - Date de création (usage interne)
-  - Date de modification (usage interne)
-- [x] Gestion des élèves
+  - [x] Nom
+  - [x] Niveau scolaire
+  - [x] Date de création (usage interne)
+  - [x] Date de modification (usage interne)
+- [ ] Gestion des élèves
       Il faut que l'application permette de gérer les élèves. Un élève est défini par:
-  - Nom
-  - Prénom
-  - Date de naissance
-  - Classe
-  - Date de création (usage interne)
-  - Date de modification (usage interne)
+  - [x] Nom
+  - [x] Prénom
+  - [x] Date de naissance
+  - [x] Classe
+  - [ ] Etat (activé ou désactivé)
+  - [x] Date de création (usage interne)
+  - [x] Date de modification (usage interne)
 - [ ] Gestion des matières
       Il faut que l'application permette de gérer les matières. Une matière est définie par:
-  - Nom
-  - Date de création (usage interne)
-  - Date de modification (usage interne)
+  - [ ] Nom
+  - [ ] Date de création (usage interne)
+  - [ ] Date de modification (usage interne)
 - [ ] Gestion des notes :
       Les notes peuvent être introduites dans l'application grâce à une interface utilisateur. Ou bien, elles peuvent être importées depuis un fichier CSV dont le template peut être fourni.
   - [ ] Gestion du template de fichier CSV:
@@ -47,25 +50,50 @@ ScholarSuite 1.0 est la première version de ScholarSuite. Elle est une applicat
     - Valeur note
   - [ ] Importation des notes depuis un fichier CSV
   - [ ] Interface utilisateur pour introduire les notes
-        La note est définie par:
-    - Un identifiant
-    - Une valeur
-    - Un élève
-    - Une matière
-- [x] Gestion des présences
+
+  La note est définie par:
+    - [ ] Un identifiant
+    - [ ] Une valeur
+    - [ ] Un élève
+    - [ ] Une matière
+- [ ] Gestion des présences
       Il faut que l'application permette de gérer les présences. Une présence est définie par:
-  - Elève
-  - Date/heure
-  - utilisateur (enseignant, ou administrateur)
+  - [x] Elève
+  - [x] Date/heure
+  - [x] Utilisateur (enseignant, ou administrateur)
+  - [ ] Date de création (usage interne ou pour verification de fraude)
+  - [ ] Date de modification (usage interne)
 - [x] Gestion des rapports disciplinaires
       Il faut que l'application permette de gérer les rapports disciplinaires. Un rapport disciplinaire est défini par:
-  - Elève
-  - Date
-  - Description
-  - Date de création (usage interne)
-  - Date de modification (usage interne)
+  - [x] Elève
+  - [x] Date
+  - [x] Description
+  - [x] Date de création (usage interne)
+  - [x] Date de modification (usage interne)
+- [x] Gestion des tranches horaires
+      Il faut que l'application permette de gérer les tranches horaires. Une tranche horaire est définie par:
+  - [x] Nom
+  - [x] Heure de début
+  - [x] Heure de fin
+  - [x] Date de création (usage interne)
+  - [x] Date de modification (usage interne)
+- [ ] Période de cote
+      Il faut que l'application permette de gérer les périodes de cote. Une période de cote est définie par:
+  - [ ] Nom
+  - [ ] Date de début
+  - [ ] Date de fin
+  - [ ] Date de création (usage interne)
+  - [ ] Date de modification (usage interne)
 - [ ] Gestion des bulletins
   Il faut que l'application permette de générer des bulletins. Ils peuvent être générés en format web ou pdf.
+- [ ] Gestion des cours
+      Il faut que l'application permette de gérer les cours.
+      Un cours est défini par:
+  - [ ] Matière
+  - [ ] Enseignant(s)
+  - [ ] Elève(s)
+  - [ ] Date de création (usage interne)
+  - [ ] Date de modification (usage interne)
 
 ## Points techniques
 
