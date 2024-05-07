@@ -1,0 +1,9 @@
+.tagList {
+  @apply -mb-4
+      flex
+      gap-2
+      overflow-x-auto
+      rounded
+      p-2
+      pb-4;
+}

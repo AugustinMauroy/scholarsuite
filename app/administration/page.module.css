@@ -1,0 +1,26 @@
+.section {
+  @apply flex
+    flex-wrap
+    gap-4;
+
+  .card {
+    @apply w-52
+      rounded
+      bg-white
+      p-4
+      shadow
+      dark:bg-gray-800
+      dark:shadow-none;
+
+    h2 {
+      @apply text-xl
+        font-bold;
+    }
+
+    a {
+      @apply block
+        text-brand-500
+        hover:underline;
+    }
+  }
+}

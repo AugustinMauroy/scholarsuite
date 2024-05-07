@@ -1,7 +1,6 @@
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import Tabs from '@/components/Common/Tabs';
 import type { Meta as MetaObj, StoryObj } from '@storybook/react';
-import type { ComponentProps } from 'react';
 
 type Story = StoryObj<typeof Tabs>;
 type Meta = MetaObj<typeof Tabs>;

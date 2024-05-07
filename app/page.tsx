@@ -18,7 +18,8 @@ const Page: FC = () => {
     <main className="m-4">
       <h1 className="text-6xl font-bold">Dashboard</h1>
       <p className="text-xl text-gray-600 dark:text-gray-400">
-        Welcome, {session.user.name}! You are {displayRole}.
+        Welcome, {`${session.user.firstName} ${session.user.lastName}`}! You are{' '}
+        {displayRole}.
       </p>
       <ul className="m-4 list-disc">
         {session.user.role === 0 && (

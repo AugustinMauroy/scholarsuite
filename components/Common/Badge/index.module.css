@@ -1,0 +1,81 @@
+.badge {
+  @apply inline-flex
+    items-center
+    rounded-md
+    px-2
+    py-1
+    text-xs
+    font-medium
+    ring-1
+    ring-inset;
+
+  svg {
+    @apply size-4
+      fill-current;
+  }
+}
+
+.primary {
+  @apply bg-gray-50
+    text-gray-600
+    ring-gray-500/10
+    dark:bg-gray-800
+    dark:text-gray-300;
+
+  &[role='button']:hover {
+    @apply ring-gray-500/20
+      dark:bg-gray-700;
+  }
+}
+
+.secondary {
+  @apply bg-brand-50
+    text-brand-600
+    ring-brand-500/10
+    dark:bg-brand-800
+    dark:text-brand-300;
+
+  &[role='button']:hover {
+    @apply ring-brand-500/20
+      dark:bg-brand-700;
+  }
+}
+
+.success {
+  @apply bg-green-50
+    text-green-600
+    ring-green-500/10
+    dark:bg-green-800
+    dark:text-green-300;
+
+  &[role='button']:hover {
+    @apply ring-green-500/20
+      dark:bg-green-700;
+  }
+}
+
+.error {
+  @apply bg-red-50
+    text-red-600
+    ring-red-500/10
+    dark:bg-red-800
+    dark:text-red-300;
+
+  &[role='button']:hover {
+    @apply ring-red-500/20
+      dark:bg-red-700;
+  }
+}
+
+.warning {
+  @apply bg-yellow-50
+    text-yellow-600
+    ring-yellow-500/10
+    dark:bg-yellow-800
+    dark:text-yellow-300;
+
+  &[role='button']:hover {
+    @apply ring-yellow-500/20
+      dark:bg-yellow-700;
+  }
+}

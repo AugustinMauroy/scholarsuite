@@ -7,6 +7,7 @@ import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid';
+import ClassList from '@/components/User/ClassList';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
@@ -14,17 +15,52 @@ import { useToast } from '@/hooks/useToast';
 import styles from './index.module.css';
 import type { FC } from 'react';
 import type { User } from '@prisma/client';
+import type { Patch } from '@/components/User/ClassList';
 
 const UsersTable: FC = () => {
   const toast = useToast();
   const [userList, setUserList] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [userClassesPatch, setUserClassesPatch] = useState<Patch | null>(null);
 
   useEffect(() => {
     fetch('/api/user')
       .then(response => response.json())
       .then(data => setUserList(data.data));
   }, []);
+
+  useEffect(() => {
+    if (!userClassesPatch) return;
+
+    fetch('/api/user/class', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userClassesPatch),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) {
+          toast({
+            message: data.error,
+            kind: 'error',
+          });
+
+          return;
+        }
+
+        toast({
+          message: (
+            <>
+              <CheckCircleIcon />
+              Classes updated successfully
+            </>
+          ),
+          kind: 'success',
+        });
+      });
+  }, [userClassesPatch]);
 
   const handleEdit = async () => {
     if (!selectedUser) return;
@@ -121,54 +157,69 @@ const UsersTable: FC = () => {
               onClick={() => setSelectedUser(null)}
             />
           </DialogPrimitive.Close>
-          <DialogPrimitive.Title>User Class</DialogPrimitive.Title>
-          <DialogPrimitive.Description>
-            Update the user&apos;s information
-          </DialogPrimitive.Description>
-          <Input
-            label="First Name"
-            value={selectedUser?.firstName}
-            onChange={e =>
-              selectedUser &&
-              setSelectedUser({ ...selectedUser, firstName: e.target.value })
-            }
-          />
-          <Input
-            label="Last Name"
-            value={selectedUser?.lastName}
-            onChange={e =>
-              selectedUser &&
-              setSelectedUser({ ...selectedUser, lastName: e.target.value })
-            }
-          />
-          <Input
-            label="Email"
-            value={selectedUser?.email ?? ''}
-            onChange={e =>
-              selectedUser &&
-              setSelectedUser({ ...selectedUser, email: e.target.value })
-            }
-          />
-          <Select
-            label="Role"
-            values={[
-              { value: '0', label: 'Admin' },
-              { value: '1', label: 'Teacher' },
-            ]}
-            defaultValue={selectedUser?.role.toString()}
-            onChange={v =>
-              selectedUser &&
-              setSelectedUser({
-                ...selectedUser,
-                role: parseInt(v, 10),
-              })
-            }
-          />
-          <DialogPrimitive.Close asChild>
-            <Button kind="outline" onClick={handleEdit}>
-              Save
-            </Button>
-          </DialogPrimitive.Close>
+          {selectedUser ? (
+            <>
+              <DialogPrimitive.Title>User Class</DialogPrimitive.Title>
+              <DialogPrimitive.Description>
+                Update the user&apos;s information
+              </DialogPrimitive.Description>
+              <Input
+                label="First Name"
+                value={selectedUser.firstName}
+                onChange={e =>
+                  setSelectedUser({
+                    ...selectedUser,
+                    firstName: e.target.value,
+                  })
+                }
+              />
+              <Input
+                label="Last Name"
+                value={selectedUser?.lastName}
+                onChange={e =>
+                  setSelectedUser({ ...selectedUser, lastName: e.target.value })
+                }
+              />
+              <Input
+                label="Email"
+                value={selectedUser?.email ?? ''}
+                onChange={e =>
+                  setSelectedUser({ ...selectedUser, email: e.target.value })
+                }
+              />
+              <Select
+                label="Role"
+                values={[
+                  { value: '0', label: 'Admin' },
+                  { value: '1', label: 'Teacher' },
+                ]}
+                defaultValue={selectedUser.role.toString()}
+                onChange={v =>
+                  setSelectedUser({
+                    ...selectedUser,
+                    role: parseInt(v, 10),
+                  })
+                }
+              />
+              <ClassList
+                userId={selectedUser.id}
+                patch={userClassesPatch}
+                setPatch={setUserClassesPatch}
+              />
+              <DialogPrimitive.Close asChild>
+                <Button kind="outline" onClick={handleEdit}>
+                  Save
+                </Button>
+              </DialogPrimitive.Close>
+            </>
+          ) : (
+            <>
+              <DialogPrimitive.Title>Error</DialogPrimitive.Title>
+              <DialogPrimitive.Description>
+                User not found
+              </DialogPrimitive.Description>
+            </>
+          )}
         </DialogPrimitive.Content>
       </DialogPrimitive.Portal>
     </DialogPrimitive.Root>
