@@ -17,16 +17,19 @@ model User {
   email              String?              @unique
   password           String
   role               Int
+  enabled            Boolean              @default(true)
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
   Class              Class[]
   Presence           Presence[]
   DisciplinaryReport DisciplinaryReport[]
+  Course             Course[]
 }
 
 model SchoolLevel {
   id        Int        @id @default(autoincrement())
   name      String
+  order     Int
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
   classes   Class[]
@@ -53,6 +56,7 @@ model Student {
   class               Class?               @relation(fields: [classId], references: [id])
   classId             Int?
   contactEmail        String?
+  enabled             Boolean              @default(true)
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
   grades              Grade[]
@@ -67,24 +71,25 @@ model Subject {
   updatedAt DateTime   @updatedAt
   grades    Grade[]
   Presence  Presence[]
+  Course    Course[]
 }
 
 model Grade {
-  id        Int      @id @default(autoincrement())
-  value     Float
-  student   Student  @relation(fields: [studentId], references: [id])
-  studentId Int
-  subject   Subject  @relation(fields: [subjectId], references: [id])
-  subjectId Int
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id            Int         @id @default(autoincrement())
+  value         Float
+  student       Student     @relation(fields: [studentId], references: [id])
+  studentId     Int
+  subject       Subject     @relation(fields: [subjectId], references: [id])
+  subjectId     Int
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime    @updatedAt
+  GradePeriod   GradePeriod @relation(fields: [gradePeriodId], references: [id])
+  gradePeriodId Int
 }
 
 model TimeSlot {
   id            Int          @id @default(autoincrement())
   name          String?
-  // startTime and endTime is string
-  // because we don't need to know the date
   startTime     String
   endTime       String
   Presence      Presence[]
@@ -118,4 +123,38 @@ model DisciplinaryReport {
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+model AcademicYear {
+  id        Int      @id @default(autoincrement())
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  Course    Course[]
+}
+
+model Course {
+  id             Int          @id @default(autoincrement())
+  name           String
+  description    String?
+  subject        Subject      @relation(fields: [subjectId], references: [id])
+  subjectId      Int
+  teacher        User         @relation(fields: [teacherId], references: [id])
+  teacherId      Int
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+  academicYearId Int
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+}
+
+model GradePeriod {
+  id        Int      @id @default(autoincrement())
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  grades    Grade[]
 }

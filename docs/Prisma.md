@@ -15,16 +15,19 @@ ScholarSuite utilise Prisma pour gérer la couche d'accès aux données. Voici l
 - `email` : adresse e-mail optionnelle de l'utilisateur
 - `password` : mot de passe haché de l'utilisateur
 - `role` : rôle de l'utilisateur (enseignant ou administrateur représenté par un entier)
+- `enabled` : état de l'utilisateur (activé ou désactivé)
 - `createdAt` : date de création de l'utilisateur pour un usage interne
 - `updatedAt` : date de modification de l'utilisateur pour un usage interne
 - `Class` : relation avec les classes de l'utilisateur
 - `Presence` : relation avec les présences de l'utilisateur
 - `DisciplinaryReport` : relation avec les rapports disciplinaires de l'utilisateur
+- `Course` : relation avec les cours de l'utilisateur
 
 ### 2. `SchoolLevel`
 
 - `id` : identifiant unique du niveau scolaire
 - `name` : nom du niveau scolaire
+- `order` : ordre des niveaux scolaires
 - `createdAt` : date de création du niveau scolaire pour un usage interne
 - `updatedAt` : date de modification du niveau scolaire pour un usage interne
 - `classes` : relation avec les classes du niveau scolaire
@@ -39,8 +42,8 @@ ScholarSuite utilise Prisma pour gérer la couche d'accès aux données. Voici l
 - `createdAt` : date de création de la classe pour un usage interne
 - `updatedAt` : date de modification de la classe pour un usage interne
 - `students` : relation avec les élèves de la classe
-- `User` : relation avec l'utilisateur de la classe (enseignant ou administrateur)
-- `userId` : identifiant de l'utilisateur de la classe (enseignant ou administrateur)
+- `User` : relation avec l'enseignant responsable de la classe
+- `userId` : identifiant de l'enseignant responsable de la classe
 
 ### 4. `Student`
 
@@ -50,7 +53,8 @@ ScholarSuite utilise Prisma pour gérer la couche d'accès aux données. Voici l
 - `dateOfBirth` : date de naissance de l'élève
 - `class` : relation avec la classe de l'élève
 - `classId` : identifiant de la classe de l'élève
-- `contactEmail` : adresse e-mail de contact optionnelle de l'élève
+- `contactEmail` : adresse e-mail de contact de l'élève
+- `enabled` : état de l'élève (activé ou désactivé)
 - `createdAt` : date de création de l'élève pour un usage interne
 - `updatedAt` : date de modification de l'élève pour un usage interne
 - `grades` : relation avec les notes de l'élève
@@ -65,6 +69,7 @@ ScholarSuite utilise Prisma pour gérer la couche d'accès aux données. Voici l
 - `updatedAt` : date de modification de la matière pour un usage interne
 - `grades` : relation avec les notes de la matière
 - `Presence` : relation avec les présences de la matière
+- `Course` : relation avec les cours de la matière
 
 ### 6. `Grade`
 
@@ -74,6 +79,8 @@ ScholarSuite utilise Prisma pour gérer la couche d'accès aux données. Voici l
 - `studentId` : identifiant de l'élève de la note
 - `subject` : relation avec la matière de la note
 - `subjectId` : identifiant de la matière de la note
+- `GradePeriod` : relation avec la période de cotation de la note
+- `gradePeriodId` : identifiant de la période de cotation de la note
 - `createdAt` : date de création de la note pour un usage interne
 - `updatedAt` : date de modification de la note pour un usage interne
 
@@ -88,7 +95,7 @@ ScholarSuite utilise Prisma pour gérer la couche d'accès aux données. Voici l
 - `userId` : identifiant de l'utilisateur responsable de l'enregistrement de la présence
 - `timeSlot` : relation avec la tranche horaire de la présence
 - `timeSlotId` : identifiant de la tranche horaire de la présence
-- `subject` : relation avec la matière de la présence (optionnel)
+- `Subject` : relation avec la matière de la présence (optionnel)
 - `subjectId` : identifiant de la matière de la présence (optionnel)
 
 ### 8. `DisciplinaryReport`
@@ -114,3 +121,37 @@ ScholarSuite utilise Prisma pour gérer la couche d'accès aux données. Voici l
 - `SchoolLevel` : relation avec le niveau scolaire de la tranche horaire (optionnel)
 - `schoolLevelId` : identifiant du niveau scolaire de la tranche horaire (optionnel)
 - `Presence` : relation avec les présences de la tranche horaire
+
+### 10. `GradePeriod`
+
+- `id` : identifiant unique de la période de cotation
+- `name` : nom de la période de cotation
+- `startDate` : date de début de la période de cotation
+- `endDate` : date de fin de la période de cotation
+- `createdAt` : date de création de la période de cotation pour un usage interne
+- `updatedAt` : date de modification de la période de cotation pour un usage interne
+- `grades` : relation avec les notes de la période de cotation
+
+### 11. `AcademicYear`
+
+- `id` : identifiant unique de l'année scolaire
+- `name` : nom de l'année scolaire
+- `startDate` : date de début de l'année scolaire
+- `endDate` : date de fin de l'année scolaire
+- `createdAt` : date de création de l'année scolaire pour un usage interne
+- `updatedAt` : date de modification de l'année scolaire pour un usage interne
+- `Course` : relation avec les cours de l'année scolaire
+
+### 12. `Course`
+
+- `id` : identifiant unique du cours
+- `name` : nom du cours
+- `description` : description du cours (optionnel)
+- `subject` : relation avec la matière du cours
+- `subjectId` : identifiant de la matière du cours
+- `teacher` : relation avec l'enseignant responsable du cours
+- `teacherId` : identifiant de l'enseignant responsable du cours
+- `academicYear` : relation avec l'année scolaire du cours
+- `academicYearId` : identifiant de l'année scolaire du cours
+- `createdAt` : date de création du cours pour un usage interne
+- `updatedAt` : date de modification du cours pour un usage interne

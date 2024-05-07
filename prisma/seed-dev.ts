@@ -2,6 +2,27 @@ import { styleText } from 'node:util';
 import { PrismaClient } from '@prisma/client';
 import { encode } from '@/utils/crypto.ts';
 
+const getCurrentAcademicYear = () => {
+  const now = new Date();
+  const data = {
+    startDate: new Date(),
+    endDate: new Date(),
+    name: '',
+  };
+
+  if (now.getMonth() < 8) {
+    data.name = `${now.getFullYear() - 1}-${now.getFullYear()}`;
+    data.startDate = new Date(now.getFullYear() - 1, 8, 1);
+    data.endDate = new Date(now.getFullYear(), 7, 31);
+  } else {
+    data.name = `${now.getFullYear()}-${now.getFullYear() + 1}`;
+    data.startDate = new Date(now.getFullYear(), 8, 1);
+    data.endDate = new Date(now.getFullYear() + 1, 7, 31);
+  }
+
+  return data;
+};
+
 const prisma = new PrismaClient();
 const users = await prisma.user.findMany();
 
@@ -31,18 +52,18 @@ if (users.length) {
   /* Belgian school levels */
   await prisma.schoolLevel.createMany({
     data: [
-      { name: '1ère primaire' },
-      { name: '2ème primaire' },
-      { name: '3ème primaire' },
-      { name: '4ème primaire' },
-      { name: '5ème primaire' },
-      { name: '6ème primaire' },
-      { name: '1ère secondaire' },
-      { name: '2ème secondaire' },
-      { name: '3ème secondaire' },
-      { name: '4ème secondaire' },
-      { name: '5ème secondaire' },
-      { name: '6ème secondaire' },
+      { name: '1ère primaire', order: 1 },
+      { name: '2ème primaire', order: 2 },
+      { name: '3ème primaire', order: 3 },
+      { name: '4ème primaire', order: 4 },
+      { name: '5ème primaire', order: 5 },
+      { name: '6ème primaire', order: 6 },
+      { name: '1ère secondaire', order: 7 },
+      { name: '2ème secondaire', order: 8 },
+      { name: '3ème secondaire', order: 9 },
+      { name: '4ème secondaire', order: 10 },
+      { name: '5ème secondaire', order: 11 },
+      { name: '6ème secondaire', order: 12 },
     ],
   });
 
@@ -163,6 +184,15 @@ if (users.length) {
         endTime: '16:10',
       },
     ],
+  });
+
+  const AcademicYear = getCurrentAcademicYear();
+  await prisma.academicYear.create({
+    data: {
+      name: AcademicYear.name,
+      startDate: AcademicYear.startDate,
+      endDate: AcademicYear.endDate,
+    },
   });
 
   await prisma.$disconnect();
