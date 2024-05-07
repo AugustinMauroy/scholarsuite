@@ -1,14 +1,28 @@
 # ScholarSuite Roadmap
 
-## ScholarSuite 1.0
+## Introduction
 
-ScholarSuite 1.0 est la première version de ScholarSuite. Elle est une application de gestion scolaire. Elle permet de gérer les utilisateurs, les niveaux scolaires, les classes, les élèves, les présences et les rapports disciplinaires.
+ScholarSuite 1.0 est la première version de ScholarSuite, une application de gestion scolaire. Elle permet de gérer les utilisateurs, les niveaux scolaires, les classes, les élèves, les présences, les rapports disciplinaires et bien plus encore.
+
+## Technologies
+
+- [react](https://reactjs.org/)
+- [tailwindcss](https://tailwindcss.com/)
+- [typescript](https://www.typescriptlang.org/)
+- [nextjs](https://nextjs.org/)
+- [next-auth](https://next-auth.js.org/)
+- [prisma](https://www.prisma.io/)
+- [nodejs](https://nodejs.org/)
+- [storybook](https://storybook.js.org/)
+- [react-pdf](https://react-pdf.org/)
+- [react-pdf-tailwind](https://www.npmjs.com/package/react-pdf-tailwind)
+- [nodemailer](https://nodemailer.com/)
+- [react-email](https://nodemailer.com)
 
 ## Fonctionnalités
 
-- [ ] Gestion des utilisateurs
-      Il faut que l'application permette de gérer les utilisateurs. Un utilisateur peut être un enseignant ou un administrateur. Un utilisateur peut avoir une photo de profil qui n'est pas stockée dans la base de données.
-      Voci les éléments d'un utilisateur:
+- [ ] **Gestion des utilisateurs**
+
   - [x] Nom
   - [x] Prénom
   - [x] Email (optionnel)
@@ -17,20 +31,25 @@ ScholarSuite 1.0 est la première version de ScholarSuite. Elle est une applicat
   - [ ] Etat (activé ou désactivé)
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
-- [ ] Gestion des niveau scolaire
-      Il faut que l'application permette de gérer les niveaux scolaires. Un niveau scolaire est un ensemble de classes. Un niveau scolaire est défini par:
+
+- [ ] **Gestion des niveaux scolaires**
+      Représente les niveaux scolaires (primaire, secondaire, etc.)
+
   - [x] Nom
-  - [ ] Ordre, premettant de donné un ordre aux niveaux scolaires
+  - [ ] Ordre, permettant de donner un ordre aux niveaux scolaires
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
-- [x] gestion des classes
-      Il faut que l'application permette de gérer les classes. Une classe est définie par:
+
+- [ ] **Gestion des classes**
+      Représente les classes (1a, 1b, 2a, 2b, etc...) d'un niveau scolaire.
+
   - [x] Nom
   - [x] Niveau scolaire
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
-- [ ] Gestion des élèves
-      Il faut que l'application permette de gérer les élèves. Un élève est défini par:
+
+- [ ] **Gestion des élèves**
+
   - [x] Nom
   - [x] Prénom
   - [x] Date de naissance
@@ -38,57 +57,72 @@ ScholarSuite 1.0 est la première version de ScholarSuite. Elle est une applicat
   - [ ] Etat (activé ou désactivé)
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
-- [ ] Gestion des matières
-      Il faut que l'application permette de gérer les matières. Une matière est définie par:
+
+- [ ] **Gestion des matières**
+      Représente les matières enseignées dans une classe (Ex: Mathématiques, Français, etc...).
+
   - [ ] Nom
   - [ ] Date de création (usage interne)
   - [ ] Date de modification (usage interne)
-- [ ] Gestion des notes :
-      Les notes peuvent être introduites dans l'application grâce à une interface utilisateur. Ou bien, elles peuvent être importées depuis un fichier CSV dont le template peut être fourni.
-  - [ ] Gestion du template de fichier CSV:
-    - Nom prénom élève
-    - Valeur note
+
+- [ ] **Gestion des notes**
+
+  - [ ] Une valeur
+  - [ ] Un élève
+  - [ ] Une matière
+  - [ ] Gestion du template de fichier CSV
   - [ ] Importation des notes depuis un fichier CSV
   - [ ] Interface utilisateur pour introduire les notes
 
-  La note est définie par:
-    - [ ] Un identifiant
-    - [ ] Une valeur
-    - [ ] Un élève
-    - [ ] Une matière
-- [ ] Gestion des présences
-      Il faut que l'application permette de gérer les présences. Une présence est définie par:
+- [x] **Gestion des présences**
+
   - [x] Elève
-  - [x] Date/heure
+  - [x] Date (`date` date db type), seul le jour est pris en compte car l'heure dépend de la tranche horaire
   - [x] Utilisateur (enseignant, ou administrateur)
-  - [ ] Date de création (usage interne ou pour verification de fraude)
-  - [ ] Date de modification (usage interne)
-- [x] Gestion des rapports disciplinaires
-      Il faut que l'application permette de gérer les rapports disciplinaires. Un rapport disciplinaire est défini par:
-  - [x] Elève
-  - [x] Date
-  - [x] Description
-  - [x] Date de création (usage interne)
+  - [x] Tranche horaire
+  - [x] Date de création (usage interne ou pour vérification de fraude)
   - [x] Date de modification (usage interne)
-- [x] Gestion des tranches horaires
-      Il faut que l'application permette de gérer les tranches horaires. Une tranche horaire est définie par:
+
+- [x] **Gestion des rapports disciplinaires**
+
+  - [x] Elève
+  - [x] Date (Représente la date de l'incident)
+  - [x] Description
+  - [x] Date de création (usage interne, ou pour vérification de fraude)
+  - [x] Date de modification (usage interne)
+
+- [x] **Gestion des tranches horaires**
+      Représente les tranches horaires (h1, h2, h3, h4, etc...) d'une journée scolaire. Les tranches horaires sont utilisées pour les présences.
+
   - [x] Nom
   - [x] Heure de début
   - [x] Heure de fin
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
-- [ ] Période de cote
-      Il faut que l'application permette de gérer les périodes de cote. Une période de cote est définie par:
+
+- [ ] **Période de cote**
+      Représente une période de cotation (trimestre, semestre, etc...).
+
   - [ ] Nom
   - [ ] Date de début
   - [ ] Date de fin
   - [ ] Date de création (usage interne)
   - [ ] Date de modification (usage interne)
-- [ ] Gestion des bulletins
-  Il faut que l'application permette de générer des bulletins. Ils peuvent être générés en format web ou pdf.
-- [ ] Gestion des cours
-      Il faut que l'application permette de gérer les cours.
-      Un cours est défini par:
+
+- [ ] **Gestion des bulletins**
+
+  - [ ] Génération de bulletins en format web ou pdf
+
+- **Gestion des cours**
+  <!--
+  **Note**:
+  Reste beaucoup de question sur sont utilité. Ca à été pensé pour évité par exemple qu'un enseignant ai à chercher dans plusieurs classes pour voir les élèves si il donne cours à plusieurs classes (cours de langue par exemple). Mais comment le gérer dans l'interface utilisateur, car accutellement l'enseignant peut naviguer entre les classes.
+
+  Donc ne pas implémenter temps qu'on a pas une idée claire de son utilité.
+  -->
+
+  Représente les cours donnés par un ou plusieurs enseignants à un groupe d'élèves qui peuvent être dans une ou plusieurs classes.
+
   - [ ] Matière
   - [ ] Enseignant(s)
   - [ ] Elève(s)
@@ -97,35 +131,23 @@ ScholarSuite 1.0 est la première version de ScholarSuite. Elle est une applicat
 
 ## Points techniques
 
-- [ ] Avoir un semblant de design system
-- [ ] Faire des composant réutilisable
-- [ ] Ne pas avoir de code dupliqué. Si un code est dupliqué, il faut le factoriser.
 - [x] Authentification
-      Il faut que l'application permette de s'authentifier. L'authentification se fait par email et mot de passe
-- [ ] API REST pour pouvoir plugger l'application à d'autres services.
-- [x] Base de données
-      Il faut que l'application utilise une base de données pour stocker les données. La base de données doit être relationnelle.
+- [x] Base de données relationnelle
+- [x] Internationalisation
+- [ ] Design system et composants réutilisables
+- [ ] Pas de code dupliqué
+- [ ] API REST, qui peuvent être utilisées par des services tiers
 - [ ] Tests unitaires
 - [ ] Tests d'intégration (E2E)
-- [ ] Test visuel
-- [ ] Documentation
-      Il faut que l'application soit documentée. La documentation doit être écrite en markdown.
-- [x] Internationalisation
-      Il faut que l'application soit internationalisée. La langue par défaut est le français ou défini par un configuration.
+- [ ] Test visuel (Storybook)
+- [ ] Documentation en markdown, pour les mainteneurs, les contributeurs et les utilisateurs
 - [ ] Docker (à discuter)
-- [ ] SSO avec
+- [ ] SSO (à discuter)
 
-## Technologies
+## Autres
 
-- [react](https://reactjs.org/) est une bibliothèque JavaScript pour construire des interfaces utilisateur.
-- [tailwindcss](https://tailwindcss.com/) est un framework CSS pour construire des interfaces utilisateur.
-- [typescript](https://www.typescriptlang.org/) est un langage de programmation qui ajoute des fonctionnalités à JavaScript.
-- [nextjs](https://nextjs.org/) est un framework React pour construire des applications web. Il permet de générer des pages statiques ou dynamiques mais aussi de gérer le routage et encore les api
-- [next-auth](https://next-auth.js.org/) est une bibliothèque pour gérer l'authentification dans une application Next.js
-- [prisma](https://www.prisma.io/) est un ORM pour Node.js et TypeScript
-- [nodejs](https://nodejs.org/) est un environnement d'exécution JavaScript côté serveur. Il permet d'exécuter du JavaScript côté serveur. Mais aussi de faire des tests unitaires.
-- [storybook](https://storybook.js.org/) est un outil de développement pour les composants React. Il permet de visualiser les composants et de les tester.
-- [react-pdf](https://react-pdf.org/) est une bibliothèque pour générer des fichiers PDF en React.
-- [react-pdf-tailwind](https://www.npmjs.com/package/react-pdf-tailwind) est une bibliothèque pour générer des fichiers PDF en React avec TailwindCSS.
-- [nodemailer](https://nodemailer.com/) est une bibliothèque pour envoyer des emails en Node.js. Elle est utilisée pour envoyer des emails de réinitialisation de mot de passe.
-- [react-email](https://nodemailer.com) est une bibliothèque pour envoyer des emails en React. Elle est utilisée pour envoyer des emails de réinitialisation de mot de passe. Elle support tailwindcss sans problème.
+- [x] L'application doit supporter le thème clair et sombre
+- [ ] Gestion des années scolaires (plus avancé)
+- [ ] Gestion des emplois du temps (S'il y a une demande ou quelqu'un qui sait le développer)
+- [ ] Utilisation d'envoi de mail pour la réinitialisation de mot de passe ou pour notifier d'événements telle qu'une absence non justifiée.
+- [ ] Gestion des absences justifiées et non justifiées

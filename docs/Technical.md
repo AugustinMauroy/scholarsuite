@@ -196,6 +196,12 @@ Aussi pour générer des PDF, nous utiliserons la bibliothèque `react-pdf`. Ain
 
 npm est le gestionnaire de paquets par défaut de Node.js. Il nous permet d'installer et de gérer les dépendances de notre projet. Il nous permet également d'exécuter des scripts et de publier nos packages. Nous l'avons sélectionné car les développeurs ne devraient pas avoir à installer un autre gestionnaire de paquets.
 
+### Pourquoi voir configurer `.vscode`?
+
+Visual Studio Code est un éditeur de code très populaire parmi les développeurs. Il est également très extensible et nous permet de configurer notre environnement de développement pour qu'il soit plus productif.
+
+Par example nous recommandons toutes sortes de plugins pour améliorer la productivité des développeurs.
+
 ### Bon à savoir
 
 - Nous avons un fichier `.nvmrc` à la racine du projet. Ce fichier est utilisé par [`nvm`][] pour définir la version correcte de Node.js pour le projet. Si vous avez [`nvm`][] installé, vous pouvez exécuter `nvm use` pour définir la bonne version de Node.js pour le projet.
