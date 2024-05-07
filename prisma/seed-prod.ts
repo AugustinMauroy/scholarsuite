@@ -1,6 +1,7 @@
 import { platform } from 'node:os';
 import readline from 'node:readline';
 import { PrismaClient } from '@prisma/client';
+import { encode } from '@/utils/crypto';
 
 const BELGIAN_SCHOOL_LEVELS = [
   { name: '1ère primaire' },
@@ -36,7 +37,7 @@ if (users.length) {
       {
         firstName: 'admin',
         lastName: 'admin',
-        password: 'password',
+        password: await encode('password'),
         role: 0,
       },
     ],

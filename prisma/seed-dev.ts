@@ -1,5 +1,6 @@
 import { platform } from 'node:os';
 import { PrismaClient } from '@prisma/client';
+import { encode } from '@/utils/crypto';
 
 const prisma = new PrismaClient();
 const users = await prisma.user.findMany();
@@ -16,13 +17,13 @@ if (users.length) {
       {
         firstName: 'augustin',
         lastName: 'mauroy',
-        password: 'password',
+        password: await encode('password'),
         role: 0, // administrator
       },
       {
         firstName: 'jean',
         lastName: 'dupont',
-        password: 'password',
+        password: await encode('password'),
         role: 1, // teacher
       },
     ],

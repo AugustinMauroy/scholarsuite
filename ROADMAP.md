@@ -57,6 +57,8 @@
   - Description
   - Date de création (usage interne)
   - Date de modification (usage interne)
+- [ ] Gestion des bulletins
+  Il faut que l'application permette de générer des bulletins. Ils peuvent être générés en format web ou pdf.
 
 ## Points techniques
 
@@ -85,3 +87,5 @@
 - [prisma](https://www.prisma.io/) est un ORM pour Node.js et TypeScript
 - [nodejs](https://nodejs.org/) est un environnement d'exécution JavaScript côté serveur. Il permet d'exécuter du JavaScript côté serveur. Mais aussi de faire des tests unitaires.
 - [storybook](https://storybook.js.org/) est un outil de développement pour les composants React. Il permet de visualiser les composants et de les tester.
+- [react-pdf](https://react-pdf.org/) est une bibliothèque pour générer des fichiers PDF en React.
+- [react-pdf-tailwind](https://www.npmjs.com/package/react-pdf-tailwind) est une bibliothèque pour générer des fichiers PDF en React avec TailwindCSS.

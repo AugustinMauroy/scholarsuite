@@ -1,5 +1,6 @@
 import CredentialsProvider from 'next-auth/providers/credentials';
 import prisma from '@/lib/prisma';
+import { decode } from '@/utils/crypto';
 import type { NextAuthOptions } from 'next-auth';
 
 const nextAuthConfig = {
@@ -25,7 +26,7 @@ const nextAuthConfig = {
           where: {
             firstName: credentials.firstName,
             lastName: credentials.lastName,
-            password: credentials.password,
+            password: await decode(credentials.password),
           },
         });
 
@@ -33,7 +34,7 @@ const nextAuthConfig = {
 
         return {
           id: user.id.toString(),
-          name: user.firstName + '/' + user.lastName,
+          name: `${user.firstName}/${user.lastName}`,
           image: `http://localhost:3000/api/content/profile-picture/${user.firstName + user.lastName}`,
         };
       },

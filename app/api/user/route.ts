@@ -1,6 +1,7 @@
 import { getServerSession } from 'next-auth';
 import prisma from '@/lib/prisma';
 import nextAuthConfig from '@/lib/auth';
+import { encode } from '@/utils/crypto';
 
 export const GET = async (req: Request): Promise<Response> => {
   const session = await getServerSession(nextAuthConfig);
@@ -36,6 +37,8 @@ export const PUT = async (req: Request): Promise<Response> => {
   if ((!firstName && !lastName) || !role)
     return Response.json({ error: 'Missing fields' }, { status: 400 });
 
+  const password = await encode(`${firstName}${lastName}`);
+
   const user = await prisma.user.create({
     data: {
       firstName:
@@ -44,7 +47,7 @@ export const PUT = async (req: Request): Promise<Response> => {
         lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase(),
       email: !email ? null : (email as string | null),
       role: parseInt(role, 10) as number,
-      password: `${firstName.charAt(0).toLowerCase()}${lastName.toLowerCase()}`,
+      password,
     },
   });
 
