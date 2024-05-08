@@ -27,6 +27,7 @@ const nextAuthConfig = {
             firstName: credentials.firstName,
             lastName: credentials.lastName,
             password: await decode(credentials.password),
+            enabled: true,
           },
         });
 
@@ -48,6 +49,7 @@ const nextAuthConfig = {
         where: {
           firstName: fistName,
           lastName: lastName,
+          enabled: true,
         },
       });
 

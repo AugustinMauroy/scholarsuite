@@ -94,7 +94,7 @@ const ClassTable: FC<TableProps> = ({ classes }) => {
         </tbody>
       </table>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.overlay} />
+        <DialogPrimitive.Overlay className={styles.modalOverlay} />
         <DialogPrimitive.Content className={styles.modalContent}>
           <DialogPrimitive.Close asChild>
             <XMarkIcon
@@ -106,7 +106,6 @@ const ClassTable: FC<TableProps> = ({ classes }) => {
           <DialogPrimitive.Description>
             Update the class&apos;s information
           </DialogPrimitive.Description>
-
           <Input
             label="Name"
             name="name"

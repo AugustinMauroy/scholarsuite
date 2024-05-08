@@ -81,6 +81,7 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
             <th />
             <th>First Name</th>
             <th>Last Name</th>
+            <th>Enabled</th>
             <th>Class</th>
             <th>Contact Email</th>
             <th>Actions</th>
@@ -99,6 +100,9 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
               </td>
               <td>{student.firstName}</td>
               <td>{student.lastName}</td>
+              <td>
+                <Input type="checkbox" checked={student.enabled} disabled />
+              </td>
               <td>{student.class?.name}</td>
               <td>{student.contactEmail}</td>
               <td>
@@ -114,7 +118,7 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
         </tbody>
       </table>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.overlay} />
+        <DialogPrimitive.Overlay className={styles.modalOverlay} />
         <DialogPrimitive.Content className={styles.modalContent}>
           <DialogPrimitive.Close asChild>
             <XMarkIcon
@@ -122,57 +126,77 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
               onClick={() => setSelectedStudent(null)}
             />
           </DialogPrimitive.Close>
-          <DialogPrimitive.Title>Edit Student</DialogPrimitive.Title>
-          <DialogPrimitive.Description>
-            Update the student&apos;s information
-          </DialogPrimitive.Description>
-          <Input
-            label="First Name"
-            name="firstName"
-            value={selectedStudent?.firstName || ''}
-            onChange={e =>
-              setSelectedStudent(prevStudent => ({
-                ...(prevStudent as StudentState),
-                firstName: e.target.value,
-              }))
-            }
-          />
-          <Input
-            label="Last Name"
-            name="lastName"
-            value={selectedStudent?.lastName || ''}
-            onChange={e =>
-              setSelectedStudent(prevStudent => ({
-                ...(prevStudent as StudentState),
-                lastName: e.target.value,
-              }))
-            }
-          />
-          <Select
-            label="Class"
-            values={possibleClasses.map(c => ({
-              value: c.id.toString(),
-              label: c.name,
-            }))}
-            defaultValue={selectedStudent?.class?.id.toString()}
-            onChange={v =>
-              setSelectedStudent(prevStudent => ({
-                ...(prevStudent as StudentState),
-                classId: parseInt(v),
-              }))
-            }
-          />
-          <Input
-            label="Contact Email"
-            name="email"
-            value={selectedStudent?.contactEmail || ''}
-            onChange={e =>
-              setSelectedStudent(prevStudent => ({
-                ...(prevStudent as StudentState),
-                contactEmail: e.target.value,
-              }))
-            }
-          />
+          {selectedStudent ? (
+            <>
+              <DialogPrimitive.Title>Edit Student</DialogPrimitive.Title>
+              <DialogPrimitive.Description>
+                Update the student&apos;s information
+              </DialogPrimitive.Description>
+              <Input
+                label="First Name"
+                name="firstName"
+                value={selectedStudent.firstName || ''}
+                onChange={e =>
+                  setSelectedStudent({
+                    ...selectedStudent,
+                    firstName: e.target.value,
+                  })
+                }
+              />
+              <Input
+                label="Last Name"
+                name="lastName"
+                value={selectedStudent.lastName || ''}
+                onChange={e =>
+                  setSelectedStudent({
+                    ...selectedStudent,
+                    lastName: e.target.value,
+                  })
+                }
+              />
+              <Select
+                label="Class"
+                values={possibleClasses.map(c => ({
+                  value: c.id.toString(),
+                  label: c.name,
+                }))}
+                defaultValue={selectedStudent.class?.id.toString()}
+                onChange={v =>
+                  setSelectedStudent({
+                    ...selectedStudent,
+                    classId: parseInt(v),
+                  })
+                }
+              />
+              <Input
+                label="Contact Email"
+                name="email"
+                value={selectedStudent.contactEmail || ''}
+                onChange={e =>
+                  setSelectedStudent({
+                    ...selectedStudent,
+                    contactEmail: e.target.value,
+                  })
+                }
+              />
+              <Input
+                label="Enabled"
+                name="enabled"
+                type="checkbox"
+                checked={selectedStudent.enabled}
+                onChange={e =>
+                  setSelectedStudent({
+                    ...selectedStudent,
+                    enabled: e.target.checked,
+                  })
+                }
+              />
+            </>
+          ) : (
+            <DialogPrimitive.Title>
+              An error occurred while trying to edit the student
+            </DialogPrimitive.Title>
+          )}
           <DialogPrimitive.Close asChild>
             <Button kind="outline" onClick={handleEdit}>
               Save

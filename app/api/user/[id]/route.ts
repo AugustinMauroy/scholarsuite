@@ -37,6 +37,7 @@ export const PATCH = async (
       firstName: body.firstName,
       lastName: body.lastName,
       email: body.email,
+      enabled: body.enabled,
     },
   });
 

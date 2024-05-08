@@ -7,6 +7,7 @@ import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid';
+import { useSession } from 'next-auth/react';
 import ClassList from '@/components/User/ClassList';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
@@ -19,6 +20,7 @@ import type { Patch } from '@/components/User/ClassList';
 
 const UsersTable: FC = () => {
   const toast = useToast();
+  const { data: session } = useSession();
   const [userList, setUserList] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [userClassesPatch, setUserClassesPatch] = useState<Patch | null>(null);
@@ -126,6 +128,7 @@ const UsersTable: FC = () => {
             <th>Last Name</th>
             <th>Email</th>
             <th>Role</th>
+            <th>Enabled</th>
             <th>Actions</th>
           </tr>
         </thead>
@@ -136,6 +139,9 @@ const UsersTable: FC = () => {
               <td>{user.lastName}</td>
               <td>{user.email}</td>
               <td>{user.role}</td>
+              <td>
+                <Input type="checkbox" checked={user.enabled} disabled />
+              </td>
               <td>
                 <DialogPrimitive.Trigger asChild>
                   <Button onClick={() => setSelectedUser(user)}>
@@ -149,7 +155,7 @@ const UsersTable: FC = () => {
         </tbody>
       </table>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.overlay} />
+        <DialogPrimitive.Overlay className={styles.modalOverlay} />
         <DialogPrimitive.Content className={styles.modalContent}>
           <DialogPrimitive.Close asChild>
             <XMarkIcon
@@ -206,6 +212,19 @@ const UsersTable: FC = () => {
                 patch={userClassesPatch}
                 setPatch={setUserClassesPatch}
               />
+              {session?.user.id !== selectedUser.id && (
+                <Input
+                  label="Enabled"
+                  type="checkbox"
+                  checked={selectedUser.enabled}
+                  onChange={e =>
+                    setSelectedUser({
+                      ...selectedUser,
+                      enabled: e.target.checked,
+                    })
+                  }
+                />
+              )}
               <DialogPrimitive.Close asChild>
                 <Button kind="outline" onClick={handleEdit}>
                   Save

@@ -18,6 +18,7 @@ export const GET = async (req: Request): Promise<Response> => {
       lastName: true,
       email: true,
       role: true,
+      enabled: true,
     },
   });
 

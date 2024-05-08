@@ -23,6 +23,9 @@ export const POST = async (req: Request) => {
           },
         },
       ],
+      AND: {
+        enabled: true,
+      },
     },
     include: {
       class: true,

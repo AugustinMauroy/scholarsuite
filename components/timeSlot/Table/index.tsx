@@ -224,7 +224,7 @@ const Table: FC = () => {
         </tbody>
       </table>
       <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.overlay} />
+        <DialogPrimitive.Overlay className={styles.modalOverlay} />
         <DialogPrimitive.Content className={styles.modalContent}>
           <DialogPrimitive.Close asChild>
             <XMarkIcon className={styles.closeIcon} />

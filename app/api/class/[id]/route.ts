@@ -19,6 +19,9 @@ export const GET = async (
     },
     include: {
       students: {
+        where: {
+          enabled: true,
+        },
         include: {
           Presence: true,
         },
@@ -48,6 +51,9 @@ export const POST = async (
       },
       include: {
         students: {
+          where: {
+            enabled: true,
+          },
           include: {
             Presence: true,
           },
@@ -85,6 +91,9 @@ export const POST = async (
     },
     include: {
       students: {
+        where: {
+          enabled: true,
+        },
         include: {
           Presence: {
             where: {

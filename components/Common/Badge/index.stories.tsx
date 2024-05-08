@@ -43,7 +43,7 @@ export const WithClickEvent: Story = {
   args: {
     children: 'Clickable',
     kind: 'primary',
-    onclick: () => alert('Badge clicked!'),
+    onClick: () => alert('Badge clicked!'),
   },
 };
 
