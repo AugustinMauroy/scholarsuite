@@ -12,7 +12,7 @@ import type { SchoolLevel } from '@prisma/client';
 
 const Page: FC = () => {
   const { data: session } = useSession();
-  if (session?.user.role !== 0) notFound();
+  if (session?.user.role !== 'ADMIN') notFound();
 
   const [schoolLevel, setSchoolLevel] = useState<SchoolLevel[] | null>(null);
   const [name, setName] = useState('');

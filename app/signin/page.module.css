@@ -4,8 +4,7 @@
     w-screen
     flex-col
     items-center
-    justify-center
-    gap-8;
+    justify-center;
 
   h1 {
     @apply text-center
@@ -14,8 +13,17 @@
       lg:text-6xl;
   }
 
+  p {
+    @apply text-center
+      text-lg
+      text-gray-500
+      lg:text-xl
+      dark:text-gray-400;
+  }
+
   form {
-    @apply flex
+    @apply mt-8
+      flex
       w-2/3
       flex-col
       gap-2

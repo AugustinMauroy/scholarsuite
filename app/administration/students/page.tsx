@@ -8,7 +8,7 @@ import type { FC } from 'react';
 
 const Page: FC = async () => {
   const session = await getServerSession(nextAuthConfig);
-  if (session?.user.role !== 0) notFound();
+  if (session?.user.role !== 'ADMIN') notFound();
 
   const students = await prisma.student.findMany({
     include: {

@@ -40,7 +40,7 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
 
-- [ ] **Gestion des classes**
+- [x] **Gestion des classes**
       Représente les classes (1a, 1b, 2a, 2b, etc...) d'un niveau scolaire.
 
   - [x] Nom
@@ -74,12 +74,13 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
   - [ ] Importation des notes depuis un fichier CSV
   - [ ] Interface utilisateur pour introduire les notes
 
-- [x] **Gestion des présences**
+- [ ] **Gestion des présences**
 
   - [x] Elève
   - [x] Date (`date` date db type), seul le jour est pris en compte car l'heure dépend de la tranche horaire
   - [x] Utilisateur (enseignant, ou administrateur)
   - [x] Tranche horaire
+  - [ ] Traité (pour les éducateurs qui peuvent traiter les absences)
   - [x] Date de création (usage interne ou pour vérification de fraude)
   - [x] Date de modification (usage interne)
 

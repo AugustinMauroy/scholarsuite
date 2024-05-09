@@ -1,7 +1,6 @@
 'use client';
 import { useSession } from 'next-auth/react';
 import Link from 'next/link';
-import { userRoles } from '@/utils/roles';
 import type { FC } from 'react';
 
 const Page: FC = () => {
@@ -10,23 +9,21 @@ const Page: FC = () => {
 
   // way to display a/an based on the role
   const displayRole =
-    (userRoles[session.user.role].startsWith('a') ? 'an' : 'a') +
-    ' ' +
-    userRoles[session.user.role];
+    (session.user.role.startsWith('a') ? 'an' : 'a') + ' ' + session.user.role.toLowerCase();
 
   return (
     <main className="m-4">
-      <h1 className="text-6xl font-bold">Dashboard</h1>
-      <p className="text-xl text-gray-600 dark:text-gray-400">
+      <h1 className="text-3xl font-bold">Dashboard</h1>
+      <p className="text-lg text-gray-600 dark:text-gray-400">
         Welcome, {`${session.user.firstName} ${session.user.lastName}`}! You are{' '}
         {displayRole}.
       </p>
       <ul className="m-4 list-disc">
-        {session.user.role === 0 && (
+        {session.user.role === 'ADMIN' && (
           <li>
             <Link
               href="/administration"
-              className="text-lg text-blue-500 hover:underline"
+              className="text-lg text-brand-500 hover:underline"
             >
               Administration Dashboard
             </Link>
@@ -35,7 +32,7 @@ const Page: FC = () => {
         <li>
           <Link
             href="/disciplinaryReport"
-            className="text-lg text-blue-500 hover:underline"
+            className="text-lg text-brand-500 hover:underline"
           >
             Disciplinary Dashboard
           </Link>

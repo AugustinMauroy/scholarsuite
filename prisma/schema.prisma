@@ -16,7 +16,7 @@ model User {
   lastName           String
   email              String?              @unique
   password           String
-  role               Int
+  role               Role
   enabled            Boolean              @default(true)
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
@@ -24,6 +24,12 @@ model User {
   Presence           Presence[]
   DisciplinaryReport DisciplinaryReport[]
   Course             Course[]
+}
+
+enum Role {
+  ADMIN
+  MANAGER
+  TEACHER
 }
 
 model SchoolLevel {

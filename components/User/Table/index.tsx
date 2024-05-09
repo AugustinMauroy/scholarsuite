@@ -196,14 +196,15 @@ const UsersTable: FC = () => {
               <Select
                 label="Role"
                 values={[
-                  { value: '0', label: 'Admin' },
-                  { value: '1', label: 'Teacher' },
+                  { value: 'ADMIN', label: 'Admin' },
+                  { value: 'TEACHER', label: 'Teacher' },
+                  { value: 'STUDENT', label: 'Student' },
                 ]}
                 defaultValue={selectedUser.role.toString()}
                 onChange={v =>
                   setSelectedUser({
                     ...selectedUser,
-                    role: parseInt(v, 10),
+                    role: v as User['role'],
                   })
                 }
               />

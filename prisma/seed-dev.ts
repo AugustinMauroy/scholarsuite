@@ -1,9 +1,9 @@
 import { styleText } from 'node:util';
 import { PrismaClient } from '@prisma/client';
 import { encode } from '@/utils/crypto.ts';
+const now = new Date();
 
 const getCurrentAcademicYear = () => {
-  const now = new Date();
   const data = {
     startDate: new Date(),
     endDate: new Date(),
@@ -35,16 +35,22 @@ if (users.length) {
   await prisma.user.createMany({
     data: [
       {
-        firstName: 'augustin',
-        lastName: 'mauroy',
+        firstName: 'Augustin',
+        lastName: 'Mauroy',
         password: await encode('password'),
-        role: 0, // administrator
+        role: 'ADMIN',
       },
       {
-        firstName: 'jean',
-        lastName: 'dupont',
+        firstName: 'Jean',
+        lastName: 'Dupont',
         password: await encode('password'),
-        role: 1, // teacher
+        role: 'TEACHER',
+      },
+      {
+        firstName: 'Paul',
+        lastName: 'Martin',
+        password: await encode('password'),
+        role: 'MANAGER',
       },
     ],
   });
@@ -121,7 +127,6 @@ if (users.length) {
     data: { userId: 1 },
   });
 
-  // create subjects
   await prisma.subject.createMany({
     data: [{ name: 'Mathematics' }, { name: 'Science' }, { name: 'History' }],
   });
@@ -193,6 +198,23 @@ if (users.length) {
       startDate: AcademicYear.startDate,
       endDate: AcademicYear.endDate,
     },
+  });
+
+  await prisma.gradePeriod.createMany({
+    data: [
+      // first semester 1 september - 31 january
+      {
+        name: 'First semester',
+        startDate: new Date(now.getFullYear(), 8, 1),
+        endDate: new Date(now.getFullYear(), 11, 31),
+      },
+      // second semester 1 february - 31 july
+      {
+        name: 'Second semester',
+        startDate: new Date(now.getFullYear(), 1, 1),
+        endDate: new Date(now.getFullYear(), 6, 31),
+      },
+    ],
   });
 
   await prisma.$disconnect();

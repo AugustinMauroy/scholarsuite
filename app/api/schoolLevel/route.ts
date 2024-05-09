@@ -17,7 +17,7 @@ export const GET = async (req: Request) => {
 
 export const PUT = async (req: Request) => {
   const session = await getServerSession(nextAuthConfig);
-  if (!session || session.user.role !== 0)
+  if (!session || session.user.role !== 'ADMIN')
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
   const schoolLevel = (await req.json()) as SchoolLevel;
@@ -33,7 +33,7 @@ export const PUT = async (req: Request) => {
 
 export const PATCH = async (req: Request) => {
   const session = await getServerSession(nextAuthConfig);
-  if (!session || session.user.role !== 0)
+  if (!session || session.user.role !== 'ADMIN')
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { id, order, ...schoolLevelData } = (await req.json()) as SchoolLevel;

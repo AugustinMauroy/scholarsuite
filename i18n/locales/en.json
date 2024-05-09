@@ -11,6 +11,7 @@
     },
     "signin": {
       "title": "Please authenticate",
+      "description": "Please sign in to access to SchoolarSuite",
       "firstName": "First Name",
       "lastName": "Last Name",
       "password": "Password",

@@ -7,7 +7,7 @@ import type { FC } from 'react';
 
 const Page: FC = async () => {
   const session = await getServerSession(nextAuthConfig);
-  if (session?.user.role !== 0) notFound();
+  if (session?.user.role !== 'ADMIN') notFound();
 
   return (
     <BaseLayout title="Time Slot" description="Manage your school time slots">

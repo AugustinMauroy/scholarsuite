@@ -12,8 +12,8 @@ export default {
           : cyan,
       },
       aspectRatio: {
-        '9/16': 'aspect-ratio-9/16',
-        '16/9': 'aspect-ratio-16/9',
+        '4/3': '4 / 3',
+        '3/4': '3 / 4',
       },
     },
   },

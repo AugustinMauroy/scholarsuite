@@ -16,7 +16,7 @@ export const PATCH = async (
 
   if (!session)
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
-  if (session.user.role !== 0)
+  if (session.user.role !== 'ADMIN')
     return Response.json({ error: 'Unauthorized (bad role)' }, { status: 401 });
 
   const body = await req.json();

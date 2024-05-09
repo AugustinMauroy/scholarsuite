@@ -31,6 +31,25 @@ export const PATCH = async (req: Request): Promise<Response> => {
     return Response.json({ error: 'user not found' }, { status: 404 });
   }
 
+  const now = new Date();
+  const academicYear = await prisma.academicYear.findFirst({
+    where: {
+      startDate: { lte: now },
+      endDate: { gte: now },
+    },
+  });
+
+  if (!academicYear) {
+    return Response.json({ error: 'no academic year found' }, { status: 404 });
+  }
+
+  if (date < academicYear.startDate || date > academicYear.endDate) {
+    return Response.json(
+      { error: 'date not within current academic year' },
+      { status: 400 }
+    );
+  }
+
   for (const item of data) {
     const student = await prisma.student.findUnique({
       where: { id: item.studentId },

@@ -81,7 +81,7 @@ const NavItemComponent: FC<NavItemComponentProps> = ({ item, pathname }) => {
               className={classNames(
                 'block px-4 py-2 text-sm',
                 pathname.includes(`/class/${cls.id}`)
-                  ? 'bg-blue-500 text-white dark:bg-blue-600 dark:text-gray-200'
+                  ? 'bg-brand-500 text-white dark:bg-brand-600 dark:text-gray-200'
                   : 'hover:bg-gray-100 dark:hover:bg-gray-800'
               )}
             >

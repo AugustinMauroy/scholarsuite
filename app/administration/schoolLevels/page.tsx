@@ -7,7 +7,7 @@ import type { FC } from 'react';
 
 const Page: FC = async () => {
   const session = await getServerSession(nextAuthConfig);
-  if (!session || session.user.role !== 0) notFound();
+  if (!session || session.user.role !== 'ADMIN') notFound();
 
   return (
     <BaseLayout title="School Levels" description="Manage your school levels">

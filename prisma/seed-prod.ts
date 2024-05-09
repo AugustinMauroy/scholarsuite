@@ -52,7 +52,7 @@ if (users.length) {
         firstName: 'admin',
         lastName: 'admin',
         password: await encode('password'),
-        role: 0,
+        role: 'ADMIN',
       },
     ],
   });

@@ -1,6 +1,6 @@
 'use client';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
@@ -10,6 +10,7 @@ import type { FC, FormEvent } from 'react';
 const Page: FC = () => {
   const t = useTranslations('app.signin');
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { data: session } = useSession();
 
   if (session) {
@@ -22,12 +23,18 @@ const Page: FC = () => {
     const firstName = formData.get('firstName') as string;
     const lastName = formData.get('lastName') as string;
     const password = formData.get('password') as string;
-    await signIn('credentials', { firstName, lastName, password });
+    await signIn('credentials', {
+      firstName,
+      lastName,
+      password,
+      callbackUrl: searchParams.get('callbackUrl') ?? '/',
+    });
   };
 
   return (
     <main className={styles.wrapper}>
       <h1>{t('title')}</h1>
+      <p>{t('description')}</p>
       <form onSubmit={handleSubmit}>
         <Input
           label={t('firstName')}
