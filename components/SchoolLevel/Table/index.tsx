@@ -9,7 +9,6 @@ import {
 } from '@heroicons/react/24/solid';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
-import Select from '@/components/Common/Select';
 import { useToast } from '@/hooks/useToast';
 import styles from './index.module.css';
 import type { FC } from 'react';
@@ -38,21 +37,11 @@ const SchoolLevelsTable: FC = () => {
       body: JSON.stringify(selectedSchoolLevel),
     });
 
-    response.json().then(data => {
-      if (data.error) {
-        toast({
-          message: (
-            <>
-              <ExclamationTriangleIcon />
-              {data.error}
-            </>
-          ),
-          kind: 'error',
-        });
-        setSelectedSchoolLevel(null);
-
-        return;
-      }
+    if (response.ok) {
+      const newSchoolLevels = await fetch('/api/schoolLevel')
+        .then(response => response.json())
+        .then(data => data.data);
+      setSchoolLevels(newSchoolLevels);
 
       toast({
         message: (
@@ -63,13 +52,21 @@ const SchoolLevelsTable: FC = () => {
         ),
         kind: 'success',
       });
+
       setSelectedSchoolLevel(null);
-      setSchoolLevels(prev =>
-        prev.map(user =>
-          user.id === selectedSchoolLevel.id ? selectedSchoolLevel : user
-        )
-      );
-    });
+    } else {
+      const data = await response.json();
+      toast({
+        message: (
+          <>
+            <ExclamationTriangleIcon />
+            {data.error}
+          </>
+        ),
+        kind: 'error',
+      });
+      setSelectedSchoolLevel(null);
+    }
   };
 
   return (
@@ -77,26 +74,28 @@ const SchoolLevelsTable: FC = () => {
       <table>
         <thead>
           <tr>
-            <th>ID</th>
+            <th>Order</th>
             <th>Name</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {schoolLevels.map(schoolLevel => (
-            <tr key={schoolLevel.id}>
-              <td>{schoolLevel.id}</td>
-              <td>{schoolLevel.name}</td>
-              <td>
-                <DialogPrimitive.Trigger asChild>
-                  <Button onClick={() => setSelectedSchoolLevel(schoolLevel)}>
-                    <PencilIcon />
-                    Edit
-                  </Button>
-                </DialogPrimitive.Trigger>
-              </td>
-            </tr>
-          ))}
+          {schoolLevels
+            .sort((a, b) => a.order - b.order)
+            .map(schoolLevel => (
+              <tr key={schoolLevel.id}>
+                <td>{schoolLevel.order}</td>
+                <td>{schoolLevel.name}</td>
+                <td>
+                  <DialogPrimitive.Trigger asChild>
+                    <Button onClick={() => setSelectedSchoolLevel(schoolLevel)}>
+                      <PencilIcon />
+                      Edit
+                    </Button>
+                  </DialogPrimitive.Trigger>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
       <DialogPrimitive.Portal>
@@ -125,8 +124,20 @@ const SchoolLevelsTable: FC = () => {
               })
             }
           />
+          <Input
+            label="Order"
+            type="number"
+            value={selectedSchoolLevel?.order}
+            onChange={e =>
+              selectedSchoolLevel &&
+              setSelectedSchoolLevel({
+                ...selectedSchoolLevel,
+                order: parseInt(e.target.value),
+              })
+            }
+          />
           <DialogPrimitive.Close asChild>
-            <Button kind="outline" onClick={handleEdit}>
+            <Button type="submit" kind="outline" onClick={() => handleEdit()}>
               Save
             </Button>
           </DialogPrimitive.Close>

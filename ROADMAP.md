@@ -32,11 +32,11 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
 
-- [ ] **Gestion des niveaux scolaires**
+- [x] **Gestion des niveaux scolaires**
       Représente les niveaux scolaires (primaire, secondaire, etc.)
 
   - [x] Nom
-  - [ ] Ordre, permettant de donner un ordre aux niveaux scolaires
+  - [x] Ordre, permettant de donner un ordre aux niveaux scolaires
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
 
