@@ -17,7 +17,7 @@ export const Present: Story = {
     firstName: 'John',
     lastName: 'Doe',
     image: '/static/placeholder-portrait-9-16.jpg',
-    state: 'present',
+    state: 'PRESENT',
   },
 };
 
@@ -26,7 +26,7 @@ export const Absent: Story = {
     firstName: 'John',
     lastName: 'Doe',
     image: '/static/placeholder-portrait-9-16.jpg',
-    state: 'absent',
+    state: 'ABSENT',
   },
 };
 
@@ -35,7 +35,7 @@ export const Late: Story = {
     firstName: 'John',
     lastName: 'Doe',
     image: '/static/placeholder-portrait-9-16.jpg',
-    state: 'late',
+    state: 'LATE',
   },
 };
 
@@ -44,7 +44,7 @@ export const Excused: Story = {
     firstName: 'John',
     lastName: 'Doe',
     image: '/static/placeholder-portrait-9-16.jpg',
-    state: 'excused',
+    state: 'EXCUSED',
   },
 };
 

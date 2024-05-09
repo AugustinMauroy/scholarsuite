@@ -122,9 +122,21 @@ if (users.length) {
   });
 
   // assing class to teacher
-  await prisma.class.update({
-    where: { id: 1 },
-    data: { userId: 1 },
+  await prisma.classUser.createMany({
+    data: [
+      {
+        userId: 1,
+        classId: 1,
+      },
+      {
+        userId: 2,
+        classId: 1,
+      },
+      {
+        userId: 3,
+        classId: 1,
+      },
+    ],
   });
 
   await prisma.subject.createMany({

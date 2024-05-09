@@ -1,17 +1,17 @@
 .card {
   @apply w-40
+  cursor-pointer
   select-none
   rounded-xl
   bg-white
   shadow-lg
+  transition
+  duration-300
+  ease-in-out
   dark:border-2
   dark:border-gray-50
   dark:bg-black
-  dark:shadow-none
-  cursor-pointer
-  transition
-  duration-300
-  ease-in-out;
+  dark:shadow-none;
 
   &:hover {
     @apply shadow-xl;
@@ -19,8 +19,8 @@
 
   .avatar {
     @apply flex
-      w-40
       aspect-3/4
+      w-40
       flex-col
       items-center
       justify-center
@@ -40,6 +40,7 @@
       text-center
       text-lg
       font-semibold
+      lowercase
       text-white
       dark:text-black;
 

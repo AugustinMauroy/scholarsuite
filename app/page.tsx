@@ -9,7 +9,9 @@ const Page: FC = () => {
 
   // way to display a/an based on the role
   const displayRole =
-    (session.user.role.startsWith('a') ? 'an' : 'a') + ' ' + session.user.role.toLowerCase();
+    (session.user.role.startsWith('a') ? 'an' : 'a') +
+    ' ' +
+    session.user.role.toLowerCase();
 
   return (
     <main className="m-4">
@@ -26,6 +28,16 @@ const Page: FC = () => {
               className="text-lg text-brand-500 hover:underline"
             >
               Administration Dashboard
+            </Link>
+          </li>
+        )}
+        {session.user.role === 'MANAGER' && (
+          <li>
+            <Link
+              href="/presence"
+              className="text-lg text-brand-500 hover:underline"
+            >
+              Review Presence
             </Link>
           </li>
         )}

@@ -3,11 +3,16 @@ import { useState, useEffect } from 'react';
 import StudentCard from '@/components/Student/StudentCard';
 import BaseLayout from '@/components/Layout/Base';
 import Selector from '@/components/timeSlot/Selector';
-import { presenceState } from '@/utils/presence';
 import styles from './page.module.css';
 import type { FC } from 'react';
-import type { Student, Class, TimeSlot, Presence } from '@prisma/client';
-import type { PatchBody } from '@/utils/presence';
+import type {
+  Student,
+  Class,
+  TimeSlot,
+  Presence,
+  PresenceState,
+} from '@prisma/client';
+import type { PatchBody } from '@/types/presence';
 
 type PageProps = {
   params: { id: string };
@@ -31,7 +36,9 @@ const Page: FC<PageProps> = ({ params }) => {
     date: currentDate,
   });
 
-  const getPresence = (student: StudentWithPresence): Number | undefined => {
+  const getPresence = (
+    student: StudentWithPresence
+  ): PresenceState | undefined => {
     // check patch data first then check student presence
     const presence = patch.data.find(data => data.studentId === student.id);
 
@@ -161,9 +168,6 @@ const Page: FC<PageProps> = ({ params }) => {
       : setCurrentTimeslot(timeSlot[currentIndex + 1]);
   };
 
-  /**
-   * Handle student click, it's put student on state 0 (present)
-   */
   const handleStudentClick = (student: StudentWithPresence) => {
     if (!currentTimeslot) return;
 
@@ -176,17 +180,12 @@ const Page: FC<PageProps> = ({ params }) => {
             presence => presence.timeSlotId === currentTimeslot.id
           )?.id,
           studentId: student.id,
-          state: 0,
+          state: 'PRESENT',
         },
       ],
     });
   };
 
-  /**
-   * Handle student context menu, it's put student on state 1 (absent)
-   * If second click, it's put student on state 2 (late)
-   * If third click, come back to state 1 (absent)
-   */
   const handleStudentContextMenu = (student: StudentWithPresence) => {
     if (!currentTimeslot) return;
 
@@ -204,7 +203,12 @@ const Page: FC<PageProps> = ({ params }) => {
             ...prev.data.filter(data => data.studentId !== student.id),
             {
               studentId: student.id,
-              state: presence.state === 0 ? 1 : presence.state === 1 ? 2 : 1,
+              state:
+                presence.state === 'PRESENT'
+                  ? 'ABSENT'
+                  : presence.state === 'ABSENT'
+                    ? 'LATE'
+                    : 'ABSENT',
             },
           ],
         };
@@ -219,7 +223,12 @@ const Page: FC<PageProps> = ({ params }) => {
               presence => presence.timeSlotId === currentTimeslot.id
             )?.id,
             studentId: student.id,
-            state: state === 0 ? 1 : state === 1 ? 2 : 1,
+            state:
+              state === 'PRESENT'
+                ? 'ABSENT'
+                : state === 'ABSENT'
+                  ? 'LATE'
+                  : 'ABSENT',
           },
         ],
       };
@@ -254,9 +263,7 @@ const Page: FC<PageProps> = ({ params }) => {
           key={student.id}
           firstName={student.firstName}
           lastName={student.lastName}
-          state={
-            presenceState[getPresence(student) as keyof typeof presenceState]
-          }
+          state={getPresence(student)}
           image={`http://localhost:3000/api/content/student-picture/${student.id}`}
           onClick={() => handleStudentClick(student)}
           onContextMenu={() => handleStudentContextMenu(student)}

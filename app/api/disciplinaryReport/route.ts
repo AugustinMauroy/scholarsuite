@@ -5,13 +5,38 @@ import nextAuthConfig from '@/lib/auth';
 export const GET = async (req: Request): Promise<Response> => {
   const session = await getServerSession(nextAuthConfig);
 
-  if (!session) {
-    return new Response(null, { status: 401 });
-  }
+  if (!session)
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+
+  const userWithClasses = await prisma.user.findUnique({
+    where: {
+      id: session.user.id,
+    },
+    include: {
+      ClassUser: {
+        include: {
+          class: {
+            include: {
+              students: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!userWithClasses)
+    return Response.json({ error: 'User not found' }, { status: 404 });
+
+  const studentIdsUnderTutelage = userWithClasses.ClassUser.flatMap(
+    cu => cu.class.students
+  ).map(s => s.id);
 
   const disciplinaryReports = await prisma.disciplinaryReport.findMany({
     where: {
-      createdById: session.user.id,
+      studentId: {
+        in: studentIdsUnderTutelage,
+      },
     },
     include: {
       createdBy: true,
@@ -19,7 +44,7 @@ export const GET = async (req: Request): Promise<Response> => {
     },
   });
 
-  return Response.json({ disciplinaryReports }, { status: 200 });
+  return Response.json({ data: disciplinaryReports }, { status: 200 });
 };
 
 export const POST = async (req: Request): Promise<Response> => {

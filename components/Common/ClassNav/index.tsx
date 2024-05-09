@@ -15,7 +15,14 @@ const ClassNav: FC = async () => {
     include: {
       classes: {
         where: {
-          userId: teacherId,
+          classUsers: {
+            some: {
+              userId: teacherId,
+            },
+          },
+        },
+        include: {
+          classUsers: true,
         },
       },
     },

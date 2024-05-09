@@ -6,39 +6,27 @@ export const PATCH = async (req: Request) => {
 
   for (const { opp, classId } of data) {
     if (opp === 'add') {
-      await prisma.user
-        .update({
-          where: {
-            id: userId,
-          },
+      try {
+        await prisma.classUser.create({
           data: {
-            Class: {
-              connect: {
-                id: classId,
-              },
-            },
+            userId,
+            classId,
           },
-        })
-        .catch(() => {
-          return Response.json({ error: 'Error connecting classes' });
         });
+      } catch (error) {
+        return Response.json({ error: 'Error connecting classes' });
+      }
     } else {
-      await prisma.user
-        .update({
+      try {
+        await prisma.classUser.deleteMany({
           where: {
-            id: userId,
+            userId,
+            classId,
           },
-          data: {
-            Class: {
-              disconnect: {
-                id: classId,
-              },
-            },
-          },
-        })
-        .catch(() => {
-          return Response.json({ error: 'Error disconnecting classes' });
         });
+      } catch (error) {
+        return Response.json({ error: 'Error disconnecting classes' });
+      }
     }
   }
 

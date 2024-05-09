@@ -1,5 +1,67 @@
+import { getServerSession } from 'next-auth';
 import prisma from '@/lib/prisma';
-import type { PatchBody } from '@/utils/presence';
+import nextAuthConfig from '@/lib/auth';
+import type { PatchBody } from '@/types/presence';
+
+export const GET = async (req: Request): Promise<Response> => {
+  const session = await getServerSession(nextAuthConfig);
+
+  if (!session)
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+
+  const userWithClasses = await prisma.user.findUnique({
+    where: {
+      id: session.user.id,
+    },
+    include: {
+      ClassUser: {
+        include: {
+          class: {
+            include: {
+              students: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if (!userWithClasses)
+    return Response.json({ error: 'User not found' }, { status: 404 });
+
+  const studentIdsUnderTutelage = userWithClasses.ClassUser.flatMap(
+    cu => cu.class.students
+  ).map(s => s.id);
+
+  const data = await prisma.presence.findMany({
+    where: {
+      OR: [
+        {
+          state: 'ABSENT',
+        },
+        {
+          state: 'LATE',
+        },
+      ],
+      studentId: {
+        in: studentIdsUnderTutelage,
+      },
+    },
+    include: {
+      student: {
+        include: {
+          class: true,
+        },
+      },
+      timeSlot: true,
+    },
+    orderBy: {
+      processed: 'asc',
+    },
+  });
+
+  return Response.json({ data: data }, { status: 200 });
+};
 
 export const PATCH = async (req: Request): Promise<Response> => {
   const body: PatchBody = await req.json().catch(() => null);

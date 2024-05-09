@@ -8,6 +8,7 @@ import Button from '@/components/Common/Button';
 import StudentSearch from '@/components/Student/Search';
 import type { FC, FormEvent } from 'react';
 import type { DisciplinaryReport, User, Student } from '@prisma/client';
+
 type DisciplinaryState = DisciplinaryReport & {
   createdBy: User;
   student: Student;
@@ -29,8 +30,10 @@ const Page: FC = () => {
       method: 'GET',
     })
       .then(res => res.json())
-      .then(data => setDisciplinaryReports(data.disciplinaryReports));
+      .then(data => setDisciplinaryReports(data.data));
   }, []);
+
+  console.log(disciplinaryReports);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

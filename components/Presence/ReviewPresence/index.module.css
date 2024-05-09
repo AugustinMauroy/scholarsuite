@@ -1,0 +1,7 @@
+.wrapper {
+  @apply mx-auto
+    flex
+    w-1/2
+    flex-col
+    gap-4;
+}

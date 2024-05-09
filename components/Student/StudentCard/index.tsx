@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { getAcronymFromString } from '@/utils/string';
 import styles from './index.module.css';
 import type { FC } from 'react';
-import type { PresenceState } from '@/utils/presence';
+import type { PresenceState } from '@prisma/client';
 
 type StudentCardProps = {
   state?: PresenceState;
@@ -43,7 +43,14 @@ const StudentCard: FC<StudentCardProps> = ({
         {getAcronymFromString(firstName + ' ' + lastName)}
       </AvatarPrimitive.Fallback>
     </AvatarPrimitive.Root>
-    <p className={classNames(styles.state, state && styles[state])}>{state}</p>
+    <p
+      className={classNames(
+        styles.state,
+        state && styles[state.toLocaleLowerCase()]
+      )}
+    >
+      {state}
+    </p>
     <p className={styles.firstName}>{firstName}</p>
     <p className={styles.lastName}>{lastName}</p>
   </div>
