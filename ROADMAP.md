@@ -21,14 +21,14 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
 
 ## Fonctionnalités
 
-- [ ] **Gestion des utilisateurs**
+- [x] **Gestion des utilisateurs**
 
   - [x] Nom
   - [x] Prénom
   - [x] Email (optionnel)
   - [x] Mot de passe (hashé)
   - [x] Rôle (enseignant ou administrateur représenté par un entier)
-  - [ ] Etat (activé ou désactivé)
+  - [x] Etat (activé ou désactivé)
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
 
@@ -48,13 +48,13 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
 
-- [ ] **Gestion des élèves**
+- [x] **Gestion des élèves**
 
   - [x] Nom
   - [x] Prénom
   - [x] Date de naissance
   - [x] Classe
-  - [ ] Etat (activé ou désactivé)
+  - [x] Etat (activé ou désactivé)
   - [x] Date de création (usage interne)
   - [x] Date de modification (usage interne)
 
