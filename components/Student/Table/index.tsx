@@ -1,5 +1,6 @@
 'use client';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { useState } from 'react';
 import {
   PencilIcon,
@@ -7,6 +8,7 @@ import {
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid';
+import DropZone from '@/components/Common/DropZone';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
@@ -30,12 +32,12 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
   const [selectedStudent, setSelectedStudent] = useState<StudentState | null>(
     null
   );
+  const [file, setFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [displayRemove, setDisplayRemove] = useState(false);
 
   const handleEdit = async () => {
-    if (
-      !selectedStudent ||
-      selectedStudent === studentList.find(s => s.id === selectedStudent.id)
-    ) {
+    if (!selectedStudent || !file) {
       toast({
         message: (
           <>
@@ -49,9 +51,19 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
       return;
     }
 
+    const formData = new FormData();
+    formData.append('firstName', selectedStudent.firstName);
+    formData.append('lastName', selectedStudent.lastName);
+    selectedStudent.classId &&
+      formData.append('classId', selectedStudent.classId.toString());
+    selectedStudent.contactEmail &&
+      formData.append('contactEmail', selectedStudent.contactEmail);
+    formData.append('enabled', selectedStudent.enabled.toString());
+    file && formData.append('file', file);
+
     const response = await fetch(`/api/student/${selectedStudent.id}`, {
       method: 'PATCH',
-      body: JSON.stringify(selectedStudent),
+      body: formData,
     });
 
     if (response.ok) {
@@ -60,6 +72,7 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
         prevList.map(s => (s.id === updatedStudent.id ? updatedStudent : s))
       );
       setSelectedStudent(null);
+      setFile(null);
 
       toast({
         message: (
@@ -132,6 +145,44 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
               <DialogPrimitive.Description>
                 Update the student&apos;s information
               </DialogPrimitive.Description>
+              {imagePreview ? (
+                <AvatarPrimitive.Root
+                  className={styles.avatarRoot}
+                  onMouseEnter={() => setDisplayRemove(true)}
+                  onMouseLeave={() => setDisplayRemove(false)}
+                >
+                  <AvatarPrimitive.Image
+                    src={imagePreview}
+                    alt="Photo de l’étudiant"
+                    className={styles.avatar}
+                  />
+                  <AvatarPrimitive.Fallback className={styles.avatar}>
+                    {getAcronymFromString(
+                      `${selectedStudent.firstName} ${selectedStudent.lastName}`
+                    )}
+                  </AvatarPrimitive.Fallback>
+                  {displayRemove && (
+                    <button
+                      className={styles.avatarRemove}
+                      onClick={() => {
+                        setFile(null);
+                        setImagePreview(null);
+                      }}
+                    >
+                      Supprimer
+                    </button>
+                  )}
+                </AvatarPrimitive.Root>
+              ) : (
+                <DropZone
+                  file={file}
+                  setFile={(file: File) => {
+                    setFile(file);
+                    setImagePreview(URL.createObjectURL(file));
+                  }}
+                  title="Photo de l’étudiant"
+                />
+              )}
               <Input
                 label="First Name"
                 name="firstName"

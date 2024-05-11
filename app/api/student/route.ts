@@ -1,6 +1,5 @@
-import { join } from 'node:path';
-import { writeFile, mkdir } from 'node:fs/promises';
 import prisma from '@/lib/prisma';
+import { uploadStudentPicture } from '@/utils/contentApi';
 
 export const PUT = async (req: Request) => {
   const formData = await req.formData();
@@ -31,22 +30,9 @@ export const PUT = async (req: Request) => {
     );
   }
 
-  const directory = join(process.cwd(), 'content', 'student-picture');
-
-  try {
-    await mkdir(directory, {
-      recursive: true,
-    });
-
-    const filepath = join(
-      directory,
-      `${student.id}.${file.type.split('/').pop()}`
-    );
-
-    await writeFile(filepath, Buffer.from(await file.arrayBuffer()));
-
-    return Response.json({ data: student }, { status: 201 });
-  } catch {
-    return Response.json({ error: 'Error saving file' }, { status: 500 });
-  }
+  return uploadStudentPicture({
+    contentType: file.type.split('/').pop() ?? 'png',
+    slug: student.id.toString(),
+    file: file,
+  });
 };

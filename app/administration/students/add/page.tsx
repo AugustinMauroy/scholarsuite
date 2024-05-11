@@ -1,7 +1,6 @@
 'use client';
 // @todo:
 // - [ ] use translation
-// - [ ] handle errors such as missing fields ...
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { notFound } from 'next/navigation';
 import { useSession } from 'next-auth/react';
@@ -48,15 +47,21 @@ const Page: FC = () => {
         method: 'PUT',
         body: formData,
       });
-      const data = await response.json();
-      if (data.error) toast({ message: data.error, kind: 'error' });
-      else {
-        toast({ message: 'Étudiant ajouté', kind: 'success' });
+      if (response.ok) {
+        toast({
+          message: 'Étudiant ajouté avec succès',
+          kind: 'success',
+        });
         setFirstName('');
         setLastName('');
         setEmail('');
         setFile(null);
         setImagePreview(null);
+      } else {
+        toast({
+          message: 'Une erreur est survenue',
+          kind: 'error',
+        });
       }
     } catch (error) {
       console.error('Error adding student:', error);

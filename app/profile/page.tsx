@@ -22,7 +22,7 @@ const Page: FC = () => {
   const handleUpdate = async () => {
     if (!file) return;
     await fetch(
-      `/api/content/profile-picture/${sessionData.data?.user.name.replace(' ', '')}`,
+      `/api/content/profile-picture/${sessionData.data?.user.firstName}${sessionData.data?.user.lastName}`,
       {
         method: 'POST',
         headers: {

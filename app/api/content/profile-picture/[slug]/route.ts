@@ -1,5 +1,6 @@
 import { join } from 'node:path';
-import { readFile, readdir, writeFile, mkdir, rm } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
+import { uploadProfilePicture } from '@/utils/contentApi';
 
 type Params = {
   params: { slug: string };
@@ -36,35 +37,7 @@ export const POST = async (req: Request, { params }: Params) => {
     return new Response('Bad Request', { status: 400 });
   }
 
-  const directory = join(process.cwd(), 'content', 'profile-picture');
-  const files = await readdir(directory).catch(() => []);
-  const alreadyExists = files.some(file => file.startsWith(params.slug));
+  const file = await req.blob();
 
-  if (alreadyExists) {
-    const filePath = join(
-      directory,
-      files.find(file => file.startsWith(params.slug))!
-    );
-
-    try {
-      await rm(filePath);
-    } catch {
-      return new Response('Internal Server Error', { status: 500 });
-    }
-  }
-
-  try {
-    const filepath = join(
-      directory,
-      `${params.slug}.${contentType.split('/').pop()}`
-    );
-    const file = await req.blob();
-
-    await mkdir(directory, { recursive: true });
-    await writeFile(filepath, Buffer.from(await file.arrayBuffer()));
-
-    return new Response('OK');
-  } catch {
-    return new Response('Internal Server Error', { status: 500 });
-  }
+  return uploadProfilePicture({ contentType, slug: params.slug, file });
 };
