@@ -9,6 +9,20 @@ export const GET = async (req: Request): Promise<Response> => {
   if (!session)
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
+  const currentAcademicYear = await prisma.academicYear.findFirst({
+    where: {
+      startDate: {
+        lte: new Date(),
+      },
+      endDate: {
+        gte: new Date(),
+      },
+    },
+  });
+
+  if (!currentAcademicYear)
+    return Response.json({ error: 'No academic year found' }, { status: 404 });
+
   const userWithClasses = await prisma.user.findUnique({
     where: {
       id: session.user.id,
@@ -46,6 +60,7 @@ export const GET = async (req: Request): Promise<Response> => {
       studentId: {
         in: studentIdsUnderTutelage,
       },
+      academicYearId: currentAcademicYear.id,
     },
     include: {
       student: {
@@ -83,6 +98,31 @@ export const PATCH = async (req: Request): Promise<Response> => {
 
   if (!timeSlot) {
     return Response.json({ error: 'timeslot not found' }, { status: 404 });
+  }
+
+  const currentAcademicYear = await prisma.academicYear.findFirst({
+    where: {
+      startDate: {
+        lte: new Date(),
+      },
+      endDate: {
+        gte: new Date(),
+      },
+    },
+  });
+
+  if (!currentAcademicYear) {
+    return Response.json({ error: 'no academic year found' }, { status: 404 });
+  }
+
+  if (
+    date < currentAcademicYear.startDate ||
+    date > currentAcademicYear.endDate
+  ) {
+    return Response.json(
+      { error: 'date not within current academic year' },
+      { status: 400 }
+    );
   }
 
   const user = await prisma.user.findUnique({
@@ -139,7 +179,14 @@ export const PATCH = async (req: Request): Promise<Response> => {
       });
     } else {
       await prisma.presence.create({
-        data: { ...item, userId, timeSlotId, date, studentId: item.studentId },
+        data: {
+          ...item,
+          userId,
+          timeSlotId,
+          date,
+          studentId: item.studentId,
+          academicYearId: academicYear.id,
+        },
       });
     }
   }

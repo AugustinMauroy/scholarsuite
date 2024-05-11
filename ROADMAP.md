@@ -81,6 +81,7 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
   - [x] Utilisateur (enseignant, ou administrateur)
   - [x] Tranche horaire
   - [x] Traité (pour les éducateurs qui peuvent traiter les absences)
+  - [x] Année scolaire
   - [x] Date de création (usage interne ou pour vérification de fraude)
   - [x] Date de modification (usage interne)
 
@@ -114,7 +115,7 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
 
   - [ ] Génération de bulletins en format web ou pdf
 
-- **Gestion des cours**
+- [ ] **Gestion des cours**
   <!--
   **Note**:
   Reste beaucoup de question sur sont utilité. Ca à été pensé pour évité par exemple qu'un enseignant ai à chercher dans plusieurs classes pour voir les élèves si il donne cours à plusieurs classes (cours de langue par exemple). Mais comment le gérer dans l'interface utilisateur, car accutellement l'enseignant peut naviguer entre les classes.
@@ -129,6 +130,15 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
   - [ ] Elève(s)
   - [ ] Date de création (usage interne)
   - [ ] Date de modification (usage interne)
+
+- [x] ** Gestion des années scolaires**
+      Représente les années scolaires (2021-2022, 2022-2023, etc...).
+
+  - [x] Nom
+  - [x] Date de début
+  - [x] Date de fin
+  - [x] Date de création (usage interne)
+  - [x] Date de modification (usage interne)
 
 ## Points techniques
 
@@ -148,7 +158,6 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
 ## Autres
 
 - [x] L'application doit supporter le thème clair et sombre
-- [ ] Gestion des années scolaires (plus avancé)
 - [ ] Gestion des emplois du temps (S'il y a une demande ou quelqu'un qui sait le développer)
 - [ ] Utilisation d'envoi de mail pour la réinitialisation de mot de passe ou pour notifier d'événements telle qu'une absence non justifiée.
 - [ ] Gestion des absences justifiées et non justifiées

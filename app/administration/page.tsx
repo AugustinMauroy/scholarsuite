@@ -40,6 +40,10 @@ const Page: FC = async () => {
         <Link href="/administration/schoolLevels">View Levels</Link>
         <Link href="/administration/schoolLevels/add">Add Level</Link>
       </div>
+      <div className={styles.card}>
+        <h2>Academic Years</h2>
+        <Link href="/administration/academicYear">Manage Academic Years</Link>
+      </div>
     </BaseLayout>
   );
 };
