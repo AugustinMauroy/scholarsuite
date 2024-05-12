@@ -47,7 +47,8 @@ const ReviewPresence: FC = () => {
         <ReviewPresenceCard
           key={presence.id}
           presence={presence}
-          onClick={handleProcessed}
+          processPresence={handleProcessed}
+          notifyStudent={() => {}}
         />
       ))}
     </main>

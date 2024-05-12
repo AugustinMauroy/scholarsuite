@@ -1,0 +1,68 @@
+.wrapper {
+  @apply flex
+    flex-col
+    gap-2
+    rounded
+    border
+    p-2
+    transition-colors
+    duration-200
+    ease-in-out;
+
+  &.processed {
+    @apply bg-gray-100
+    dark:bg-gray-800;
+  }
+
+  &.pending {
+    @apply border-brand-500
+      bg-white
+      dark:bg-gray-900;
+  }
+
+  .actions {
+    @apply flex
+      flex-row
+      items-center
+      justify-between;
+
+    button {
+      @apply flex
+        size-fit
+        flex-row
+        items-center
+        justify-center
+        gap-2
+        rounded
+        p-1;
+
+      &:not(:disabled):hover {
+        @apply bg-gray-100
+        dark:bg-gray-800;
+      }
+
+      .doneIcon {
+        @apply size-5
+          text-green-500
+          dark:text-green-400;
+      }
+
+      .todoIcon {
+        @apply size-5
+          text-brand-500
+          dark:text-brand-400;
+      }
+
+      .notifyIcon {
+        @apply size-5
+          fill-current
+          hover:animate-pulse;
+      }
+    }
+  }
+
+  .class {
+    @apply text-gray-500
+      dark:text-gray-400;
+  }
+}
