@@ -10,6 +10,51 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Role {
+  ADMIN
+  MANAGER
+  TEACHER
+}
+
+enum PresenceState {
+  PRESENT
+  ABSENT
+  LATE
+  EXCUSED
+}
+
+model AcademicYear {
+  id           Int                       @id @default(autoincrement())
+  name         String
+  startDate    DateTime
+  endDate      DateTime
+  createdAt    DateTime                  @default(now())
+  updatedAt    DateTime                  @updatedAt
+  archives     Boolean                   @default(false)
+  courses      Course[]
+  presences    Presence[]
+  gradePeriods GradePeriodAcademicYear[]
+}
+
+model SchoolLevel {
+  id        Int        @id @default(autoincrement())
+  name      String
+  order     Int
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  classes   Class[]
+  TimeSlot  TimeSlot[]
+}
+
+model Subject {
+  id        Int      @id @default(autoincrement())
+  name      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  grades    Grade[]
+  Course    Course[]
+}
+
 model User {
   id                 Int                  @id @default(autoincrement())
   firstName          String
@@ -24,31 +69,7 @@ model User {
   DisciplinaryReport DisciplinaryReport[]
   Course             Course[]
   ClassUser          ClassUser[]
-}
-
-enum Role {
-  ADMIN
-  MANAGER
-  TEACHER
-}
-
-model SchoolLevel {
-  id        Int        @id @default(autoincrement())
-  name      String
-  order     Int
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  classes   Class[]
-  TimeSlot  TimeSlot[]
-}
-
-// Many to many relationship between User and Class
-model ClassUser {
-  id      Int   @id @default(autoincrement())
-  userId  Int
-  classId Int
-  user    User  @relation(fields: [userId], references: [id])
-  class   Class @relation(fields: [classId], references: [id])
+  ApiKey             ApiKey[]
 }
 
 model Class {
@@ -78,15 +99,6 @@ model Student {
   Presence            Presence[]
 }
 
-model Subject {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  grades    Grade[]
-  Course    Course[]
-}
-
 model Grade {
   id            Int         @id @default(autoincrement())
   value         Float
@@ -112,51 +124,13 @@ model TimeSlot {
   schoolLevelId Int?
 }
 
-model Presence {
-  id             Int           @id @default(autoincrement())
-  student        Student       @relation(fields: [studentId], references: [id])
-  studentId      Int
-  state          PresenceState
-  date           DateTime
-  user           User          @relation(fields: [userId], references: [id])
-  userId         Int
-  academicYear   AcademicYear  @relation(fields: [academicYearId], references: [id])
-  academicYearId Int
-  timeSlot       TimeSlot      @relation(fields: [timeSlotId], references: [id])
-  timeSlotId     Int
-  processed      Boolean       @default(false)
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-}
-
-enum PresenceState {
-  PRESENT
-  ABSENT
-  LATE
-  EXCUSED
-}
-
-model DisciplinaryReport {
-  id          Int      @id @default(autoincrement())
-  student     Student  @relation(fields: [studentId], references: [id])
-  studentId   Int
-  createdById Int
-  createdBy   User     @relation(fields: [createdById], references: [id])
-  date        DateTime
-  description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-}
-
-model AcademicYear {
-  id        Int        @id @default(autoincrement())
-  name      String
-  startDate DateTime
-  endDate   DateTime
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  Course    Course[]
-  Presence  Presence[]
+// Many to many relationship between User and Class
+model ClassUser {
+  id      Int   @id @default(autoincrement())
+  userId  Int
+  classId Int
+  user    User  @relation(fields: [userId], references: [id])
+  class   Class @relation(fields: [classId], references: [id])
 }
 
 model Course {
@@ -174,11 +148,59 @@ model Course {
 }
 
 model GradePeriod {
+  id            Int                       @id @default(autoincrement())
+  name          String
+  startDate     DateTime
+  endDate       DateTime
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
+  grades        Grade[]
+  academicYears GradePeriodAcademicYear[]
+}
+
+// Many to many relationship between GradePeriod and AcademicYear
+model GradePeriodAcademicYear {
+  id             Int          @id @default(autoincrement())
+  gradePeriodId  Int
+  academicYearId Int
+  gradePeriod    GradePeriod  @relation(fields: [gradePeriodId], references: [id])
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+}
+
+model Presence {
+  id             Int           @id @default(autoincrement())
+  student        Student       @relation(fields: [studentId], references: [id])
+  studentId      Int
+  state          PresenceState
+  date           DateTime
+  user           User          @relation(fields: [userId], references: [id])
+  userId         Int
+  academicYear   AcademicYear  @relation(fields: [academicYearId], references: [id])
+  academicYearId Int
+  timeSlot       TimeSlot      @relation(fields: [timeSlotId], references: [id])
+  timeSlotId     Int
+  processed      Boolean       @default(false)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+}
+
+model DisciplinaryReport {
+  id          Int      @id @default(autoincrement())
+  student     Student  @relation(fields: [studentId], references: [id])
+  studentId   Int
+  createdById Int
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  date        DateTime
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ApiKey {
   id        Int      @id @default(autoincrement())
-  name      String
-  startDate DateTime
-  endDate   DateTime
+  key       String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  grades    Grade[]
 }

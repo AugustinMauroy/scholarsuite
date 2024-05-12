@@ -148,7 +148,7 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
 - [ ] Design system et composants réutilisables
 - [ ] Pas de code dupliqué
 - [ ] API REST, qui peuvent être utilisées par des services tiers
-- [ ] Tests unitaires
+- [x] Tests unitaires
 - [ ] Tests d'intégration (E2E)
 - [ ] Test visuel (Storybook)
 - [ ] Documentation en markdown, pour les mainteneurs, les contributeurs et les utilisateurs
