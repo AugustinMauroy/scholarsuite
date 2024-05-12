@@ -9,6 +9,8 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      include: ['components/**/*', 'hooks/**/*', "providers/**/*", "utils/**/*"],
+      exclude: ['node_modules', '**/*.stories.tsx'],
     }
   },
   resolve: {
