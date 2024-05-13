@@ -61,26 +61,28 @@ model User {
   lastName           String
   email              String?              @unique
   password           String
-  role               Role
   enabled            Boolean              @default(true)
   createdAt          DateTime             @default(now())
   updatedAt          DateTime             @updatedAt
+  role               Role
   Presence           Presence[]
   DisciplinaryReport DisciplinaryReport[]
   Course             Course[]
   ClassUser          ClassUser[]
   ApiKey             ApiKey[]
+  UserClass          UserClass[]
 }
 
 model Class {
   id            Int         @id @default(autoincrement())
   name          String
-  schoolLevel   SchoolLevel @relation(fields: [schoolLevelId], references: [id])
   schoolLevelId Int
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
+  schoolLevel   SchoolLevel @relation(fields: [schoolLevelId], references: [id])
   students      Student[]
   classUsers    ClassUser[]
+  UserClass     UserClass[]
 }
 
 model Student {
@@ -88,28 +90,30 @@ model Student {
   firstName           String
   lastName            String
   dateOfBirth         DateTime?
-  class               Class?               @relation(fields: [classId], references: [id])
-  classId             Int?
+  classId             Int
   contactEmail        String?
   enabled             Boolean              @default(true)
   createdAt           DateTime             @default(now())
   updatedAt           DateTime             @updatedAt
+  class               Class                @relation(fields: [classId], references: [id])
   grades              Grade[]
   disciplinaryReports DisciplinaryReport[]
-  Presence            Presence[]
+  presence            Presence[]
 }
 
 model Grade {
   id            Int         @id @default(autoincrement())
   value         Float
-  student       Student     @relation(fields: [studentId], references: [id])
   studentId     Int
-  subject       Subject     @relation(fields: [subjectId], references: [id])
   subjectId     Int
+  gradePeriodId Int
+  courseId      Int
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
-  GradePeriod   GradePeriod @relation(fields: [gradePeriodId], references: [id])
-  gradePeriodId Int
+  student       Student     @relation(fields: [studentId], references: [id])
+  subject       Subject     @relation(fields: [subjectId], references: [id])
+  gradePeriod   GradePeriod @relation(fields: [gradePeriodId], references: [id])
+  course        Course      @relation(fields: [courseId], references: [id])
 }
 
 model TimeSlot {
@@ -117,11 +121,11 @@ model TimeSlot {
   name          String?
   startTime     String
   endTime       String
-  Presence      Presence[]
+  schoolLevelId Int?
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
-  SchoolLevel   SchoolLevel? @relation(fields: [schoolLevelId], references: [id])
-  schoolLevelId Int?
+  schoolLevel   SchoolLevel? @relation(fields: [schoolLevelId], references: [id])
+  presence      Presence[]
 }
 
 // Many to many relationship between User and Class
@@ -137,14 +141,16 @@ model Course {
   id             Int          @id @default(autoincrement())
   name           String
   description    String?
-  subject        Subject      @relation(fields: [subjectId], references: [id])
   subjectId      Int
-  teacher        User         @relation(fields: [teacherId], references: [id])
   teacherId      Int
-  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
   academicYearId Int
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
+  presence       Presence[]
+  subject        Subject      @relation(fields: [subjectId], references: [id])
+  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+  user           User         @relation(fields: [teacherId], references: [id])
+  grade          Grade[]
 }
 
 model GradePeriod {
@@ -169,40 +175,52 @@ model GradePeriodAcademicYear {
 
 model Presence {
   id             Int           @id @default(autoincrement())
-  student        Student       @relation(fields: [studentId], references: [id])
   studentId      Int
   state          PresenceState
   date           DateTime
-  user           User          @relation(fields: [userId], references: [id])
   userId         Int
-  academicYear   AcademicYear  @relation(fields: [academicYearId], references: [id])
   academicYearId Int
-  timeSlot       TimeSlot      @relation(fields: [timeSlotId], references: [id])
   timeSlotId     Int
+  courseId       Int
   processed      Boolean       @default(false)
   notified       Boolean       @default(false)
   createdAt      DateTime      @default(now())
   updatedAt      DateTime      @updatedAt
+  user           User          @relation(fields: [userId], references: [id])
+  student        Student       @relation(fields: [studentId], references: [id])
+  academicYear   AcademicYear  @relation(fields: [academicYearId], references: [id])
+  timeSlot       TimeSlot      @relation(fields: [timeSlotId], references: [id])
+  course         Course        @relation(fields: [courseId], references: [id])
 }
 
 model DisciplinaryReport {
   id          Int      @id @default(autoincrement())
-  student     Student  @relation(fields: [studentId], references: [id])
   studentId   Int
   createdById Int
-  createdBy   User     @relation(fields: [createdById], references: [id])
   date        DateTime
   description String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  createdBy   User     @relation(fields: [createdById], references: [id])
+  student     Student  @relation(fields: [studentId], references: [id])
 }
 
 model ApiKey {
   id        Int      @id @default(autoincrement())
   name      String
   key       String
-  user      User     @relation(fields: [userId], references: [id])
   userId    Int
+  expiresAt DateTime
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+// relation many to many between User and Class
+model UserClass {
+  id      Int   @id @default(autoincrement())
+  userId  Int
+  classId Int
+  user    User  @relation(fields: [userId], references: [id])
+  class   Class @relation(fields: [classId], references: [id])
 }

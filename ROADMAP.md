@@ -116,13 +116,6 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
   - [ ] Génération de bulletins en format web ou pdf
 
 - [ ] **Gestion des cours**
-  <!--
-  **Note**:
-  Reste beaucoup de question sur sont utilité. Ca à été pensé pour évité par exemple qu'un enseignant ai à chercher dans plusieurs classes pour voir les élèves si il donne cours à plusieurs classes (cours de langue par exemple). Mais comment le gérer dans l'interface utilisateur, car accutellement l'enseignant peut naviguer entre les classes.
-
-  Donc ne pas implémenter temps qu'on a pas une idée claire de son utilité.
-  -->
-
   Représente les cours donnés par un ou plusieurs enseignants à un groupe d'élèves qui peuvent être dans une ou plusieurs classes.
 
   - [ ] Matière
