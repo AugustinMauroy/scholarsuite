@@ -13,7 +13,7 @@ export const GET = async (req: Request): Promise<Response> => {
       id: session.user.id,
     },
     include: {
-      ClassUser: {
+      classUser: {
         include: {
           class: {
             include: {
@@ -28,9 +28,9 @@ export const GET = async (req: Request): Promise<Response> => {
   if (!userWithClasses)
     return Response.json({ error: 'User not found' }, { status: 404 });
 
-  const studentIdsUnderTutelage = userWithClasses.ClassUser.flatMap(
-    cu => cu.class.students
-  ).map(s => s.id);
+  const studentIdsUnderTutelage = userWithClasses.classUser
+    .flatMap(cu => cu.class.students)
+    .map(s => s.id);
 
   const disciplinaryReports = await prisma.disciplinaryReport.findMany({
     where: {

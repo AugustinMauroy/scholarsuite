@@ -116,7 +116,7 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
   - [ ] Génération de bulletins en format web ou pdf
 
 - [ ] **Gestion des cours**
-  Représente les cours donnés par un ou plusieurs enseignants à un groupe d'élèves qui peuvent être dans une ou plusieurs classes.
+      Représente les cours donnés par un ou plusieurs enseignants à un groupe d'élèves qui peuvent être dans une ou plusieurs classes.
 
   - [ ] Matière
   - [ ] Enseignant(s)

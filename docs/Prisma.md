@@ -3,7 +3,6 @@
 > [!NOTE]
 > Cette documentation est à destination des mainteneurs du projet ScholarSuite. Elle fournit des informations sur les modèles de données utilisés dans ScholarSuite et comment les gérer avec Prisma.
 
-
 ## Models
 
 The data models used in ScholarSuite are as follows:

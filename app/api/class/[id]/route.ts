@@ -23,7 +23,7 @@ export const GET = async (
           enabled: true,
         },
         include: {
-          Presence: true,
+          presence: true,
         },
       },
     },
@@ -55,7 +55,7 @@ export const POST = async (
             enabled: true,
           },
           include: {
-            Presence: true,
+            presence: true,
           },
         },
       },
@@ -95,7 +95,7 @@ export const POST = async (
           enabled: true,
         },
         include: {
-          Presence: {
+          presence: {
             where: {
               date: {
                 gte: new Date(now.getFullYear(), now.getMonth(), now.getDate()),

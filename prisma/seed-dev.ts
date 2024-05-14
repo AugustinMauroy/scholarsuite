@@ -229,6 +229,50 @@ if (users.length) {
     ],
   });
 
+  await prisma.course.createMany({
+    data: [
+      {
+        name: 'Mathématiques 6 heures',
+        subjectId: 1,
+        academicYearId: 1,
+      },
+    ],
+  });
+
+  await prisma.userCourse.createMany({
+    data: [
+      {
+        userId: 1,
+        courseId: 1,
+      },
+      {
+        userId: 2,
+        courseId: 1,
+      },
+      {
+        userId: 3,
+        courseId: 1,
+      },
+    ],
+  });
+
+  await prisma.courseStudents.createMany({
+    data: [
+      {
+        courseId: 1,
+        studentId: 1,
+      },
+      {
+        courseId: 1,
+        studentId: 2,
+      },
+      {
+        courseId: 1,
+        studentId: 3,
+      },
+    ],
+  });
+
   await prisma.$disconnect();
   console.log(styleText('green', '✓') + ' Seeded database for developement');
 }
