@@ -44,6 +44,7 @@ model SchoolLevel {
   updatedAt DateTime   @updatedAt
   classes   Class[]
   timeSlot  TimeSlot[]
+  course    Course[]
 }
 
 model Subject {
@@ -67,9 +68,8 @@ model User {
   role               Role
   presence           Presence[]
   disciplinaryReport DisciplinaryReport[]
-  classUser          ClassUser[]
-  apiKey             ApiKey[]
   userClass          UserClass[]
+  apiKey             ApiKey[]
   userCourse         UserCourse[]
 }
 
@@ -81,8 +81,7 @@ model Class {
   updatedAt     DateTime    @updatedAt
   schoolLevel   SchoolLevel @relation(fields: [schoolLevelId], references: [id])
   students      Student[]
-  classUsers    ClassUser[]
-  userClass     UserClass[]
+  userClasss    UserClass[]
 }
 
 model Student {
@@ -99,7 +98,7 @@ model Student {
   grades              Grade[]
   disciplinaryReports DisciplinaryReport[]
   presence            Presence[]
-  CourseStudents      CourseStudents[]
+  StudentCourse       StudentCourse[]
 }
 
 model Grade {
@@ -130,18 +129,20 @@ model TimeSlot {
 }
 
 model Course {
-  id             Int              @id @default(autoincrement())
+  id             Int             @id @default(autoincrement())
   name           String
   description    String?
   subjectId      Int
+  schoolLevelId  Int
   academicYearId Int
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime         @updatedAt
-  subject        Subject          @relation(fields: [subjectId], references: [id])
-  academicYear   AcademicYear     @relation(fields: [academicYearId], references: [id])
+  createdAt      DateTime        @default(now())
+  updatedAt      DateTime        @updatedAt
+  subject        Subject         @relation(fields: [subjectId], references: [id])
+  academicYear   AcademicYear    @relation(fields: [academicYearId], references: [id])
+  schoolLevel    SchoolLevel     @relation(fields: [schoolLevelId], references: [id])
   grade          Grade[]
   presence       Presence[]
-  courseStudents CourseStudents[]
+  StudentCourse  StudentCourse[]
   userCourse     UserCourse[]
 }
 
@@ -209,15 +210,6 @@ model GradePeriodAcademicYear {
 }
 
 // Many to Many relations, between User and Class
-model ClassUser {
-  id      Int   @id @default(autoincrement())
-  userId  Int
-  classId Int
-  user    User  @relation(fields: [userId], references: [id])
-  class   Class @relation(fields: [classId], references: [id])
-}
-
-// Many to Many relations, between User and Class
 model UserClass {
   id      Int   @id @default(autoincrement())
   userId  Int
@@ -236,7 +228,7 @@ model UserCourse {
 }
 
 // Many to Many relations, between Student and Course
-model CourseStudents {
+model StudentCourse {
   id        Int     @id @default(autoincrement())
   studentId Int
   courseId  Int

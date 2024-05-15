@@ -7,7 +7,7 @@ export const PATCH = async (req: Request) => {
   for (const { opp, classId } of data) {
     if (opp === 'add') {
       try {
-        await prisma.classUser.create({
+        await prisma.userClass.create({
           data: {
             userId,
             classId,
@@ -18,7 +18,7 @@ export const PATCH = async (req: Request) => {
       }
     } else {
       try {
-        await prisma.classUser.deleteMany({
+        await prisma.userClass.deleteMany({
           where: {
             userId,
             classId,

@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import ReviewPresenceCard from '../ReviewPresenceCard';
 import styles from './index.module.css';
-import type { Class, Presence, Student, TimeSlot } from '@prisma/client';
+import type { Class, Presence, Student, TimeSlot, User } from '@prisma/client';
 import type { FC } from 'react';
 
 type PresenceState = Presence & {
@@ -10,6 +10,7 @@ type PresenceState = Presence & {
     class: Class | null;
   };
   timeSlot: TimeSlot;
+  user: User;
 };
 
 const ReviewPresence: FC = () => {

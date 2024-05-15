@@ -8,12 +8,13 @@ import { XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import type { FC } from 'react';
 
 type NavItem = {
-  id: number;
-  name: string;
-  classes: {
+  course: {
     id: number;
     name: string;
   }[];
+} & {
+  id: number;
+  name: string;
 };
 
 type NavProps = {
@@ -74,7 +75,7 @@ const NavItemComponent: FC<NavItemComponentProps> = ({ item, pathname }) => {
     <li>
       <span className="block px-4 py-2 text-sm">{item.name}</span>
       <ul className="pl-4">
-        {item.classes.map(cls => (
+        {item.course.map(cls => (
           <li key={cls.id}>
             <Link
               href={`/class/${cls.id}`}

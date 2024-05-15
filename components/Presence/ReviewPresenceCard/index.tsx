@@ -5,7 +5,7 @@ import {
 } from '@heroicons/react/24/solid';
 import classNames from 'classnames';
 import styles from './index.module.css';
-import type { Class, Presence, Student, TimeSlot } from '@prisma/client';
+import type { Class, Presence, Student, TimeSlot, User } from '@prisma/client';
 import type { FC } from 'react';
 
 type ReviewPresenceCardProps = {
@@ -13,6 +13,7 @@ type ReviewPresenceCardProps = {
     student: Student & {
       class: Class | null;
     };
+    user: User;
     timeSlot: TimeSlot;
   };
   processPresence: (id: number) => void;
@@ -51,11 +52,17 @@ const ReviewPresenceCard: FC<ReviewPresenceCardProps> = ({
         </button>
       )}
     </div>
-    <span>{new Date(presence.date).toLocaleDateString()}</span>
-    <span>{presence.timeSlot.name}</span>
+    <span>
+      {new Date(presence.date).toLocaleDateString() +
+        ' ' +
+        presence.timeSlot.name}
+    </span>
     <span>
       {presence.student.firstName} {presence.student.lastName}{' '}
       <small className={styles.class}>({presence.student.class?.name})</small>
+    </span>
+    <span>
+      By {presence.user.firstName} {presence.user.lastName}
     </span>
     <span>{presence.state}</span>
   </div>

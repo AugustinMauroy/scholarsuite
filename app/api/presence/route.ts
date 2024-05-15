@@ -28,7 +28,7 @@ export const GET = async (req: Request): Promise<Response> => {
       id: session.user.id,
     },
     include: {
-      classUser: {
+      userClass: {
         include: {
           class: {
             include: {
@@ -43,7 +43,7 @@ export const GET = async (req: Request): Promise<Response> => {
   if (!userWithClasses)
     return Response.json({ error: 'User not found' }, { status: 404 });
 
-  const studentIdsUnderTutelage = userWithClasses.classUser
+  const studentIdsUnderTutelage = userWithClasses.userClass
     .flatMap(cu => cu.class.students)
     .map(s => s.id);
 
@@ -69,6 +69,7 @@ export const GET = async (req: Request): Promise<Response> => {
         },
       },
       timeSlot: true,
+      user: true,
     },
     orderBy: {
       processed: 'asc',

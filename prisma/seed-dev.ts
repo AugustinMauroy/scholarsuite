@@ -122,7 +122,7 @@ if (users.length) {
   });
 
   // assing class to teacher
-  await prisma.classUser.createMany({
+  await prisma.userClass.createMany({
     data: [
       {
         userId: 1,
@@ -235,6 +235,7 @@ if (users.length) {
         name: 'Mathématiques 6 heures',
         subjectId: 1,
         academicYearId: 1,
+        schoolLevelId: 7,
       },
     ],
   });
@@ -256,7 +257,7 @@ if (users.length) {
     ],
   });
 
-  await prisma.courseStudents.createMany({
+  await prisma.studentCourse.createMany({
     data: [
       {
         courseId: 1,

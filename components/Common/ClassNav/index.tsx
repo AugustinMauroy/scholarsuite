@@ -13,24 +13,30 @@ const ClassNav: FC = async () => {
 
   const schoolLevels = await prisma.schoolLevel.findMany({
     include: {
-      classes: {
+      course: {
         where: {
-          classUsers: {
+          userCourse: {
             some: {
               userId: teacherId,
             },
           },
         },
-        include: {
-          classUsers: true,
+      },
+    },
+    where: {
+      course: {
+        some: {
+          userCourse: {
+            some: {
+              userId: teacherId,
+            },
+          },
         },
       },
     },
   });
 
-  const navItems = schoolLevels.filter(level => level.classes.length > 0);
-
-  return <Nav items={navItems} />;
+  return <Nav items={schoolLevels} />;
 };
 
 export default ClassNav;
