@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import StudentCard from '@/components/Student/StudentCard';
 import BaseLayout from '@/components/Layout/Base';
-import Selector from '@/components/timeSlot/Selector';
+import Selector from '@/components/TimeSlot/Selector';
 import styles from './page.module.css';
 import type { FC } from 'react';
 import type {
@@ -18,7 +18,7 @@ type PageProps = {
   params: { id: string };
 };
 
-type StudentWithPresence = Student & { Presence: Presence[] };
+type StudentWithPresence = Student & { presence: Presence[] };
 
 type ClassWithStudents = Class & {
   students: StudentWithPresence[];
@@ -48,7 +48,7 @@ const Page: FC<PageProps> = ({ params }) => {
 
     if (!currentTimeslot) return;
 
-    return student.Presence.find(
+    return student.presence.find(
       presence => presence.timeSlotId === currentTimeslot.id
     )?.state;
   };
@@ -132,8 +132,8 @@ const Page: FC<PageProps> = ({ params }) => {
 
                 return {
                   ...student,
-                  Presence: [
-                    ...student.Presence.filter(
+                  presence: [
+                    ...student.presence.filter(
                       p => p.timeSlotId !== presence.timeSlotId
                     ),
                     presence,
@@ -176,7 +176,7 @@ const Page: FC<PageProps> = ({ params }) => {
       data: [
         ...patch.data.filter(data => data.studentId !== student.id),
         {
-          id: student.Presence.find(
+          id: student.presence.find(
             presence => presence.timeSlotId === currentTimeslot.id
           )?.id,
           studentId: student.id,
@@ -190,7 +190,7 @@ const Page: FC<PageProps> = ({ params }) => {
     if (!currentTimeslot) return;
 
     setPatch(prev => {
-      const state = student.Presence.find(
+      const state = student.presence.find(
         presence => presence.timeSlotId === currentTimeslot.id
       )?.state;
 
@@ -219,7 +219,7 @@ const Page: FC<PageProps> = ({ params }) => {
         data: [
           ...prev.data.filter(data => data.studentId !== student.id),
           {
-            id: student.Presence.find(
+            id: student.presence.find(
               presence => presence.timeSlotId === currentTimeslot.id
             )?.id,
             studentId: student.id,
