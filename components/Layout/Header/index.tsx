@@ -7,6 +7,7 @@ import { useTranslations } from 'next-intl';
 import Avatar from '@/components/Common/Avatar';
 import { getAcronymFromString } from '@/utils/string';
 import Button from '@/components/Common/Button';
+import Breadcrumb from '@/components/Common/Breadcrumb';
 import type { FC } from 'react';
 
 const Header: FC = () => {
@@ -16,9 +17,10 @@ const Header: FC = () => {
 
   return (
     <header className="mb-4 flex flex-row items-center justify-between bg-gray-100 p-4 shadow-md dark:border-b dark:border-gray-700 dark:bg-gray-800 dark:shadow-none">
-      <Link href="/" className="text-xl font-bold">
+      {/*<Link href="/" className="text-xl font-bold">
         SchoolarSuite
-      </Link>
+      </Link>*/}
+      <Breadcrumb />
       <DropdownMenuPrimitive.Root>
         <DropdownMenuPrimitive.Trigger className="rounded-full focus:outline-none focus:ring-2 focus:ring-brand-500">
           <Avatar src={sessionData.data?.user?.image || ''} alt={alt} />
