@@ -37,4 +37,15 @@ export const Root: Story = {
   },
 };
 
+export const WithNumbers: Story = {
+  parameters: {
+    nextjs: {
+      appDirectory: true,
+      navigation: {
+        pathname: '/class/1',
+      },
+    },
+  },
+};
+
 export default { component: Breadcrumb } as Meta;
