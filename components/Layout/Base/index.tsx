@@ -3,7 +3,7 @@ import styles from './index.module.css';
 import type { FC, PropsWithChildren, ReactNode } from 'react';
 
 type BaseLayoutProps = PropsWithChildren<{
-  title: string;
+  title?: string;
   description?: string;
   sectionClassName?: string;
   actions?: ReactNode;
@@ -17,13 +17,15 @@ const BaseLayout: FC<BaseLayoutProps> = ({
   actions,
 }) => (
   <main className={styles.page}>
-    <header>
-      <div>
-        <h1>{title}</h1>
-        {description && <p>{description}</p>}
-      </div>
-      {actions && <div>{actions}</div>}
-    </header>
+    {(title || description || actions) && (
+      <header>
+        <div>
+          {title && <h1>{title}</h1>}
+          {description && <p>{description}</p>}
+        </div>
+        {actions && <div>{actions}</div>}
+      </header>
+    )}
     <section className={classNames(styles.section, sectionClassName)}>
       {children}
     </section>

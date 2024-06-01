@@ -10,10 +10,7 @@ const Page: FC = async () => {
   if (session?.user.role !== 'ADMIN') notFound();
 
   return (
-    <BaseLayout
-      title="Academic Year"
-      description="Manage your school academic years"
-    >
+    <BaseLayout>
       <Table />
     </BaseLayout>
   );

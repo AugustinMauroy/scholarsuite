@@ -17,7 +17,7 @@ const Page: FC = async () => {
   });
 
   return (
-    <BaseLayout title="Administration" description="Manage your school">
+    <BaseLayout>
       <Table classes={classes} />
     </BaseLayout>
   );

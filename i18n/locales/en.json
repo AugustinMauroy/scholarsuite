@@ -34,5 +34,21 @@
         "signout": "Sign Out"
       }
     }
+  },
+  "common": {
+    "breadcrumb": {
+      "administration": "Administration",
+      "academicYear": "Academic Year",
+      "classes": "Classes",
+      "schoolLevels": "School Levels",
+      "students": "Students",
+      "timeSlots": "Time Slots",
+      "users": "Users",
+      "class": "Class",
+      "disciplinaryReport": "Disciplinary Report",
+      "presence": "Presence",
+      "profile": "Profile",
+      "add": "Add"
+    }
   }
 }
