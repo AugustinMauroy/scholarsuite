@@ -10,7 +10,7 @@ const Page: FC = async () => {
   if (!session || session.user.role !== 'ADMIN') notFound();
 
   return (
-    <BaseLayout title="Users" description="Manage your school users">
+    <BaseLayout>
       <UsersTable />
     </BaseLayout>
   );

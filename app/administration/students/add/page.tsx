@@ -69,11 +69,7 @@ const Page: FC = () => {
   };
 
   return (
-    <BaseLayout
-      title="Administration"
-      description="Manage your school"
-      sectionClassName={styles.formWrapper}
-    >
+    <BaseLayout sectionClassName={styles.formWrapper}>
       <form onSubmit={handleSubmit}>
         {imagePreview ? (
           <AvatarPrimitive.Root

@@ -11,11 +11,7 @@ const Page: FC = async () => {
   if (session?.user.role !== 'ADMIN') notFound();
 
   return (
-    <BaseLayout
-      title="Administration"
-      description="Manage your school"
-      sectionClassName={styles.section}
-    >
+    <BaseLayout sectionClassName={styles.section}>
       <div className={styles.card}>
         <h2>Manage Students</h2>
         <Link href="/administration/students">View Students</Link>

@@ -56,11 +56,7 @@ const Page: FC = () => {
   };
 
   return (
-    <BaseLayout
-      title="Administration"
-      description="Add a school level"
-      sectionClassName={styles.formWrapper}
-    >
+    <BaseLayout sectionClassName={styles.formWrapper}>
       <form onSubmit={handleSubmit}>
         <Input
           type="text"
