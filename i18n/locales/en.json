@@ -50,7 +50,10 @@
       "presence": "Presence",
       "profile": "Profile",
       "add": "Add",
-      "about": "About the app"
+      "about": "About the app",
+      "subjects": "Subjects",
+      "courses": "Courses"
+
     }
   }
 }
