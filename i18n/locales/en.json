@@ -15,7 +15,8 @@
       "firstName": "First Name",
       "lastName": "Last Name",
       "password": "Password",
-      "submit": "Sign In"
+      "submit": "Sign In",
+      "credentialsError": "The credentials you provided are incorrect"
     },
     "profile": {
       "title": "Profile",

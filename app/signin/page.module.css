@@ -21,6 +21,22 @@
       dark:text-gray-400;
   }
 
+  .error {
+    @apply mt-4
+      w-2/3
+      rounded-md
+      border-2
+      border-red-500
+      bg-red-200/50
+      px-3
+      py-2
+      text-center
+      text-lg
+      font-semibold
+      text-red-500
+      lg:w-1/3;
+  }
+
   form {
     @apply mt-8
       flex

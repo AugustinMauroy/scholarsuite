@@ -27,6 +27,8 @@
       text-gray-900
       shadow-sm
       outline-none
+      transition-all
+      duration-200
       focus:border-gray-500
       focus:ring-1
       focus:ring-brand-500
