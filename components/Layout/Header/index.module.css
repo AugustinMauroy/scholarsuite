@@ -1,0 +1,21 @@
+.header {
+  @apply mb-4
+    flex
+    flex-row
+    items-center
+    justify-between
+    bg-gray-100
+    p-4
+    shadow-md
+    dark:border-b
+    dark:border-gray-700
+    dark:bg-gray-800
+    dark:shadow-none;
+
+  .headerLeft {
+    @apply flex
+      flex-row
+      items-center
+      gap-4;
+  }
+}

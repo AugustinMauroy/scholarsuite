@@ -1,0 +1,15 @@
+.environement {
+  @apply rounded-md
+    px-2
+    py-1
+    text-xs
+    text-white;
+
+  &.development {
+    @apply bg-blue-500;
+  }
+
+  &.production {
+    @apply bg-green-500;
+  }
+}

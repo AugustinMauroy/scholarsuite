@@ -64,7 +64,7 @@ const StudentSearch: FC<StudentSearchProps> = ({ studentId, setStudentId }) => {
         }}
       />
       {focused && students.length > 0 && (
-        <ul className="absolute mt-2 w-full divide-y divide-gray-300 rounded border border-gray-300 bg-white dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800 max-h-60 overflow-y-auto">
+        <ul className="absolute mt-2 max-h-60 w-full divide-y divide-gray-300 overflow-y-auto rounded border border-gray-300 bg-white dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800">
           {students.map(student => (
             <li
               key={student.id}
