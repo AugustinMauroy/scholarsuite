@@ -35,11 +35,11 @@ const StudentCard: FC<StudentCardProps> = ({
         loading="lazy"
         src={image}
         alt={getAcronymFromString(firstName + ' ' + lastName)}
-        className={styles.avatar}
+        className={styles.image}
         height={240}
         width={160}
       />
-      <AvatarPrimitive.Fallback delayMs={500} className={styles.avatar}>
+      <AvatarPrimitive.Fallback delayMs={250} className={styles.fallback}>
         {getAcronymFromString(firstName + ' ' + lastName)}
       </AvatarPrimitive.Fallback>
     </AvatarPrimitive.Root>

@@ -1,5 +1,7 @@
 .studentList {
   @apply flex
+    max-h-[calc(100vh-10rem)]
     flex-wrap
-    gap-4;
+    gap-4
+    overflow-y-auto;
 }

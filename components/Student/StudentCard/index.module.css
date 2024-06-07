@@ -1,33 +1,48 @@
 .card {
-  @apply w-40
-  cursor-pointer
-  select-none
-  rounded-xl
-  bg-white
-  shadow-lg
-  transition
-  duration-300
-  ease-in-out
-  dark:border-2
-  dark:border-gray-50
-  dark:bg-black
-  dark:shadow-none;
+  @apply w-36
+    cursor-pointer
+    select-none
+    rounded-xl
+    bg-white
+    shadow-lg
+    transition
+    duration-300
+    ease-in-out
+    dark:border-2
+    dark:border-gray-50
+    dark:bg-black
+    dark:shadow-none;
 
   &:hover {
-    @apply shadow-xl;
+    @apply shadow-xl
+      dark:shadow-none;
   }
 
   .avatar {
     @apply flex
-      aspect-3/4
-      w-40
       flex-col
       items-center
       justify-center
       rounded-t-xl
       bg-gray-200
-      text-6xl
       dark:bg-gray-800;
+
+    .image {
+      @apply aspect-[3/4]
+        h-full
+        w-36
+        rounded-t-xl;
+    }
+
+    .fallback {
+      @apply flex
+        aspect-[3/4]
+        h-full
+        w-36
+        items-center
+        justify-center
+        text-6xl;
+    }
   }
 
   .state {
@@ -42,6 +57,8 @@
       font-semibold
       lowercase
       text-white
+      transition
+      duration-75
       dark:text-black;
 
     &.present {
