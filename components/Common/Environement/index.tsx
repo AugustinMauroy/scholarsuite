@@ -3,9 +3,13 @@ import { getPackage } from '@/utils/getPackage';
 import styles from './index.module.css';
 import type { FC } from 'react';
 
-const Environment: FC = async () => {
+type EnvironmentProps = {
+  forceDisplay?: boolean;
+};
+
+const Environment: FC<EnvironmentProps> = async ({ forceDisplay }) => {
   const env = process.env.NODE_ENV;
-  const display = process.env.DISPLAY_ENV;
+  const display = process.env.DISPLAY_ENV || forceDisplay;
 
   if (!display) return null;
 
