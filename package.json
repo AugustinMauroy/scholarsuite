@@ -72,8 +72,9 @@
     "stylelint-order": "~6.0.4",
     "stylelint-selector-bem-pattern": "~4.0.0",
     "tailwindcss": "~3.4.6",
-    "turbo": "~1.13.3",
+    "turbo": "~2.0.7",
     "typescript": "~5.4.5",
     "vitest": "^1.6.0"
-  }
+  },
+  "packageManager": "npm@10.7.0"
 }
