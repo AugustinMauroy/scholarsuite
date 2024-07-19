@@ -1,16 +1,16 @@
 import prisma from '@/lib/prisma';
-import type { Patch } from '@/components/User/ClassList';
+import type { Patch } from '@/types/patch';
 
 export const PATCH = async (req: Request) => {
   const { userId, data } = (await req.json()) as Patch;
 
-  for (const { opp, classId } of data) {
+  for (const { opp, id } of data) {
     if (opp === 'add') {
       try {
         await prisma.userClass.create({
           data: {
             userId,
-            classId,
+            classId: id,
           },
         });
       } catch (error) {
@@ -21,7 +21,7 @@ export const PATCH = async (req: Request) => {
         await prisma.userClass.deleteMany({
           where: {
             userId,
-            classId,
+            classId: id,
           },
         });
       } catch (error) {

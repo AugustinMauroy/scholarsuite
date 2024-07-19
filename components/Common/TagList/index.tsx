@@ -2,21 +2,19 @@ import classNames from 'classnames';
 import Badge from '@/components/Common/Badge';
 import styles from './index.module.css';
 import type { FC, ReactNode } from 'react';
+import type { Tag } from '@/types/tag';
 
 type TagListProps = {
-  tags: {
-    id: number;
-    name: string;
-  }[];
+  tags: Tag[];
   icon?: ReactNode;
-  onClick: (id: number) => void;
+  onClick: (tag: Tag) => void;
   className?: string;
 };
 
 const TagList: FC<TagListProps> = ({ tags, onClick, className, icon }) => (
   <div className={classNames(styles.tagList, className)}>
-    {tags.map(tag => (
-      <Badge key={tag.id} onClick={() => onClick(tag.id)}>
+    {tags?.map(tag => (
+      <Badge key={tag.id} onClick={() => onClick(tag)}>
         {tag.name}
         {icon}
       </Badge>

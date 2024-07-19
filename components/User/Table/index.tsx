@@ -8,31 +8,50 @@ import {
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid';
 import { useSession } from 'next-auth/react';
-import ClassList from '@/components/User/ClassList';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
 import { useToast } from '@/hooks/useToast';
+import List from '@/components/Common/List';
 import styles from './index.module.css';
 import type { FC } from 'react';
-import type { User } from '@prisma/client';
-import type { Patch } from '@/components/User/ClassList';
+import type { User, Class } from '@prisma/client';
+import type { Patch } from '@/types/patch';
+import type { Tag } from '@/types/tag';
 
 const UsersTable: FC = () => {
   const toast = useToast();
   const { data: session } = useSession();
   const [userList, setUserList] = useState<User[]>([]);
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [classes, setClasses] = useState<Class[]>([]);
+  const [activeList, setActiveList] = useState<Class[]>([]);
   const [userClassesPatch, setUserClassesPatch] = useState<Patch | null>(null);
 
   useEffect(() => {
     fetch('/api/user')
       .then(response => response.json())
       .then(data => setUserList(data.data));
+    fetch('/api/class')
+      .then(res => res.json())
+      .then(data => setClasses(data.data));
   }, []);
 
   useEffect(() => {
-    if (!userClassesPatch) return;
+    if (!selectedUser) return;
+
+    fetch('/api/class', {
+      method: 'POST',
+      body: JSON.stringify({ userId: selectedUser.id }),
+    })
+      .then(res => res.json())
+      .then(data => setActiveList(data.data));
+  }, [selectedUser]);
+
+  const handlePatch = async () => {
+    if (!userClassesPatch || userClassesPatch.data.length === 0) return;
+
+    console.log(userClassesPatch);
 
     fetch('/api/user/class', {
       method: 'PATCH',
@@ -52,6 +71,8 @@ const UsersTable: FC = () => {
           return;
         }
 
+        setUserClassesPatch(null);
+
         toast({
           message: (
             <>
@@ -62,7 +83,7 @@ const UsersTable: FC = () => {
           kind: 'success',
         });
       });
-  }, [userClassesPatch]);
+  };
 
   const handleEdit = async () => {
     if (!selectedUser) return;
@@ -117,6 +138,53 @@ const UsersTable: FC = () => {
         kind: 'success',
       });
     });
+
+    await handlePatch();
+  };
+
+  /**
+   * When clicking on a tag, add it to the active list
+   * Also, add it to the patch object
+   */
+  const handleTagClick = (tag: Tag) => {
+    if (!selectedUser) return;
+
+    setActiveList([...activeList, classes.find(Class => Class.id === tag.id)!]);
+
+    if (!userClassesPatch) {
+      setUserClassesPatch({
+        userId: selectedUser.id,
+        data: [{ opp: 'add', id: tag.id }],
+      });
+    } else {
+      setUserClassesPatch({
+        userId: selectedUser.id,
+        data: [...userClassesPatch.data, { opp: 'add', id: tag.id }],
+      });
+    }
+  };
+
+  const handleTagRemove = (tag: Tag) => {
+    if (!selectedUser) return;
+    const userId = selectedUser.id;
+
+    const newClasses = activeList.filter(Class => Class.id !== tag.id);
+
+    setActiveList(newClasses);
+
+    if (!userClassesPatch) {
+      setUserClassesPatch({
+        userId,
+        data: [{ opp: 'remove', id: tag.id }],
+      });
+
+      return;
+    } else {
+      setUserClassesPatch({
+        userId,
+        data: [...userClassesPatch.data, { opp: 'remove', id: tag.id }],
+      });
+    }
   };
 
   return (
@@ -208,10 +276,11 @@ const UsersTable: FC = () => {
                   })
                 }
               />
-              <ClassList
-                userId={selectedUser.id}
-                patch={userClassesPatch}
-                setPatch={setUserClassesPatch}
+              <List
+                list={classes}
+                activeList={activeList}
+                onTagClick={handleTagClick}
+                onTagRemove={handleTagRemove}
               />
               {session?.user.id !== selectedUser.id && (
                 <Input
