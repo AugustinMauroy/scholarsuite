@@ -1,10 +1,59 @@
 import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import {
+  UserGroupIcon,
+  UsersIcon,
+  CalendarDaysIcon,
+} from '@heroicons/react/20/solid';
 import BaseLayout from '@/components/Layout/Base';
 import nextAuthConfig from '@/lib/auth';
 import styles from './page.module.css';
 import type { FC } from 'react';
+
+const CARDS = [
+  {
+    title: 'Manage Students',
+    icon: UserGroupIcon,
+    links: [
+      { href: '/administration/students', text: 'View Students' },
+      { href: '/administration/students/add', text: 'Add Student' },
+    ],
+  },
+  {
+    title: 'Manage Classes',
+    links: [
+      { href: '/administration/classes', text: 'View Classes' },
+      { href: '/administration/classes/add', text: 'Add Class' },
+    ],
+  },
+  {
+    title: 'Manage TimeSlots',
+    links: [{ href: '/administration/timeSlot', text: 'Manage TimeSlots' }],
+  },
+  {
+    title: 'Manage Users',
+    icon: UsersIcon,
+    links: [
+      { href: '/administration/users', text: 'View Users' },
+      { href: '/administration/users/add', text: 'Add User' },
+    ],
+  },
+  {
+    title: 'School Levels',
+    links: [
+      { href: '/administration/schoolLevels', text: 'View Levels' },
+      { href: '/administration/schoolLevels/add', text: 'Add Level' },
+    ],
+  },
+  {
+    title: 'Academic Years',
+    icon: CalendarDaysIcon,
+    links: [
+      { href: '/administration/academicYear', text: 'Manage Academic Years' },
+    ],
+  },
+];
 
 const Page: FC = async () => {
   const session = await getServerSession(nextAuthConfig);
@@ -12,34 +61,19 @@ const Page: FC = async () => {
 
   return (
     <BaseLayout sectionClassName={styles.section}>
-      <div className={styles.card}>
-        <h2>Manage Students</h2>
-        <Link href="/administration/students">View Students</Link>
-        <Link href="/administration/students/add">Add Student</Link>
-      </div>
-      <div className={styles.card}>
-        <h2>Manage Classes</h2>
-        <Link href="/administration/classes">View Classes</Link>
-        <Link href="/administration/classes/add">Add Class</Link>
-      </div>
-      <div className={styles.card}>
-        <h2>Manage TimeSlots</h2>
-        <Link href="/administration/timeSlot">Manage TimeSlots</Link>
-      </div>
-      <div className={styles.card}>
-        <h2>Manage Users</h2>
-        <Link href="/administration/users">View Users</Link>
-        <Link href="/administration/users/add">Add User</Link>
-      </div>
-      <div className={styles.card}>
-        <h2>School Levels</h2>
-        <Link href="/administration/schoolLevels">View Levels</Link>
-        <Link href="/administration/schoolLevels/add">Add Level</Link>
-      </div>
-      <div className={styles.card}>
-        <h2>Academic Years</h2>
-        <Link href="/administration/academicYear">Manage Academic Years</Link>
-      </div>
+      {CARDS.map(({ title, links, icon: Icon }) => (
+        <div className={styles.card} key={title}>
+          <h2>
+            {Icon && <Icon />}
+            {title}
+          </h2>
+          {links?.map(({ href, text }) => (
+            <Link key={href} href={href}>
+              {text}
+            </Link>
+          ))}
+        </div>
+      ))}
     </BaseLayout>
   );
 };

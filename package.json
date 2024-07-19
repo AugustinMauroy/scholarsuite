@@ -4,7 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "next dev --turbo",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "test": "vitest run",
@@ -26,7 +26,7 @@
     "db:seed-prod": "node --no-warnings --loader=nodejs-loaders/dev/alias --loader=nodejs-loaders/dev/tsx prisma/seed-prod.ts"
   },
   "dependencies": {
-    "@heroicons/react": "~2.1.3",
+    "@heroicons/react": "~2.1.5",
     "@prisma/client": "~5.14.0",
     "@radix-ui/react-avatar": "~1.1.0",
     "@radix-ui/react-dialog": "~1.0.5",
@@ -64,7 +64,7 @@
     "eslint-config-next": "~14.2.5",
     "eslint-plugin-storybook": "~0.8.0",
     "jsdom": "^24.1.0",
-    "postcss": "~8.4.38",
+    "postcss": "~8.4.39",
     "prettier": "~3.3.2",
     "prettier-plugin-tailwindcss": "~0.6.5",
     "storybook": "~8.2.4",

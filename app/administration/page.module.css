@@ -9,12 +9,27 @@
       bg-white
       p-4
       shadow
+      transition-shadow
+      lg:w-64
+      dark:border
+      dark:border-gray-700
       dark:bg-gray-800
       dark:shadow-none;
+
+    &:hover {
+      @apply shadow-lg
+        dark:shadow-none;
+    }
 
     h2 {
       @apply text-xl
         font-bold;
+
+      svg {
+        @apply mr-2
+          inline
+          size-5;
+      }
     }
 
     a {
