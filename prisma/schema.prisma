@@ -31,7 +31,6 @@ model AcademicYear {
   createdAt    DateTime                  @default(now())
   updatedAt    DateTime                  @updatedAt
   archives     Boolean                   @default(false)
-  courses      Course[]
   presences    Presence[]
   gradePeriods GradePeriodAcademicYear[]
 }
@@ -50,6 +49,7 @@ model SchoolLevel {
 model Subject {
   id        Int      @id @default(autoincrement())
   name      String
+  enabled   Boolean  @default(true)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   grades    Grade[]
@@ -113,7 +113,6 @@ model Grade {
   student       Student     @relation(fields: [studentId], references: [id])
   subject       Subject     @relation(fields: [subjectId], references: [id])
   gradePeriod   GradePeriod @relation(fields: [gradePeriodId], references: [id])
-  course        Course      @relation(fields: [courseId], references: [id])
 }
 
 model TimeSlot {
@@ -129,21 +128,16 @@ model TimeSlot {
 }
 
 model Course {
-  id             Int             @id @default(autoincrement())
-  name           String
-  description    String?
-  subjectId      Int
-  schoolLevelId  Int
-  academicYearId Int
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  subject        Subject         @relation(fields: [subjectId], references: [id])
-  academicYear   AcademicYear    @relation(fields: [academicYearId], references: [id])
-  schoolLevel    SchoolLevel     @relation(fields: [schoolLevelId], references: [id])
-  grade          Grade[]
-  presence       Presence[]
-  StudentCourse  StudentCourse[]
-  userCourse     UserCourse[]
+  id            Int             @id @default(autoincrement())
+  name          String
+  subjectId     Int
+  schoolLevelId Int
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  subject       Subject         @relation(fields: [subjectId], references: [id])
+  schoolLevel   SchoolLevel     @relation(fields: [schoolLevelId], references: [id])
+  StudentCourse StudentCourse[]
+  userCourse    UserCourse[]
 }
 
 model GradePeriod {
@@ -174,7 +168,6 @@ model Presence {
   student        Student       @relation(fields: [studentId], references: [id])
   academicYear   AcademicYear  @relation(fields: [academicYearId], references: [id])
   timeSlot       TimeSlot      @relation(fields: [timeSlotId], references: [id])
-  course         Course        @relation(fields: [courseId], references: [id])
 }
 
 model DisciplinaryReport {

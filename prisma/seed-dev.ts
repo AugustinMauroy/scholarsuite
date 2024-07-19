@@ -234,7 +234,6 @@ if (users.length) {
       {
         name: 'Mathématiques 6 heures',
         subjectId: 1,
-        academicYearId: 1,
         schoolLevelId: 7,
       },
     ],
