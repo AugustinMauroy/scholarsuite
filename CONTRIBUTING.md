@@ -1,11 +1,11 @@
 # ScholarSuite
 
-Merci de vouloir contribuer à ScholarSuite. Nous sommes ravis de vous accueillir dans notre communauté. Avant de commencer, veuillez lire ce document pour comprendre comment vous pouvez contribuer à ce projet.
+Thank you for wanting to contribute to ScholarSuite. We are thrilled to welcome you to our community. Before you start, please read this document to understand how you can contribute to this project.
 
-## Comment contribuer
+## How to Contribute
 
-1. Créez un fork du dépôt ScholarSuite.
-2. Clonez le dépôt ScholarSuite sur votre machine locale.
+1. Fork the ScholarSuite repository.
+2. Clone the ScholarSuite repository to your local machine.
 
 ```bash
 git clone git@github.com:<YOUR_GITHUB_USERNAME>/scholarsuite.git # SSH
@@ -13,19 +13,19 @@ git clone https://github.com/<YOUR_GITHUB_USERNAME>/scholarsuite.git # HTTPS
 gh repo clone <YOUR_GITHUB_USERNAME>/scholarsuite # GitHub CLI
 ```
 
-3. Changez de répertoire vers le dépôt cloné.
+3. Change directory to the cloned repository.
 
 ```bash
 cd scholarsuite
 ```
 
-4. Créez une branche pour votre contribution.
+4. Create a branch for your contribution.
 
 ```bash
 git checkout -b <BRANCH_NAME>
 ```
 
-5. Démarrez l'environnement de développement.
+5. Start the development environment.
 
 ```bash
 npm install
@@ -35,17 +35,17 @@ npm run db:seed-dev
 npx turbo dev # or turbo dev if you have Turbo installed globally
 ```
 
-Ci-dessus, nous commençons par installer les dépendances du projet, puis nous copions le fichier `.env.example` en `.env` pour définir les variables d'environnement _(pensez à le mettre à jour selon votre environnement)_. Ensuite, nous générons les migrations et les exécutons pour créer les tables de la base de données. Enfin, nous démarrons l'environnement de développement.
+Above, we start by installing the project dependencies, then we copy the `.env.example` file to `.env` to set the environment variables _(remember to update it according to your environment)_. Then, we generate the migrations and run them to create the database tables. Finally, we start the development environment.
 
-6. Faites vos modifications.
+6. Make your changes.
 
-7. Formatez votre code.
+7. Format your code.
 
 ```bash
 turbo format # or npx turbo format
 ```
 
-10. Dès que vous avez terminé, créez un commit de vos modifications.
+10. Once you're done, commit your changes.
 
 ```bash
 git add .
@@ -53,20 +53,20 @@ git commit -m "Your commit message"
 ```
 
 > [!NOTE]
-> Veuillez suivre les directives de commit décrites ci-dessous.
+> Please follow the commit guidelines described below.
 
-## Directives de commit
+## Commit Guidelines
 
-Ce projet suit la spécification [Conventional Commits][].
+This project follows the [Conventional Commits][] specification.
 
-Les commits doivent être signés. Vous pouvez en savoir plus sur [Commit Signing][] ici.
+Commits must be signed. You can learn more about [Commit Signing][] here.
 
-### Directives de message de commit
+### Commit Message Guidelines
 
-- Les messages de commit doivent inclure un "type" tel que décrit sur Conventional Commits
-- Les messages de commit **doivent** commencer par une lettre majuscule
-- Les messages de commit **ne doivent pas** se terminer par un point `.`
-- Les messages de commit **doivent** être en anglais _désolé pour la contrainte_
+- Commit messages must include a "type" as described in Conventional Commits
+- Commit messages **must** start with a capital letter
+- Commit messages **must not** end with a period `.`
+- Commit messages **must** be in English _sorry for the constraint_
 
 [Conventional Commits]: https://www.conventionalcommits.org/
 [Commit Signing]: https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits

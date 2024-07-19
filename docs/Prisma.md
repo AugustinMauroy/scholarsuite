@@ -1,7 +1,7 @@
-# ScholarSuite Prisma Documentation
+# ScholarSuite Prisma Schema Documentation
 
-> [!NOTE]
-> Cette documentation est à destination des mainteneurs du projet ScholarSuite. Elle fournit des informations sur les modèles de données utilisés dans ScholarSuite et comment les gérer avec Prisma.
+> **Note:**
+> This documentation is intended for ScholarSuite project maintainers. It provides information about the data models used in ScholarSuite and how to manage them with Prisma.
 
 ## Models
 
@@ -29,7 +29,6 @@ The data models used in ScholarSuite are as follows:
 - `createdAt`: creation date of the academic year for internal use
 - `updatedAt`: modification date of the academic year for internal use
 - `archives`: indicates if the academic year is archived
-- `courses`: relationship with the courses of the academic year
 - `presences`: relationship with the presences of the academic year
 - `gradePeriods`: relationship with the grading periods of the academic year
 
@@ -65,8 +64,8 @@ The data models used in ScholarSuite are as follows:
 - `updatedAt`: modification date of the user for internal use
 - `presences`: relationship with the presences of the user
 - `disciplinaryReports`: relationship with the disciplinary reports of the user
-- `courses`: relationship with the courses of the user
-- `classUsers`: relationship with the classes of the user (teacher or administrator)
+- `userCourses`: relationship with the courses of the user
+- `userClasses`: relationship with the classes of the user (teacher or administrator)
 
 ### 7. `Class`
 
@@ -77,7 +76,7 @@ The data models used in ScholarSuite are as follows:
 - `createdAt`: creation date of the class for internal use
 - `updatedAt`: modification date of the class for internal use
 - `students`: relationship with the students of the class
-- `classUsers`: relationship with the users (teachers or administrators) of the class
+- `userClasses`: relationship with the users (teachers or administrators) of the class
 
 ### 8. `Student`
 
@@ -122,7 +121,7 @@ The data models used in ScholarSuite are as follows:
 - `updatedAt`: modification date of the time slot for internal use
 - `presences`: relationship with the presences of the time slot
 
-### 11. `ClassUser`
+### 11. `UserClass`
 
 - `id`: unique identifier for the user-class relationship
 - `userId`: identifier of the user
@@ -192,3 +191,21 @@ The data models used in ScholarSuite are as follows:
 - `description`: description of the disciplinary report
 - `createdAt`: creation date of the disciplinary report for internal use
 - `updatedAt`: modification date of the disciplinary report for internal use
+
+### 17. `ApiKey`
+
+- `id`: unique identifier for the API key
+- `name`: name of the API key
+- `key`: API key value
+- `userId`: identifier of the user associated with the API key
+- `expiresAt`: expiration date of the API key
+- `createdAt`: creation date of the API key for internal use
+- `updatedAt`: modification date of the API key for internal use
+- `user`: relationship with the user associated with the API key
+
+### Many-to-Many Relationships
+
+- `GradePeriodAcademicYear`: Many-to-many relationship between `GradePeriod` and `AcademicYear`
+- `UserClass`: Many-to-many relationship between `User` and `Class`
+- `UserCourse`: Many-to-many relationship between `User` and `Course`
+- `StudentCourse`: Many-to-many relationship between `Student` and `Course`

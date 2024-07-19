@@ -2,7 +2,7 @@
 
 ## Introduction
 
-ScholarSuite 1.0 est la première version de ScholarSuite, une application de gestion scolaire. Elle permet de gérer les utilisateurs, les niveaux scolaires, les classes, les élèves, les présences, les rapports disciplinaires et bien plus encore.
+ScholarSuite 1.0 is the first version of ScholarSuite, a school management application. It allows to manage users, school levels, classes, students, attendance, disciplinary reports and much more.
 
 ## Technologies
 
@@ -19,138 +19,113 @@ ScholarSuite 1.0 est la première version de ScholarSuite, une application de ge
 - [nodemailer](https://nodemailer.com/)
 - [react-email](https://nodemailer.com)
 
-## Fonctionnalités
+## Features
 
-- [x] **Gestion des utilisateurs**
-
-  - [x] Nom
-  - [x] Prénom
-  - [x] Email (optionnel)
-  - [x] Mot de passe (hashé)
-  - [x] Rôle (enseignant ou administrateur représenté par un entier)
-  - [x] Etat (activé ou désactivé)
-  - [x] Date de création (usage interne)
-  - [x] Date de modification (usage interne)
-
-- [x] **Gestion des niveaux scolaires**
-      Représente les niveaux scolaires (primaire, secondaire, etc.)
-
-  - [x] Nom
-  - [x] Ordre, permettant de donner un ordre aux niveaux scolaires
-  - [x] Date de création (usage interne)
-  - [x] Date de modification (usage interne)
-
-- [x] **Gestion des classes**
-      Représente les classes (1a, 1b, 2a, 2b, etc...) d'un niveau scolaire.
-
-  - [x] Nom
-  - [x] Niveau scolaire
-  - [x] Date de création (usage interne)
-  - [x] Date de modification (usage interne)
-
-- [x] **Gestion des élèves**
-
-  - [x] Nom
-  - [x] Prénom
-  - [x] Date de naissance
-  - [x] Classe
-  - [x] Etat (activé ou désactivé)
-  - [x] Date de création (usage interne)
-  - [x] Date de modification (usage interne)
-
-- [ ] **Gestion des matières**
-      Représente les matières enseignées dans une classe (Ex: Mathématiques, Français, etc...).
-
-  - [ ] Nom
-  - [ ] Date de création (usage interne)
-  - [ ] Date de modification (usage interne)
-
-- [ ] **Gestion des notes**
-
-  - [ ] Une valeur
-  - [ ] Un élève
-  - [ ] Une matière
-  - [ ] Gestion du template de fichier CSV
-  - [ ] Importation des notes depuis un fichier CSV
-  - [ ] Interface utilisateur pour introduire les notes
-
-- [x] **Gestion des présences**
-
-  - [x] Elève
-  - [x] Date (`date` date db type), seul le jour est pris en compte car l'heure dépend de la tranche horaire
-  - [x] Utilisateur (enseignant, ou administrateur)
-  - [x] Tranche horaire
-  - [x] Traité (pour les éducateurs qui peuvent traiter les absences)
-  - [x] Année scolaire
-  - [x] Date de création (usage interne ou pour vérification de fraude)
-  - [x] Date de modification (usage interne)
-
-- [x] **Gestion des rapports disciplinaires**
-
-  - [x] Elève
-  - [x] Date (Représente la date de l'incident)
+- [x] **User management**
+  - [x] First name
+  - [x] Last name
+  - [x] Email (optional)
+  - [x] Password (hashed)
+  - [x] Role (teacher or administrator represented by an integer)
+  - [x] State (enabled or disabled)
+  - [x] Creation date (internal use)
+  - [x] Modification date (internal use)
+- [x] **School level management**
+Represents school levels (primary, secondary, etc.)
+  - [x] Name
+  - [x] Order, allowing to give an order to the school levels
+  - [x] Creation date (internal use)
+  - [x] Modification date (internal use)
+- [x] **Class management**
+Represents classes (1a, 1b, 2a, 2b, etc...) of a school level.
+  - [x] Name
+  - [x] School level
+  - [x] Creation date (internal use)
+  - [x] Modification date (internal use)
+- [x] **Student management**
+  - [x] First name
+  - [x] Last name
+  - [x] Date of birth
+  - [x] Class
+  - [x] State (enabled or disabled)
+  - [x] Creation date (internal use)
+  - [x] Modification date (internal use)
+- [ ] **Subject management**
+Represents the subjects taught in a class (Ex: Mathematics, French, etc...).
+  - [ ] Name
+  - [ ] Creation date (internal use)
+  - [ ] Modification date (internal use)
+- [ ] **Grade management**
+  - [ ] A value
+  - [ ] A student
+  - [ ] A subject
+  - [ ] CSV file template management
+  - [ ] Importing grades from a CSV file
+  - [ ] User interface for entering grades
+- [x] **Attendance management**
+  - [x] Student
+  - [x] Date (`date` date db type), only the day is taken into account because the time depends on the time slot
+  - [x] User (teacher, or administrator)
+  - [x] Time slot
+  - [x] Treated (for educators who can process absences)
+  - [x] School year
+  - [x] Creation date (internal use or for fraud verification)
+  - [x] Modification date (internal use)
+- [x] **Disciplinary report management**
+  - [x] Student
+  - [x] Date (Represents the date of the incident)
   - [x] Description
-  - [x] Date de création (usage interne, ou pour vérification de fraude)
-  - [x] Date de modification (usage interne)
+  - [x] Creation date (internal use, or for fraud verification)
+  - [x] Modification date (internal use)
+- [x] **Time slot management**
+Represents time slots (h1, h2, h3, h4, etc...) of a school day. Time slots are used for attendance.
+  - [x] Name
+  - [x] Start time
+  - [x] End time
+  - [x] Creation date (internal use)
+  - [x] Modification date (internal use)
+- [ ] **Grading period**
+Represents a grading period (trimester, semester, etc...).
+  - [ ] Name
+  - [ ] Start date
+  - [ ] End date
+  - [ ] Creation date (internal use)
+  - [ ] Modification date (internal use)
+- [ ] **Report card management**
+  - [ ] Generation of report cards in web or pdf format
+- [ ] **Course management**
+Represents the courses given by one or more teachers to a group of students who can be in one or more classes.
+  - [ ] Subject
+  - [ ] Teacher(s)
+  - [ ] Student(s)
+  - [ ] Creation date (internal use)
+  - [ ] Modification date (internal use)
+- [x] **School year management**
+Represents school years (2021-2022, 2022-2023, etc...).
+  - [x] Name
+  - [x] Start date
+  - [x] End date
+  - [x] Creation date (internal use)
+  - [x] Modification date (internal use)
 
-- [x] **Gestion des tranches horaires**
-      Représente les tranches horaires (h1, h2, h3, h4, etc...) d'une journée scolaire. Les tranches horaires sont utilisées pour les présences.
+## Technical points
 
-  - [x] Nom
-  - [x] Heure de début
-  - [x] Heure de fin
-  - [x] Date de création (usage interne)
-  - [x] Date de modification (usage interne)
+- [x] Authentication
+- [x] Relational database
+- [x] Internationalization
+- [ ] Design system and reusable components
+- [ ] No duplicated code
+- [ ] REST API, which can be used by third-party services
+- [x] Unit tests
+- [ ] Integration tests (E2E)
+- [ ] Visual testing (Storybook)
+- [ ] Markdown documentation, for maintainers, contributors and users
+- [ ] Docker (to be discussed)
+- [ ] SSO (to be discussed)
 
-- [ ] **Période de cote**
-      Représente une période de cotation (trimestre, semestre, etc...).
+## Others
 
-  - [ ] Nom
-  - [ ] Date de début
-  - [ ] Date de fin
-  - [ ] Date de création (usage interne)
-  - [ ] Date de modification (usage interne)
-
-- [ ] **Gestion des bulletins**
-
-  - [ ] Génération de bulletins en format web ou pdf
-
-- [ ] **Gestion des cours**
-      Représente les cours donnés par un ou plusieurs enseignants à un groupe d'élèves qui peuvent être dans une ou plusieurs classes.
-
-  - [ ] Matière
-  - [ ] Enseignant(s)
-  - [ ] Elève(s)
-  - [ ] Date de création (usage interne)
-  - [ ] Date de modification (usage interne)
-
-- [x] ** Gestion des années scolaires**
-      Représente les années scolaires (2021-2022, 2022-2023, etc...).
-
-  - [x] Nom
-  - [x] Date de début
-  - [x] Date de fin
-  - [x] Date de création (usage interne)
-  - [x] Date de modification (usage interne)
-
-## Points techniques
-
-- [x] Authentification
-- [x] Base de données relationnelle
-- [x] Internationalisation
-- [ ] Design system et composants réutilisables
-- [ ] Pas de code dupliqué
-- [ ] API REST, qui peuvent être utilisées par des services tiers
-- [x] Tests unitaires
-- [ ] Tests d'intégration (E2E)
-- [ ] Test visuel (Storybook)
-- [ ] Documentation en markdown, pour les mainteneurs, les contributeurs et les utilisateurs
-- [ ] Docker (à discuter)
-- [ ] SSO (à discuter)
-
-## Autres
-
-- [x] L'application doit supporter le thème clair et sombre
-- [ ] Gestion des emplois du temps (S'il y a une demande ou quelqu'un qui sait le développer)
-- [ ] Utilisation d'envoi de mail pour la réinitialisation de mot de passe ou pour notifier d'événements telle qu'une absence non justifiée.
-- [ ] Gestion des absences justifiées et non justifiées
+- [x] The application must support light and dark theme
+- [ ] Schedule management (If there is a demand or someone who knows how to develop it)
+- [ ] Use of email sending for password reset or to notify of events such as an unjustified absence.
+- [ ] Management of justified and unjustified absences

@@ -1,9 +1,9 @@
-# Documentation Technique
+# Technical Documentation
 
 > [!NOTE]
-> Cette documentation concerne les aspects techniques du projet. Elle inclut l'architecture, la conception, la mise en œuvre et les tests du projet. Elle est destinée aux développeurs et aux mainteneurs du projet.
+> This documentation concerns the technical aspects of the project. It includes the architecture, design, implementation, and testing of the project. It is intended for developers and maintainers of the project.
 
-## Technologies Utilisées
+## Technologies Used
 
 - [React][]
 - [Tailwind][]
@@ -11,42 +11,42 @@
 - [PostCSS][]
 - [TypeScript][]
 - [Storybook][]
-- [prisma][], pour en savoir plus sur notre base de données et nos modèles de données, consultez [la documentation Prisma](./Prisma.md)
+- [prisma][] - for more information on our database and data models, see [Prisma documentation](./Prisma.md)
 
-## Outils Utilisés
+## Tools Used
 
 - [prettier][]
 - [eslint][]
 - [stylelint][]
 - [turbo][]
 
-## Configuration de l'environnement de développement
+## Setting up the Development Environment
 
-Pour configurer un environnement de développement, vous pouvez suivre [ces instructions](../CONTRIBUTING.md#comment-contribuer).
+To set up a development environment, you can follow [these instructions](../CONTRIBUTING.md#how-to-contribute).
 
-## Création de Composants React
+## Creating React Components
 
-Nous utilisons [React][] comme bibliothèque frontend pour développer le site Web. React nous permet de créer des interfaces utilisateur avec une approche moderne du développement Web.
+We use [React][] as the frontend library to develop the website. React allows us to create user interfaces with a modern approach to web development.
 
-Si vous n'êtes pas familier avec React ou le développement Web en général, nous vous encourageons à lire avant d'aborder des problèmes et des tâches complexes car ce référentiel n'est **pas à des fins éducatives** et nous attendons de vous que vous ayez une compréhension de base des technologies utilisées. Sauf encadrement par l'un de nos membres d'équipe.
+If you are not familiar with React or web development in general, we encourage you to read before tackling complex problems and tasks as this repository is **not for educational purposes** and we expect you to have a basic understanding of the technologies used. Except for mentoring by one of our team members.
 
-Nous vous recommandons également de vous familiariser avec des technologies telles que [Next.js][], [PostCSS][] et des "concepts" tels que les "Modules CSS" et "CSS-in-JS".
+We also recommend that you familiarize yourself with technologies such as [Next.js][], [PostCSS][] and concepts such as "CSS Modules" and "CSS-in-JS".
 
-### Stylisation d'un Composant
+### Styling a Component
 
-Comme mentionné, nous écrivons tous les styles de composants dans des fichiers `.module.css` séparés. C'est comme écrire n'importe quel CSS dans un fichier séparé (à part le fait que nous utilisons [PostCSS][]).
+As mentioned, we write all component styles in separate `.module.css` files. This is like writing any CSS in a separate file (except that we use [PostCSS][]).
 
-Ce concept d'écriture de styles dans des fichiers `.module.css` dédiés et de les importer dans JavaScript (ou React) est un modèle appelé **[CSS Module](https://github.com/css-modules/css-modules)**.
-Ces modules nous permettent d'écrire du PostCSS (ou du CSS régulier, ou n'importe quelle variante de CSS si vous avez un moyen de l'interpréter) dans un fichier `.module.css` et d'importer les noms de classes directement dans nos composants React.
-Nous vous recommandons de lire des guides sur "Styliser les composants React avec des modules CSS", dont il existe de nombreux exemples sur le web.
+This concept of writing styles in dedicated `.module.css` files and importing them into JavaScript (or React) is a pattern called **[CSS Module](https://github.com/css-modules/css-modules)**.
+These modules allow us to write PostCSS (or regular CSS, or any CSS variant if you have a way to interpret it) in a `.module.css` file and import the class names directly into our React components.
+We recommend reading guides on "Styling React Components with CSS Modules", of which there are many examples on the web.
 
-Il est important de mentionner que nous utilisons [Tailwind][] comme framework CSS. Par conséquent, les marges, les rembourrages, les tailles de police, les poids de police, les couleurs et d'autres types de styles sont tous fournis avec Tailwind.
-Nous vous recommandons de lire la [documentation de Tailwind](https://tailwindcss.com/docs/preflight) pour vous familiariser avec les styles de Tailwind.
-Nous vous recommandons également de lire [ce guide pour configurer Tailwind dans votre IDE](https://tailwindcss.com/docs/editor-setup).
+It is important to mention that we use [Tailwind][] as our CSS framework. Therefore, margins, paddings, font sizes, font weights, colors, and other types of styles are all provided with Tailwind.
+We recommend reading the [Tailwind documentation](https://tailwindcss.com/docs/preflight) to familiarize yourself with Tailwind styles.
+We also recommend reading [this guide to set up Tailwind in your IDE](https://tailwindcss.com/docs/editor-setup).
 
-Enfin, si vous n'êtes pas familier avec l'utilisation de Tailwind ou l'utilisation de Tailwind avec des modules CSS, nous vous recommandons de lire [ce guide](https://tailwindcss.com/docs/using-with-preprocessors).
+Finally, if you are not familiar with using Tailwind or using Tailwind with CSS modules, we recommend reading [this guide](https://tailwindcss.com/docs/using-with-preprocessors).
 
-#### Exemple d'un Module CSS
+#### Example of a CSS Module
 
 ```css
 .myComponent {
@@ -56,118 +56,118 @@ Enfin, si vous n'êtes pas familier avec l'utilisation de Tailwind ou l'utilisat
 }
 ```
 
-#### Directives lors de l'écriture du CSS
+#### Guidelines for Writing CSS
 
-- Nous utilisons camelCase pour définir les classes CSS
-- Nous utilisons le sélecteur `@apply` de Tailwind pour appliquer les tokens Tailwind
-  - Nous déconseillons l'utilisation de styles et de tokens CSS simples, en cas de doute, demandez de l'aide
-  - Nous vous demandons de définir un token Tailwind par ligne, comme indiqué dans l'exemple ci-dessus, car cela améliore la lisibilité
-- Écrivez uniquement du CSS dans les modules CSS, évitez d'écrire du CSS dans les fichiers JavaScript
-- Nous recommandons de créer des mixins pour les animations réutilisables, les effets et plus encore
-  - Vous pouvez créer des mixins dans le dossier `styles/mixins`
+- We use camelCase to define CSS classes
+- We use the `@apply` selector of Tailwind to apply Tailwind tokens
+  - We discourage the use of simple CSS styles and tokens, if in doubt, ask for help
+  - We ask you to define a Tailwind token per line, as shown in the example above, as this improves readability
+- Write only CSS in the CSS modules, avoid writing CSS in the JavaScript files
+- We recommend creating mixins for reusable animations, effects, and more
+  - You can create mixins in the `styles/mixins` folder
 
-> \[!NOTE]\
-> Tailwind est déjà configuré pour ce référentiel. Vous n'avez pas besoin d'importer de module Tailwind dans votre module CSS.\
-> Vous pouvez appliquer les tokens Tailwind avec la règle CSS `@apply` de Tailwind. [En savoir plus sur l'application des classes Tailwind avec `@apply`](https://tailwindcss.com/docs/functions-and-directives#apply).
+> [!NOTE]\
+> Tailwind is already configured for this repository. You do not need to import a Tailwind module into your CSS module.\
+> You can apply the Tailwind tokens with the `@apply` CSS rule of Tailwind. [Learn more about applying Tailwind classes with `@apply`](https://tailwindcss.com/docs/functions-and-directives#apply).
 
-### Meilleures pratiques lors de la création d'un Composant
+### Best Practices for Creating a Component
 
-- Tous les composants React doivent être placés dans le dossier `components`.
-- Chaque composant devrait être placé, lorsque possible, dans un sous-dossier, que nous appelons le "Domaine" du composant
-  - Le domaine représente où ces composants appartiennent ou où ils seront utilisés.
-  - Par exemple, les composants utilisés dans les pages d'articles ou faisant partie de la structure d'un article ou des mises en page d'article,
-    devraient être placés dans `components/Article`
-- Chaque composant devrait avoir son dossier avec le nom du composant
-- La structure de chaque dossier de composant suit le modèle suivant :
-  ```text
-  - NomDuComposant
-    - index.tsx // le composant lui-même
-    - index.module.css // tous les styles du composant sont placés là
-    - index.stories.tsx // stories Storybook du composant
-  ```
-- Les Hooks React appartenant à un seul composant doivent être placés dans le dossier du composant
-  - Si le Hook a une utilité plus large ou peut être utilisé par d'autres composants, il doit être placé dans le dossier racine `hooks`.
-- Si le composant a des "sous-composants", ils doivent suivre la même philosophie que le composant lui-même.
-  - Par exemple, si le composant `NomDuComposant` a un sous-composant appelé `SousComposantNom`,
-    alors il devrait être placé dans `NomDuComposant/SousComposantNom`
+- All React components should be placed in the `components` folder.
+- Each component should be placed, when possible, in a subfolder, which we call the "Domain" of the component
+  - The domain represents where these components belong or where they will be used.
+  - For example, components used in article pages or that are part of the structure of an article or article layouts,
+    should be placed in `components/Article`
+- Each component should have its folder with the name of the component
+- The structure of each component folder follows the following pattern:
+```text
+  - ComponentName
+    - index.tsx // the component itself
+    - index.module.css // all the styles of the component are placed here
+    - index.stories.tsx // Storybook stories of the component
+```
+- React Hooks belonging to a single component should be placed in the component folder
+  - If the Hook has a wider utility or can be used by other components, it should be placed in the root `hooks` folder.
+- If the component has "subcomponents", they should follow the same philosophy as the component itself.
+  - For example, if the component `ComponentName` has a subcomponent called `SubcomponentName`,
+    then it should be placed in `ComponentName/SubcomponentName`
 
-#### À quoi devrait ressembler un nouveau Composant lorsqu'il est créé fraîchement
+#### What a New Component Should Look Like When Freshly Created
 
 ```tsx
 import styles from './index.module.css';
 import type { FC } from 'react';
 
-type PropsNameOfComponent = {
+type PropsComponentName = {
   ...
 };
 
-const NameOfComponent: FC<PropsNameOfComponent> = ({ ... }) => (
-  // code jsx here
+const ComponentName: FC<PropsComponentName> = ({ ... }) => (
+  // jsx code here
 );
 
-export default NameOfComponent;
+export default ComponentName;
 ```
 
-### Meilleures pratiques pour le développement de Composants en général
+### Best Practices for Component Development in General
 
-- Propagez uniquement les props `{ ... }` à la définition du Composant (Évitez d'avoir une variable nommée `props`)
-- Évitez d'importer `React`, importez uniquement les modules de React dont vous avez besoin
-- Lors de l'importation de types, utilisez `import type { NomDeLImport } from 'module'`
-- Lors de la définition d'un Composant, utilisez le type `FC` de React pour définir le type du Composant
-  - Lorsque vous utilisez `children` comme une prop, utilisez le type `FC<PropsWithChildren<PropsNomDuComposant>>` à la place
-  - Alternativement, vous pouvez définir votre type comme `type PropsNomDuComposant = PropsWithChildren<{ mes autres props }>` **(Recommandé)**
-- Chaque type de prop devrait être préfixé par le nom du composant
-- Les composants doivent toujours être l'exportation `default` d'un fichier de composant React
-- Évitez d'utiliser les API DOM/Web/accès à `document`/API `window` à l'intérieur d'un Composant React.
-  Utilisez des utilitaires ou des Hooks lorsque vous avez besoin d'un état réactif
-- Évitez de rendre votre Composant trop gros. Décomposez-le en plus petits Composants/Hooks chaque fois que possible
-- Ne pas faire d'appels à une API rest interne dans un composant server privilégier de directement faire la query dans le composant. Car si non l'app doit calculé le composant et l'API.
+- Propagate only the props `{ ... }` to the Component definition (Avoid having a variable named `props`)
+- Avoid importing `React`, import only the React modules you need
+- When importing types, use `import type { ImportName } from 'module'`
+- When defining a Component, use the `FC` type of React to define the type of the Component
+  - When using `children` as a prop, use the type `FC<PropsWithChildren<PropsComponentName>>` instead
+  - Alternatively, you can define your type as `type PropsComponentName = PropsWithChildren<{ my other props }>` **(Recommended)**
+- Each type of prop should be prefixed by the name of the component
+- Components should always be the `default` export of a React component file
+- Avoid using DOM/Web APIs/access to `document`/`window` APIs inside a React Component.
+  Use utilities or Hooks when you need reactive state
+- Avoid making your Component too big. Break it down into smaller Components/Hooks whenever possible
+- Do not make internal REST API calls in a server component, prefer to make the query directly in the component. Because if not the app must calculate the component and the API.
 
-## Test des Composants React
+## Testing React Components
 
-Nous utilisons [Storybook][] pour documenter nos composants. Chaque composant devrait avoir une histoire Storybook qui documente l'utilisation du composant.
+We use [Storybook][] to document our components. Each component should have a Storybook story that documents the use of the component.
 
-### Directives Générales pour Storybooks
+### General Guidelines for Storybooks
 
-Les Storybooks sont une partie essentielle de notre processus de développement. Ils nous aident à documenter nos composants et à nous assurer que les composants fonctionnent comme prévu.
+Storybooks are an essential part of our development process. They help us document our components and ensure that the components work as expected.
 
-Ils permettent également aux développeurs de prévisualiser les composants et de les tester manuellement/individuellement jusqu'à l'unité la plus petite de l'application (l'individu du composant lui-même).
+They also allow developers to preview components and test them manually/individually up to the smallest unit of the application (the individual component itself).
 
-**Les Storybooks doivent être entièrement typés et suivre le modèle suivant :**
+**Storybooks must be fully typed and follow the following pattern:**
 
 ```tsx
-import NomDuComposant from '@components/CheminVers/VotreComposant';
+import ComponentName from '@components/PathTo/YourComponent';
 import type { Meta as MetaObj, StoryObj } from '@storybook/react';
 
-type Story = StoryObj<typeof NomDuComposant>;
-type Meta = MetaObj<typeof NomDuComposant>;
+type Story = StoryObj<typeof ComponentName>;
+type Meta = MetaObj<typeof ComponentName>;
 
-// Si le composant a des props avec lesquelles on peut interagir, elles doivent être passées ici
-// Nous recommandons de lire la documentation de Storybook pour args : https://storybook.js.org/docs/react/writing-stories/args
+// If the component has props that can be interacted with, they should be passed here
+// We recommend reading the Storybook documentation for args: https://storybook.js.org/docs/react/writing-stories/args
 export const Default: Story = {};
 
-// Si le composant a plus d'un état/disposition/variante, il devrait y avoir une histoire pour chaque variante
+// If the component has more than one state/layout/variant, there should be a story for each variant
 export const AnotherStory: Story = {
   args: {},
 };
 
-export default { component: NomDuComposant } as Meta;
+export default { component: ComponentName } as Meta;
 ```
 
-- Les histoires devraient avoir des `args` chaque fois que possible, nous voulons être en mesure de tester les différents aspects d'un composant
-- Veuillez suivre le modèle ci-dessus pour maintenir les Storybooks aussi cohérents que possible
-- Nous recommandons de lire les Storybooks précédents du codebase pour inspiration et directives de code.
-- Si vous avez besoin de décorer/envelopper votre composant/histoire avec un conteneur/fournisseur, veuillez utiliser les [Décorateurs Storybook](https://storybook.js.org/docs/react/writing-stories/decorators)
+- Stories should have `args` whenever possible, we want to be able to test the different aspects of a component
+- Please follow the above pattern to keep the Storybooks as consistent as possible
+- We recommend reading previous Storybooks in the codebase for inspiration and code guidelines.
+- If you need to decorate/wrap your component/story with a container/provider, please use [Storybook Decorators](https://storybook.js.org/docs/react/writing-stories/decorators)
 
-## Gestion des API REST
+## Managing REST APIs
 
-Nous utilisons [prisma][] pour gérer notre base de données et nos modèles de données. Pour en savoir plus sur la gestion de la base de données, consultez [la documentation Prisma](./Prisma.md). Et pour la partie API REST, nous utilisons Next.js avec ça fonctionnalité de [route handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers).
+We use [prisma][] to manage our database and data models. For more information on database management, see [Prisma documentation](./Prisma.md). And for the REST API part, we use Next.js with its [route handler](https://nextjs.org/docs/app/building-your-application/routing/route-handlers) functionality.
 
-### Quelques Directives Générales
+### Some General Guidelines
 
-- Les fichiers de route doivent être placés dans le dossier `app/api`
-- Les fonciton dans le fichier doivent être dans l'ordre suivant : `GET` -> `POST` -> `PUT` -> `PATCH` -> `DELETE` -> `HEAD` -> `OPTIONS`
-- Les fonctions doivent être exportées à leur définition:
+- Route files should be placed in the `app/api` folder
+- Functions in the file should be in the following order: `GET` -> `POST` -> `PUT` -> `PATCH` -> `DELETE` -> `HEAD` -> `OPTIONS`
+- Functions should be exported at their definition:
 
 ```ts
 export const GET = async (req: Request) => {
@@ -175,46 +175,46 @@ export const GET = async (req: Request) => {
 };
 ```
 
-- Toutes les routes doivent retourné des Objets [Response](https://developer.mozilla.org/fr/docs/Web/API/Response).
-- Les routes doivent renvoyé des JSON. `data` pour les données et `message` pour les messages et `error` pour les erreurs.
+- All routes should return [Response](https://developer.mozilla.org/fr/docs/Web/API/Response) objects.
+- Routes should return JSONs. `data` for data and `message` for messages and `error` for errors.
 
 ## FAQ
 
-### Choix d'Infrastructure
+### Infrastructure Choices
 
-Une brève explication de pourquoi nous avons choisi les technologies que nous utilisons.
+A brief explanation of why we chose the technologies we use.
 
-### Pourquoi React?
+### Why React?
 
-React est une bibliothèque moderne et à la mode pour construire des interfaces utilisateur. Elle nous permet de créer des composants réutilisables et de gérer l'état de notre application de manière plus prévisible.
+React is a modern and trendy library for building user interfaces. It allows us to create reusable components and manage the state of our application in a more predictable way.
 
-Nous avons choisi React car c'est une bibliothèque largement utilisée et a une grande communauté. Cela signifie que nous pouvons trouver beaucoup de ressources et d'aide en ligne et nous pouvons également trouver beaucoup de personnes qui sont familières avec React.
+We chose React because it is a widely used library and has a large community. This means that we can find a lot of resources and help online and we can also find many people who are familiar with React.
 
-Aussi pour générer des PDF, nous utiliserons la bibliothèque `react-pdf`. Ainsi, nous aurons la même syntaxe pour générer des PDF que nous avons pour générer du HTML côté client et côté serveur.
+Also, to generate PDFs, we will use the `react-pdf` library. Thus, we will have the same syntax for generating PDFs as we have for generating client-side and server-side HTML.
 
-### Pourquoi utiliser npm?
+### Why use npm?
 
-npm est le gestionnaire de paquets par défaut de Node.js. Il nous permet d'installer et de gérer les dépendances de notre projet. Il nous permet également d'exécuter des scripts et de publier nos packages. Nous l'avons sélectionné car les développeurs ne devraient pas avoir à installer un autre gestionnaire de paquets.
+npm is the default package manager of Node.js. It allows us to install and manage the dependencies of our project. It also allows us to run scripts and publish our packages. We selected it because developers should not have to install another package manager.
 
-### Pourquoi voir configurer `.vscode`?
+### Why configure `.vscode`?
 
-Visual Studio Code est un éditeur de code très populaire parmi les développeurs. Il est également très extensible et nous permet de configurer notre environnement de développement pour qu'il soit plus productif.
+Visual Studio Code is a very popular code editor among developers. It is also very extensible and allows us to configure our development environment to be more productive.
 
-Par example nous recommandons toutes sortes de plugins pour améliorer la productivité des développeurs.
+For example, we recommend all sorts of plugins to improve developer productivity.
 
-### Bon à savoir
+### Good to Know
 
-- Nous avons un fichier `.nvmrc` à la racine du projet. Ce fichier est utilisé par [`nvm`][] pour définir la version correcte de Node.js pour le projet. Si vous avez [`nvm`][] installé, vous pouvez exécuter `nvm use` pour définir la bonne version de Node.js pour le projet.
-- Nous utilisons [turbo][] pour accélérer le processus de développement en utilisant la mise en cache et les constructions incrémentales.
+- We have a `.nvmrc` file at the root of the project. This file is used by [`nvm`][] to define the correct version of Node.js for the project. If you have [`nvm`][] installed, you can run `nvm use` to set the correct version of Node.js for the project.
+- We use [turbo][] to speed up the development process using caching and incremental builds.
 
-[React]: https://reactjs.org/
-[Tailwind]: https://tailwindcss.com/
-[Next.js]: https://nextjs.org/
-[PostCSS]: https://postcss.org/
-[TypeScript]: https://www.typescriptlang.org/
-[Storybook]: https://storybook.js.org/
-[prisma]: https://www.prisma.io/
-[prettier]: https://prettier.io/
-[eslint]: https://eslint.org/
-[stylelint]: https://stylelint.io/
-[turbo]: https://turbo.build/
+[React]: <https://reactjs.org/>
+[Tailwind]: <https://tailwindcss.com/>
+[Next.js]: <https://nextjs.org/>
+[PostCSS]: <https://postcss.org/>
+[TypeScript]: <https://www.typescriptlang.org/>
+[Storybook]: <https://storybook.js.org/>
+[prisma]: <https://www.prisma.io/>
+[prettier]: <https://prettier.io/>
+[eslint]: <https://eslint.org/>
+[stylelint]: <https://stylelint.io/>
+[turbo]: <https://turbo.build/>
