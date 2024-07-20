@@ -50,11 +50,11 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [x] State (enabled or disabled)
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
-- [ ] **Subject management**
+- [x] **Subject management**
       Represents the subjects taught in a class (Ex: Mathematics, French, etc...).
-  - [ ] Name
-  - [ ] Creation date (internal use)
-  - [ ] Modification date (internal use)
+  - [x] Name
+  - [x] Creation date (internal use)
+  - [x] Modification date (internal use)
 - [ ] **Grade management**
   - [ ] A value
   - [ ] A student
@@ -95,11 +95,12 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [ ] Generation of report cards in web or pdf format
 - [ ] **Course management**
       Represents the courses given by one or more teachers to a group of students who can be in one or more classes.
-  - [ ] Subject
+  - [x] Name
+  - [x] Subject
   - [ ] Teacher(s)
   - [ ] Student(s)
-  - [ ] Creation date (internal use)
-  - [ ] Modification date (internal use)
+  - [x] Creation date (internal use)
+  - [x] Modification date (internal use)
 - [x] **School year management**
       Represents school years (2021-2022, 2022-2023, etc...).
   - [x] Name
