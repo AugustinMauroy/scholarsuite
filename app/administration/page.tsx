@@ -53,6 +53,18 @@ const CARDS = [
       { href: '/administration/academicYear', text: 'Manage Academic Years' },
     ],
   },
+  {
+    title: "Mange Courses",
+    links: [
+      { href: '/administration/courses', text: 'Manage Courses' },
+    ],
+  },
+  {
+    title: "Manage Subjects",
+    links: [
+      { href: '/administration/subjects', text: 'Manage Subjects' },
+    ],
+  }
 ];
 
 const Page: FC = async () => {

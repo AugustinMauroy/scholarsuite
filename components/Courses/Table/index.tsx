@@ -210,16 +210,16 @@ const Table: FC = () => {
       </table>
       <DialogPrimitive.Portal>
         <DialogPrimitive.Overlay className={styles.modalOverlay} />
-        <DialogPrimitive.Content className={styles.modalContent}>
-          <DialogPrimitive.Close
-            asChild
-            onClick={() => {
-              setIsAdding(false);
-              setName('');
-              setSchoolLevelId(null);
-              setSubjectId(null);
-            }}
-          >
+        <DialogPrimitive.Content
+          className={styles.modalContent}
+          onCloseAutoFocus={() => {
+            setIsAdding(false);
+            setName('');
+            setSchoolLevelId(null);
+            setSubjectId(null);
+          }}
+        >
+          <DialogPrimitive.Close asChild>
             <XMarkIcon className={styles.closeIcon} />
           </DialogPrimitive.Close>
           <DialogPrimitive.Title>
