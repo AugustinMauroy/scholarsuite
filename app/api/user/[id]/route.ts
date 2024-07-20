@@ -1,6 +1,5 @@
-import { getServerSession } from 'next-auth';
 import prisma from '@/lib/prisma';
-import nextAuthConfig from '@/lib/auth';
+import rightAcces from '@/utils/rightAcces';
 
 type Params = {
   params: {
@@ -12,12 +11,8 @@ export const PATCH = async (
   req: Request,
   { params }: Params
 ): Promise<Response> => {
-  const session = await getServerSession(nextAuthConfig);
-
-  if (!session)
+  if (!(await rightAcces(['ADMIN'])))
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
-  if (session.user.role !== 'ADMIN')
-    return Response.json({ error: 'Unauthorized (bad role)' }, { status: 401 });
 
   const body = await req.json();
 

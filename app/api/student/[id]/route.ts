@@ -7,9 +7,6 @@ type Params = {
 
 export const PATCH = async (req: Request, { params }: Params) => {
   const { id } = params;
-  /*const { firstName, lastName, classId, contactEmail, enabled } =
-    await req.json();*/
-  // now use formData
   const formData = await req.formData();
   const firstName = formData.get('firstName') as string;
   const lastName = formData.get('lastName') as string;

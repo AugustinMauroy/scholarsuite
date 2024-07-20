@@ -1,7 +1,5 @@
 'use client';
-import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
-import { notFound } from 'next/navigation';
 import Select from '@/components/Common/Select';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
@@ -11,9 +9,6 @@ import type { FC, FormEvent } from 'react';
 import type { SchoolLevel } from '@prisma/client';
 
 const Page: FC = () => {
-  const { data: session } = useSession();
-  if (session?.user.role !== 'ADMIN') notFound();
-
   const [schoolLevel, setSchoolLevel] = useState<SchoolLevel[] | null>(null);
   const [name, setName] = useState('');
   const [selectedSchoolLevel, setSelectedSchoolLevel] = useState<number | null>(

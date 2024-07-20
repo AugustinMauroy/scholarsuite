@@ -1,13 +1,12 @@
-import { getServerSession } from 'next-auth';
 import { notFound } from 'next/navigation';
 import ReviewPresence from '@/components/Presence/ReviewPresence';
-import nextAuthConfig from '@/lib/auth';
+import rightAcces from '@/utils/rightAcces';
 import BaseLayout from '@/components/Layout/Base';
 import type { FC } from 'react';
 
 const Page: FC = async () => {
-  const session = await getServerSession(nextAuthConfig);
-  if (session && session.user.role !== 'MANAGER') notFound();
+  const access = await rightAcces(['MANAGER', 'ADMIN']);
+  if (!access) notFound();
 
   return (
     <BaseLayout title="Review Presence">

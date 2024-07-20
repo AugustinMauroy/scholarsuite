@@ -1,5 +1,3 @@
-import { getServerSession } from 'next-auth';
-import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import {
   UserGroupIcon,
@@ -7,7 +5,6 @@ import {
   CalendarDaysIcon,
 } from '@heroicons/react/20/solid';
 import BaseLayout from '@/components/Layout/Base';
-import nextAuthConfig from '@/lib/auth';
 import styles from './page.module.css';
 import type { FC } from 'react';
 
@@ -63,27 +60,22 @@ const CARDS = [
   },
 ];
 
-const Page: FC = async () => {
-  const session = await getServerSession(nextAuthConfig);
-  if (session?.user.role !== 'ADMIN') notFound();
-
-  return (
-    <BaseLayout sectionClassName={styles.section}>
-      {CARDS.map(({ title, links, icon: Icon }) => (
-        <div className={styles.card} key={title}>
-          <h2>
-            {Icon && <Icon />}
-            {title}
-          </h2>
-          {links?.map(({ href, text }) => (
-            <Link key={href} href={href}>
-              {text}
-            </Link>
-          ))}
-        </div>
-      ))}
-    </BaseLayout>
-  );
-};
+const Page: FC = () => (
+  <BaseLayout sectionClassName={styles.section}>
+    {CARDS.map(({ title, links, icon: Icon }) => (
+      <div className={styles.card} key={title}>
+        <h2>
+          {Icon && <Icon />}
+          {title}
+        </h2>
+        {links?.map(({ href, text }) => (
+          <Link key={href} href={href}>
+            {text}
+          </Link>
+        ))}
+      </div>
+    ))}
+  </BaseLayout>
+);
 
 export default Page;

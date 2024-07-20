@@ -1,7 +1,5 @@
 'use client';
-import { useSession } from 'next-auth/react';
 import { useState } from 'react';
-import { notFound } from 'next/navigation';
 import { useToast } from '@/hooks/useToast';
 import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
@@ -10,9 +8,6 @@ import styles from './page.module.css';
 import type { FC, FormEvent } from 'react';
 
 const Page: FC = () => {
-  const { data: session } = useSession();
-  if (session && session.user.role !== 'ADMIN') notFound();
-
   const toast = useToast();
   const [name, setName] = useState('');
 

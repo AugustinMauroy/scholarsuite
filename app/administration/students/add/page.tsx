@@ -2,8 +2,6 @@
 // @todo:
 // - [ ] use translation
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
-import { notFound } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 import { useToast } from '@/hooks/useToast';
 import Input from '@/components/Common/Input';
@@ -14,9 +12,6 @@ import styles from './page.module.css';
 import type { FC, FormEvent } from 'react';
 
 const Page: FC = () => {
-  const { data: session } = useSession();
-  if (session && session.user.role !== 'ADMIN') notFound();
-
   const toast = useToast();
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
