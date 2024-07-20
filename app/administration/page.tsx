@@ -54,17 +54,13 @@ const CARDS = [
     ],
   },
   {
-    title: "Mange Courses",
-    links: [
-      { href: '/administration/courses', text: 'Manage Courses' },
-    ],
+    title: 'Mange Courses',
+    links: [{ href: '/administration/courses', text: 'Manage Courses' }],
   },
   {
-    title: "Manage Subjects",
-    links: [
-      { href: '/administration/subjects', text: 'Manage Subjects' },
-    ],
-  }
+    title: 'Manage Subjects',
+    links: [{ href: '/administration/subjects', text: 'Manage Subjects' }],
+  },
 ];
 
 const Page: FC = async () => {

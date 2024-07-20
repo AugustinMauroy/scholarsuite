@@ -79,12 +79,14 @@ Finally, if you are not familiar with using Tailwind or using Tailwind with CSS 
     should be placed in `components/Article`
 - Each component should have its folder with the name of the component
 - The structure of each component folder follows the following pattern:
+
 ```text
   - ComponentName
     - index.tsx // the component itself
     - index.module.css // all the styles of the component are placed here
     - index.stories.tsx // Storybook stories of the component
 ```
+
 - React Hooks belonging to a single component should be placed in the component folder
   - If the Hook has a wider utility or can be used by other components, it should be placed in the root `hooks` folder.
 - If the component has "subcomponents", they should follow the same philosophy as the component itself.
@@ -207,14 +209,14 @@ For example, we recommend all sorts of plugins to improve developer productivity
 - We have a `.nvmrc` file at the root of the project. This file is used by [`nvm`][] to define the correct version of Node.js for the project. If you have [`nvm`][] installed, you can run `nvm use` to set the correct version of Node.js for the project.
 - We use [turbo][] to speed up the development process using caching and incremental builds.
 
-[React]: <https://reactjs.org/>
-[Tailwind]: <https://tailwindcss.com/>
-[Next.js]: <https://nextjs.org/>
-[PostCSS]: <https://postcss.org/>
-[TypeScript]: <https://www.typescriptlang.org/>
-[Storybook]: <https://storybook.js.org/>
-[prisma]: <https://www.prisma.io/>
-[prettier]: <https://prettier.io/>
-[eslint]: <https://eslint.org/>
-[stylelint]: <https://stylelint.io/>
-[turbo]: <https://turbo.build/>
+[React]: https://reactjs.org/
+[Tailwind]: https://tailwindcss.com/
+[Next.js]: https://nextjs.org/
+[PostCSS]: https://postcss.org/
+[TypeScript]: https://www.typescriptlang.org/
+[Storybook]: https://storybook.js.org/
+[prisma]: https://www.prisma.io/
+[prettier]: https://prettier.io/
+[eslint]: https://eslint.org/
+[stylelint]: https://stylelint.io/
+[turbo]: https://turbo.build/

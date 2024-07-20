@@ -11,26 +11,33 @@ ScholarSuite is a grade management application for schools. It allows to manage 
 
 **Prerequisites:**
 
-- Node.js (LTS) and npm *(provided with Node.js)*
+- Node.js (LTS) and npm _(provided with Node.js)_
 - MySQL
 
 1. Clone the repository
 2. Install dependencies (without development dependencies)
+
 ```bash
 npm ci
 ```
+
 3. Create a `.env` file at the root of the project and add the environment variables. There is an `.env.example` file that can be used as a template.
 4. Instantiate the database
+
 ```bash
 npm run db:generate
 npm run db:push
 npm run db:seed-prod
 ```
+
 5. Build the application. Using [Turbo](https://turbo.build) for caching.
+
 ```bash
 turbo build
 ```
+
 6. Start the application
+
 ```bash
 npm start
 ```
@@ -42,6 +49,7 @@ In the `.env` file, you can customize the main color of the application by addin
 Also, keep in mind that the color will be used for buttons, links and navigation bar elements... So don't put a color that could cause readability problems. But still, it is not recommended to put a color with a particular meaning (such as red for errors).
 
 **Example:**
+
 ```makefile
 CUSTOM_COLOR=blue
 ```

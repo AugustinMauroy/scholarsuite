@@ -31,13 +31,13 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
 - [x] **School level management**
-Represents school levels (primary, secondary, etc.)
+      Represents school levels (primary, secondary, etc.)
   - [x] Name
   - [x] Order, allowing to give an order to the school levels
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
 - [x] **Class management**
-Represents classes (1a, 1b, 2a, 2b, etc...) of a school level.
+      Represents classes (1a, 1b, 2a, 2b, etc...) of a school level.
   - [x] Name
   - [x] School level
   - [x] Creation date (internal use)
@@ -51,7 +51,7 @@ Represents classes (1a, 1b, 2a, 2b, etc...) of a school level.
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
 - [ ] **Subject management**
-Represents the subjects taught in a class (Ex: Mathematics, French, etc...).
+      Represents the subjects taught in a class (Ex: Mathematics, French, etc...).
   - [ ] Name
   - [ ] Creation date (internal use)
   - [ ] Modification date (internal use)
@@ -78,14 +78,14 @@ Represents the subjects taught in a class (Ex: Mathematics, French, etc...).
   - [x] Creation date (internal use, or for fraud verification)
   - [x] Modification date (internal use)
 - [x] **Time slot management**
-Represents time slots (h1, h2, h3, h4, etc...) of a school day. Time slots are used for attendance.
+      Represents time slots (h1, h2, h3, h4, etc...) of a school day. Time slots are used for attendance.
   - [x] Name
   - [x] Start time
   - [x] End time
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
 - [ ] **Grading period**
-Represents a grading period (trimester, semester, etc...).
+      Represents a grading period (trimester, semester, etc...).
   - [ ] Name
   - [ ] Start date
   - [ ] End date
@@ -94,14 +94,14 @@ Represents a grading period (trimester, semester, etc...).
 - [ ] **Report card management**
   - [ ] Generation of report cards in web or pdf format
 - [ ] **Course management**
-Represents the courses given by one or more teachers to a group of students who can be in one or more classes.
+      Represents the courses given by one or more teachers to a group of students who can be in one or more classes.
   - [ ] Subject
   - [ ] Teacher(s)
   - [ ] Student(s)
   - [ ] Creation date (internal use)
   - [ ] Modification date (internal use)
 - [x] **School year management**
-Represents school years (2021-2022, 2022-2023, etc...).
+      Represents school years (2021-2022, 2022-2023, etc...).
   - [x] Name
   - [x] Start date
   - [x] End date
