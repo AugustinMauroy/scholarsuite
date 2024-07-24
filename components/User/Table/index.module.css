@@ -9,16 +9,19 @@
   @apply fixed
     left-1/2
     top-1/2
+    m-4
     flex
-    w-96
+    w-full
     -translate-x-1/2
     -translate-y-1/2
     transform flex-col
     gap-4
+    overflow-y-auto
     rounded-lg
     bg-white
     p-4
     shadow-lg
+    lg:w-3/4
     dark:bg-gray-800
     dark:shadow-none;
 

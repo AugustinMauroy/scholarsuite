@@ -97,7 +97,7 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
       Represents the courses given by one or more teachers to a group of students who can be in one or more classes.
   - [x] Name
   - [x] Subject
-  - [ ] Teacher(s)
+  - [x] User(s)
   - [ ] Student(s)
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)

@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma';
 import type { Patch } from '@/types/patch';
 
-export const PATCH = async (req: Request) => {
+export const PATCH = async (req: Request): Promise<Response> => {
   const { userId, data } = (await req.json()) as Patch;
 
   if (!userId || !data) return Response.json({ error: 'Invalid request' });
@@ -9,25 +9,25 @@ export const PATCH = async (req: Request) => {
   for (const { opp, id } of data) {
     if (opp === 'add') {
       try {
-        await prisma.userClass.create({
+        await prisma.userCourse.create({
           data: {
             userId,
-            classId: id,
+            courseId: id,
           },
         });
       } catch (error) {
-        return Response.json({ error: 'Error connecting classes' });
+        return Response.json({ error: 'Error connecting courses' });
       }
     } else if (opp === 'remove') {
       try {
-        await prisma.userClass.deleteMany({
+        await prisma.userCourse.deleteMany({
           where: {
             userId,
-            classId: id,
+            courseId: id,
           },
         });
       } catch (error) {
-        return Response.json({ error: 'Error disconnecting classes' });
+        return Response.json({ error: 'Error disconnecting courses' });
       }
     } else {
       return Response.json({
@@ -40,5 +40,5 @@ export const PATCH = async (req: Request) => {
     }
   }
 
-  return Response.json({ message: 'Classes updated successfully' });
+  return Response.json({ message: 'Courses updated successfully' });
 };

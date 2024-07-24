@@ -40,7 +40,7 @@ const List: FC<ListProps> = ({ list, activeList, onTagClick, onTagRemove }) => {
   }, [searchQuery]);
 
   return (
-    <div className="relative flex items-center justify-start border-2 border-gray-200 py-2">
+    <div className="relative flex items-center justify-start border-2 border-gray-200 py-2 dark:border-gray-900">
       <TagList
         tags={activeList}
         onClick={onTagRemove}
@@ -48,7 +48,7 @@ const List: FC<ListProps> = ({ list, activeList, onTagClick, onTagRemove }) => {
         icon={<XMarkIcon />}
       />
       <input
-        className="w-1/2 border-l-2 border-gray-200 p-2 caret-brand-500 focus:outline-none"
+        className="w-1/2 border-l-2 border-gray-200 p-2 caret-brand-500 focus:outline-none dark:border-gray-900 dark:bg-gray-800 dark:text-gray-200"
         type="text"
         placeholder="Search"
         value={searchQuery}
@@ -60,10 +60,14 @@ const List: FC<ListProps> = ({ list, activeList, onTagClick, onTagRemove }) => {
         }}
       />
       {searchResult.length > 0 && focus && (
-        <div className="absolute right-0 top-full my-2 w-1/2 border-2 border-gray-200 bg-white py-2">
+        <div className="absolute right-0 top-full my-2 w-1/2 border-2 border-gray-200 bg-white py-2 dark:border-gray-900 dark:bg-gray-800">
           <TagList
             tags={searchResult}
-            onClick={onTagClick}
+            onClick={(tag: Tag) => {
+              onTagClick(tag);
+              setSearchQuery('');
+              setFocus(false);
+            }}
             icon={<PlusIcon />}
           />
         </div>

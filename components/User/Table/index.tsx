@@ -11,6 +11,7 @@ import { useSession } from 'next-auth/react';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
+import CourseList from '@/components/Courses/List';
 import { useToast } from '@/hooks/useToast';
 import List from '@/components/Common/List';
 import styles from './index.module.css';
@@ -27,6 +28,7 @@ const UsersTable: FC = () => {
   const [classes, setClasses] = useState<Class[]>([]);
   const [activeList, setActiveList] = useState<Class[]>([]);
   const [userClassesPatch, setUserClassesPatch] = useState<Patch | null>(null);
+  const [userCoursesPatch, setUserCoursesPatch] = useState<Patch | null>(null);
 
   useEffect(() => {
     fetch('/api/user')
@@ -48,7 +50,7 @@ const UsersTable: FC = () => {
       .then(data => setActiveList(data.data));
   }, [selectedUser]);
 
-  const handlePatch = async () => {
+  const handlePatchClass = () => {
     if (!userClassesPatch || userClassesPatch.data.length === 0) return;
 
     console.log(userClassesPatch);
@@ -83,6 +85,33 @@ const UsersTable: FC = () => {
           kind: 'success',
         });
       });
+  };
+
+  const handlePatchCourse = async () => {
+    if (!userCoursesPatch || userCoursesPatch.data.length === 0) return;
+
+    const res = await fetch('/api/user/course', {
+      method: 'PATCH',
+      body: JSON.stringify(userCoursesPatch),
+    });
+
+    const data = await res.json();
+
+    if (data.error) {
+      toast({
+        message: data.error,
+        kind: 'error',
+      });
+
+      return;
+    }
+
+    toast({
+      message: data.message,
+      kind: 'success',
+    });
+
+    setUserCoursesPatch(null);
   };
 
   const handleEdit = async () => {
@@ -139,7 +168,8 @@ const UsersTable: FC = () => {
       });
     });
 
-    await handlePatch();
+    await handlePatchClass();
+    await handlePatchCourse();
   };
 
   /**
@@ -276,11 +306,18 @@ const UsersTable: FC = () => {
                   })
                 }
               />
+              <label>Classes</label>
               <List
                 list={classes}
                 activeList={activeList}
                 onTagClick={handleTagClick}
                 onTagRemove={handleTagRemove}
+              />
+              <label>Courses</label>
+              <CourseList
+                userId={selectedUser.id}
+                patch={userCoursesPatch}
+                setPatch={setUserCoursesPatch}
               />
               {session?.user.id !== selectedUser.id && (
                 <Input
