@@ -1,5 +1,5 @@
 import BaseLayout from '@/components/Layout/Base';
-import Table from '@/components/AcademicYear';
+import Table from '@/components/AcademicYear/Table';
 import type { FC } from 'react';
 
 const Page: FC = () => (
