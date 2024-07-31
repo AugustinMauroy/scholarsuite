@@ -3,14 +3,13 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useState } from 'react';
 import {
   PencilIcon,
-  XMarkIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid';
+import EditModal from '@/components/Common/EditModal';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
-import styles from './index.module.css';
 import type { FC } from 'react';
 import type { Class, SchoolLevel } from '@prisma/client';
 
@@ -93,37 +92,27 @@ const ClassTable: FC<TableProps> = ({ classes }) => {
           ))}
         </tbody>
       </table>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.modalOverlay} />
-        <DialogPrimitive.Content className={styles.modalContent}>
-          <DialogPrimitive.Close asChild>
-            <XMarkIcon
-              className={styles.closeIcon}
-              onClick={() => setSelectedClass(null)}
-            />
-          </DialogPrimitive.Close>
-          <DialogPrimitive.Title>Edit Class</DialogPrimitive.Title>
-          <DialogPrimitive.Description>
-            Update the class&apos;s information
-          </DialogPrimitive.Description>
-          <Input
-            label="Name"
-            name="name"
-            value={selectedClass?.name || ''}
-            onChange={e =>
-              setSelectedClass(prevClass => ({
-                ...(prevClass as ClassState),
-                name: e.target.value,
-              }))
-            }
-          />
-          <DialogPrimitive.Close asChild>
-            <Button kind="outline" onClick={handleEdit}>
-              Save
-            </Button>
-          </DialogPrimitive.Close>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
+      <EditModal
+        title="Edit Class"
+        description="Update the class's information"
+        onClose={() => setSelectedClass(null)}
+      >
+        <Input
+          label="Name"
+          value={selectedClass?.name}
+          onChange={e =>
+            setSelectedClass(prevClass => ({
+              ...(prevClass as ClassState),
+              name: e.target.value,
+            }))
+          }
+        />
+        <DialogPrimitive.Close asChild>
+          <Button kind="outline" onClick={handleEdit}>
+            Save
+          </Button>
+        </DialogPrimitive.Close>
+      </EditModal>
     </DialogPrimitive.Root>
   );
 };

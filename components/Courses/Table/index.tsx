@@ -8,11 +8,11 @@ import {
   ExclamationTriangleIcon,
   PencilIcon,
 } from '@heroicons/react/24/solid';
+import EditModal from '@/components/Common/EditModal';
 import { useToast } from '@/hooks/useToast';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
-import styles from './index.module.css';
 import type { FC } from 'react';
 import type { Course, SchoolLevel, Subject } from '@prisma/client';
 
@@ -208,58 +208,42 @@ const Table: FC = () => {
           ))}
         </tbody>
       </table>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.modalOverlay} />
-        <DialogPrimitive.Content
-          className={styles.modalContent}
-          onCloseAutoFocus={() => {
-            setIsAdding(false);
-            setName('');
-            setSchoolLevelId(null);
-            setSubjectId(null);
-          }}
-        >
-          <DialogPrimitive.Close asChild>
-            <XMarkIcon className={styles.closeIcon} />
-          </DialogPrimitive.Close>
-          <DialogPrimitive.Title>
-            {isAdding ? 'Add Course' : 'Edit Course'}
-          </DialogPrimitive.Title>
-          <Input
-            label="Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <Select
-            label="School Level"
-            values={schoolLevels.map(level => ({
-              value: level.id.toString(),
-              label: level.name,
-            }))}
-            defaultValue={schoolLevelId?.toString()}
-            onChange={value => setSchoolLevelId(Number(value))}
-          />
+      <EditModal
+        title={isAdding ? 'Add Course' : 'Edit Course'}
+        onClose={() => setIsAdding(false)}
+      >
+        <Input
+          label="Name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+        />
+        <Select
+          label="School Level"
+          values={schoolLevels.map(level => ({
+            value: level.id.toString(),
+            label: level.name,
+          }))}
+          defaultValue={schoolLevelId?.toString()}
+          onChange={value => setSchoolLevelId(Number(value))}
+        />
 
-          <Select
-            label="Subject"
-            values={subjects.map(subject => ({
-              value: subject.id.toString(),
-              label: subject.name,
-            }))}
-            defaultValue={subjectId?.toString()}
-            onChange={value => setSubjectId(Number(value))}
-          />
-          <DialogPrimitive.Close asChild>
-            <Button
-              kind="outline"
-              onClick={() => (isAdding ? handleAdd() : handleEdit())}
-            >
-              {isAdding ? <PlusIcon /> : <PencilIcon />}
-              {isAdding ? 'Add' : 'Edit'}
-            </Button>
-          </DialogPrimitive.Close>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
+        <Select
+          label="Subject"
+          values={subjects.map(subject => ({
+            value: subject.id.toString(),
+            label: subject.name,
+          }))}
+          defaultValue={subjectId?.toString()}
+          onChange={value => setSubjectId(Number(value))}
+        />
+        <Button
+          kind="outline"
+          onClick={() => (isAdding ? handleAdd() : handleEdit())}
+        >
+          {isAdding ? <PlusIcon /> : <PencilIcon />}
+          {isAdding ? 'Add' : 'Edit'}
+        </Button>
+      </EditModal>
     </DialogPrimitive.Root>
   );
 };

@@ -1,75 +1,36 @@
-.modalOverlay {
-  @apply fixed
-  inset-0
-  bg-black
-  bg-opacity-50;
-}
+.avatarRoot {
+  @apply relative;
 
-.modalContent {
-  @apply fixed
-    left-1/2
-    top-1/2
-    flex
-    w-96
-    -translate-x-1/2
-    -translate-y-1/2
-    transform flex-col
-    gap-4
-    rounded-lg
-    bg-white
-    p-4
-    shadow-lg
-    dark:bg-gray-800
-    dark:shadow-none;
+  .avatar {
+    @apply mx-auto
+      flex
+      h-60
+      w-40
+      flex-col
+      items-center
+      justify-center
+      overflow-hidden
+      rounded-lg
+      border
+      border-gray-300
+      bg-gray-200
+      object-cover
+      text-6xl
+      dark:border-gray-700
+      dark:bg-gray-800;
+  }
 
-  .closeIcon {
+  .avatarRemove {
     @apply absolute
-    right-4
-    top-4
-    size-8
-    cursor-pointer
-    hover:text-red-500;
-  }
-
-  h2 {
-    @apply text-2xl
-      font-bold;
-  }
-
-  .avatarRoot {
-    @apply relative;
-
-    .avatar {
-      @apply mx-auto
-        flex
-        h-60
-        w-40
-        flex-col
-        items-center
-        justify-center
-        overflow-hidden
-        rounded-lg
-        border
-        border-gray-300
-        bg-gray-200
-        object-cover
-        text-6xl
-        dark:border-gray-700
-        dark:bg-gray-800;
-    }
-
-    .avatarRemove {
-      @apply absolute
-        left-1/2
-        top-1/2
-        -translate-x-1/2
-        -translate-y-1/2
-        transform
-        rounded-md
-        bg-red-500
-        px-2
-        py-1
-        text-white;
-    }
+      left-1/2
+      top-1/2
+      -translate-x-1/2
+      -translate-y-1/2
+      transform
+      rounded-md
+      bg-red-500
+      px-2
+      py-1
+      text-white;
   }
 }

@@ -3,16 +3,15 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useState, useEffect } from 'react';
 import {
   PencilIcon,
-  XMarkIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
   PlusIcon,
 } from '@heroicons/react/24/solid';
+import EditModal from '@/components/Common/EditModal';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
 import { isPossible } from '@/utils/academicYear';
-import styles from './index.module.css';
 import type { FC } from 'react';
 import type { AcademicYear } from '@prisma/client';
 
@@ -236,43 +235,35 @@ const Table: FC = () => {
           ))}
         </tbody>
       </table>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.modalOverlay} />
-        <DialogPrimitive.Content className={styles.modalContent}>
-          <DialogPrimitive.Close asChild>
-            <XMarkIcon className={styles.closeIcon} />
-          </DialogPrimitive.Close>
-          <DialogPrimitive.Title>
-            {isAdding ? 'Add Academic Year' : 'Edit Academic Year'}
-          </DialogPrimitive.Title>
-          <Input
-            label="Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <Input
-            type="date"
-            label="Start Date"
-            value={startDate}
-            onChange={e => setStartDate(e.target.value)}
-          />
-          <Input
-            type="date"
-            label="End Date"
-            value={endDate}
-            onChange={e => setEndDate(e.target.value)}
-          />
-          <DialogPrimitive.Close asChild>
-            <Button
-              kind="outline"
-              onClick={() => (isAdding ? handleAdd() : handleEdit())}
-            >
-              {isAdding ? <PlusIcon /> : <PencilIcon />}
-              {isAdding ? 'Add' : 'Edit'}
-            </Button>
-          </DialogPrimitive.Close>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
+      <EditModal
+        title={isAdding ? 'Add Academic Year' : 'Edit Academic Year'}
+        onClose={() => setIsAdding(false)}
+      >
+        <Input
+          label="Name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+        />
+        <Input
+          type="date"
+          label="Start Date"
+          value={startDate}
+          onChange={e => setStartDate(e.target.value)}
+        />
+        <Input
+          type="date"
+          label="End Date"
+          value={endDate}
+          onChange={e => setEndDate(e.target.value)}
+        />
+        <Button
+          kind="outline"
+          onClick={() => (isAdding ? handleAdd() : handleEdit())}
+        >
+          {isAdding ? <PlusIcon /> : <PencilIcon />}
+          {isAdding ? 'Add' : 'Edit'}
+        </Button>
+      </EditModal>
     </DialogPrimitive.Root>
   );
 };

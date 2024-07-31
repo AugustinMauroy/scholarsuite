@@ -3,14 +3,13 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useState, useEffect } from 'react';
 import {
   PencilIcon,
-  XMarkIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid';
+import EditModal from '@/components/Common/EditModal';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
-import styles from './index.module.css';
 import type { FC } from 'react';
 import type { SchoolLevel } from '@prisma/client';
 
@@ -98,51 +97,37 @@ const SchoolLevelsTable: FC = () => {
             ))}
         </tbody>
       </table>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.modalOverlay} />
-        <DialogPrimitive.Content className={styles.modalContent}>
-          <DialogPrimitive.Close asChild>
-            <XMarkIcon
-              className={styles.closeIcon}
-              onClick={() => setSelectedSchoolLevel(null)}
-            />
-          </DialogPrimitive.Close>
-          <DialogPrimitive.Title>
-            School Level: {selectedSchoolLevel?.name}
-          </DialogPrimitive.Title>
-          <DialogPrimitive.Description>
-            Edit the school level
-          </DialogPrimitive.Description>
-          <Input
-            label="Name"
-            value={selectedSchoolLevel?.name}
-            onChange={e =>
-              selectedSchoolLevel &&
-              setSelectedSchoolLevel({
-                ...selectedSchoolLevel,
-                name: e.target.value,
-              })
-            }
-          />
-          <Input
-            label="Order"
-            type="number"
-            value={selectedSchoolLevel?.order}
-            onChange={e =>
-              selectedSchoolLevel &&
-              setSelectedSchoolLevel({
-                ...selectedSchoolLevel,
-                order: parseInt(e.target.value),
-              })
-            }
-          />
-          <DialogPrimitive.Close asChild>
-            <Button type="submit" kind="outline" onClick={() => handleEdit()}>
-              Save
-            </Button>
-          </DialogPrimitive.Close>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
+      <EditModal
+        title="Edit School Level"
+        onClose={() => setSelectedSchoolLevel(null)}
+      >
+        <Input
+          label="Name"
+          value={selectedSchoolLevel?.name}
+          onChange={e =>
+            selectedSchoolLevel &&
+            setSelectedSchoolLevel({
+              ...selectedSchoolLevel,
+              name: e.target.value,
+            })
+          }
+        />
+        <Input
+          label="Order"
+          type="number"
+          value={selectedSchoolLevel?.order}
+          onChange={e =>
+            selectedSchoolLevel &&
+            setSelectedSchoolLevel({
+              ...selectedSchoolLevel,
+              order: parseInt(e.target.value),
+            })
+          }
+        />
+        <Button type="submit" kind="outline" onClick={() => handleEdit()}>
+          Save
+        </Button>
+      </EditModal>
     </DialogPrimitive.Root>
   );
 };

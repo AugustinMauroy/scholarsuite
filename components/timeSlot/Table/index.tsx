@@ -3,7 +3,6 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useState, useEffect } from 'react';
 import {
   PencilIcon,
-  XMarkIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
   PlusIcon,
@@ -11,7 +10,7 @@ import {
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
-import styles from './index.module.css';
+import EditModal from '@/components/Common/EditModal';
 import type { FC } from 'react';
 import type { TimeSlot } from '@prisma/client';
 
@@ -223,49 +222,41 @@ const Table: FC = () => {
           ))}
         </tbody>
       </table>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.modalOverlay} />
-        <DialogPrimitive.Content className={styles.modalContent}>
-          <DialogPrimitive.Close asChild>
-            <XMarkIcon className={styles.closeIcon} />
-          </DialogPrimitive.Close>
-          <DialogPrimitive.Title>
-            {isAdding ? 'Add Time Slot' : 'Edit TimeSlot'}
-          </DialogPrimitive.Title>
-          <Input
-            type="text"
-            name="name"
-            id="name"
-            label="Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <Input
-            type="text"
-            name="startTime"
-            id="startTime"
-            label="Start Time"
-            value={startTime}
-            onChange={e => setStartTime(e.target.value)}
-          />
-          <Input
-            type="text"
-            name="endTime"
-            id="endTime"
-            label="End Time"
-            value={endTime}
-            onChange={e => setEndTime(e.target.value)}
-          />
-          <DialogPrimitive.Close asChild>
-            <Button
-              kind="outline"
-              onClick={() => (isAdding ? handleAdd() : handleEdit())}
-            >
-              Save
-            </Button>
-          </DialogPrimitive.Close>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
+      <EditModal
+        title={isAdding ? 'Add Time Slot' : 'Edit TimeSlot'}
+        onClose={() => setIsAdding(false)}
+      >
+        <Input
+          type="text"
+          name="name"
+          id="name"
+          label="Name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+        />
+        <Input
+          type="text"
+          name="startTime"
+          id="startTime"
+          label="Start Time"
+          value={startTime}
+          onChange={e => setStartTime(e.target.value)}
+        />
+        <Input
+          type="text"
+          name="endTime"
+          id="endTime"
+          label="End Time"
+          value={endTime}
+          onChange={e => setEndTime(e.target.value)}
+        />
+        <Button
+          kind="outline"
+          onClick={() => (isAdding ? handleAdd() : handleEdit())}
+        >
+          Save
+        </Button>
+      </EditModal>
     </DialogPrimitive.Root>
   );
 };

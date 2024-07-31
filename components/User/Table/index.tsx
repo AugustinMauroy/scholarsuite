@@ -3,7 +3,6 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useState, useEffect } from 'react';
 import {
   PencilIcon,
-  XMarkIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid';
@@ -13,8 +12,8 @@ import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
 import CourseList from '@/components/Courses/List';
 import { useToast } from '@/hooks/useToast';
+import EditModal from '@/components/Common/EditModal';
 import List from '@/components/Common/List';
-import styles from './index.module.css';
 import type { FC } from 'react';
 import type { User, Class } from '@prisma/client';
 import type { Patch } from '@/types/patch';
@@ -252,102 +251,78 @@ const UsersTable: FC = () => {
           ))}
         </tbody>
       </table>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.modalOverlay} />
-        <DialogPrimitive.Content className={styles.modalContent}>
-          <DialogPrimitive.Close asChild>
-            <XMarkIcon
-              className={styles.closeIcon}
-              onClick={() => setSelectedUser(null)}
+      {selectedUser && (
+        <EditModal title="Edit User" onClose={() => setSelectedUser(null)}>
+          <Input
+            label="First Name"
+            value={selectedUser.firstName}
+            onChange={e =>
+              setSelectedUser({
+                ...selectedUser,
+                firstName: e.target.value,
+              })
+            }
+          />
+          <Input
+            label="Last Name"
+            value={selectedUser?.lastName}
+            onChange={e =>
+              setSelectedUser({ ...selectedUser, lastName: e.target.value })
+            }
+          />
+          <Input
+            label="Email"
+            value={selectedUser?.email ?? ''}
+            onChange={e =>
+              setSelectedUser({ ...selectedUser, email: e.target.value })
+            }
+          />
+          <Select
+            label="Role"
+            values={[
+              { value: 'ADMIN', label: 'Admin' },
+              { value: 'TEACHER', label: 'Teacher' },
+              { value: 'STUDENT', label: 'Student' },
+            ]}
+            defaultValue={selectedUser.role.toString()}
+            onChange={v =>
+              setSelectedUser({
+                ...selectedUser,
+                role: v as User['role'],
+              })
+            }
+          />
+          <label>Classes</label>
+          <List
+            list={classes}
+            activeList={activeList}
+            onTagClick={handleTagClick}
+            onTagRemove={handleTagRemove}
+          />
+          <label>Courses</label>
+          <CourseList
+            userId={selectedUser.id}
+            patch={userCoursesPatch}
+            setPatch={setUserCoursesPatch}
+          />
+          {session?.user.id !== selectedUser.id && (
+            <Input
+              label="Enabled"
+              type="checkbox"
+              checked={selectedUser.enabled}
+              onChange={e =>
+                setSelectedUser({
+                  ...selectedUser,
+                  enabled: e.target.checked,
+                })
+              }
             />
-          </DialogPrimitive.Close>
-          {selectedUser ? (
-            <>
-              <DialogPrimitive.Title>User Class</DialogPrimitive.Title>
-              <DialogPrimitive.Description>
-                Update the user&apos;s information
-              </DialogPrimitive.Description>
-              <Input
-                label="First Name"
-                value={selectedUser.firstName}
-                onChange={e =>
-                  setSelectedUser({
-                    ...selectedUser,
-                    firstName: e.target.value,
-                  })
-                }
-              />
-              <Input
-                label="Last Name"
-                value={selectedUser?.lastName}
-                onChange={e =>
-                  setSelectedUser({ ...selectedUser, lastName: e.target.value })
-                }
-              />
-              <Input
-                label="Email"
-                value={selectedUser?.email ?? ''}
-                onChange={e =>
-                  setSelectedUser({ ...selectedUser, email: e.target.value })
-                }
-              />
-              <Select
-                label="Role"
-                values={[
-                  { value: 'ADMIN', label: 'Admin' },
-                  { value: 'TEACHER', label: 'Teacher' },
-                  { value: 'STUDENT', label: 'Student' },
-                ]}
-                defaultValue={selectedUser.role.toString()}
-                onChange={v =>
-                  setSelectedUser({
-                    ...selectedUser,
-                    role: v as User['role'],
-                  })
-                }
-              />
-              <label>Classes</label>
-              <List
-                list={classes}
-                activeList={activeList}
-                onTagClick={handleTagClick}
-                onTagRemove={handleTagRemove}
-              />
-              <label>Courses</label>
-              <CourseList
-                userId={selectedUser.id}
-                patch={userCoursesPatch}
-                setPatch={setUserCoursesPatch}
-              />
-              {session?.user.id !== selectedUser.id && (
-                <Input
-                  label="Enabled"
-                  type="checkbox"
-                  checked={selectedUser.enabled}
-                  onChange={e =>
-                    setSelectedUser({
-                      ...selectedUser,
-                      enabled: e.target.checked,
-                    })
-                  }
-                />
-              )}
-              <DialogPrimitive.Close asChild>
-                <Button kind="outline" onClick={handleEdit}>
-                  Save
-                </Button>
-              </DialogPrimitive.Close>
-            </>
-          ) : (
-            <>
-              <DialogPrimitive.Title>Error</DialogPrimitive.Title>
-              <DialogPrimitive.Description>
-                User not found
-              </DialogPrimitive.Description>
-            </>
           )}
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
+          <Button kind="outline" onClick={handleEdit}>
+            Save
+          </Button>
+        </EditModal>
+      )}
     </DialogPrimitive.Root>
   );
 };

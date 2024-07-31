@@ -3,15 +3,14 @@ import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useState, useEffect } from 'react';
 import {
   PlusIcon,
-  XMarkIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
   PencilIcon,
 } from '@heroicons/react/24/solid';
+import EditModal from '@/components/Common/EditModal';
 import { useToast } from '@/hooks/useToast';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
-import styles from './index.module.css';
 import type { FC } from 'react';
 import type { Subject } from '@prisma/client';
 
@@ -208,37 +207,31 @@ const Table: FC = () => {
           ))}
         </tbody>
       </table>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className={styles.modalOverlay} />
-        <DialogPrimitive.Content className={styles.modalContent}>
-          <DialogPrimitive.Close asChild>
-            <XMarkIcon className={styles.closeIcon} />
-          </DialogPrimitive.Close>
-          <DialogPrimitive.Title>
-            {isAdding ? 'Add Subject' : 'Edit Subject'}
-          </DialogPrimitive.Title>
-          <Input
-            label="Name"
-            value={name}
-            onChange={e => setName(e.target.value)}
-          />
-          <Input
-            type="checkbox"
-            label="Enabled"
-            checked={enabled}
-            onChange={e => setEnabled(e.target.checked)}
-          />
-          <DialogPrimitive.Close asChild>
-            <Button
-              kind="outline"
-              onClick={() => (isAdding ? handleAdd() : handleEdit())}
-            >
-              {isAdding ? <PlusIcon /> : <PencilIcon />}
-              {isAdding ? 'Add' : 'Edit'}
-            </Button>
-          </DialogPrimitive.Close>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
+      <EditModal
+        title={isAdding ? 'Add Subject' : 'Edit Subject'}
+        onClose={() => setIsAdding(false)}
+      >
+        <Input
+          label="Name"
+          value={name}
+          onChange={e => setName(e.target.value)}
+        />
+        <Input
+          type="checkbox"
+          label="Enabled"
+          checked={enabled}
+          onChange={e => setEnabled(e.target.checked)}
+        />
+        <DialogPrimitive.Close asChild>
+          <Button
+            kind="outline"
+            onClick={() => (isAdding ? handleAdd() : handleEdit())}
+          >
+            {isAdding ? <PlusIcon /> : <PencilIcon />}
+            {isAdding ? 'Add' : 'Edit'}
+          </Button>
+        </DialogPrimitive.Close>
+      </EditModal>
     </DialogPrimitive.Root>
   );
 };
