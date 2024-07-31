@@ -66,6 +66,7 @@ The data models used in ScholarSuite are as follows:
 - `disciplinaryReports`: relationship with the disciplinary reports of the user
 - `userCourses`: relationship with the courses of the user
 - `userClasses`: relationship with the classes of the user (teacher or administrator)
+- `apiKey`: relationship with the API keys of the user
 
 ### 7. `Class`
 
@@ -93,6 +94,7 @@ The data models used in ScholarSuite are as follows:
 - `grades`: relationship with the grades of the student
 - `disciplinaryReports`: relationship with the disciplinary reports of the student
 - `presences`: relationship with the presences of the student
+- `studentCourses`: relationship with the courses of the student
 
 ### 9. `Grade`
 
@@ -133,16 +135,14 @@ The data models used in ScholarSuite are as follows:
 
 - `id`: unique identifier for the course
 - `name`: name of the course
-- `description`: description of the course (optional)
 - `subject`: relationship with the subject of the course
 - `subjectId`: identifier of the subject of the course
-- `teacher`: relationship with the teacher responsible for the course
-- `teacherId`: identifier of the teacher responsible for the course
-- `academicYear`: relationship with the academic year of the course
-- `academicYearId`: identifier of the academic year of the course
+- `schoolLevel`: relationship with the school level of the course
+- `schoolLevelId`: identifier of the school level of the course
 - `createdAt`: creation date of the course for internal use
 - `updatedAt`: modification date of the course for internal use
-- `presences`: relationship with the presences of the course
+- `userCourse`: relationship with the users (teachers) of the course
+- `studentCourse`: relationship with the students of the course
 
 ### 13. `GradePeriod`
 
@@ -179,6 +179,7 @@ The data models used in ScholarSuite are as follows:
 - `course`: relationship with the course of the presence
 - `courseId`: identifier of the course of the presence
 - `processed`: indicates if the presence has been processed
+- `notified`: indicates if the presence has been notified
 
 ### 16. `DisciplinaryReport`
 

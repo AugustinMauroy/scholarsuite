@@ -108,6 +108,18 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [x] End date
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
+- [x] **API Key management**
+  - [x] Name
+  - [x] Key (unique)
+  - [x] User
+  - [x] Expiration date
+  - [x] Creation date (internal use)
+  - [x] Modification date (internal use)
+- [x] **Many-to-Many relations**
+  - [x] Between Course and AcademicYear
+  - [x] Between User and Class
+  - [x] Between User and Course
+  - [x] Between Student and Course
 
 ## Technical points
 
