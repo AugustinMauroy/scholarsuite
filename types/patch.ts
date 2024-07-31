@@ -1,7 +1,7 @@
 type opp = 'add' | 'remove';
 
 export type Patch = {
-  userId: number;
+  id: number;
   data: {
     opp: opp;
     id: number;

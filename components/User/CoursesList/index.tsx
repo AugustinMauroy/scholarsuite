@@ -1,18 +1,11 @@
 'use client';
-import { useState, useEffect, use } from 'react';
+import { useState, useEffect } from 'react';
 import { useToast } from '@/hooks/useToast';
 import List from '@/components/Common/List';
 import type { FC } from 'react';
 import type { Course } from '@prisma/client';
 import type { Tag } from '@/types/tag';
-
-export type Patch = {
-  userId: number;
-  data: {
-    opp: 'add' | 'remove';
-    id: number;
-  }[];
-};
+import type { Patch } from '@/types/patch';
 
 type CourseListProps = {
   userId: number;
@@ -26,7 +19,7 @@ const CourseList: FC<CourseListProps> = ({ userId, patch, setPatch }) => {
   const [courseList, setCourseList] = useState<Course[]>([]);
 
   useEffect(() => {
-    fetch('/api/course', {
+    fetch('/api/course/user', {
       method: 'POST',
       body: JSON.stringify({ userId }),
     })
@@ -75,14 +68,14 @@ const CourseList: FC<CourseListProps> = ({ userId, patch, setPatch }) => {
 
     if (!patch) {
       setPatch({
-        userId,
+        id: userId,
         data: [{ opp: 'add', id: tag.id }],
       });
 
       return;
     } else {
       setPatch({
-        userId,
+        id: userId,
         data: [...patch.data, { opp: 'add', id: tag.id }],
       });
     }
@@ -95,14 +88,14 @@ const CourseList: FC<CourseListProps> = ({ userId, patch, setPatch }) => {
 
     if (!patch) {
       setPatch({
-        userId,
+        id: userId,
         data: [{ opp: 'remove', id: tag.id }],
       });
 
       return;
     } else {
       setPatch({
-        userId,
+        id: userId,
         data: [...patch.data, { opp: 'remove', id: tag.id }],
       });
     }

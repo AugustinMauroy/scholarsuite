@@ -2,16 +2,16 @@ import prisma from '@/lib/prisma';
 import type { Patch } from '@/types/patch';
 
 export const PATCH = async (req: Request): Promise<Response> => {
-  const { id: userId, data } = (await req.json()) as Patch;
+  const { id: studentId, data } = (await req.json()) as Patch;
 
-  if (!userId || !data) return Response.json({ error: 'Invalid request' });
+  if (!studentId || !data) return Response.json({ error: 'Invalid request' });
 
   for (const { opp, id } of data) {
     if (opp === 'add') {
       try {
-        await prisma.userCourse.create({
+        await prisma.studentCourse.create({
           data: {
-            userId,
+            studentId,
             courseId: id,
           },
         });
@@ -20,9 +20,9 @@ export const PATCH = async (req: Request): Promise<Response> => {
       }
     } else if (opp === 'remove') {
       try {
-        await prisma.userCourse.deleteMany({
+        await prisma.studentCourse.deleteMany({
           where: {
-            userId,
+            studentId,
             courseId: id,
           },
         });

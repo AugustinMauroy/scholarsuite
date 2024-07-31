@@ -10,7 +10,7 @@ import { useSession } from 'next-auth/react';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
-import CourseList from '@/components/Courses/List';
+import CourseList from '@/components/User/CoursesList';
 import { useToast } from '@/hooks/useToast';
 import EditModal from '@/components/Common/EditModal';
 import List from '@/components/Common/List';
@@ -182,12 +182,12 @@ const UsersTable: FC = () => {
 
     if (!userClassesPatch) {
       setUserClassesPatch({
-        userId: selectedUser.id,
+        id: selectedUser.id,
         data: [{ opp: 'add', id: tag.id }],
       });
     } else {
       setUserClassesPatch({
-        userId: selectedUser.id,
+        id: selectedUser.id,
         data: [...userClassesPatch.data, { opp: 'add', id: tag.id }],
       });
     }
@@ -203,14 +203,14 @@ const UsersTable: FC = () => {
 
     if (!userClassesPatch) {
       setUserClassesPatch({
-        userId,
+        id: userId,
         data: [{ opp: 'remove', id: tag.id }],
       });
 
       return;
     } else {
       setUserClassesPatch({
-        userId,
+        id: userId,
         data: [...userClassesPatch.data, { opp: 'remove', id: tag.id }],
       });
     }
