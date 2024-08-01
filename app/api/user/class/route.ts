@@ -2,7 +2,7 @@ import prisma from '@/lib/prisma';
 import type { Patch } from '@/types/patch';
 
 export const PATCH = async (req: Request) => {
-  const { userId, data } = (await req.json()) as Patch;
+  const { id: userId, data } = (await req.json()) as Patch;
 
   if (!userId || !data) return Response.json({ error: 'Invalid request' });
 

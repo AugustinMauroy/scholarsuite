@@ -78,10 +78,10 @@ const NavItemComponent: FC<NavItemComponentProps> = ({ item, pathname }) => {
         {item.course.map(cls => (
           <li key={cls.id}>
             <Link
-              href={`/class/${cls.id}`}
+              href={`/course/${cls.id}`}
               className={classNames(
                 'block px-4 py-2 text-sm',
-                pathname.includes(`/class/${cls.id}`)
+                pathname.includes(`/course/${cls.id}`)
                   ? 'bg-brand-500 text-white dark:bg-brand-600 dark:text-gray-200'
                   : 'hover:bg-gray-100 dark:hover:bg-gray-800'
               )}

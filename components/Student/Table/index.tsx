@@ -15,9 +15,11 @@ import { useToast } from '@/hooks/useToast';
 import EditModal from '@/components/Common/EditModal';
 import Avatar from '@/components/Common/Avatar';
 import { getAcronymFromString } from '@/utils/string';
+import CourseList from '../CoursesList';
 import styles from './index.module.css';
 import type { FC } from 'react';
 import type { Student, Class } from '@prisma/client';
+import type { Patch } from '@/types/patch';
 
 type StudentState = Student & { class: Class | null };
 
@@ -35,54 +37,74 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [displayRemove, setDisplayRemove] = useState(false);
+  const [coursePatch, setCoursePatch] = useState<Patch | null>(null);
 
-  const handleEdit = async () => {
-    if (!selectedStudent || !file) {
-      toast({
-        message: (
-          <>
-            <ExclamationTriangleIcon />
-            Anything was changed
-          </>
-        ),
-        kind: 'warning',
-      });
-
-      return;
-    }
-
-    const formData = new FormData();
-    formData.append('firstName', selectedStudent.firstName);
-    formData.append('lastName', selectedStudent.lastName);
-    selectedStudent.classId &&
-      formData.append('classId', selectedStudent.classId.toString());
-    selectedStudent.contactEmail &&
-      formData.append('contactEmail', selectedStudent.contactEmail);
-    formData.append('enabled', selectedStudent.enabled.toString());
-    file && formData.append('file', file);
-
-    const response = await fetch(`/api/student/${selectedStudent.id}`, {
+  const handlePatch = async () => {
+    const res = await fetch('/api/student/course', {
       method: 'PATCH',
-      body: formData,
+      body: JSON.stringify(coursePatch),
     });
 
-    if (response.ok) {
-      const updatedStudent = (await response.json()).student as StudentState;
-      setStudentList(prevList =>
-        prevList.map(s => (s.id === updatedStudent.id ? updatedStudent : s))
-      );
-      setSelectedStudent(null);
-      setFile(null);
-
+    if (res.ok) {
+      setCoursePatch(null);
       toast({
         message: (
           <>
             <CheckCircleIcon />
-            Student updated successfully
+            Courses updated successfully
           </>
         ),
         kind: 'success',
       });
+    } else {
+      toast({
+        message: (
+          <>
+            <ExclamationTriangleIcon />
+            Error updating courses
+          </>
+        ),
+        kind: 'error',
+      });
+    }
+  };
+
+  const handleEdit = async () => {
+    if (coursePatch) await handlePatch();
+    if (selectedStudent) {
+      const formData = new FormData();
+      formData.append('firstName', selectedStudent.firstName);
+      formData.append('lastName', selectedStudent.lastName);
+      selectedStudent.classId &&
+        formData.append('classId', selectedStudent.classId.toString());
+      selectedStudent.contactEmail &&
+        formData.append('contactEmail', selectedStudent.contactEmail);
+      formData.append('enabled', selectedStudent.enabled.toString());
+      file && formData.append('file', file);
+
+      const response = await fetch(`/api/student/${selectedStudent.id}`, {
+        method: 'PATCH',
+        body: formData,
+      });
+
+      if (response.ok) {
+        const updatedStudent = (await response.json()).student as StudentState;
+        setStudentList(prevList =>
+          prevList.map(s => (s.id === updatedStudent.id ? updatedStudent : s))
+        );
+        setSelectedStudent(null);
+        setFile(null);
+
+        toast({
+          message: (
+            <>
+              <CheckCircleIcon />
+              Student updated successfully
+            </>
+          ),
+          kind: 'success',
+        });
+      }
     }
   };
 
@@ -234,6 +256,16 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
                 })
               }
             />
+            <CourseList
+              studentId={selectedStudent.id}
+              patch={coursePatch}
+              setPatch={setCoursePatch}
+            />
+            <DialogPrimitive.Close asChild>
+              <Button kind="outline" onClick={handleEdit}>
+                Save
+              </Button>
+            </DialogPrimitive.Close>
           </>
         )}
       </EditModal>
