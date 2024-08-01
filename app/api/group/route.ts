@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma';
 
 export const GET = async (req: Request) => {
-  const courses = await prisma.course.findMany({
+  const groups = await prisma.group.findMany({
     include: {
       subject: true,
       schoolLevel: true,
@@ -10,7 +10,7 @@ export const GET = async (req: Request) => {
 
   return Response.json(
     {
-      data: courses,
+      data: groups,
     },
     { status: 200 }
   );
@@ -22,7 +22,7 @@ export const PUT = async (req: Request) => {
   if (!name || !schoolLevelId || !subjectId)
     return Response.json({ error: 'All fields are required' }, { status: 400 });
 
-  const course = await prisma.course.create({
+  const groups = await prisma.group.create({
     data: {
       name,
       schoolLevelId,
@@ -34,7 +34,7 @@ export const PUT = async (req: Request) => {
     },
   });
 
-  return Response.json({ data: course }, { status: 201 });
+  return Response.json({ data: groups }, { status: 201 });
 };
 
 export const PATCH = async (req: Request) => {
@@ -45,7 +45,7 @@ export const PATCH = async (req: Request) => {
   if (!id || !name || !schoolLevelId || !subjectId)
     return Response.json({ error: 'All fields are required' }, { status: 400 });
 
-  const course = await prisma.course.update({
+  const groups = await prisma.group.update({
     where: {
       id,
     },
@@ -60,5 +60,5 @@ export const PATCH = async (req: Request) => {
     },
   });
 
-  return Response.json({ data: course }, { status: 200 });
+  return Response.json({ data: groups }, { status: 200 });
 };

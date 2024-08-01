@@ -13,7 +13,7 @@ import Input from '@/components/Common/Input';
 import Label from '@/components/Common/Label';
 import List from '@/components/Common/List';
 import Select from '@/components/Common/Select';
-import CourseList from '@/components/User/CoursesList';
+import GroupList from '@/components/User/GroupsList';
 import { useToast } from '@/hooks/useToast';
 import type { Patch } from '@/types/patch';
 import type { Tag } from '@/types/tag';
@@ -28,7 +28,7 @@ const UsersTable: FC = () => {
   const [classes, setClasses] = useState<Class[]>([]);
   const [activeList, setActiveList] = useState<Class[]>([]);
   const [userClassesPatch, setUserClassesPatch] = useState<Patch | null>(null);
-  const [userCoursesPatch, setUserCoursesPatch] = useState<Patch | null>(null);
+  const [userGroupsPatch, setUserGroupsPatch] = useState<Patch | null>(null);
 
   useEffect(() => {
     fetch('/api/user')
@@ -87,12 +87,12 @@ const UsersTable: FC = () => {
       });
   };
 
-  const handlePatchCourse = async () => {
-    if (!userCoursesPatch || userCoursesPatch.data.length === 0) return;
+  const handlePatchGroup = async () => {
+    if (!userGroupsPatch || userGroupsPatch.data.length === 0) return;
 
-    const res = await fetch('/api/user/course', {
+    const res = await fetch('/api/user/group', {
       method: 'PATCH',
-      body: JSON.stringify(userCoursesPatch),
+      body: JSON.stringify(userGroupsPatch),
     });
 
     const data = await res.json();
@@ -111,7 +111,7 @@ const UsersTable: FC = () => {
       kind: 'success',
     });
 
-    setUserCoursesPatch(null);
+    setUserGroupsPatch(null);
   };
 
   const handleEdit = async () => {
@@ -169,7 +169,7 @@ const UsersTable: FC = () => {
     });
 
     await handlePatchClass();
-    await handlePatchCourse();
+    await handlePatchGroup();
   };
 
   /**
@@ -300,11 +300,11 @@ const UsersTable: FC = () => {
             onTagClick={handleTagClick}
             onTagRemove={handleTagRemove}
           />
-          <Label>Courses</Label>
-          <CourseList
+          <Label>Groups</Label>
+          <GroupList
             userId={selectedUser.id}
-            patch={userCoursesPatch}
-            setPatch={setUserCoursesPatch}
+            patch={userGroupsPatch}
+            setPatch={setUserGroupsPatch}
           />
           {session?.user.id !== selectedUser.id && (
             <Input

@@ -13,36 +13,36 @@ import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
 import { useToast } from '@/hooks/useToast';
-import type { Course, SchoolLevel, Subject } from '@prisma/client';
+import type { Group, SchoolLevel, Subject } from '@prisma/client';
 import type { FC } from 'react';
 
-type CoursesWithRelations = Course & {
+type GroupsWithRelations = Group & {
   schoolLevel: SchoolLevel;
   subject: Subject;
 };
 
 const Table: FC = () => {
   const toast = useToast();
-  const [courses, setCourses] = useState<CoursesWithRelations[]>([]);
+  const [groups, setGroups] = useState<GroupsWithRelations[]>([]);
   const [schoolLevels, setSchoolLevels] = useState<SchoolLevel[]>([]);
   const [subjects, setSubjects] = useState<Subject[]>([]);
   const [isAdding, setIsAdding] = useState(false);
-  const [courseId, setCourseId] = useState<number>();
+  const [groupId, setGroupId] = useState<number>();
   const [name, setName] = useState('');
   const [schoolLevelId, setSchoolLevelId] = useState<number | null>(null);
   const [subjectId, setSubjectId] = useState<number | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const courseRes = await fetch('/api/course');
+      const groupRes = await fetch('/api/group');
       const schoolLevelRes = await fetch('/api/schoolLevel');
       const subjectRes = await fetch('/api/subject');
 
-      const courseData = await courseRes.json();
+      const groupData = await groupRes.json();
       const schoolLevelData = await schoolLevelRes.json();
       const subjectData = await subjectRes.json();
 
-      setCourses(courseData.data);
+      setGroups(groupData.data);
       setSchoolLevels(schoolLevelData.data);
       setSubjects(subjectData.data);
     };
@@ -65,7 +65,7 @@ const Table: FC = () => {
       return;
     }
 
-    const course = await fetch('/api/course', {
+    const group = await fetch('/api/group', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -77,12 +77,12 @@ const Table: FC = () => {
       }),
     }).then(res => res.json());
 
-    if (course.error) {
+    if (group.error) {
       toast({
         message: (
           <>
             <ExclamationTriangleIcon />
-            {course.error}
+            {group.error}
           </>
         ),
         kind: 'error',
@@ -91,12 +91,12 @@ const Table: FC = () => {
       return;
     }
 
-    setCourses([...courses, course.data]);
+    setGroups([...groups, group.data]);
     toast({
       message: (
         <>
           <CheckCircleIcon />
-          Course added successfully
+          Group added successfully
         </>
       ),
       kind: 'success',
@@ -118,25 +118,25 @@ const Table: FC = () => {
       return;
     }
 
-    const course = await fetch('/api/course', {
+    const group = await fetch('/api/group', {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        id: courseId,
+        id: groupId,
         name,
         schoolLevelId,
         subjectId,
       }),
     }).then(res => res.json());
 
-    if (course.error) {
+    if (group.error) {
       toast({
         message: (
           <>
             <ExclamationTriangleIcon />
-            {course.error}
+            {group.error}
           </>
         ),
         kind: 'error',
@@ -145,15 +145,15 @@ const Table: FC = () => {
       return;
     }
 
-    const index = courses.findIndex(course => course.id === courseId);
-    courses[index] = course.data;
-    setCourses([...courses]);
+    const index = groups.findIndex(group => group.id === groupId);
+    groups[index] = group.data;
+    setGroups([...groups]);
 
     toast({
       message: (
         <>
           <CheckCircleIcon />
-          Course updated successfully
+          Group updated successfully
         </>
       ),
       kind: 'success',
@@ -169,33 +169,33 @@ const Table: FC = () => {
           className="mb-4"
         >
           <PlusIcon />
-          Add Course
+          Add Group
         </Button>
       </DialogPrimitive.Trigger>
       <table>
         <thead>
           <tr>
-            <th>Course</th>
+            <th>Group</th>
             <th>School Level</th>
             <th>Subject</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          {courses.map(course => (
-            <tr key={course.id}>
-              <td>{course.name}</td>
-              <td>{course.schoolLevel?.name}</td>
-              <td>{course.subject?.name}</td>
+          {groups.map(group => (
+            <tr key={group.id}>
+              <td>{group.name}</td>
+              <td>{group.schoolLevel?.name}</td>
+              <td>{group.subject?.name}</td>
               <td>
                 <DialogPrimitive.Trigger asChild>
                   <Button
                     kind="outline"
                     onClick={() => {
-                      setCourseId(course.id);
-                      setName(course.name);
-                      setSchoolLevelId(course.schoolLevelId);
-                      setSubjectId(course.subjectId);
+                      setGroupId(group.id);
+                      setName(group.name);
+                      setSchoolLevelId(group.schoolLevelId);
+                      setSubjectId(group.subjectId);
                       setIsAdding(false);
                     }}
                   >
@@ -209,7 +209,7 @@ const Table: FC = () => {
         </tbody>
       </table>
       <EditModal
-        title={isAdding ? 'Add Course' : 'Edit Course'}
+        title={isAdding ? 'Add Group' : 'Edit Group'}
         onClose={() => setIsAdding(false)}
       >
         <Input

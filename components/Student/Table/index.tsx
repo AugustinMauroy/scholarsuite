@@ -12,10 +12,11 @@ import Button from '@/components/Common/Button';
 import DropZone from '@/components/Common/DropZone';
 import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
+import Label from '@/components/Common/Label';
 import Select from '@/components/Common/Select';
 import { useToast } from '@/hooks/useToast';
 import { getAcronymFromString } from '@/utils/string';
-import CourseList from '../CoursesList';
+import GroupsList from '../GroupsList';
 import styles from './index.module.css';
 import type { Patch } from '@/types/patch';
 import type { Student, Class } from '@prisma/client';
@@ -38,7 +39,7 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
   const [file, setFile] = useState<File | null>(null);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [displayRemove, setDisplayRemove] = useState(false);
-  const [coursePatch, setCoursePatch] = useState<Patch | null>(null);
+  const [groupPatch, setGroupPatch] = useState<Patch | null>(null);
 
   const selectClassValue = useMemo(
     () =>
@@ -55,18 +56,18 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
   console.log('selectClassValue', selectClassValue);
 
   const handlePatch = async () => {
-    const res = await fetch('/api/student/course', {
+    const res = await fetch('/api/student/group', {
       method: 'PATCH',
-      body: JSON.stringify(coursePatch),
+      body: JSON.stringify(groupPatch),
     });
 
     if (res.ok) {
-      setCoursePatch(null);
+      setGroupPatch(null);
       toast({
         message: (
           <>
             <CheckCircleIcon />
-            Courses updated successfully
+            Groups updated successfully
           </>
         ),
         kind: 'success',
@@ -76,7 +77,7 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
         message: (
           <>
             <ExclamationTriangleIcon />
-            Error updating courses
+            Error updating groups
           </>
         ),
         kind: 'error',
@@ -85,7 +86,7 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
   };
 
   const handleEdit = async () => {
-    if (coursePatch) await handlePatch();
+    if (groupPatch) await handlePatch();
     if (selectedStudent) {
       const formData = new FormData();
       formData.append('firstName', selectedStudent.firstName);
@@ -269,10 +270,11 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
                 })
               }
             />
-            <CourseList
+            <Label>Groups</Label>
+            <GroupsList
               studentId={selectedStudent.id}
-              patch={coursePatch}
-              setPatch={setCoursePatch}
+              patch={groupPatch}
+              setPatch={setGroupPatch}
             />
             <DialogPrimitive.Close asChild>
               <Button kind="outline" onClick={handleEdit}>

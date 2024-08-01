@@ -184,8 +184,8 @@ export const PATCH = async (req: Request): Promise<Response> => {
           ...item,
           userId,
           timeSlotId,
-          // @TODO
-          courseId: 1,
+          // @TODO: get groupIdId from user
+          groupId: 1,
           date,
           studentId: item.studentId,
           academicYearId: academicYear.id,

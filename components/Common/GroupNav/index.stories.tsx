@@ -10,7 +10,7 @@ export const Default: Story = {
       {
         id: 1,
         name: 'Item 1',
-        course: [
+        group: [
           {
             id: 1,
             name: 'Class 1',
@@ -24,7 +24,7 @@ export const Default: Story = {
       {
         id: 2,
         name: 'Item 2',
-        course: [
+        group: [
           {
             id: 3,
             name: 'Class 3',

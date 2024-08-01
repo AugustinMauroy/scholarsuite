@@ -44,7 +44,7 @@ model SchoolLevel {
   updatedAt DateTime   @updatedAt
   classes   Class[]
   timeSlot  TimeSlot[]
-  course    Course[]
+  group     Group[]
 }
 
 model Subject {
@@ -54,7 +54,7 @@ model Subject {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   grades    Grade[]
-  course    Course[]
+  group     Group[]
 }
 
 model User {
@@ -71,7 +71,7 @@ model User {
   disciplinaryReport DisciplinaryReport[]
   userClass          UserClass[]
   apiKey             ApiKey[]
-  userCourse         UserCourse[]
+  userGroup          UserGroup[]
 }
 
 model Class {
@@ -100,7 +100,7 @@ model Student {
   grades              Grade[]
   disciplinaryReports DisciplinaryReport[]
   presence            Presence[]
-  StudentCourse       StudentCourse[]
+  StudentGroup        StudentGroup[]
 }
 
 model Grade {
@@ -109,7 +109,7 @@ model Grade {
   studentId     Int
   subjectId     Int
   gradePeriodId Int
-  courseId      Int
+  groupId       Int
   enabled       Boolean     @default(true)
   createdAt     DateTime    @default(now())
   updatedAt     DateTime    @updatedAt
@@ -131,18 +131,18 @@ model TimeSlot {
   presence      Presence[]
 }
 
-model Course {
-  id            Int             @id @default(autoincrement())
+model Group {
+  id            Int            @id @default(autoincrement())
   name          String
   subjectId     Int
   schoolLevelId Int
-  enabled       Boolean         @default(true)
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  subject       Subject         @relation(fields: [subjectId], references: [id])
-  schoolLevel   SchoolLevel     @relation(fields: [schoolLevelId], references: [id])
-  StudentCourse StudentCourse[]
-  userCourse    UserCourse[]
+  enabled       Boolean        @default(true)
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  subject       Subject        @relation(fields: [subjectId], references: [id])
+  schoolLevel   SchoolLevel    @relation(fields: [schoolLevelId], references: [id])
+  StudentGroup  StudentGroup[]
+  userGroup     UserGroup[]
 }
 
 model GradePeriod {
@@ -165,7 +165,7 @@ model Presence {
   userId         Int
   academicYearId Int
   timeSlotId     Int
-  courseId       Int
+  groupId        Int
   processed      Boolean       @default(false)
   notified       Boolean       @default(false)
   createdAt      DateTime      @default(now())
@@ -202,7 +202,7 @@ model ApiKey {
   user      User     @relation(fields: [userId], references: [id])
 }
 
-// Many to Many relations, between Course and AcademicYear
+// Many to Many relations, between GradePeriod and AcademicYear
 model GradePeriodAcademicYear {
   id             Int          @id @default(autoincrement())
   gradePeriodId  Int
@@ -220,20 +220,20 @@ model UserClass {
   class   Class @relation(fields: [classId], references: [id])
 }
 
-// Many to Many relations, between User and Course
-model UserCourse {
-  id       Int    @id @default(autoincrement())
-  userId   Int
-  courseId Int
-  user     User   @relation(fields: [userId], references: [id])
-  course   Course @relation(fields: [courseId], references: [id])
+// Many to Many relations, between User and Group
+model UserGroup {
+  id      Int   @id @default(autoincrement())
+  userId  Int
+  groupId Int
+  user    User  @relation(fields: [userId], references: [id])
+  group   Group @relation(fields: [groupId], references: [id])
 }
 
-// Many to Many relations, between Student and Course
-model StudentCourse {
+// Many to Many relations, between Student and Group
+model StudentGroup {
   id        Int     @id @default(autoincrement())
   studentId Int
-  courseId  Int
+  groupId   Int
   student   Student @relation(fields: [studentId], references: [id])
-  course    Course  @relation(fields: [courseId], references: [id])
+  group     Group   @relation(fields: [groupId], references: [id])
 }

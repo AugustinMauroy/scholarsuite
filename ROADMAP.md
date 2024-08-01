@@ -93,8 +93,8 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [ ] Modification date (internal use)
 - [ ] **Report card management**
   - [ ] Generation of report cards in web or pdf format
-- [x] **Course management**
-      Represents the courses given by one or more teachers to a group of students who can be in one or more classes.
+- [x] **Group management**
+      Represents the groups of students (Ex: Group A, Group B, etc...).
   - [x] Name
   - [x] Subject
   - [x] User(s)
@@ -115,11 +115,10 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [x] Expiration date
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
-- [x] **Many-to-Many relations**
-  - [x] Between Course and AcademicYear
+- [x] \*_Many-to-Many relations_
   - [x] Between User and Class
-  - [x] Between User and Course
-  - [x] Between Student and Course
+  - [x] Between User and Group
+  - [x] Between Student and Group
 
 ## Technical points
 

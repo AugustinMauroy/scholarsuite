@@ -1,27 +1,26 @@
-'use client';
 import { useState, useEffect } from 'react';
 import List from '@/components/Common/List';
 import { useToast } from '@/hooks/useToast';
 import type { Patch } from '@/types/patch';
 import type { Tag } from '@/types/tag';
-import type { Course } from '@prisma/client';
+import type { Group } from '@prisma/client';
 import type { FC } from 'react';
 
-type CourseListProps = {
-  userId: number;
+type GroupsListProps = {
+  studentId: number;
   patch: Patch | null;
   setPatch: (patch: Patch) => void;
 };
 
-const CourseList: FC<CourseListProps> = ({ userId, patch, setPatch }) => {
+const GroupsList: FC<GroupsListProps> = ({ studentId, patch, setPatch }) => {
   const toast = useToast();
-  const [userCourseList, setUserCourseList] = useState<Course[]>([]);
-  const [courseList, setCourseList] = useState<Course[]>([]);
+  const [studentGroupList, setStudentGroupList] = useState<Group[]>([]);
+  const [groupList, setGroupList] = useState<Group[]>([]);
 
   useEffect(() => {
-    fetch('/api/course/user', {
+    fetch('/api/group/student', {
       method: 'POST',
-      body: JSON.stringify({ userId }),
+      body: JSON.stringify({ studentId }),
     })
       .then(res => res.json())
       .then(data => {
@@ -33,9 +32,9 @@ const CourseList: FC<CourseListProps> = ({ userId, patch, setPatch }) => {
 
           return;
         }
-        setUserCourseList(data.data);
+        setStudentGroupList(data.data);
       });
-    fetch('/api/course', {
+    fetch('/api/group', {
       method: 'GET',
     })
       .then(res => res.json())
@@ -48,7 +47,7 @@ const CourseList: FC<CourseListProps> = ({ userId, patch, setPatch }) => {
 
           return;
         }
-        setCourseList(data.data);
+        setGroupList(data.data);
       });
   }, []);
 
@@ -60,42 +59,42 @@ const CourseList: FC<CourseListProps> = ({ userId, patch, setPatch }) => {
   }, [patch]);
 
   const handleAddClass = (tag: Tag) => {
-    const newCourse = courseList.find(Course => Course.id === tag.id);
+    const newGroup = groupList.find(Group => Group.id === tag.id);
 
-    if (!newCourse) return;
+    if (!newGroup) return;
 
-    setUserCourseList([...userCourseList, newCourse]);
+    setStudentGroupList([...studentGroupList, newGroup]);
 
     if (!patch) {
       setPatch({
-        id: userId,
+        id: studentId,
         data: [{ opp: 'add', id: tag.id }],
       });
 
       return;
     } else {
       setPatch({
-        id: userId,
+        id: studentId,
         data: [...patch.data, { opp: 'add', id: tag.id }],
       });
     }
   };
 
   const handleRemoveClass = (tag: Tag) => {
-    const newCourseList = userCourseList.filter(Course => Course.id !== tag.id);
+    const newGroupList = studentGroupList.filter(Group => Group.id !== tag.id);
 
-    setUserCourseList(newCourseList);
+    setStudentGroupList(newGroupList);
 
     if (!patch) {
       setPatch({
-        id: userId,
+        id: studentId,
         data: [{ opp: 'remove', id: tag.id }],
       });
 
       return;
     } else {
       setPatch({
-        id: userId,
+        id: studentId,
         data: [...patch.data, { opp: 'remove', id: tag.id }],
       });
     }
@@ -103,12 +102,12 @@ const CourseList: FC<CourseListProps> = ({ userId, patch, setPatch }) => {
 
   return (
     <List
-      list={courseList}
-      activeList={userCourseList}
+      list={groupList}
+      activeList={studentGroupList}
       onTagClick={handleAddClass}
       onTagRemove={handleRemoveClass}
     />
   );
 };
 
-export default CourseList;
+export default GroupsList;

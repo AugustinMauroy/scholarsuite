@@ -6,13 +6,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import styles from './nav.module.css';
+import type { Group } from '@prisma/client';
 import type { FC } from 'react';
 
 type NavItem = {
-  course: {
-    id: number;
-    name: string;
-  }[];
+  group: Partial<Group>[];
 } & {
   id: number;
   name: string;
@@ -76,18 +74,18 @@ const NavItemComponent: FC<NavItemComponentProps> = ({ item, pathname }) => {
     <li>
       <span className={styles.item}>{item.name}</span>
       <ul className={styles.item}>
-        {item.course.map(cls => (
-          <li key={cls.id}>
+        {item.group.map(grp => (
+          <li key={grp.id}>
             <Link
-              href={`/course/${cls.id}`}
+              href={`/group/${grp.id}`}
               className={classNames(
                 styles.link,
-                pathname.includes(`/course/${cls.id}`)
+                pathname.includes(`/group/${grp.id}`)
                   ? styles.active
                   : styles.inactive
               )}
             >
-              {cls.name}
+              {grp.name}
             </Link>
           </li>
         ))}

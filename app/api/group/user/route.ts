@@ -14,9 +14,9 @@ export const POST = async (req: Request) => {
 
   if (!user) return Response.json({ error: 'User not found' }, { status: 404 });
 
-  const courses = await prisma.course.findMany({
+  const groups = await prisma.group.findMany({
     where: {
-      userCourse: {
+      userGroup: {
         some: {
           userId,
         },
@@ -24,5 +24,5 @@ export const POST = async (req: Request) => {
     },
   });
 
-  return Response.json({ data: courses }, { status: 200 });
+  return Response.json({ data: groups }, { status: 200 });
 };

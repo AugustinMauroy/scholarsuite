@@ -9,25 +9,25 @@ export const PATCH = async (req: Request): Promise<Response> => {
   for (const { opp, id } of data) {
     if (opp === 'add') {
       try {
-        await prisma.userCourse.create({
+        await prisma.userGroup.create({
           data: {
             userId,
-            courseId: id,
+            groupId: id,
           },
         });
       } catch (error) {
-        return Response.json({ error: 'Error connecting courses' });
+        return Response.json({ error: 'Error connecting Groups' });
       }
     } else if (opp === 'remove') {
       try {
-        await prisma.userCourse.deleteMany({
+        await prisma.userGroup.deleteMany({
           where: {
             userId,
-            courseId: id,
+            groupId: id,
           },
         });
       } catch (error) {
-        return Response.json({ error: 'Error disconnecting courses' });
+        return Response.json({ error: 'Error disconnecting Groups' });
       }
     } else {
       return Response.json({
@@ -40,5 +40,5 @@ export const PATCH = async (req: Request): Promise<Response> => {
     }
   }
 
-  return Response.json({ message: 'Courses updated successfully' });
+  return Response.json({ message: 'Groups updated' });
 };

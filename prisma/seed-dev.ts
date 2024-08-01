@@ -294,7 +294,7 @@ if (users.length) {
     data: academicYear,
   });
 
-  await prisma.course.createMany({
+  await prisma.group.createMany({
     data: [
       {
         name: 'Siences de base gp1',
@@ -344,27 +344,27 @@ if (users.length) {
     ],
   });
 
-  const courses = await prisma.course.findMany();
+  const groups = await prisma.group.findMany();
 
-  // bind user to courses
+  // bind user to groups
   for (const user of users) {
-    for (const course of courses) {
-      await prisma.userCourse.create({
+    for (const group of groups) {
+      await prisma.userGroup.create({
         data: {
           userId: user.id,
-          courseId: course.id,
+          groupId: group.id,
         },
       });
     }
   }
 
-  // bind all students to all courses
+  // bind all students to all groups
   for (const student of students) {
-    for (const course of courses) {
-      await prisma.studentCourse.create({
+    for (const group of groups) {
+      await prisma.studentGroup.create({
         data: {
           studentId: student.id,
-          courseId: course.id,
+          groupId: group.id,
         },
       });
     }

@@ -51,8 +51,8 @@ const CARDS = [
     ],
   },
   {
-    title: 'Mange Courses',
-    links: [{ href: '/administration/courses', text: 'Manage Courses' }],
+    title: 'Mange groups',
+    links: [{ href: '/administration/groups', text: 'Manage Groups' }],
   },
   {
     title: 'Manage Subjects',
@@ -60,7 +60,7 @@ const CARDS = [
   },
 ];
 
-const Page: FC = () => (
+const Page: FC = async () => (
   <BaseLayout sectionClassName={styles.section}>
     {CARDS.map(({ title, links, icon: Icon }) => (
       <div className={styles.card} key={title}>

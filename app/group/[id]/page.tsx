@@ -7,7 +7,7 @@ import styles from './page.module.css';
 import type { PatchBody } from '@/types/presence';
 import type {
   Student,
-  Course,
+  Group,
   TimeSlot,
   Presence,
   PresenceState,
@@ -20,14 +20,14 @@ type PageProps = {
 
 type StudentWithPresence = Student & { presence: Presence[] };
 
-type CourseWithStudents = Course & {
-  StudentCourse: {
+type GroupWithStudents = Group & {
+  StudentGroup: {
     student: StudentWithPresence;
   }[];
 };
 
 const Page: FC<PageProps> = ({ params }) => {
-  const [courseData, setCourseData] = useState<CourseWithStudents | null>(null);
+  const [groupData, setGroupData] = useState<GroupWithStudents | null>(null);
   const [timeSlot, setTimeSlot] = useState<TimeSlot[] | null>(null);
   const [currentTimeslot, setCurrentTimeslot] = useState<TimeSlot | null>(null);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -91,7 +91,7 @@ const Page: FC<PageProps> = ({ params }) => {
       timeSlotId: currentTimeslot?.id ?? -1,
     });
 
-    fetch(`/api/course/${params.id}`, {
+    fetch(`/api/group/${params.id}`, {
       body: JSON.stringify({
         currentTimeslot,
         date: currentDate,
@@ -103,8 +103,7 @@ const Page: FC<PageProps> = ({ params }) => {
         if (data.error) {
           throw new Error(data.error);
         }
-        console.log(data.data);
-        setCourseData(data.data);
+        setGroupData(data.data);
       });
   }, [currentTimeslot, currentDate]);
 
@@ -121,25 +120,25 @@ const Page: FC<PageProps> = ({ params }) => {
           if (data.error) {
             throw new Error(data.error);
           }
-          setCourseData(prev => {
+          setGroupData(prev => {
             if (!prev) return prev;
 
             return {
               ...prev,
-              StudentCourse: prev.StudentCourse.map(studentCourse => {
+              StudentGroup: prev.StudentGroup.map(studentGroup => {
                 const presence = data.data.find(
                   (presence: Presence) =>
-                    presence.studentId === studentCourse.student.id
+                    presence.studentId === studentGroup.student.id
                 );
 
-                if (!presence) return studentCourse;
+                if (!presence) return studentGroup;
 
                 return {
-                  ...studentCourse,
+                  ...studentGroup,
                   student: {
-                    ...studentCourse.student,
+                    ...studentGroup.student,
                     presence: [
-                      ...studentCourse.student.presence.filter(
+                      ...studentGroup.student.presence.filter(
                         p => p.timeSlotId !== presence.timeSlotId
                       ),
                       presence,
@@ -240,11 +239,11 @@ const Page: FC<PageProps> = ({ params }) => {
     });
   };
 
-  if (!courseData) return <BaseLayout title="Loading..." />;
+  if (!groupData) return <BaseLayout title="Loading..." />;
 
   return (
     <BaseLayout
-      title={courseData.name}
+      title={groupData.name}
       sectionClassName={styles.studentList}
       actions={
         currentTimeslot &&
@@ -265,15 +264,15 @@ const Page: FC<PageProps> = ({ params }) => {
         )
       }
     >
-      {courseData.StudentCourse.map(studentCourse => (
+      {groupData.StudentGroup.map(studentGroup => (
         <StudentCard
-          key={studentCourse.student.id}
-          firstName={studentCourse.student.firstName}
-          lastName={studentCourse.student.lastName}
-          state={getPresence(studentCourse.student)}
-          image={`http://localhost:3000/api/content/student-picture/${studentCourse.student.id}`}
-          onClick={() => handleStudentClick(studentCourse.student)}
-          onContextMenu={() => handleStudentContextMenu(studentCourse.student)}
+          key={studentGroup.student.id}
+          firstName={studentGroup.student.firstName}
+          lastName={studentGroup.student.lastName}
+          state={getPresence(studentGroup.student)}
+          image={`http://localhost:3000/api/content/student-picture/${studentGroup.student.id}`}
+          onClick={() => handleStudentClick(studentGroup.student)}
+          onContextMenu={() => handleStudentContextMenu(studentGroup.student)}
         />
       ))}
     </BaseLayout>

@@ -16,12 +16,12 @@ export const POST = async (
   const data = await req.json();
 
   if (!data.currentTimeslot) {
-    const courseData = await prisma.course.findUnique({
+    const groupData = await prisma.group.findUnique({
       where: {
         id: id,
       },
       include: {
-        StudentCourse: {
+        StudentGroup: {
           include: {
             student: {
               include: {
@@ -33,11 +33,11 @@ export const POST = async (
       },
     });
 
-    if (!courseData) {
-      return Response.json({ error: 'Course not found' }, { status: 404 });
+    if (!groupData) {
+      return Response.json({ error: 'Group not found' }, { status: 404 });
     }
 
-    return Response.json({ data: courseData }, { status: 200 });
+    return Response.json({ data: groupData }, { status: 200 });
   }
 
   const timeSlots = await prisma.timeSlot.findMany();
@@ -57,12 +57,12 @@ export const POST = async (
       return now >= startSlot && now <= endSlot;
     });
 
-  const courseData = await prisma.course.findUnique({
+  const groupData = await prisma.group.findUnique({
     where: {
       id: id,
     },
     include: {
-      StudentCourse: {
+      StudentGroup: {
         include: {
           student: {
             include: {
@@ -90,9 +90,9 @@ export const POST = async (
     },
   });
 
-  if (!courseData) {
-    return Response.json({ error: 'Course not found' }, { status: 404 });
+  if (!groupData) {
+    return Response.json({ error: 'Group not found' }, { status: 404 });
   }
 
-  return Response.json({ data: courseData }, { status: 200 });
+  return Response.json({ data: groupData }, { status: 200 });
 };

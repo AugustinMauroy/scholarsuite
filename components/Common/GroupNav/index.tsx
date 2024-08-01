@@ -1,34 +1,34 @@
 import { getServerSession } from 'next-auth';
+import Nav from '@/components/Common/GroupNav/nav';
 import nextAuthConfig from '@/lib/auth';
 import prisma from '@/lib/prisma';
-import Nav from './nav';
 import type { FC } from 'react';
 
-const ClassNav: FC = async () => {
+const GroupNav: FC = async () => {
   const sessions = await getServerSession(nextAuthConfig);
 
-  const teacherId = sessions?.user.id;
+  const userId = sessions?.user.id;
 
-  if (!teacherId) return null;
+  if (!userId) return null;
 
   const schoolLevels = await prisma.schoolLevel.findMany({
     include: {
-      course: {
+      group: {
         where: {
-          userCourse: {
+          userGroup: {
             some: {
-              userId: teacherId,
+              userId,
             },
           },
         },
       },
     },
     where: {
-      course: {
+      group: {
         some: {
-          userCourse: {
+          userGroup: {
             some: {
-              userId: teacherId,
+              userId,
             },
           },
         },
@@ -39,4 +39,4 @@ const ClassNav: FC = async () => {
   return <Nav items={schoolLevels} />;
 };
 
-export default ClassNav;
+export default GroupNav;
