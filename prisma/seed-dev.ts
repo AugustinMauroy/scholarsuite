@@ -1,12 +1,13 @@
 import { styleText } from 'node:util';
 import { PrismaClient } from '@prisma/client';
 import { encode } from '@/utils/crypto.ts';
+
 const now = new Date();
 
 const getCurrentAcademicYear = () => {
   const data = {
-    startDate: new Date(),
-    endDate: new Date(),
+    startDate: now,
+    endDate: now,
     name: '',
   };
 
@@ -24,7 +25,7 @@ const getCurrentAcademicYear = () => {
 };
 
 const prisma = new PrismaClient();
-const users = await prisma.user.findMany();
+let users = await prisma.user.findMany();
 
 if (users.length) {
   console.log(
@@ -35,25 +36,27 @@ if (users.length) {
   await prisma.user.createMany({
     data: [
       {
-        firstName: 'Augustin',
-        lastName: 'Mauroy',
+        firstName: 'Admin',
+        lastName: 'Admin',
         password: await encode('password'),
         role: 'ADMIN',
       },
       {
-        firstName: 'Jean',
-        lastName: 'Dupont',
+        firstName: 'Teacher',
+        lastName: 'Teacher',
         password: await encode('password'),
         role: 'TEACHER',
       },
       {
-        firstName: 'Paul',
-        lastName: 'Martin',
+        firstName: 'Manager',
+        lastName: 'Manager',
         password: await encode('password'),
         role: 'MANAGER',
       },
     ],
   });
+
+  users = await prisma.user.findMany();
 
   /* Belgian school levels */
   await prisma.schoolLevel.createMany({
@@ -97,29 +100,84 @@ if (users.length) {
     ],
   });
 
-  /* Create stutend for one class */
   await prisma.student.createMany({
     data: [
       {
         firstName: 'Alice',
         lastName: 'Dubois',
-        dateOfBirth: new Date(),
+        dateOfBirth: now,
         classId: 1,
       },
       {
         firstName: 'Bob',
         lastName: 'Martin',
-        dateOfBirth: new Date(),
+        dateOfBirth: now,
         classId: 1,
       },
       {
         firstName: 'Charlie',
         lastName: 'Brown',
-        dateOfBirth: new Date(),
+        dateOfBirth: now,
+        classId: 1,
+      },
+      {
+        firstName: 'David',
+        lastName: 'Smith',
+        dateOfBirth: now,
+        classId: 1,
+      },
+      {
+        firstName: 'Eve',
+        lastName: 'Johnson',
+        dateOfBirth: now,
+        classId: 1,
+      },
+      {
+        firstName: 'Frank',
+        lastName: 'Williams',
+        dateOfBirth: now,
+        classId: 1,
+      },
+      {
+        firstName: 'Grace',
+        lastName: 'Jones',
+        dateOfBirth: now,
+        classId: 1,
+      },
+      {
+        firstName: 'Hugo',
+        lastName: 'Garcia',
+        dateOfBirth: now,
+        classId: 1,
+      },
+      {
+        firstName: 'Isabel',
+        lastName: 'Martinez',
+        dateOfBirth: now,
+        classId: 1,
+      },
+      {
+        firstName: 'Jack',
+        lastName: 'Brown',
+        dateOfBirth: now,
+        classId: 1,
+      },
+      {
+        firstName: 'Karl',
+        lastName: 'Schmidt',
+        dateOfBirth: now,
+        classId: 1,
+      },
+      {
+        firstName: 'Linda',
+        lastName: 'Davis',
+        dateOfBirth: now,
         classId: 1,
       },
     ],
   });
+
+  const students = await prisma.student.findMany();
 
   // assing class to teacher
   await prisma.userClass.createMany({
@@ -140,16 +198,44 @@ if (users.length) {
   });
 
   await prisma.subject.createMany({
-    data: [{ name: 'Mathematics' }, { name: 'Science' }, { name: 'History' }],
+    data: [
+      { name: 'Mathematics' },
+      { name: 'Science' },
+      { name: 'History' },
+      { name: 'Geography' },
+      { name: 'French' },
+      { name: 'English' },
+    ],
   });
 
-  await prisma.disciplinaryReport.create({
-    data: {
-      description: 'Student was caught cheating during the exam',
-      date: new Date(),
-      createdBy: { connect: { id: 1 } },
-      student: { connect: { id: 1 } },
-    },
+  await prisma.disciplinaryReport.createMany({
+    data: [
+      {
+        description: 'Student was caught cheating during the exam',
+        date: now,
+        createdById: 1,
+        studentId: 1,
+      },
+      {
+        description: 'Bob was imitating a chicken during the class',
+        // one day before
+        date: new Date(now.setDate(now.getDate() - 1)),
+        createdById: 1,
+        studentId: 2,
+      },
+      {
+        description: 'Charlie was caught smoking in the school',
+        date: new Date(now.setDate(now.getDate() - 1)),
+        createdById: 1,
+        studentId: 3,
+      },
+      {
+        description: "Alice won' t stop talking during the revision",
+        date: new Date(now.setDate(now.getDate() - 1)),
+        createdById: 1,
+        studentId: 1,
+      },
+    ],
   });
 
   /* Create the Create schedule (timeslot) */
@@ -203,75 +289,86 @@ if (users.length) {
     ],
   });
 
-  const AcademicYear = getCurrentAcademicYear();
+  const academicYear = getCurrentAcademicYear();
   await prisma.academicYear.create({
-    data: {
-      name: AcademicYear.name,
-      startDate: AcademicYear.startDate,
-      endDate: AcademicYear.endDate,
-    },
-  });
-
-  await prisma.gradePeriod.createMany({
-    data: [
-      // first semester 1 september - 31 january
-      {
-        name: 'First semester',
-        startDate: new Date(now.getFullYear(), 8, 1),
-        endDate: new Date(now.getFullYear(), 11, 31),
-      },
-      // second semester 1 february - 31 july
-      {
-        name: 'Second semester',
-        startDate: new Date(now.getFullYear(), 1, 1),
-        endDate: new Date(now.getFullYear(), 6, 31),
-      },
-    ],
+    data: academicYear,
   });
 
   await prisma.course.createMany({
     data: [
       {
-        name: 'Mathématiques 6 heures',
-        subjectId: 1,
-        schoolLevelId: 7,
+        name: 'Siences de base gp1',
+        subjectId: 2,
+        schoolLevelId: 10,
+      },
+      {
+        name: 'Siences de base gp2',
+        subjectId: 2,
+        schoolLevelId: 10,
+      },
+      {
+        name: 'Siences générales',
+        subjectId: 2,
+        schoolLevelId: 10,
+      },
+      {
+        name: 'Siences de base gp1',
+        subjectId: 2,
+        schoolLevelId: 11,
+      },
+      {
+        name: 'Siences de base gp2',
+        subjectId: 2,
+        schoolLevelId: 11,
+      },
+      {
+        name: 'Siences générales',
+        subjectId: 2,
+        schoolLevelId: 11,
+      },
+      {
+        name: 'Siences de base gp1',
+        subjectId: 2,
+        schoolLevelId: 12,
+      },
+      {
+        name: 'Siences de base gp2',
+        subjectId: 2,
+        schoolLevelId: 12,
+      },
+      {
+        name: 'Siences générales',
+        subjectId: 2,
+        schoolLevelId: 12,
       },
     ],
   });
 
-  await prisma.userCourse.createMany({
-    data: [
-      {
-        userId: 1,
-        courseId: 1,
-      },
-      {
-        userId: 2,
-        courseId: 1,
-      },
-      {
-        userId: 3,
-        courseId: 1,
-      },
-    ],
-  });
+  const courses = await prisma.course.findMany();
 
-  await prisma.studentCourse.createMany({
-    data: [
-      {
-        courseId: 1,
-        studentId: 1,
-      },
-      {
-        courseId: 1,
-        studentId: 2,
-      },
-      {
-        courseId: 1,
-        studentId: 3,
-      },
-    ],
-  });
+  // bind user to courses
+  for (const user of users) {
+    for (const course of courses) {
+      await prisma.userCourse.create({
+        data: {
+          userId: user.id,
+          courseId: course.id,
+        },
+      });
+    }
+  }
+
+  // bind all students to all courses
+  for (const student of students) {
+    for (const course of courses) {
+      await prisma.studentCourse.create({
+        data: {
+          studentId: student.id,
+          courseId: course.id,
+        },
+      });
+    }
+  }
 
   await prisma.$disconnect();
   console.log(styleText('green', '✓') + ' Seeded database for developement');
