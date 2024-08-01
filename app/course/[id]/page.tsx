@@ -7,7 +7,7 @@ import styles from './page.module.css';
 import type { FC } from 'react';
 import type {
   Student,
-  Class,
+  Course,
   TimeSlot,
   Presence,
   PresenceState,
@@ -20,12 +20,14 @@ type PageProps = {
 
 type StudentWithPresence = Student & { presence: Presence[] };
 
-type ClassWithStudents = Class & {
-  students: StudentWithPresence[];
+type CourseWithStudents = Course & {
+  StudentCourse: {
+    student: StudentWithPresence;
+  }[];
 };
 
 const Page: FC<PageProps> = ({ params }) => {
-  const [classData, setClassData] = useState<ClassWithStudents | null>(null);
+  const [courseData, setCourseData] = useState<CourseWithStudents | null>(null);
   const [timeSlot, setTimeSlot] = useState<TimeSlot[] | null>(null);
   const [currentTimeslot, setCurrentTimeslot] = useState<TimeSlot | null>(null);
   const [currentDate, setCurrentDate] = useState<Date>(new Date());
@@ -89,7 +91,7 @@ const Page: FC<PageProps> = ({ params }) => {
       timeSlotId: currentTimeslot?.id ?? -1,
     });
 
-    fetch(`/api/class/${params.id}`, {
+    fetch(`/api/course/${params.id}`, {
       body: JSON.stringify({
         currentTimeslot,
         date: currentDate,
@@ -101,7 +103,8 @@ const Page: FC<PageProps> = ({ params }) => {
         if (data.error) {
           throw new Error(data.error);
         }
-        setClassData(data.data);
+        console.log(data.data);
+        setCourseData(data.data);
       });
   }, [currentTimeslot, currentDate]);
 
@@ -118,26 +121,30 @@ const Page: FC<PageProps> = ({ params }) => {
           if (data.error) {
             throw new Error(data.error);
           }
-          setClassData(prev => {
+          setCourseData(prev => {
             if (!prev) return prev;
 
             return {
               ...prev,
-              students: prev.students.map(student => {
+              StudentCourse: prev.StudentCourse.map(studentCourse => {
                 const presence = data.data.find(
-                  (presence: Presence) => presence.studentId === student.id
+                  (presence: Presence) =>
+                    presence.studentId === studentCourse.student.id
                 );
 
-                if (!presence) return student;
+                if (!presence) return studentCourse;
 
                 return {
-                  ...student,
-                  presence: [
-                    ...student.presence.filter(
-                      p => p.timeSlotId !== presence.timeSlotId
-                    ),
-                    presence,
-                  ],
+                  ...studentCourse,
+                  student: {
+                    ...studentCourse.student,
+                    presence: [
+                      ...studentCourse.student.presence.filter(
+                        p => p.timeSlotId !== presence.timeSlotId
+                      ),
+                      presence,
+                    ],
+                  },
                 };
               }),
             };
@@ -153,8 +160,6 @@ const Page: FC<PageProps> = ({ params }) => {
 
     return () => clearTimeout(timeout);
   }, [patch]);
-
-  if (!classData) return <BaseLayout title="Loading..." />;
 
   const handleTimeSlotChange = (kind: 'prev' | 'next') => {
     if (!timeSlot || !currentTimeslot) return;
@@ -235,9 +240,11 @@ const Page: FC<PageProps> = ({ params }) => {
     });
   };
 
+  if (!courseData) return <BaseLayout title="Loading..." />;
+
   return (
     <BaseLayout
-      title={classData.name}
+      title={courseData.name}
       sectionClassName={styles.studentList}
       actions={
         currentTimeslot &&
@@ -258,15 +265,15 @@ const Page: FC<PageProps> = ({ params }) => {
         )
       }
     >
-      {classData?.students.map(student => (
+      {courseData.StudentCourse.map(studentCourse => (
         <StudentCard
-          key={student.id}
-          firstName={student.firstName}
-          lastName={student.lastName}
-          state={getPresence(student)}
-          image={`http://localhost:3000/api/content/student-picture/${student.id}`}
-          onClick={() => handleStudentClick(student)}
-          onContextMenu={() => handleStudentContextMenu(student)}
+          key={studentCourse.student.id}
+          firstName={studentCourse.student.firstName}
+          lastName={studentCourse.student.lastName}
+          state={getPresence(studentCourse.student)}
+          image={`http://localhost:3000/api/content/student-picture/${studentCourse.student.id}`}
+          onClick={() => handleStudentClick(studentCourse.student)}
+          onContextMenu={() => handleStudentContextMenu(studentCourse.student)}
         />
       ))}
     </BaseLayout>
