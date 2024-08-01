@@ -8,4 +8,12 @@
       w-full
       flex-col;
   }
+
+  .notif {
+    @apply fixed
+      bottom-0
+      right-0
+      z-50
+      list-none;
+  }
 }

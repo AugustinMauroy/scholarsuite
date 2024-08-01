@@ -1,4 +1,5 @@
 import { getServerSession } from 'next-auth/next';
+import classNames from 'classnames';
 import AuthProvider from '@/providers/auth';
 import LocaleProvider from '@/providers/locale';
 import { ToastProvider } from '@/providers/toastProvider';
@@ -31,14 +32,18 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
 
   return (
     <html lang={language}>
-      <body className={sessionData ? styles.body : ''}>
+      <body
+        className={classNames({
+          [styles.body]: sessionData,
+        })}
+      >
         <AuthProvider>
           <LocaleProvider
             locale={language}
             messages={messages}
             timeZone={timeZone}
           >
-            <ToastProvider viewportClassName="absolute bottom-0 right-0 list-none">
+            <ToastProvider viewportClassName={styles.notif}>
               {sessionData ? (
                 <>
                   <ClassNav />

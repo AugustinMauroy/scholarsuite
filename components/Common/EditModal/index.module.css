@@ -9,12 +9,13 @@
   @apply fixed
     left-1/2
     top-1/2
-    m-4
     flex
+    h-[95vh]
     w-full
     -translate-x-1/2
     -translate-y-1/2
-    transform flex-col
+    transform
+    flex-col
     gap-4
     overflow-y-auto
     rounded-lg
@@ -26,7 +27,7 @@
     dark:shadow-none;
 
   .closeIcon {
-    @apply absolute
+    @apply fixed
     right-4
     top-4
     size-8

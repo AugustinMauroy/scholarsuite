@@ -25,7 +25,7 @@ const preview: Preview = {
     }),
     Story => (
       <LocaleProvider locale="en" messages={messages} timeZone="UTC">
-        <ToastProvider viewportClassName="absolute bottom-0 right-0 list-none">
+        <ToastProvider viewportClassName="absolute top-0 left-0 list-none">
           <Story />
         </ToastProvider>
       </LocaleProvider>

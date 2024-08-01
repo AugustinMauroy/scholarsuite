@@ -1,0 +1,28 @@
+.breadcrumb {
+  @apply flex
+    flex-row
+    items-center
+    justify-start
+    gap-2;
+
+  svg {
+    @apply size-5;
+  }
+
+  .activeItem {
+    @apply rounded
+      bg-brand-600
+      px-2
+      py-1
+      text-white;
+
+    a {
+      @apply hover:no-underline;
+    }
+  }
+
+  a {
+    @apply capitalize
+      hover:underline;
+  }
+}

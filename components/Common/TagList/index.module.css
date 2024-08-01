@@ -1,9 +1,10 @@
 .tagList {
-  @apply -mb-4
-      flex
+  @apply flex
+      items-center
+      justify-start
       gap-2
       overflow-x-auto
       rounded
-      p-2
-      pb-4;
+      px-2
+      py-4;
 }

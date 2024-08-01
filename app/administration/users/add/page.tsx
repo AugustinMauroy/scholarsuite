@@ -96,6 +96,7 @@ const Page: FC = () => {
           onChange={e => setUser({ ...user, email: e.target.value })}
         />
         <Select
+          inline
           label="Role"
           onChange={v => setUser({ ...user, role: parseInt(v, 10) })}
           values={[

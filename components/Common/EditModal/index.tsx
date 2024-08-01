@@ -16,7 +16,7 @@ const EditModal: FC<PropsWithChildren<EditModalProps>> = ({
   onClose,
 }) => {
   return (
-    <DialogPrimitive.Portal>
+    <>
       <DialogPrimitive.Overlay className={styles.modalOverlay} />
       <DialogPrimitive.Content
         className={styles.modalContent}
@@ -29,7 +29,7 @@ const EditModal: FC<PropsWithChildren<EditModalProps>> = ({
         <DialogPrimitive.Description>{description}</DialogPrimitive.Description>
         {children}
       </DialogPrimitive.Content>
-    </DialogPrimitive.Portal>
+    </>
   );
 };
 

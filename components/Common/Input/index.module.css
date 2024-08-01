@@ -4,13 +4,6 @@
     flex-col
     gap-1.5;
 
-  .label {
-    @apply text-base
-      font-medium
-      text-gray-900
-      dark:text-white;
-  }
-
   .input {
     @apply inline-flex
       h-11

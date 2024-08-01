@@ -1,7 +1,7 @@
 'use client';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   PencilIcon,
   CheckCircleIcon,
@@ -22,10 +22,11 @@ import type { Student, Class } from '@prisma/client';
 import type { Patch } from '@/types/patch';
 
 type StudentState = Student & { class: Class | null };
+type ClassWithSchoolLevel = Class & { schoolLevel: { name: string } };
 
 type TableProps = {
   students: StudentState[];
-  possibleClasses: Class[];
+  possibleClasses: ClassWithSchoolLevel[];
 };
 
 const Table: FC<TableProps> = ({ students, possibleClasses }) => {
@@ -38,6 +39,20 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [displayRemove, setDisplayRemove] = useState(false);
   const [coursePatch, setCoursePatch] = useState<Patch | null>(null);
+
+  const selectClassValue = useMemo(
+    () =>
+      possibleClasses.map(c => ({
+        label: (
+          <>
+            {c.name} <small>{c.schoolLevel.name}</small>
+          </>
+        ),
+        value: c.id.toString(),
+      })),
+    [possibleClasses]
+  );
+  console.log('selectClassValue', selectClassValue);
 
   const handlePatch = async () => {
     const res = await fetch('/api/student/course', {
@@ -221,10 +236,8 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
             />
             <Select
               label="Class"
-              values={possibleClasses.map(c => ({
-                value: c.id.toString(),
-                label: c.name,
-              }))}
+              inline
+              values={selectClassValue}
               defaultValue={selectedStudent.class?.id.toString()}
               onChange={v =>
                 setSelectedStudent({

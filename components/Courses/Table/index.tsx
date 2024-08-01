@@ -218,6 +218,7 @@ const Table: FC = () => {
           onChange={e => setName(e.target.value)}
         />
         <Select
+          inline
           label="School Level"
           values={schoolLevels.map(level => ({
             value: level.id.toString(),
@@ -228,6 +229,7 @@ const Table: FC = () => {
         />
 
         <Select
+          inline
           label="Subject"
           values={subjects.map(subject => ({
             value: subject.id.toString(),

@@ -1,0 +1,6 @@
+.label {
+  @apply text-base
+    font-medium
+    text-gray-900
+    dark:text-white;
+}

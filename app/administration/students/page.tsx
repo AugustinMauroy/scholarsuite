@@ -10,7 +10,11 @@ const Page: FC = async () => {
     },
   });
 
-  const possibleClasses = await prisma.class.findMany();
+  const possibleClasses = await prisma.class.findMany({
+    include: {
+      schoolLevel: true,
+    },
+  });
 
   return (
     <BaseLayout title="Administration" description="Manage your school">

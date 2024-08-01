@@ -13,6 +13,7 @@ import Select from '@/components/Common/Select';
 import CourseList from '@/components/User/CoursesList';
 import { useToast } from '@/hooks/useToast';
 import EditModal from '@/components/Common/EditModal';
+import Label from '@/components/Common/Label';
 import List from '@/components/Common/List';
 import type { FC } from 'react';
 import type { User, Class } from '@prisma/client';
@@ -292,14 +293,14 @@ const UsersTable: FC = () => {
               })
             }
           />
-          <label>Classes</label>
+          <Label>Classes</Label>
           <List
             list={classes}
             activeList={activeList}
             onTagClick={handleTagClick}
             onTagRemove={handleTagRemove}
           />
-          <label>Courses</label>
+          <Label>Courses</Label>
           <CourseList
             userId={selectedUser.id}
             patch={userCoursesPatch}

@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline';
+import styles from './nav.module.css';
 import type { FC } from 'react';
 
 type NavItem = {
@@ -32,30 +33,30 @@ const Nav: FC<NavProps> = ({ items }) => {
   return (
     <AnimatePresence>
       <motion.nav
-        className="bg-white shadow-lg dark:border-r dark:border-gray-700 dark:bg-gray-800 dark:shadow-none"
+        className={styles.nav}
         initial={{ width: 240 }}
         animate={{ width: isOpen ? 240 : 'auto' }}
         exit={{ width: 240 }}
         transition={{ duration: 0.2 }}
       >
         <div className="flex h-16 items-center justify-between border-b px-4">
-          <button
-            className="rounded-md p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-            onClick={toggleMenu}
-          >
+          <button className={styles.toggle} onClick={toggleMenu}>
             <XMarkIcon
-              className={
-                isOpen ? 'size-6 text-gray-600 dark:text-gray-400' : 'hidden'
-              }
+              aria-hidden={!isOpen}
+              className={classNames(styles.toggleIcon, !isOpen && 'hidden')}
             />
             <Bars3Icon
-              className={
-                isOpen ? 'hidden' : 'size-6 text-gray-600 dark:text-gray-400'
-              }
+              aria-hidden={isOpen}
+              className={classNames(styles.toggleIcon, isOpen && 'hidden')}
             />
           </button>
         </div>
-        <ul className={classNames('py-4', isOpen ? 'block' : 'hidden')}>
+        <ul
+          className={classNames(
+            styles.list,
+            isOpen ? styles.listOpen : styles.listClose
+          )}
+        >
           {items.map(item => (
             <NavItemComponent key={item.id} item={item} pathname={pathname} />
           ))}
@@ -73,17 +74,17 @@ type NavItemComponentProps = {
 const NavItemComponent: FC<NavItemComponentProps> = ({ item, pathname }) => {
   return (
     <li>
-      <span className="block px-4 py-2 text-sm">{item.name}</span>
-      <ul className="pl-4">
+      <span className={styles.item}>{item.name}</span>
+      <ul className={styles.item}>
         {item.course.map(cls => (
           <li key={cls.id}>
             <Link
               href={`/course/${cls.id}`}
               className={classNames(
-                'block px-4 py-2 text-sm',
+                styles.link,
                 pathname.includes(`/course/${cls.id}`)
-                  ? 'bg-brand-500 text-white dark:bg-brand-600 dark:text-gray-200'
-                  : 'hover:bg-gray-100 dark:hover:bg-gray-800'
+                  ? styles.active
+                  : styles.inactive
               )}
             >
               {cls.name}

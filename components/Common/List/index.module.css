@@ -1,0 +1,38 @@
+.list {
+  @apply relative
+    flex
+    items-center
+    justify-start
+    border-2
+    border-gray-200
+    dark:border-gray-900;
+
+  .activeList {
+    @apply w-1/2;
+  }
+
+  .input {
+    @apply m-0
+      w-1/2
+      border-l-2
+      border-gray-200
+      p-2
+      caret-brand-500
+      focus:outline-none
+      dark:border-gray-900
+      dark:bg-gray-800
+      dark:text-gray-200;
+  }
+
+  .result {
+    @apply absolute
+      right-0
+      top-full
+      w-1/2
+      border-2
+      border-gray-200
+      bg-white py-2
+      dark:border-gray-900
+      dark:bg-gray-800;
+  }
+}

@@ -1,0 +1,63 @@
+.nav {
+  @apply bg-white
+  shadow-lg
+  dark:border-r
+  dark:border-gray-700
+  dark:bg-gray-800
+  dark:shadow-none;
+
+  .toggle {
+    @apply rounded-md
+      p-2
+      hover:bg-gray-100
+      dark:hover:bg-gray-800;
+
+    .toggleIcon {
+      @apply size-6
+        text-gray-600
+        dark:text-gray-400;
+    }
+  }
+
+  .list {
+    @apply py-4;
+  }
+
+  .listOpen {
+    @apply block;
+  }
+
+  .listClose {
+    @apply hidden;
+  }
+}
+
+.label {
+  @apply block
+    px-4
+    py-2
+    text-sm;
+}
+
+.item {
+  @apply pl-4;
+
+  .link {
+    @apply block
+      px-4
+      py-2
+      text-sm;
+
+    &.active {
+      @apply bg-brand-500
+        text-white
+        dark:bg-brand-600
+        dark:text-gray-200;
+    }
+
+    &.inactive {
+      @apply hover:bg-gray-100
+        dark:hover:bg-gray-800;
+    }
+  }
+}

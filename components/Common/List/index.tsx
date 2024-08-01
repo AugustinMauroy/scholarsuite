@@ -2,6 +2,8 @@
 import { XMarkIcon, PlusIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect, useMemo } from 'react';
 import TagList from '@/components/Common/TagList';
+import Input from '../Input';
+import styles from './index.module.css';
 import type { FC } from 'react';
 import type { Tag } from '@/types/tag';
 
@@ -40,27 +42,27 @@ const List: FC<ListProps> = ({ list, activeList, onTagClick, onTagRemove }) => {
   }, [searchQuery]);
 
   return (
-    <div className="relative flex items-center justify-start border-2 border-gray-200 py-2 dark:border-gray-900">
+    <div className={styles.list}>
       <TagList
         tags={activeList}
         onClick={onTagRemove}
-        className="w-1/2"
+        className={styles.activeList}
         icon={<XMarkIcon />}
       />
       <input
-        className="w-1/2 border-l-2 border-gray-200 p-2 caret-brand-500 focus:outline-none dark:border-gray-900 dark:bg-gray-800 dark:text-gray-200"
+        className={styles.input}
         type="text"
         placeholder="Search"
         value={searchQuery}
         onChange={e => setSearchQuery(e.target.value)}
         onFocus={() => setFocus(true)}
-        onBlur={() => {
+        onBlur={() =>
           // 1s delay to prevent search result from disappearing when clicked
-          setTimeout(() => setFocus(false), 1000);
-        }}
+          setTimeout(() => setFocus(false), 1000)
+        }
       />
       {searchResult.length > 0 && focus && (
-        <div className="absolute right-0 top-full my-2 w-1/2 border-2 border-gray-200 bg-white py-2 dark:border-gray-900 dark:bg-gray-800">
+        <div className={styles.result}>
           <TagList
             tags={searchResult}
             onClick={(tag: Tag) => {

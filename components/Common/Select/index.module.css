@@ -1,6 +1,5 @@
 .select {
-  @apply flex
-    w-fit
+  @apply inline-flex
     flex-col
     gap-1.5;
 
@@ -31,7 +30,7 @@
       text-base
       font-medium
       text-gray-900
-      shadow-sm
+      shadow
       outline-none
       focus:border-gray-500
       focus:ring-1
@@ -47,6 +46,7 @@
 
   .trigger span {
     @apply flex
+      h-5
       items-center
       gap-2;
   }
@@ -59,8 +59,10 @@
 }
 
 .dropdown {
-  @apply max-w-xs
+  @apply max-h-48
+    max-w-xs
     overflow-hidden
+    overflow-y-auto
     rounded-md
     border
     border-gray-200
@@ -70,7 +72,8 @@
     dark:bg-gray-950;
 
   .item {
-    @apply truncate
+    @apply select-none
+      truncate
       px-2.5
       py-1.5
       text-sm
@@ -86,16 +89,24 @@
       dark:data-[highlighted]:bg-brand-600;
   }
 
-  .text span {
+  .text > span {
     @apply flex
       items-center
       gap-2;
+  }
+
+  .text > span > span {
+    @apply truncate;
   }
 
   .label {
     @apply text-gray-600
       dark:text-gray-400;
   }
+}
+
+.dropdown:has(.label) .text > span > span {
+  @apply pl-3;
 }
 
 .inline {
@@ -115,9 +126,11 @@
   .text {
     @apply text-gray-900
       data-[highlighted]:bg-gray-100
+      data-[disabled]:text-gray-600
       data-[highlighted]:text-gray-900
       dark:text-white
-      dark:data-[highlighted]:bg-gray-900;
+      dark:data-[highlighted]:bg-gray-900
+      dark:data-[disabled]:text-gray-700;
   }
 
   &.dropdown {

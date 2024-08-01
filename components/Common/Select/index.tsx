@@ -1,19 +1,21 @@
 'use client';
-import * as Primitive from '@radix-ui/react-select';
 import { ChevronDownIcon } from '@heroicons/react/24/outline';
-import { useId, useMemo } from 'react';
+import * as ScrollPrimitive from '@radix-ui/react-scroll-area';
+import * as SelectPrimitive from '@radix-ui/react-select';
 import classNames from 'classnames';
+import { useId, useMemo } from 'react';
 import styles from './index.module.css';
 import type { FC, ReactNode } from 'react';
 
 type SelectValue = {
-  label: string;
+  label: ReactNode;
   value: string;
   iconImage?: ReactNode;
+  disabled?: boolean;
 };
 
 type SelectGroup = {
-  label?: string;
+  label?: ReactNode;
   items: Array<SelectValue>;
 };
 
@@ -30,6 +32,8 @@ type SelectProps = {
   label?: string;
   inline?: boolean;
   onChange?: (value: string) => void;
+  className?: string;
+  ariaLabel?: string;
 };
 
 const Select: FC<SelectProps> = ({
@@ -39,6 +43,8 @@ const Select: FC<SelectProps> = ({
   label,
   inline,
   onChange,
+  className,
+  ariaLabel,
 }) => {
   const id = useId();
 
@@ -57,56 +63,69 @@ const Select: FC<SelectProps> = ({
   }, [values]);
 
   return (
-    <div className={classNames(styles.select, { [styles.inline]: inline })}>
+    <span
+      className={classNames(
+        styles.select,
+        { [styles.inline]: inline },
+        className
+      )}
+    >
       {label && (
         <label className={styles.label} htmlFor={id}>
           {label}
         </label>
       )}
-      <Primitive.Root value={defaultValue} onValueChange={onChange}>
-        <Primitive.Trigger
+      <SelectPrimitive.Root value={defaultValue} onValueChange={onChange}>
+        <SelectPrimitive.Trigger
           className={styles.trigger}
-          aria-label={label}
+          aria-label={ariaLabel}
           id={id}
         >
-          <Primitive.Value placeholder={placeholder} />
+          <SelectPrimitive.Value placeholder={placeholder} />
           <ChevronDownIcon className={styles.icon} />
-        </Primitive.Trigger>
-        <Primitive.Portal>
-          <Primitive.Content
+        </SelectPrimitive.Trigger>
+        <SelectPrimitive.Portal>
+          <SelectPrimitive.Content
             position={inline ? 'popper' : 'item-aligned'}
             className={classNames(styles.dropdown, { [styles.inline]: inline })}
           >
-            <Primitive.Viewport>
-              {mappedValues.map(({ label, items }, key) => (
-                <Primitive.Group key={label?.toString() || key}>
-                  {label && (
-                    <Primitive.Label
-                      className={classNames(styles.item, styles.label)}
-                    >
-                      {label}
-                    </Primitive.Label>
-                  )}
-
-                  {items.map(({ value, label, iconImage }) => (
-                    <Primitive.Item
-                      key={value}
-                      value={value}
-                      className={classNames(styles.item, styles.text)}
-                    >
-                      <Primitive.ItemText>
-                        {iconImage}
-                        {label}
-                      </Primitive.ItemText>
-                    </Primitive.Item>
+            <ScrollPrimitive.Root type="auto">
+              <SelectPrimitive.Viewport>
+                <ScrollPrimitive.Viewport>
+                  {mappedValues.map(({ label, items }, key) => (
+                    <SelectPrimitive.Group key={label?.toString() ?? key}>
+                      {label && (
+                        <SelectPrimitive.Label
+                          className={classNames(styles.item, styles.label)}
+                        >
+                          {label}
+                        </SelectPrimitive.Label>
+                      )}
+                      {items.map(({ value, label, iconImage, disabled }) => (
+                        <SelectPrimitive.Item
+                          key={value}
+                          value={value}
+                          disabled={disabled}
+                          className={classNames(styles.item, styles.text)}
+                        >
+                          <SelectPrimitive.ItemText>
+                            {iconImage}
+                            <span>{label}</span>
+                          </SelectPrimitive.ItemText>
+                        </SelectPrimitive.Item>
+                      ))}
+                    </SelectPrimitive.Group>
                   ))}
-                </Primitive.Group>
-              ))}
-            </Primitive.Viewport>
-          </Primitive.Content>
-        </Primitive.Portal>
-      </Primitive.Root>
-    </div>
+                </ScrollPrimitive.Viewport>
+              </SelectPrimitive.Viewport>
+              <ScrollPrimitive.Scrollbar orientation="vertical">
+                <ScrollPrimitive.Thumb />
+              </ScrollPrimitive.Scrollbar>
+            </ScrollPrimitive.Root>
+          </SelectPrimitive.Content>
+        </SelectPrimitive.Portal>
+      </SelectPrimitive.Root>
+    </span>
   );
 };
 

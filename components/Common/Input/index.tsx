@@ -1,4 +1,5 @@
 import classNames from 'classnames';
+import Label from '@/components/Common/Label';
 import styles from './index.module.css';
 import type { FC, InputHTMLAttributes } from 'react';
 
@@ -14,7 +15,7 @@ const Input: FC<InputProps> = ({ label, inline, type, ...inputProps }) => (
       [styles.checkbox]: type === 'checkbox',
     })}
   >
-    {label && <label className={styles.label}>{label}</label>}
+    {label && <Label>{label}</Label>}
     <input className={styles.input} type={type} {...inputProps} />
   </div>
 );
