@@ -1,6 +1,4 @@
 'use client';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { useState, useEffect } from 'react';
 import {
   PlusIcon,
   XMarkIcon,
@@ -8,13 +6,15 @@ import {
   ExclamationTriangleIcon,
   PencilIcon,
 } from '@heroicons/react/24/solid';
-import EditModal from '@/components/Common/EditModal';
-import { useToast } from '@/hooks/useToast';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
+import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
-import type { FC } from 'react';
+import { useToast } from '@/hooks/useToast';
 import type { Course, SchoolLevel, Subject } from '@prisma/client';
+import type { FC } from 'react';
 
 type CoursesWithRelations = Course & {
   schoolLevel: SchoolLevel;

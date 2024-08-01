@@ -1,7 +1,7 @@
-import classNames from 'classnames';
-import { useState, useEffect, forwardRef } from 'react';
-import { useLocale } from 'next-intl';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
+import classNames from 'classnames';
+import { useLocale } from 'next-intl';
+import { useState, useEffect, forwardRef } from 'react';
 import styles from './index.module.css';
 import type { FC } from 'react';
 

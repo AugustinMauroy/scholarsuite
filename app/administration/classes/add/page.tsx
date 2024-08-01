@@ -1,12 +1,12 @@
 'use client';
 import { useState, useEffect } from 'react';
-import Select from '@/components/Common/Select';
-import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
+import Input from '@/components/Common/Input';
+import Select from '@/components/Common/Select';
 import BaseLayout from '@/components/Layout/Base';
 import styles from './page.module.css';
-import type { FC, FormEvent } from 'react';
 import type { SchoolLevel } from '@prisma/client';
+import type { FC, FormEvent } from 'react';
 
 const Page: FC = () => {
   const [schoolLevel, setSchoolLevel] = useState<SchoolLevel[] | null>(null);

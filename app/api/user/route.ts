@@ -1,6 +1,6 @@
 import { getServerSession } from 'next-auth';
-import prisma from '@/lib/prisma';
 import nextAuthConfig from '@/lib/auth';
+import prisma from '@/lib/prisma';
 import { encode } from '@/utils/crypto';
 
 export const GET = async (req: Request): Promise<Response> => {

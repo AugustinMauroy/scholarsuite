@@ -1,24 +1,24 @@
 'use client';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { useState, useEffect } from 'react';
 import {
   PencilIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useSession } from 'next-auth/react';
+import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
+import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
+import Label from '@/components/Common/Label';
+import List from '@/components/Common/List';
 import Select from '@/components/Common/Select';
 import CourseList from '@/components/User/CoursesList';
 import { useToast } from '@/hooks/useToast';
-import EditModal from '@/components/Common/EditModal';
-import Label from '@/components/Common/Label';
-import List from '@/components/Common/List';
-import type { FC } from 'react';
-import type { User, Class } from '@prisma/client';
 import type { Patch } from '@/types/patch';
 import type { Tag } from '@/types/tag';
+import type { User, Class } from '@prisma/client';
+import type { FC } from 'react';
 
 const UsersTable: FC = () => {
   const toast = useToast();

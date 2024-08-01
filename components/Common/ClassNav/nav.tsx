@@ -1,10 +1,10 @@
 'use client';
-import classNames from 'classnames';
-import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { usePathname } from 'next/navigation';
-import Link from 'next/link';
 import { XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline';
+import classNames from 'classnames';
+import { motion, AnimatePresence } from 'framer-motion';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 import styles from './nav.module.css';
 import type { FC } from 'react';
 

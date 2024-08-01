@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
+import BaseLayout from '@/components/Layout/Base';
 import ReviewPresence from '@/components/Presence/ReviewPresence';
 import rightAcces from '@/utils/rightAcces';
-import BaseLayout from '@/components/Layout/Base';
 import type { FC } from 'react';
 
 const Page: FC = async () => {

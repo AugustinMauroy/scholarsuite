@@ -1,25 +1,25 @@
 'use client';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import * as AvatarPrimitive from '@radix-ui/react-avatar';
-import { useMemo, useState } from 'react';
 import {
   PencilIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
 } from '@heroicons/react/24/solid';
-import DropZone from '@/components/Common/DropZone';
+import * as AvatarPrimitive from '@radix-ui/react-avatar';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { useMemo, useState } from 'react';
+import Avatar from '@/components/Common/Avatar';
 import Button from '@/components/Common/Button';
+import DropZone from '@/components/Common/DropZone';
+import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
 import { useToast } from '@/hooks/useToast';
-import EditModal from '@/components/Common/EditModal';
-import Avatar from '@/components/Common/Avatar';
 import { getAcronymFromString } from '@/utils/string';
 import CourseList from '../CoursesList';
 import styles from './index.module.css';
-import type { FC } from 'react';
-import type { Student, Class } from '@prisma/client';
 import type { Patch } from '@/types/patch';
+import type { Student, Class } from '@prisma/client';
+import type { FC } from 'react';
 
 type StudentState = Student & { class: Class | null };
 type ClassWithSchoolLevel = Class & { schoolLevel: { name: string } };

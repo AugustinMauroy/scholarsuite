@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import {
   UserGroupIcon,
   UsersIcon,
   CalendarDaysIcon,
 } from '@heroicons/react/20/solid';
+import Link from 'next/link';
 import BaseLayout from '@/components/Layout/Base';
 import styles from './page.module.css';
 import type { FC } from 'react';

@@ -1,19 +1,19 @@
 'use client';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { useState, useEffect } from 'react';
 import {
   PencilIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
   PlusIcon,
 } from '@heroicons/react/24/solid';
-import EditModal from '@/components/Common/EditModal';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
+import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
 import { isPossible } from '@/utils/academicYear';
-import type { FC } from 'react';
 import type { AcademicYear } from '@prisma/client';
+import type { FC } from 'react';
 
 const Table: FC = () => {
   const toast = useToast();

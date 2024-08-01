@@ -1,10 +1,10 @@
 'use client';
 import { useState, useEffect } from 'react';
-import StudentCard from '@/components/Student/StudentCard';
 import BaseLayout from '@/components/Layout/Base';
+import StudentCard from '@/components/Student/StudentCard';
 import Selector from '@/components/TimeSlot/Selector';
 import styles from './page.module.css';
-import type { FC } from 'react';
+import type { PatchBody } from '@/types/presence';
 import type {
   Student,
   Course,
@@ -12,7 +12,7 @@ import type {
   Presence,
   PresenceState,
 } from '@prisma/client';
-import type { PatchBody } from '@/types/presence';
+import type { FC } from 'react';
 
 type PageProps = {
   params: { id: string };

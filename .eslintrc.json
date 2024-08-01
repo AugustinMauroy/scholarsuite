@@ -33,14 +33,18 @@
             "group": "type",
             "position": "before"
           }
-        ]
+        ],
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
       }
     ],
-    "react/jsx-no-undef": "off",
     "padding-line-between-statements": [
       "error",
       { "blankLine": "always", "prev": "*", "next": "return" }
     ],
+    "react/jsx-no-undef": "off",
     "react-hooks/exhaustive-deps": "off"
   }
 }

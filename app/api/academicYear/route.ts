@@ -1,5 +1,5 @@
-import { isPossible } from '@/utils/academicYear';
 import prisma from '@/lib/prisma';
+import { isPossible } from '@/utils/academicYear';
 
 export const GET = async (req: Request): Promise<Response> => {
   const academicYears = await prisma.academicYear.findMany();

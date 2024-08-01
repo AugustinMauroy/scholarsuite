@@ -1,7 +1,7 @@
 'use client';
-import { useTranslations } from 'next-intl';
 import { ArrowRightIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 import style from './not-found.module.css';
 import type { FC } from 'react';
 

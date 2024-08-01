@@ -2,8 +2,8 @@ import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import classNames from 'classnames';
 import { getAcronymFromString } from '@/utils/string';
 import styles from './index.module.css';
-import type { FC } from 'react';
 import type { PresenceState } from '@prisma/client';
+import type { FC } from 'react';
 
 type StudentCardProps = {
   state?: PresenceState;

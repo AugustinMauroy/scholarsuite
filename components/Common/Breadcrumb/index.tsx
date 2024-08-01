@@ -1,10 +1,10 @@
 'use client';
-import classNames from 'classnames';
-import { Fragment } from 'react';
-import { usePathname } from 'next/navigation';
 import { ChevronRightIcon } from '@heroicons/react/24/solid';
-import { useTranslations } from 'next-intl';
+import classNames from 'classnames';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
+import { Fragment } from 'react';
 import styles from './index.module.css';
 import type { FC } from 'react';
 

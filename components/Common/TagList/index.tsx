@@ -1,8 +1,8 @@
 import classNames from 'classnames';
 import Badge from '@/components/Common/Badge';
 import styles from './index.module.css';
-import type { FC, ReactNode } from 'react';
 import type { Tag } from '@/types/tag';
+import type { FC, ReactNode } from 'react';
 
 type TagListProps = {
   tags: Tag[];

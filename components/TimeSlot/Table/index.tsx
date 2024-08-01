@@ -1,18 +1,18 @@
 'use client';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { useState, useEffect } from 'react';
 import {
   PencilIcon,
   CheckCircleIcon,
   ExclamationTriangleIcon,
   PlusIcon,
 } from '@heroicons/react/24/solid';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
+import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
-import EditModal from '@/components/Common/EditModal';
-import type { FC } from 'react';
 import type { TimeSlot } from '@prisma/client';
+import type { FC } from 'react';
 
 // timeSlot should be XX:XX min is 00:00 max is 23:59
 const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;

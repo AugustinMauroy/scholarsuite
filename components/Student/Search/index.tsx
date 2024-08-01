@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import Input from '@/components/Common/Input';
-import type { FC } from 'react';
 import type { Student, Class } from '@prisma/client';
+import type { FC } from 'react';
 
 type StudentsState = Student & {
   class: Class | null;

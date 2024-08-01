@@ -3,11 +3,11 @@
 // - [ ] use translation
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import { useState } from 'react';
-import { useToast } from '@/hooks/useToast';
-import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
 import DropZone from '@/components/Common/DropZone';
+import Input from '@/components/Common/Input';
 import BaseLayout from '@/components/Layout/Base';
+import { useToast } from '@/hooks/useToast';
 import styles from './page.module.css';
 import type { FC, FormEvent } from 'react';
 

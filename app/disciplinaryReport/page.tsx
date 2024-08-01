@@ -1,13 +1,13 @@
 'use client';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { useState, useEffect } from 'react';
-import { useToast } from '@/hooks/useToast';
-import Tabs from '@/components/Common/Tabs';
-import Input from '@/components/Common/Input';
 import Button from '@/components/Common/Button';
+import Input from '@/components/Common/Input';
+import Tabs from '@/components/Common/Tabs';
 import StudentSearch from '@/components/Student/Search';
-import type { FC, FormEvent } from 'react';
+import { useToast } from '@/hooks/useToast';
 import type { DisciplinaryReport, User, Student } from '@prisma/client';
+import type { FC, FormEvent } from 'react';
 
 type DisciplinaryState = DisciplinaryReport & {
   createdBy: User;

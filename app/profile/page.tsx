@@ -1,14 +1,14 @@
 'use client';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { useState } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
-import { getAcronymFromString } from '@/utils/string';
+import { useState } from 'react';
 import Avatar from '@/components/Common/Avatar';
 import Button from '@/components/Common/Button';
 import DropZone from '@/components/Common/DropZone';
 import { useToast } from '@/hooks/useToast';
+import { getAcronymFromString } from '@/utils/string';
 import styles from './page.module.css';
 import type { FC } from 'react';
 

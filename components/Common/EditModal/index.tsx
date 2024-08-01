@@ -1,5 +1,5 @@
-import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { XMarkIcon } from '@heroicons/react/24/solid';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import styles from './index.module.css';
 import type { FC, PropsWithChildren } from 'react';
 

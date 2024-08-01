@@ -1,10 +1,10 @@
 'use client';
-import { useTranslations } from 'next-intl';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
-import Input from '@/components/Common/Input';
-import Button from '@/components/Common/Button';
+import { useTranslations } from 'next-intl';
 import GlowingBackdrop from '@/components/Common/Background';
+import Button from '@/components/Common/Button';
+import Input from '@/components/Common/Input';
 import styles from './page.module.css';
 import type { FC, FormEvent } from 'react';
 

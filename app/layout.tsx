@@ -1,12 +1,12 @@
-import { getServerSession } from 'next-auth/next';
 import classNames from 'classnames';
-import AuthProvider from '@/providers/auth';
-import LocaleProvider from '@/providers/locale';
-import { ToastProvider } from '@/providers/toastProvider';
-import { getLanguage, getTimeZone, getMessages } from '@/lib/i18n';
+import { getServerSession } from 'next-auth/next';
 import ClassNav from '@/components/Common/ClassNav';
 import Header from '@/components/Layout/Header';
 import nextAuthConfig from '@/lib/auth';
+import { getLanguage, getTimeZone, getMessages } from '@/lib/i18n';
+import AuthProvider from '@/providers/auth';
+import LocaleProvider from '@/providers/locale';
+import { ToastProvider } from '@/providers/toastProvider';
 import styles from './layout.module.css';
 import type { Metadata } from 'next';
 import type { FC, PropsWithChildren } from 'react';

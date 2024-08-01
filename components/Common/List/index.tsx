@@ -4,8 +4,8 @@ import { useState, useEffect, useMemo } from 'react';
 import TagList from '@/components/Common/TagList';
 import Input from '../Input';
 import styles from './index.module.css';
-import type { FC } from 'react';
 import type { Tag } from '@/types/tag';
+import type { FC } from 'react';
 
 type ListProps = {
   list: Tag[];

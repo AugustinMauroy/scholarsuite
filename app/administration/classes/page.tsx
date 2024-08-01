@@ -1,6 +1,6 @@
-import prisma from '@/lib/prisma';
 import Table from '@/components/Classes/Table';
 import BaseLayout from '@/components/Layout/Base';
+import prisma from '@/lib/prisma';
 import type { FC } from 'react';
 
 const Page: FC = async () => {

@@ -1,12 +1,12 @@
 'use client';
-import { useSession, signOut } from 'next-auth/react';
-import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { Cog8ToothIcon } from '@heroicons/react/24/outline';
-import { useTranslations } from 'next-intl';
+import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import Avatar from '@/components/Common/Avatar';
-import { getAcronymFromString } from '@/utils/string';
 import Button from '@/components/Common/Button';
+import { getAcronymFromString } from '@/utils/string';
 import type { FC } from 'react';
 
 const HeaderAvatar: FC = () => {

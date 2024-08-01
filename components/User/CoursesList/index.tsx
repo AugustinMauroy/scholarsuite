@@ -1,11 +1,11 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { useToast } from '@/hooks/useToast';
 import List from '@/components/Common/List';
-import type { FC } from 'react';
-import type { Course } from '@prisma/client';
-import type { Tag } from '@/types/tag';
+import { useToast } from '@/hooks/useToast';
 import type { Patch } from '@/types/patch';
+import type { Tag } from '@/types/tag';
+import type { Course } from '@prisma/client';
+import type { FC } from 'react';
 
 type CourseListProps = {
   userId: number;

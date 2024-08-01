@@ -1,5 +1,5 @@
-import { join } from 'node:path';
 import { readFile, readdir } from 'node:fs/promises';
+import { join } from 'node:path';
 import { uploadProfilePicture } from '@/utils/contentApi';
 
 type Params = {
