@@ -36,7 +36,7 @@
     "@radix-ui/react-tabs": "~1.0.4",
     "@radix-ui/react-toast": "~1.2.1",
     "classnames": "~2.5.1",
-    "framer-motion": "~11.2.10",
+    "framer-motion": "~11.3.19",
     "next": "~14.2.5",
     "next-auth": "~4.24.7",
     "next-intl": "~3.14.1",
