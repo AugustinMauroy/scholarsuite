@@ -49,6 +49,11 @@ updates:
       tailwind:
         patterns:
           - 'tailwindcss'
+      test:
+        patterns:
+          - 'jsdom'
+          - '@vitejs/*'
+          - 'vitest'
     ignore:
       # Manually update major versions of @types/node with the version specified within .nvmrc
       - dependency-name: '@types/node'
