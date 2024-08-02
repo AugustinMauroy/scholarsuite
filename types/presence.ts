@@ -8,5 +8,6 @@ export type PatchBody = {
   }[];
   timeSlotId: number;
   userId: number;
+  groupId: number;
   date: Date;
 };

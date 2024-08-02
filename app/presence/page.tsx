@@ -9,7 +9,10 @@ const Page: FC = async () => {
   if (!access) notFound();
 
   return (
-    <BaseLayout title="Review Presence">
+    <BaseLayout
+      title="Review Presence"
+      description="Review all the presence of students"
+    >
       <ReviewPresence />
     </BaseLayout>
   );

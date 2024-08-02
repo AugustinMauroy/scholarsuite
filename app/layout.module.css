@@ -6,7 +6,9 @@
   .wrapper {
     @apply flex
       size-full
-      flex-col;
+      max-h-screen
+      flex-col
+      overflow-y-scroll;
   }
 
   .notif {

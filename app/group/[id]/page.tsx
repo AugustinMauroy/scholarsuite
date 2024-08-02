@@ -1,4 +1,5 @@
 'use client';
+import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import BaseLayout from '@/components/Layout/Base';
 import StudentCard from '@/components/Student/StudentCard';
@@ -27,6 +28,7 @@ type GroupWithStudents = Group & {
 };
 
 const Page: FC<PageProps> = ({ params }) => {
+  const session = useSession();
   const [groupData, setGroupData] = useState<GroupWithStudents | null>(null);
   const [timeSlot, setTimeSlot] = useState<TimeSlot[] | null>(null);
   const [currentTimeslot, setCurrentTimeslot] = useState<TimeSlot | null>(null);
@@ -34,7 +36,8 @@ const Page: FC<PageProps> = ({ params }) => {
   const [patch, setPatch] = useState<PatchBody>({
     data: [],
     timeSlotId: -1,
-    userId: 1,
+    userId: -1,
+    groupId: Number(params.id),
     date: currentDate,
   });
 
@@ -54,6 +57,15 @@ const Page: FC<PageProps> = ({ params }) => {
       presence => presence.timeSlotId === currentTimeslot.id
     )?.state;
   };
+
+  useEffect(() => {
+    if (!session || !session.data) return;
+
+    setPatch({
+      ...patch,
+      userId: session.data.user.id,
+    });
+  }, [session]);
 
   useEffect(() => {
     fetch('/api/timeSlot')
@@ -108,7 +120,8 @@ const Page: FC<PageProps> = ({ params }) => {
   }, [currentTimeslot, currentDate]);
 
   useEffect(() => {
-    if (!patch.data.length || patch.timeSlotId === -1) return;
+    if (!patch.data.length || patch.timeSlotId === -1 || patch.userId === -1)
+      return;
 
     const timeout = setTimeout(() => {
       fetch('/api/presence', {
@@ -159,6 +172,8 @@ const Page: FC<PageProps> = ({ params }) => {
 
     return () => clearTimeout(timeout);
   }, [patch]);
+
+  if (!session) return null;
 
   const handleTimeSlotChange = (kind: 'prev' | 'next') => {
     if (!timeSlot || !currentTimeslot) return;

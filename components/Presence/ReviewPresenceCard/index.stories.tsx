@@ -5,22 +5,21 @@ type Story = StoryObj<typeof ReviewPresenceCard>;
 type Meta = MetaObj<typeof ReviewPresenceCard>;
 
 const defaultPresence = {
-  id: 1,
-  date: '2022-10-10T10:00:00.000Z',
-  state: 'Present',
-  processed: false,
+  state: 'LATE',
+  date: '2024-08-02T11:52:43.858Z',
   student: {
-    id: 1,
-    firstName: 'John',
-    lastName: 'Doe',
+    firstName: 'Grace',
+    lastName: 'Jones',
     class: {
-      id: 1,
-      name: 'Class 1',
+      name: '1A',
     },
   },
   timeSlot: {
-    id: 1,
-    name: '8:25 - 9h15',
+    name: '13:40 - 14:30',
+  },
+  user: {
+    firstName: 'Admin',
+    lastName: 'Admin',
   },
 };
 

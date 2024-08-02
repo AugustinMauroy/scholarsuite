@@ -1,5 +1,7 @@
 .wrapper {
-  @apply flex
+  @apply m-2
+    flex
+    w-full
     flex-col
     gap-2
     rounded
