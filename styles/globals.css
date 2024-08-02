@@ -54,5 +54,5 @@ table {
 
 *:focus {
   @apply outline-2
-    outline-brand-500;
+    outline-teal-500;
 }

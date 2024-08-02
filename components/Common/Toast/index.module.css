@@ -27,7 +27,7 @@
     dark:bg-gray-900;
 
   .message {
-    @apply text-brand-600
+    @apply text-teal-600
       dark:text-white;
   }
 }

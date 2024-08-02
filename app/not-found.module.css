@@ -25,15 +25,15 @@
       justify-center
       gap-2
       rounded
-      bg-brand-500
+      bg-teal-500
       px-4
       py-2
       text-lg
       text-white
       transition-colors
       duration-300
-      hover:bg-brand-600
-      dark:hover:bg-brand-400;
+      hover:bg-teal-600
+      dark:hover:bg-teal-400;
 
     svg {
       @apply inline-block

@@ -42,18 +42,6 @@ turbo build
 npm start
 ```
 
-## Customizing your instance of ScholarSuite
-
-In the `.env` file, you can customize the main color of the application by adding the `CUSTOM_COLOR` variable with the name of the color [tailwindcss](https://tailwindcss.com/docs/customizing-colors#color-palette-reference). **Caution ⚠️:** the color must be a color of the tailwindcss palette and must be in lowercase.
-
-Also, keep in mind that the color will be used for buttons, links and navigation bar elements... So don't put a color that could cause readability problems. But still, it is not recommended to put a color with a particular meaning (such as red for errors).
-
-**Example:**
-
-```makefile
-CUSTOM_COLOR=blue
-```
-
 ## Docs
 
 - [Roadmap](./ROADMAP.md)

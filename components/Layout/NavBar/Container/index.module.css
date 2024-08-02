@@ -1,0 +1,94 @@
+.nav {
+  .header {
+    @apply flex
+      h-16
+      items-center
+      border-b
+      bg-white
+      px-4
+      shadow-lg
+      dark:border-r
+      dark:border-gray-700
+      dark:bg-gray-800
+      dark:shadow-none;
+
+    .button {
+      @apply rounded-md
+        p-2
+        hover:bg-gray-100
+        dark:hover:bg-gray-800;
+
+      .toggleIcon {
+        @apply size-6
+          text-gray-600
+          dark:text-gray-400;
+      }
+    }
+  }
+
+  .section {
+    @apply flex
+      h-[calc(100vh-4rem)]
+      w-full
+      flex-col
+      items-start
+      justify-between
+      divide-y
+      divide-gray-200
+      bg-white
+      shadow-lg
+      dark:divide-gray-700
+      dark:border-r
+      dark:border-gray-700
+      dark:bg-gray-800
+      dark:shadow-none;
+  }
+
+  .sectionClose {
+    @apply hidden;
+  }
+
+  .topLinks {
+    @apply w-full
+      divide-y
+      divide-gray-200
+      dark:divide-gray-700;
+  }
+
+  .links {
+    @apply flex
+      flex-col
+      gap-2
+      px-2;
+
+    a {
+      @apply transition-colors
+        duration-200;
+
+      &:hover {
+        @apply text-teal-500
+          underline
+          dark:text-teal-400;
+      }
+    }
+  }
+
+  .bottomLinks {
+    @apply flex
+      flex-col
+      gap-2
+      px-2;
+
+    a {
+      @apply text-sm
+        transition-colors
+        duration-200;
+
+      &:hover {
+        @apply text-teal-500
+          underline
+          dark:text-teal-400;
+      }
+    }
+  }
+}

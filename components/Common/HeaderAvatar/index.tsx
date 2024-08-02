@@ -16,7 +16,7 @@ const HeaderAvatar: FC = () => {
 
   return (
     <DropdownMenuPrimitive.Root>
-      <DropdownMenuPrimitive.Trigger className="rounded-full focus:outline-none focus:ring-2 focus:ring-brand-500">
+      <DropdownMenuPrimitive.Trigger className="rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500">
         <Avatar src={sessionData.data?.user?.image || ''} alt={alt} />
       </DropdownMenuPrimitive.Trigger>
       <DropdownMenuPrimitive.Portal>

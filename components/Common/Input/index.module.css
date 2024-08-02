@@ -24,12 +24,12 @@
       duration-200
       focus:border-gray-500
       focus:ring-1
-      focus:ring-brand-500
+      focus:ring-teal-500
       dark:border-gray-800
       dark:bg-gray-950
       dark:text-white
       dark:focus:border-gray-600
-      dark:focus:ring-brand-600;
+      dark:focus:ring-teal-600;
   }
 
   &.inline {
@@ -54,7 +54,7 @@
         py-2
         text-sm
         font-medium
-        accent-brand-500;
+        accent-teal-500;
     }
   }
 }

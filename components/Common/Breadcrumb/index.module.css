@@ -11,13 +11,14 @@
 
   .activeItem {
     @apply rounded
-      bg-brand-600
+      bg-violet-600
       px-2
       py-1
       text-white;
 
     a {
-      @apply hover:no-underline;
+      @apply cursor-default
+        hover:no-underline;
     }
   }
 

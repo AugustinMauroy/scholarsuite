@@ -29,15 +29,15 @@
 }
 
 .secondary {
-  @apply bg-brand-50
-    text-brand-600
-    ring-brand-500/10
-    dark:bg-brand-800
-    dark:text-brand-300;
+  @apply bg-teal-50
+    text-teal-600
+    ring-teal-500/10
+    dark:bg-teal-800
+    dark:text-teal-300;
 
   &[role='button']:hover {
-    @apply ring-brand-500/20
-      dark:bg-brand-700;
+    @apply ring-teal-500/20
+      dark:bg-teal-700;
   }
 }
 

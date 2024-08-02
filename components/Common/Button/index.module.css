@@ -20,39 +20,39 @@
 }
 
 .solid:enabled {
-  @apply bg-brand-500
+  @apply bg-teal-500
     text-white
-    dark:bg-brand-600;
+    dark:bg-teal-600;
 
   &:hover {
-    @apply bg-brand-600
-      dark:bg-brand-700;
+    @apply bg-teal-600
+      dark:bg-teal-700;
   }
 
   &:active {
-    @apply bg-brand-700
-      dark:bg-brand-800;
+    @apply bg-teal-700
+      dark:bg-teal-800;
   }
 }
 
 .outline:enabled {
   @apply border-2
-    border-brand-500
-    text-brand-500
-    dark:border-brand-600
-    dark:text-brand-600;
+    border-teal-500
+    text-teal-500
+    dark:border-teal-600
+    dark:text-teal-600;
 
   &:hover {
-    @apply bg-brand-500
+    @apply bg-teal-500
       text-gray-50
-      dark:bg-brand-600
+      dark:bg-teal-600
       dark:text-gray-50;
   }
 
   &:active {
-    @apply bg-brand-600
+    @apply bg-teal-600
       text-gray-50
-      dark:bg-brand-700
+      dark:bg-teal-700
       dark:text-gray-50;
   }
 }

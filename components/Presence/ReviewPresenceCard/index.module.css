@@ -15,7 +15,7 @@
   }
 
   &.pending {
-    @apply border-brand-500
+    @apply border-teal-500
       bg-white
       dark:bg-gray-900;
   }
@@ -49,8 +49,8 @@
 
       .todoIcon {
         @apply size-5
-          text-brand-500
-          dark:text-brand-400;
+          text-teal-500
+          dark:text-teal-400;
       }
 
       .notifyIcon {

@@ -1,0 +1,58 @@
+.accordionMenu {
+  @apply flex
+    flex-col
+    gap-2;
+
+  .item {
+    .accordion {
+      @apply flex
+        w-full
+        flex-row
+        items-center
+        justify-between
+        px-4
+        text-sm;
+
+      span {
+        @apply truncate;
+      }
+
+      svg {
+        @apply size-6
+          text-gray-600
+          transition
+          dark:text-gray-400;
+
+        &.close {
+          @apply rotate-180
+            transform;
+        }
+      }
+
+      &:hover svg {
+        @apply text-teal-500
+          dark:text-teal-400;
+      }
+    }
+
+    .panel {
+      @apply flex
+        flex-col;
+
+      a {
+        @apply px-4
+          py-2;
+
+        &:hover {
+          @apply bg-gray-100
+            dark:bg-gray-800;
+        }
+
+        &.active {
+          @apply bg-violet-500
+            text-white;
+        }
+      }
+    }
+  }
+}

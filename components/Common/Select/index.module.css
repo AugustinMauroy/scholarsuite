@@ -82,11 +82,11 @@
 
   .text {
     @apply text-gray-800
-      data-[highlighted]:bg-brand-500
+      data-[highlighted]:bg-teal-500
       data-[highlighted]:text-white
       data-[highlighted]:outline-none
       dark:text-gray-200
-      dark:data-[highlighted]:bg-brand-600;
+      dark:data-[highlighted]:bg-teal-600;
   }
 
   .text > span {

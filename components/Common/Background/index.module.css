@@ -14,10 +14,10 @@
       aspect-square
       w-[300px]
       rounded-full
-      bg-brand-300
+      bg-teal-300
       blur-[120px]
       content-['']
-      dark:bg-brand-700;
+      dark:bg-teal-700;
   }
 
   svg {

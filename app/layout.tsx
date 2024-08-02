@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import { getServerSession } from 'next-auth/next';
-import GroupNav from '@/components/Common/GroupNav';
 import Header from '@/components/Layout/Header';
+import NavBar from '@/components/Layout/NavBar';
 import nextAuthConfig from '@/lib/auth';
 import { getLanguage, getTimeZone, getMessages } from '@/lib/i18n';
 import AuthProvider from '@/providers/auth';
@@ -46,7 +46,7 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
             <ToastProvider viewportClassName={styles.notif}>
               {sessionData ? (
                 <>
-                  <GroupNav />
+                  <NavBar />
                   <div className={styles.wrapper}>
                     <Header />
                     {children}

@@ -1,11 +1,11 @@
 .body {
   @apply flex
+    max-h-screen
     flex-row;
 
   .wrapper {
     @apply flex
-      min-h-screen
-      w-full
+      size-full
       flex-col;
   }
 
