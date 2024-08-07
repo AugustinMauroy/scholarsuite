@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import AccordionMenu from '../AccordionMenu';
 import styles from './index.module.css';
-import type { FC } from 'react';
+import type { FC, ReactNode } from 'react';
 
 export type NavItem = {
   label: string;
@@ -19,20 +19,34 @@ export type NavItem = {
   }[];
 };
 
+type accordionMenuProps = {
+  title: string;
+  items: NavItem[];
+};
+
 type ContainerNavProps = {
-  items?: NavItem[];
-  links?: {
-    label: string;
+  topLinks?: {
+    label: ReactNode;
     href: string;
   }[];
-  bottomLinks?: {
-    label: string;
+  accordionMenu?: accordionMenuProps[];
+  links?: {
+    label: ReactNode;
     href: string;
+  }[];
+  bottomElements?: {
+    label: ReactNode;
+    href?: string;
   }[];
 };
 
-const ContainerNav: FC<ContainerNavProps> = ({ items, links, bottomLinks }) => {
-  const [isOpen, setIsOpen] = useState(items?.length !== 0);
+const ContainerNav: FC<ContainerNavProps> = ({
+  topLinks,
+  accordionMenu,
+  links,
+  bottomElements,
+}) => {
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -43,7 +57,7 @@ const ContainerNav: FC<ContainerNavProps> = ({ items, links, bottomLinks }) => {
       <motion.nav
         className={styles.nav}
         initial={{ width: 240 }}
-        animate={{ width: isOpen ? 240 : 'fit-content' }}
+        animate={{ width: isOpen ? 240 : 64 }}
         exit={{ width: 240 }}
         transition={{ duration: 0.15 }}
       >
@@ -63,7 +77,22 @@ const ContainerNav: FC<ContainerNavProps> = ({ items, links, bottomLinks }) => {
           className={classNames(styles.section, !isOpen && styles.sectionClose)}
         >
           <div className={styles.topLinks}>
-            {items && <AccordionMenu items={items} />}
+            {topLinks && (
+              <ul className={styles.links}>
+                {topLinks.map(link => (
+                  <li key={link.href}>
+                    <Link href={link.href}>{link.label}</Link>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {accordionMenu &&
+              accordionMenu.map((menu, index) => (
+                <div key={index} className={styles.accordionMenu}>
+                  <h3>{menu.title}</h3>
+                  <AccordionMenu items={menu.items} />
+                </div>
+              ))}
             {links && (
               <ul className={styles.links}>
                 {links.map(link => (
@@ -74,13 +103,17 @@ const ContainerNav: FC<ContainerNavProps> = ({ items, links, bottomLinks }) => {
               </ul>
             )}
           </div>
-          {bottomLinks && (
-            <div className={styles.bottomLinks}>
-              {bottomLinks.map(link => (
-                <Link key={link.href} href={link.href}>
-                  {link.label}
-                </Link>
-              ))}
+          {bottomElements && (
+            <div className={styles.bottomElements}>
+              {bottomElements.map(link =>
+                link.href ? (
+                  <Link key={link.href} href={link.href}>
+                    {link.label}
+                  </Link>
+                ) : (
+                  link.label
+                )
+              )}
             </div>
           )}
         </section>

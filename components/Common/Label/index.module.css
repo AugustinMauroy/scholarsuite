@@ -1,5 +1,9 @@
 .label {
-  @apply text-base
+  @apply inline-flex
+    items-center
+    justify-start
+    gap-2
+    text-base
     font-medium
     text-gray-900
     dark:text-white;

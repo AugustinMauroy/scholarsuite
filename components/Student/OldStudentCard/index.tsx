@@ -1,5 +1,7 @@
+import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import classNames from 'classnames';
+import Link from 'next/link';
 import { getAcronymFromString } from '@/utils/string';
 import styles from './index.module.css';
 import type { PresenceState } from '@prisma/client';
@@ -9,6 +11,8 @@ type StudentCardProps = {
   state?: PresenceState;
   firstName: string;
   lastName: string;
+  id: number;
+  from?: string;
   image?: string;
   onContextMenu?: () => void;
   onClick?: () => void;
@@ -18,6 +22,8 @@ const StudentCard: FC<StudentCardProps> = ({
   state,
   firstName,
   lastName,
+  id,
+  from,
   onContextMenu,
   onClick,
   image,
@@ -30,6 +36,13 @@ const StudentCard: FC<StudentCardProps> = ({
       onContextMenu && onContextMenu();
     }}
   >
+    <div className={styles.info}>
+      <Link
+        href={`/student/${id}${from ? '?' + new URLSearchParams({ from: from }).toString() : ''}`}
+      >
+        <InformationCircleIcon />
+      </Link>
+    </div>
     <AvatarPrimitive.Root className={styles.avatar}>
       <AvatarPrimitive.Image
         loading="lazy"

@@ -18,6 +18,29 @@
       dark:shadow-none;
   }
 
+  .info {
+    @apply fixed
+      m-2
+      rounded-full
+      p-0.5;
+
+    &:hover {
+      @apply bg-gray-100
+        dark:bg-gray-900;
+
+      svg {
+        @apply scale-110
+          transform;
+      }
+    }
+
+    svg {
+      @apply z-10
+        size-5
+        transition-transform;
+    }
+  }
+
   .avatar {
     @apply flex
       flex-col

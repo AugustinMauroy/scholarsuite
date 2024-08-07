@@ -5,6 +5,14 @@
     flex-col
     gap-4;
 
+  .empty {
+    @apply text-center
+      text-lg
+      font-semibold
+      text-gray-500
+      dark:text-gray-400;
+  }
+
   .pagination {
     @apply flex
       w-full

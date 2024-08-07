@@ -1,0 +1,35 @@
+.about {
+  @apply flex
+    h-full
+    flex-col
+    items-start
+    justify-center
+    gap-4;
+
+  h2 {
+    @apply text-2xl
+      font-bold;
+  }
+
+  hr {
+    @apply w-full border-t
+      border-gray-200
+      dark:border-gray-800;
+  }
+
+  details {
+    @apply flex
+      w-full
+      flex-col
+      items-start
+      gap-2;
+
+    pre {
+      @apply rounded-md
+        border
+        border-gray-200
+        p-2
+        dark:border-gray-800;
+    }
+  }
+}

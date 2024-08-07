@@ -19,56 +19,260 @@
   }
 }
 
-.solid:enabled {
-  @apply bg-teal-500
-    text-white
-    dark:bg-teal-600;
-
-  &:hover {
-    @apply bg-teal-600
-      dark:bg-teal-700;
-  }
-
-  &:active {
-    @apply bg-teal-700
-      dark:bg-teal-800;
-  }
-}
-
-.outline:enabled {
-  @apply border-2
-    border-teal-500
-    text-teal-500
-    dark:border-teal-600
-    dark:text-teal-600;
-
-  &:hover {
+.primary {
+  &.solid {
     @apply bg-teal-500
-      text-gray-50
-      dark:bg-teal-600
-      dark:text-gray-50;
+      text-white;
+
+    &:hover {
+      @apply bg-teal-600;
+    }
+
+    &:active {
+      @apply bg-teal-700;
+    }
+
+    &:disabled {
+      @apply bg-teal-400
+        text-gray-500;
+    }
   }
 
-  &:active {
-    @apply bg-teal-600
-      text-gray-50
-      dark:bg-teal-700
-      dark:text-gray-50;
+  &.outline {
+    @apply border
+        border-teal-500
+        text-teal-500;
+
+    &:hover {
+      @apply bg-teal-500
+            text-white;
+    }
+
+    &:active {
+      @apply bg-teal-600;
+    }
+
+    &:disabled {
+      @apply border-gray-500
+        bg-transparent
+        text-gray-500;
+    }
   }
 }
 
-.danger:enabled {
-  @apply bg-red-500
-    text-white
-    dark:bg-red-600;
+.info {
+  &.solid {
+    @apply bg-blue-500
+        text-white;
 
-  &:hover {
-    @apply bg-red-600
-      dark:bg-red-700;
+    &:hover {
+      @apply bg-blue-600;
+    }
+
+    &:active {
+      @apply bg-blue-700;
+    }
+
+    &:disabled {
+      @apply bg-blue-400
+          text-gray-500;
+    }
   }
 
-  &:active {
-    @apply bg-red-700
-      dark:bg-red-800;
+  &.outline {
+    @apply border
+            border-blue-500
+            text-blue-500;
+
+    &:hover {
+      @apply bg-blue-500
+            text-white;
+    }
+
+    &:active {
+      @apply bg-blue-600;
+    }
+
+    &:disabled {
+      @apply border-gray-500
+            bg-transparent
+            text-gray-500;
+    }
+  }
+}
+
+.success {
+  &.solid {
+    @apply bg-green-500
+        text-white;
+
+    &:hover {
+      @apply bg-green-600;
+    }
+
+    &:active {
+      @apply bg-green-700;
+    }
+
+    &:disabled {
+      @apply bg-green-400
+          text-gray-500;
+    }
+  }
+
+  &.outline {
+    @apply border
+            border-green-500
+            text-green-500;
+
+    &:hover {
+      @apply bg-green-500
+            text-white;
+    }
+
+    &:active {
+      @apply bg-green-600;
+    }
+
+    &:disabled {
+      @apply border-gray-500
+            bg-transparent
+            text-gray-500;
+    }
+  }
+}
+
+.warning {
+  &.solid {
+    @apply bg-yellow-500
+        text-white;
+
+    &:hover {
+      @apply bg-yellow-600;
+    }
+
+    &:active {
+      @apply bg-yellow-700;
+    }
+
+    &:disabled {
+      @apply bg-yellow-400
+          text-gray-500;
+    }
+  }
+
+  &.outline {
+    @apply border
+            border-yellow-500
+            text-yellow-500;
+
+    &:hover {
+      @apply bg-yellow-500
+            text-white;
+    }
+
+    &:active {
+      @apply bg-yellow-600;
+    }
+
+    &:disabled {
+      @apply border-gray-500
+            bg-transparent
+            text-gray-500;
+    }
+  }
+}
+
+.danger {
+  &.solid {
+    @apply bg-red-500
+        text-white;
+
+    &:hover {
+      @apply bg-red-600;
+    }
+
+    &:active {
+      @apply bg-red-700;
+    }
+
+    &:disabled {
+      @apply bg-red-400
+          text-gray-500;
+    }
+  }
+
+  &.outline {
+    @apply border
+            border-red-500
+            text-red-500;
+
+    &:hover {
+      @apply bg-red-500
+            text-white;
+    }
+
+    &:active {
+      @apply bg-red-600;
+    }
+
+    &:disabled {
+      @apply border-gray-500
+            bg-transparent
+            text-gray-500;
+    }
+  }
+}
+
+.light {
+  &.solid {
+    @apply bg-gray-200
+          text-black
+          dark:bg-gray-800
+            dark:text-white;
+
+    &:hover {
+      @apply bg-gray-300
+            dark:bg-gray-700;
+    }
+
+    &:active {
+      @apply bg-gray-400
+            dark:bg-gray-600;
+    }
+
+    &:disabled {
+      @apply bg-gray-100
+            text-gray-500
+            dark:bg-gray-900
+            dark:text-gray-400;
+    }
+  }
+
+  &.outline {
+    @apply border
+        border-gray-800
+        text-gray-800
+        dark:border-gray-200
+        dark:text-gray-200;
+
+    &:hover {
+      @apply bg-gray-200
+        dark:bg-gray-800;
+    }
+
+    &:active {
+      @apply bg-gray-300
+        dark:bg-gray-700;
+    }
+
+    &:disabled {
+      @apply border-gray-200
+        bg-transparent
+        text-gray-500
+        dark:border-gray-800
+        dark:bg-transparent
+        dark:text-gray-400;
+    }
   }
 }

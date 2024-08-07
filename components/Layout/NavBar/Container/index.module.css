@@ -1,13 +1,14 @@
 .nav {
   .header {
     @apply flex
-      h-16
+      h-14
+      w-full
       items-center
-      border-b
+      justify-start
+      border-b-2
+      border-r
       bg-white
-      px-4
-      shadow-lg
-      dark:border-r
+      p-2
       dark:border-gray-700
       dark:bg-gray-800
       dark:shadow-none;
@@ -28,7 +29,7 @@
 
   .section {
     @apply flex
-      h-[calc(100vh-4rem)]
+      h-[calc(100vh-3.5rem)]
       w-full
       flex-col
       items-start
@@ -50,9 +51,20 @@
 
   .topLinks {
     @apply w-full
+      space-y-1
       divide-y
       divide-gray-200
+      py-2
       dark:divide-gray-700;
+
+    .accordionMenu {
+      h3 {
+        @apply cursor-pointer
+            px-2
+            font-semibold
+            dark:text-gray-200;
+      }
+    }
   }
 
   .links {
@@ -62,7 +74,11 @@
       px-2;
 
     a {
-      @apply transition-colors
+      @apply inline-flex
+        flex-row
+        justify-center
+        gap-1
+        transition-colors
         duration-200;
 
       &:hover {
@@ -70,11 +86,16 @@
           underline
           dark:text-teal-400;
       }
+
+      svg {
+        @apply size-5;
+      }
     }
   }
 
-  .bottomLinks {
-    @apply flex
+  .bottomElements {
+    @apply mb-4
+      flex
       flex-col
       gap-2
       px-2;

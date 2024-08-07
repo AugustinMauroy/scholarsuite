@@ -2,7 +2,7 @@
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import BaseLayout from '@/components/Layout/Base';
-import StudentCard from '@/components/Student/StudentCard';
+import StudentCard from '@/components/Student/NewStudentCard';
 import Selector from '@/components/TimeSlot/Selector';
 import styles from './page.module.css';
 import type { PatchBody } from '@/types/presence';
@@ -187,7 +187,10 @@ const Page: FC<PageProps> = ({ params }) => {
       : setCurrentTimeslot(timeSlot[currentIndex + 1]);
   };
 
-  const handleStudentClick = (student: StudentWithPresence) => {
+  const handleStudentClick = (
+    student: StudentWithPresence,
+    state: PresenceState = 'PRESENT'
+  ) => {
     if (!currentTimeslot) return;
 
     setPatch({
@@ -199,58 +202,9 @@ const Page: FC<PageProps> = ({ params }) => {
             presence => presence.timeSlotId === currentTimeslot.id
           )?.id,
           studentId: student.id,
-          state: 'PRESENT',
+          state,
         },
       ],
-    });
-  };
-
-  const handleStudentContextMenu = (student: StudentWithPresence) => {
-    if (!currentTimeslot) return;
-
-    setPatch(prev => {
-      const state = student.presence.find(
-        presence => presence.timeSlotId === currentTimeslot.id
-      )?.state;
-
-      const presence = prev.data.find(data => data.studentId === student.id);
-
-      if (presence) {
-        return {
-          ...prev,
-          data: [
-            ...prev.data.filter(data => data.studentId !== student.id),
-            {
-              studentId: student.id,
-              state:
-                presence.state === 'PRESENT'
-                  ? 'ABSENT'
-                  : presence.state === 'ABSENT'
-                    ? 'LATE'
-                    : 'ABSENT',
-            },
-          ],
-        };
-      }
-
-      return {
-        ...prev,
-        data: [
-          ...prev.data.filter(data => data.studentId !== student.id),
-          {
-            id: student.presence.find(
-              presence => presence.timeSlotId === currentTimeslot.id
-            )?.id,
-            studentId: student.id,
-            state:
-              state === 'PRESENT'
-                ? 'ABSENT'
-                : state === 'ABSENT'
-                  ? 'LATE'
-                  : 'ABSENT',
-          },
-        ],
-      };
     });
   };
 
@@ -259,10 +213,16 @@ const Page: FC<PageProps> = ({ params }) => {
   return (
     <BaseLayout
       title={groupData.name}
+      description={
+        groupData.StudentGroup.length === 0
+          ? 'No students are registered in this group'
+          : ''
+      }
       sectionClassName={styles.studentList}
       actions={
         currentTimeslot &&
-        timeSlot && (
+        timeSlot &&
+        groupData.StudentGroup.length > 0 && (
           <Selector
             name={
               currentTimeslot.name ??
@@ -279,17 +239,48 @@ const Page: FC<PageProps> = ({ params }) => {
         )
       }
     >
-      {groupData.StudentGroup.map(studentGroup => (
-        <StudentCard
-          key={studentGroup.student.id}
-          firstName={studentGroup.student.firstName}
-          lastName={studentGroup.student.lastName}
-          state={getPresence(studentGroup.student)}
-          image={`http://localhost:3000/api/content/student-picture/${studentGroup.student.id}`}
-          onClick={() => handleStudentClick(studentGroup.student)}
-          onContextMenu={() => handleStudentContextMenu(studentGroup.student)}
-        />
-      ))}
+      {groupData.StudentGroup.length > 0 &&
+        groupData.StudentGroup.map(studentGroup => (
+          <StudentCard
+            key={studentGroup.student.id}
+            student={{
+              firstName: studentGroup.student.firstName,
+              lastName: studentGroup.student.lastName,
+            }}
+            image={`http://localhost:3000/api/content/student-picture/${studentGroup.student.id}`}
+            actions={[
+              {
+                kind:
+                  getPresence(studentGroup.student) === 'PRESENT'
+                    ? 'solid'
+                    : 'outline',
+                variant: 'success',
+                children: 'Present',
+                onClick: () =>
+                  handleStudentClick(studentGroup.student, 'PRESENT'),
+              },
+              {
+                kind:
+                  getPresence(studentGroup.student) === 'ABSENT'
+                    ? 'solid'
+                    : 'outline',
+                variant: 'danger',
+                children: 'Absent',
+                onClick: () =>
+                  handleStudentClick(studentGroup.student, 'ABSENT'),
+              },
+              {
+                kind:
+                  getPresence(studentGroup.student) === 'LATE'
+                    ? 'solid'
+                    : 'outline',
+                variant: 'warning',
+                children: 'Late',
+                onClick: () => handleStudentClick(studentGroup.student, 'LATE'),
+              },
+            ]}
+          />
+        ))}
     </BaseLayout>
   );
 };

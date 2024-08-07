@@ -9,20 +9,20 @@ import Button from '@/components/Common/Button';
 import { getAcronymFromString } from '@/utils/string';
 import type { FC } from 'react';
 
-const HeaderAvatar: FC = () => {
+const UserAvatar: FC = () => {
   const sessionData = useSession();
   const t = useTranslations('components.layout.header');
   const alt = getAcronymFromString(sessionData.data?.user.name || '');
 
   return (
     <DropdownMenuPrimitive.Root>
-      <DropdownMenuPrimitive.Trigger className="rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500">
+      <DropdownMenuPrimitive.Trigger className="size-fit rounded-full focus:outline-none focus:ring-2 focus:ring-teal-500">
         <Avatar src={sessionData.data?.user?.image || ''} alt={alt} />
       </DropdownMenuPrimitive.Trigger>
       <DropdownMenuPrimitive.Portal>
         <DropdownMenuPrimitive.Content
           sideOffset={5}
-          className="flex flex-col gap-4 rounded-lg bg-white p-2 shadow-lg dark:bg-gray-800"
+          className="mx-1.5 flex flex-col gap-4 rounded-lg bg-white p-2 shadow-lg dark:border dark:border-gray-700 dark:bg-gray-900"
         >
           <DropdownMenuPrimitive.CheckboxItem asChild>
             <Link
@@ -44,4 +44,4 @@ const HeaderAvatar: FC = () => {
   );
 };
 
-export default HeaderAvatar;
+export default UserAvatar;

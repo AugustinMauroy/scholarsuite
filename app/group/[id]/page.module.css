@@ -1,7 +1,10 @@
 .studentList {
   @apply flex
-    max-h-[calc(100vh-10rem)]
+    max-h-[calc(100vh-3.5rem)]
+    flex-row
     flex-wrap
+    items-start
+    justify-start
     gap-4
     overflow-y-auto;
 }

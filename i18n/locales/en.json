@@ -2,7 +2,7 @@
   "app": {
     "metadata": {
       "title": "SchoolarSuite",
-      "description": ""
+      "description": "ScholarSuite is a grade management application for schools. It allows to manage students, classes, school levels, subjects and grades."
     },
     "notFound": {
       "title": "404 - Not Found",
@@ -34,27 +34,6 @@
         "profile": "Profile",
         "signout": "Sign Out"
       }
-    }
-  },
-  "common": {
-    "breadcrumb": {
-      "administration": "Administration",
-      "academicYear": "Academic Year",
-      "classes": "Classes",
-      "schoolLevels": "School Levels",
-      "students": "Students",
-      "timeSlots": "Time Slots",
-      "users": "Users",
-      "class": "Class",
-      "disciplinaryReport": "Disciplinary Report",
-      "presence": "Presence",
-      "profile": "Profile",
-      "add": "Add",
-      "about": "About the app",
-      "subjects": "Subjects",
-      "groups": "Groups",
-      "group": "Group",
-      "timeSlot": "Time Slot"
     }
   }
 }

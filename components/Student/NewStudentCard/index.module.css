@@ -1,0 +1,55 @@
+.studentCard {
+  @apply flex
+    size-fit
+    flex-col
+    gap-4
+    rounded-lg
+    bg-white
+    object-fill
+    p-2
+    shadow-md
+    dark:border
+    dark:border-gray-700
+    dark:bg-gray-800
+    dark:shadow-none;
+
+  .info {
+    @apply flex
+      flex-row
+      gap-2;
+
+    .avatar {
+      @apply flex
+        size-12
+        items-center
+        justify-center
+        rounded-md
+        bg-gray-200
+        text-lg
+        font-semibold
+        lg:size-16
+        dark:bg-gray-700;
+    }
+
+    .content {
+      @apply flex
+        flex-1
+        flex-col
+        gap-1;
+
+      h3 {
+        @apply text-lg
+          font-semibold
+          dark:text-gray-200;
+      }
+    }
+  }
+
+  .actions {
+    @apply flex
+        flex-row
+        items-center
+        justify-start
+        gap-2;
+  }
+}

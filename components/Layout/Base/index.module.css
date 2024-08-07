@@ -1,16 +1,16 @@
 .page {
   @apply flex
-    flex-col
-    px-4;
+    flex-col;
 
   header {
     @apply flex
+      h-14
       flex-row
       items-center
       justify-between
       border-b-2
       border-gray-200
-      pb-2;
+      px-4;
 
     h1 {
       @apply text-2xl
@@ -24,7 +24,7 @@
   }
 
   .section {
-    @apply my-4
-      flex-1;
+    @apply flex-1
+      p-4;
   }
 }

@@ -100,102 +100,176 @@ if (users.length) {
     ],
   });
 
+  const classes = await prisma.class.findMany();
+
+  // bind user to classes
+  for (const user of users) {
+    for (const _class of classes) {
+      await prisma.userClass.create({
+        data: {
+          userId: user.id,
+          classId: _class.id,
+        },
+      });
+    }
+  }
+
   await prisma.student.createMany({
     data: [
       {
         firstName: 'Alice',
         lastName: 'Dubois',
-        dateOfBirth: now,
-        classId: 1,
+        dateOfBirth: new Date('2010-01-01'),
       },
       {
         firstName: 'Bob',
         lastName: 'Martin',
-        dateOfBirth: now,
-        classId: 1,
+        dateOfBirth: new Date('2010-01-01'),
       },
       {
         firstName: 'Charlie',
         lastName: 'Brown',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'David',
         lastName: 'Smith',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Eve',
         lastName: 'Johnson',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Frank',
         lastName: 'Williams',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Grace',
         lastName: 'Jones',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Hugo',
         lastName: 'Garcia',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Isabel',
         lastName: 'Martinez',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Jack',
         lastName: 'Brown',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Karl',
         lastName: 'Schmidt',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Linda',
         lastName: 'Davis',
-        dateOfBirth: now,
-        classId: 1,
+      },
+      {
+        firstName: 'Oliver',
+        lastName: 'White',
+      },
+      {
+        firstName: 'Sophia',
+        lastName: 'Green',
+      },
+      {
+        firstName: 'Ethan',
+        lastName: 'Black',
+      },
+      {
+        firstName: 'Ava',
+        lastName: 'Brown',
+      },
+      {
+        firstName: 'Liam',
+        lastName: 'Taylor',
+      },
+      {
+        firstName: 'Mia',
+        lastName: 'Johnson',
+      },
+      {
+        firstName: 'Noah',
+        lastName: 'Smith',
+      },
+      {
+        firstName: 'Emma',
+        lastName: 'Williams',
+      },
+      {
+        firstName: 'Olivia',
+        lastName: 'Jones',
+      },
+      {
+        firstName: 'William',
+        lastName: 'Garcia',
+      },
+      {
+        firstName: 'James',
+        lastName: 'Martinez',
+      },
+      {
+        firstName: 'Benjamin',
+        lastName: 'Brown',
+      },
+      {
+        firstName: 'Elijah',
+        lastName: 'Schmidt',
+      },
+      {
+        firstName: 'Lucas',
+        lastName: 'Davis',
+      },
+      {
+        firstName: 'Michael',
+        lastName: 'White',
+      },
+      {
+        firstName: 'Alexander',
+        lastName: 'Green',
+      },
+      {
+        firstName: 'Daniel',
+        lastName: 'Black',
+      },
+      {
+        firstName: 'Henry',
+        lastName: 'Brown',
+      },
+      {
+        firstName: 'Joseph',
+        lastName: 'Taylor',
+      },
+      {
+        firstName: 'David',
+        lastName: 'Johnson',
+      },
+      {
+        firstName: 'Sophia',
+        lastName: 'Smith',
+      },
+      {
+        firstName: 'Olivia',
+        lastName: 'Williams',
       },
     ],
   });
 
   const students = await prisma.student.findMany();
 
-  // assing class to teacher
-  await prisma.userClass.createMany({
-    data: [
-      {
-        userId: 1,
-        classId: 1,
+  // half student in 5a and half in 6a
+  for (let i = 0; i < students.length; i++) {
+    await prisma.student.update({
+      where: {
+        id: students[i].id,
       },
-      {
-        userId: 2,
-        classId: 1,
+      data: {
+        classId: i % 2 === 0 ? 15 : 18,
       },
-      {
-        userId: 3,
-        classId: 1,
-      },
-    ],
-  });
+    });
+  }
 
   await prisma.subject.createMany({
     data: [
@@ -234,6 +308,24 @@ if (users.length) {
         date: new Date(now.setDate(now.getDate() - 1)),
         createdById: 1,
         studentId: 1,
+      },
+      {
+        description: 'Student was caught using a mobile phone during the exam',
+        date: new Date(now.setDate(now.getDate() - 2)),
+        createdById: 1,
+        studentId: 4,
+      },
+      {
+        description: 'Student was late for class three times this week',
+        date: new Date(now.setDate(now.getDate() - 3)),
+        createdById: 1,
+        studentId: 5,
+      },
+      {
+        description: 'Student was caught vandalizing school property',
+        date: new Date(now.setDate(now.getDate() - 4)),
+        createdById: 1,
+        studentId: 6,
       },
     ],
   });
@@ -358,18 +450,37 @@ if (users.length) {
     }
   }
 
-  // bind all students to all groups
-  for (const student of students) {
-    for (const group of groups) {
-      await prisma.studentGroup.create({
-        data: {
-          studentId: student.id,
-          groupId: group.id,
-        },
-      });
-    }
+  // bind students 5 to gp 1 and 6 to gp 2 across all school levels
+  const gp1 = groups.filter(group => group.name.includes('gp1'));
+  const gp2 = groups.filter(group => group.name.includes('gp2'));
+  const students5 = await prisma.student.findMany({
+    where: {
+      classId: 15,
+    },
+  });
+  const students6 = await prisma.student.findMany({
+    where: {
+      classId: 18,
+    },
+  });
+
+  for (let i = 0; i < students5.length; i++) {
+    await prisma.studentGroup.create({
+      data: {
+        studentId: students5[i].id,
+        groupId: gp1[i % 3].id,
+      },
+    });
+  }
+  for (let i = 0; i < students6.length; i++) {
+    await prisma.studentGroup.create({
+      data: {
+        studentId: students6[i].id,
+        groupId: gp2[i % 3].id,
+      },
+    });
   }
 
   await prisma.$disconnect();
-  console.log(styleText('green', '✓') + ' Seeded database for developement');
+  console.log(styleText('green', '✓') + ' Seeded database for development');
 }

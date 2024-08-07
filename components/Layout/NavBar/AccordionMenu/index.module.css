@@ -14,7 +14,9 @@
         text-sm;
 
       span {
-        @apply truncate;
+        @apply truncate
+            text-gray-800
+            dark:text-gray-200;
       }
 
       svg {
@@ -40,8 +42,10 @@
         flex-col;
 
       a {
-        @apply px-4
-          py-2;
+        @apply truncate
+          px-4
+          py-2
+          font-medium;
 
         &:hover {
           @apply bg-gray-100

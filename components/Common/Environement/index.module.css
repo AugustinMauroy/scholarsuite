@@ -10,7 +10,7 @@
     text-white;
 
   &.development {
-    @apply bg-teal-500;
+    @apply bg-violet-500;
   }
 
   &.production {

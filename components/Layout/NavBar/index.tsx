@@ -1,4 +1,7 @@
+import { HomeIcon } from '@heroicons/react/24/outline';
 import { getServerSession } from 'next-auth';
+import Environment from '@/components/Common/Environement';
+import UserAvatar from '@/components/Common/UserAvatar';
 import nextAuthConfig from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import ContainerNav from './Container';
@@ -33,7 +36,7 @@ const NavBar: FC = async () => {
       },
     },
   });
-  const items = schoolLevels.map(schoolLevel => ({
+  const PresenceAccordionItems = schoolLevels.map(schoolLevel => ({
     label: schoolLevel.name,
     children: schoolLevel.group.map(group => ({
       label: group.name,
@@ -55,9 +58,29 @@ const NavBar: FC = async () => {
 
   return (
     <ContainerNav
-      items={items}
+      topLinks={[
+        {
+          label: (
+            <>
+              <HomeIcon />
+              ScholarSuite
+            </>
+          ),
+          href: '/',
+        },
+      ]}
+      accordionMenu={[
+        {
+          title: 'Presence for Groups',
+          items: PresenceAccordionItems,
+        },
+      ]}
       links={links}
-      bottomLinks={[{ label: 'About', href: '/about' }]}
+      bottomElements={[
+        { label: 'About', href: '/about' },
+        { label: <UserAvatar /> },
+        { label: <Environment /> },
+      ]}
     />
   );
 };

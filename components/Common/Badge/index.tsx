@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import styles from './index.module.css';
-import type { FC, PropsWithChildren, ReactNode } from 'react';
+import type { FC, PropsWithChildren } from 'react';
 
 type BadgeProps = PropsWithChildren<{
   kind?: 'primary' | 'secondary' | 'success' | 'error' | 'warning';
