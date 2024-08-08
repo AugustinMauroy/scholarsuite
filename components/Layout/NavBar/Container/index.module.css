@@ -76,6 +76,7 @@
     a {
       @apply inline-flex
         flex-row
+        items-center
         justify-center
         gap-1
         transition-colors

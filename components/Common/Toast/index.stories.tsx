@@ -1,4 +1,4 @@
-import { CodeBracketIcon } from '@heroicons/react/24/solid';
+import { CodeXml } from 'lucide-react';
 import Toast from './';
 import type { Meta as MetaObj, StoryObj } from '@storybook/react';
 
@@ -52,7 +52,7 @@ export const WithJSX: Story = {
     open: true,
     children: (
       <>
-        <CodeBracketIcon />
+        <CodeXml />
         Copied to clipboard!
       </>
     ),

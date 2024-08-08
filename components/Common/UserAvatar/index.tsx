@@ -1,6 +1,6 @@
 'use client';
-import { Cog8ToothIcon } from '@heroicons/react/24/outline';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
+import { Settings } from 'lucide-react';
 import Link from 'next/link';
 import { useSession, signOut } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
@@ -29,7 +29,7 @@ const UserAvatar: FC = () => {
               href="/profile"
               className="flex flex-row items-center gap-2 hover:underline hover:outline-none"
             >
-              <Cog8ToothIcon className="size-5" />
+              <Settings className="size-5" />
               <span>{t('profile')}</span>
             </Link>
           </DropdownMenuPrimitive.CheckboxItem>

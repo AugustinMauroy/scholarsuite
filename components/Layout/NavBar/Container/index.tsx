@@ -1,7 +1,7 @@
 'use client';
-import { XMarkIcon, Bars3Icon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import { motion, AnimatePresence } from 'framer-motion';
+import { X, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { useState } from 'react';
 import AccordionMenu from '../AccordionMenu';
@@ -63,11 +63,11 @@ const ContainerNav: FC<ContainerNavProps> = ({
       >
         <div className={styles.header}>
           <button className={styles.button} onClick={toggleMenu}>
-            <XMarkIcon
+            <X
               aria-hidden={!isOpen}
               className={classNames(styles.toggleIcon, !isOpen && 'hidden')}
             />
-            <Bars3Icon
+            <Menu
               aria-hidden={isOpen}
               className={classNames(styles.toggleIcon, isOpen && 'hidden')}
             />

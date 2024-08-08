@@ -1,5 +1,5 @@
 'use client';
-import { ArrowRightIcon } from '@heroicons/react/20/solid';
+import { MoveRight } from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 import style from './not-found.module.css';
@@ -14,7 +14,7 @@ const NotFoundPage: FC = () => {
       <p>{t('description')}</p>
       <Link href="/">
         {t('backHome')}
-        <ArrowRightIcon />
+        <MoveRight />
       </Link>
     </main>
   );

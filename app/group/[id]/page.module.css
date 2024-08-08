@@ -6,5 +6,5 @@
     items-start
     justify-start
     gap-4
-    overflow-y-auto;
+    overflow-y-scroll;
 }

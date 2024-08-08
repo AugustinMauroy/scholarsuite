@@ -1,10 +1,6 @@
 'use client';
-import {
-  PencilIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-} from '@heroicons/react/24/solid';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { PencilIcon, CheckCircleIcon, TriangleAlertIcon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
@@ -120,7 +116,7 @@ const UsersTable: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             Please fill in all fields
           </>
         ),
@@ -143,7 +139,7 @@ const UsersTable: FC = () => {
         toast({
           message: (
             <>
-              <ExclamationTriangleIcon />
+              <TriangleAlertIcon />
               {data.error}
             </>
           ),

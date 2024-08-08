@@ -1,6 +1,6 @@
-import { InformationCircleIcon } from '@heroicons/react/24/outline';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import classNames from 'classnames';
+import { InfoIcon } from 'lucide-react';
 import Link from 'next/link';
 import { getAcronymFromString } from '@/utils/string';
 import styles from './index.module.css';
@@ -40,7 +40,7 @@ const StudentCard: FC<StudentCardProps> = ({
       <Link
         href={`/student/${id}${from ? '?' + new URLSearchParams({ from: from }).toString() : ''}`}
       >
-        <InformationCircleIcon />
+        <InfoIcon />
       </Link>
     </div>
     <AvatarPrimitive.Root className={styles.avatar}>

@@ -1,4 +1,4 @@
-import { HomeIcon } from '@heroicons/react/24/outline';
+import { Home } from 'lucide-react';
 import { getServerSession } from 'next-auth';
 import Environment from '@/components/Common/Environement';
 import UserAvatar from '@/components/Common/UserAvatar';
@@ -62,7 +62,7 @@ const NavBar: FC = async () => {
         {
           label: (
             <>
-              <HomeIcon />
+              <Home />
               ScholarSuite
             </>
           ),

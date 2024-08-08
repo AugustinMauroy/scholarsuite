@@ -1,12 +1,11 @@
 'use client';
-import {
-  PlusIcon,
-  XMarkIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  PencilIcon,
-} from '@heroicons/react/24/solid';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import {
+  PencilIcon,
+  CheckCircleIcon,
+  TriangleAlertIcon,
+  PlusIcon,
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
 import EditModal from '@/components/Common/EditModal';
@@ -55,7 +54,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             All fields are required
           </>
         ),
@@ -81,7 +80,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             {group.error}
           </>
         ),
@@ -108,7 +107,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             All fields are required
           </>
         ),
@@ -135,7 +134,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             {group.error}
           </>
         ),

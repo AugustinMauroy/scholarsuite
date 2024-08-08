@@ -11,12 +11,12 @@
     duration-200
     enabled:hover:bg-gray-200
     disabled:cursor-not-allowed
-    disabled:opacity-50 enabled:dark:hover:bg-gray-800
+    disabled:opacity-50
+    enabled:dark:hover:bg-gray-800
     dark:disabled:opacity-70;
 
     svg {
-      @apply size-6
-        fill-current;
+      @apply size-6;
     }
   }
 
@@ -36,8 +36,7 @@
       duration-200;
 
       svg {
-        @apply size-6
-          fill-current;
+        @apply size-6;
       }
 
       &:hover:not([aria-expanded='true']) {

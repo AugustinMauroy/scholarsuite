@@ -1,9 +1,5 @@
-import {
-  CheckIcon,
-  CheckCircleIcon,
-  BellAlertIcon,
-} from '@heroicons/react/24/solid';
 import classNames from 'classnames';
+import { CheckIcon, CheckCircleIcon, BellIcon } from 'lucide-react';
 import styles from './index.module.css';
 import type { Class, Presence, Student, TimeSlot, User } from '@prisma/client';
 import type { FC } from 'react';
@@ -47,7 +43,7 @@ const ReviewPresenceCard: FC<ReviewPresenceCardProps> = ({
           disabled={presence.notified}
           onClick={() => notifyStudent(presence.id)}
         >
-          <BellAlertIcon className={styles.notifyIcon} />
+          <BellIcon className={styles.notifyIcon} />
           Notify
         </button>
       )}

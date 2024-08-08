@@ -1,10 +1,6 @@
 'use client';
-import {
-  PencilIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-} from '@heroicons/react/24/solid';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { PencilIcon, CheckCircleIcon, TriangleAlertIcon } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
 import EditModal from '@/components/Common/EditModal';
@@ -58,7 +54,7 @@ const SchoolLevelsTable: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             {data.error}
           </>
         ),

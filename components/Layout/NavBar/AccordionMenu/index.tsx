@@ -1,6 +1,6 @@
-import { ChevronDownIcon } from '@heroicons/react/24/outline';
 import classNames from 'classnames';
 import { motion } from 'framer-motion';
+import { ChevronDown } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -33,7 +33,7 @@ const AccordionMenu: FC<AccordionMenuProps> = ({ items }) => {
             }}
           >
             <span>{item.label}</span>
-            <ChevronDownIcon
+            <ChevronDown
               className={classNames(openIndex.includes(index) && styles.close)}
             />
           </button>

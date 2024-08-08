@@ -1,4 +1,4 @@
-import { ListBulletIcon } from '@heroicons/react/24/solid';
+import { EllipsisVertical } from 'lucide-react';
 import StudentCard from '.';
 import type { Meta as MetaObj, StoryObj } from '@storybook/react';
 
@@ -49,7 +49,7 @@ export const WithActions: Story = {
       {
         kind: 'outline',
         variant: 'light',
-        children: <ListBulletIcon />,
+        children: <EllipsisVertical />,
       },
     ],
   },
@@ -81,7 +81,7 @@ export const WithImageAndActions: Story = {
       {
         kind: 'outline',
         variant: 'light',
-        children: <ListBulletIcon />,
+        children: <EllipsisVertical />,
       },
     ],
   },
@@ -117,7 +117,7 @@ export const PresentUsage: Story = {
       {
         kind: 'outline',
         variant: 'light',
-        children: <ListBulletIcon />,
+        children: <EllipsisVertical />,
       },
     ],
   },

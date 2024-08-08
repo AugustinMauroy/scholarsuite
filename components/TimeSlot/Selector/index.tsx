@@ -1,9 +1,5 @@
-import {
-  ArrowLeftIcon,
-  ArrowRightIcon,
-  CalendarIcon,
-} from '@heroicons/react/24/solid';
 import * as PopoverPrimitive from '@radix-ui/react-popover';
+import { ArrowLeft, ArrowRight, CalendarDays } from 'lucide-react';
 import Calendar from '@/components/Common/Calendar';
 import styles from './index.module.css';
 import type { FC } from 'react';
@@ -35,7 +31,7 @@ const Selector: FC<SelectorProps> = ({
         aria-label="Previous"
         aria-disabled={disabledPrev}
       >
-        <ArrowLeftIcon />
+        <ArrowLeft />
       </button>
       <PopoverPrimitive.Trigger asChild>
         <button
@@ -45,7 +41,7 @@ const Selector: FC<SelectorProps> = ({
         >
           <span className={styles.name}>
             {name}
-            <CalendarIcon />
+            <CalendarDays />
           </span>
 
           {(selectedDate?.getMonth() !== new Date().getMonth() ||
@@ -68,7 +64,7 @@ const Selector: FC<SelectorProps> = ({
         aria-label="Next"
         aria-disabled={disabledNext}
       >
-        <ArrowRightIcon />
+        <ArrowRight />
       </button>
     </div>
     <PopoverPrimitive.Portal>

@@ -1,4 +1,4 @@
-import { InformationCircleIcon } from '@heroicons/react/24/solid';
+import { Info } from 'lucide-react';
 import Button from '.';
 import type { Meta as MetaObj, StoryObj } from '@storybook/react';
 
@@ -13,7 +13,7 @@ export const PrimarySolidWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Primary Solid With Icon
       </>
     ),
@@ -39,7 +39,7 @@ export const PrimaryOutlineWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Primary Outline With Icon
       </>
     ),
@@ -65,7 +65,7 @@ export const InfoSolidWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Info Solid With Icon
       </>
     ),
@@ -91,7 +91,7 @@ export const InfoOutlineWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Info Outline With Icon
       </>
     ),
@@ -117,7 +117,7 @@ export const SuccessSolidWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Success Solid With Icon
       </>
     ),
@@ -143,7 +143,7 @@ export const SuccessOutlineWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Success Outline With Icon
       </>
     ),
@@ -169,7 +169,7 @@ export const WarningSolidWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Warning Solid With Icon
       </>
     ),
@@ -195,7 +195,7 @@ export const WarningOutlineWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Warning Outline With Icon
       </>
     ),
@@ -221,7 +221,7 @@ export const DangerSolidWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Danger Solid With Icon
       </>
     ),
@@ -247,7 +247,7 @@ export const DangerOutlineWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Danger Outline With Icon
       </>
     ),
@@ -273,7 +273,7 @@ export const LightSolidWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Light Solid With Icon
       </>
     ),
@@ -299,7 +299,7 @@ export const LightOutlineWithIcon: Story = {
   args: {
     children: (
       <>
-        <InformationCircleIcon />
+        <Info />
         Light Outline With Icon
       </>
     ),
