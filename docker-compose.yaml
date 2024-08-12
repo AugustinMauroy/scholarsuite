@@ -1,0 +1,33 @@
+services:
+  mysql:
+    ports:
+      - 3306:3306
+    container_name: mysql
+    image: mysql:latest
+    volumes:
+      - my-datavolume:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=password
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "mysql -h 127.0.0.1 -u root -ppassword -e 'SELECT 1'"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+  app:
+    ports:
+      - 3000:3000
+    container_name: app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    build : ./
+    networks:
+      - app-network
+
+volumes:
+  my-datavolume:
+
+networks:
+  app-network:

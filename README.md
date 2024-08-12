@@ -11,7 +11,7 @@ ScholarSuite is a grade management application for schools. It allows to manage 
 
 **Prerequisites:**
 
-- Node.js (LTS) and npm _(provided with Node.js)_
+- Node.js (v22.6.0) and npm _(provided with Node.js)_
 - MySQL
 
 1. Clone the repository
@@ -40,6 +40,37 @@ turbo build
 
 ```bash
 npm start
+```
+
+**Starting application using docker compose:**
+**Starting the application in dev mode**
+
+```bash
+docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up
+```
+
+**Starting the application in prod mode**
+
+```bash
+docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up
+```
+If new image should be build during docker compose up.
+Append the "--build" command to above comments
+
+```bash
+docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up --build
+```
+
+or
+
+```bash
+docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up --build
+```
+
+To build docker compose down, use
+
+```bash
+docker-compose down
 ```
 
 ## Docs
