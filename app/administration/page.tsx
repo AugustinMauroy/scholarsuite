@@ -57,7 +57,10 @@ const CARDS = [
 ];
 
 const Page: FC = async () => (
-  <BaseLayout sectionClassName={styles.section}>
+  <BaseLayout
+    sectionClassName={styles.section}
+    title="Administration Dashboard"
+  >
     {CARDS.map(({ title, links, icon: Icon }) => (
       <div className={styles.card} key={title}>
         <h2>

@@ -1,6 +1,7 @@
 'use client';
 import { ThumbsUpIcon, UserXIcon, HourglassIcon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import BaseLayout from '@/components/Layout/Base';
 import StudentCard from '@/components/Student/StudentCard';
@@ -34,6 +35,8 @@ type GroupWithStudents = Group & {
 };
 
 const Page: FC<PageProps> = ({ params }) => {
+  const tPage = useTranslations('app.groupPresence');
+  const tShared = useTranslations('shared');
   const session = useSession();
   const toast = useToast();
   const [groupData, setGroupData] = useState<GroupWithStudents | null>(null);
@@ -139,7 +142,6 @@ const Page: FC<PageProps> = ({ params }) => {
         .then(data => {
           if (data.error) throw new Error(data.error);
 
-          // data.data is the updated presence
           setGroupData(data.data);
           setPatch({
             ...patch,
@@ -147,7 +149,7 @@ const Page: FC<PageProps> = ({ params }) => {
           });
           toast({
             kind: 'success',
-            message: 'Presence updated successfully',
+            message: tPage('toast.success'),
           });
         });
 
@@ -192,15 +194,13 @@ const Page: FC<PageProps> = ({ params }) => {
     }));
   };
 
-  if (!groupData) return <BaseLayout title="Loading..." />;
+  if (!groupData) return <BaseLayout title={tShared('loading')} />;
 
   return (
     <BaseLayout
       title={groupData.name}
       description={
-        groupData.StudentGroup.length === 0
-          ? 'No students are registered in this group'
-          : ''
+        groupData.StudentGroup.length === 0 ? tPage('noStudents') : undefined
       }
       sectionClassName={styles.studentList}
       actions={
@@ -243,7 +243,7 @@ const Page: FC<PageProps> = ({ params }) => {
                 children: (
                   <>
                     <ThumbsUpIcon />
-                    Present
+                    {tShared('presenceState.present')}
                   </>
                 ),
                 onClick: () =>
@@ -258,7 +258,7 @@ const Page: FC<PageProps> = ({ params }) => {
                 children: (
                   <>
                     <UserXIcon />
-                    Absent
+                    {tShared('presenceState.absent')}
                   </>
                 ),
                 onClick: () =>
@@ -273,7 +273,7 @@ const Page: FC<PageProps> = ({ params }) => {
                 children: (
                   <>
                     <HourglassIcon />
-                    Late
+                    {tShared('presenceState.late')}
                   </>
                 ),
                 onClick: () => handleStudentClick(studentGroup.student, 'LATE'),

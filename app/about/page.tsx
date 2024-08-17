@@ -1,4 +1,5 @@
 import { readFile } from 'fs/promises';
+import { getTranslations } from 'next-intl/server';
 import Environment from '@/components/Common/Environement';
 import Label from '@/components/Common/Label';
 import BaseLayout from '@/components/Layout/Base';
@@ -6,15 +7,16 @@ import styles from './index.module.css';
 import type { FC } from 'react';
 
 const Page: FC = async () => {
+  const t = await getTranslations('app.about');
   const license = await readFile('LICENSE', 'utf-8');
 
   return (
     <BaseLayout
       sectionClassName={styles.about}
-      title="About"
-      description={'Get an overview of ScholarSuite "backend" information.'}
+      title={t('title')}
+      description={t('description')}
     >
-      <h2>Environment:</h2>
+      <h2>{t('title')}</h2>
       <Label>
         ScholarSuite:
         <Environment kind="env" forceDisplay />

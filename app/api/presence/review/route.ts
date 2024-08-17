@@ -85,14 +85,7 @@ export const POST = async (req: Request): Promise<Response> => {
         },
       },
     },
-    orderBy: [
-      {
-        createdAt: 'asc',
-      },
-      {
-        processed: 'asc',
-      },
-    ],
+    orderBy: [{ processed: 'asc' }, { createdAt: 'asc' }],
     skip: pagination?.page * pagination?.limit,
     take: pagination?.limit,
   } as any;

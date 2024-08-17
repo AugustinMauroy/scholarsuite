@@ -67,7 +67,7 @@
       }
 
       &.today {
-        @apply font-semibold
+        @apply font-bold
           text-teal-700
           dark:text-teal-300;
       }

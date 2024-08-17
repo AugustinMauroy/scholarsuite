@@ -1,8 +1,20 @@
 {
+  "shared": {
+    "presenceState": {
+      "present": "Present",
+      "absent": "Absent",
+      "late": "Late",
+      "excused": "Excused"
+    },
+    "loading": "Loading..."
+  },
   "app": {
     "metadata": {
       "title": "SchoolarSuite",
       "description": "ScholarSuite is a grade management application for schools. It allows to manage students, classes, school levels, subjects and grades."
+    },
+    "landing": {
+      "title": "Welcome back, {firstName} {lastName}!"
     },
     "notFound": {
       "title": "404 - Not Found",
@@ -26,6 +38,18 @@
       "dropzone": {
         "title": "Drop your profile picture here"
       }
+    },
+    "groupPresence": {
+      "noStudents": "No students in this group",
+      "toast": {
+        "success": "Presence updated successfully"
+      }
+    },
+    "about": {
+      "title": "About",
+      "description": "Get an overview of ScholarSuite \"backend\" information..",
+      "environment": "Environment:",
+      "license": "License:"
     }
   },
   "components": {
@@ -42,6 +66,12 @@
         "admin": "Administration",
         "about": "About",
         "disciplinaryReport": "Disciplinary"
+      }
+    },
+    "timeSlot": {
+      "selector": {
+        "prev": "Previous",
+        "next": "Next"
       }
     }
   }
