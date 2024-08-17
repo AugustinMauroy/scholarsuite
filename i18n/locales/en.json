@@ -29,10 +29,19 @@
     }
   },
   "components": {
-    "layout": {
-      "header": {
+    "common": {
+      "userAvatar": {
         "profile": "Profile",
         "signout": "Sign Out"
+      }
+    },
+    "layout": {
+      "navbar": {
+        "presence": "Review",
+        "presenceGroup": "Presence",
+        "admin": "Administration",
+        "about": "About",
+        "disciplinaryReport": "Disciplinary"
       }
     }
   }

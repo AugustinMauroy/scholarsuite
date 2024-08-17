@@ -1,0 +1,80 @@
+.studentCard {
+  @apply flex
+    size-fit
+    w-80
+    flex-col
+    gap-4
+    rounded-lg
+    border
+    border-gray-100
+    bg-white
+    object-fill
+    p-2
+    dark:border-gray-700
+    dark:bg-gray-800;
+
+  .info {
+    @apply flex
+      flex-row
+      gap-2;
+
+    .avatar {
+      @apply flex
+        size-12
+        items-center
+        justify-center
+        rounded-md
+        bg-gray-200
+        text-lg
+        font-semibold
+        lg:size-16
+        dark:bg-gray-700;
+    }
+
+    .content {
+      @apply flex-1;
+
+      .firstName {
+        @apply text-lg
+          font-bold
+          leading-3
+          text-gray-800
+          dark:text-gray-300;
+      }
+
+      .lastName {
+        @apply font-semibold
+          text-gray-800
+          dark:text-gray-300;
+      }
+
+      small {
+        @apply mt-2
+          text-xs
+          font-normal
+          text-gray-800
+          dark:text-gray-300;
+      }
+    }
+  }
+
+  .actions {
+    @apply flex
+        flex-row
+        items-center
+        justify-center
+        gap-4;
+
+    .action {
+      @apply w-1/3
+        flex-col
+        gap-0
+        text-xs
+        font-semibold;
+
+      svg {
+        @apply size-4;
+      }
+    }
+  }
+}

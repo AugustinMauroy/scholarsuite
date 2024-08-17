@@ -24,48 +24,56 @@ enum PresenceState {
 }
 
 model AcademicYear {
-  id           Int                       @id @default(autoincrement())
-  name         String
-  startDate    DateTime
-  endDate      DateTime
-  createdAt    DateTime                  @default(now())
-  updatedAt    DateTime                  @updatedAt
-  archives     Boolean                   @default(false)
+  id        Int      @id @default(autoincrement())
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  archives  Boolean  @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   presences    Presence[]
   gradePeriods GradePeriodAcademicYear[]
 }
 
 model SchoolLevel {
-  id        Int        @id @default(autoincrement())
-  name      String
-  order     Int
-  enabled   Boolean    @default(true)
-  createdAt DateTime   @default(now())
-  updatedAt DateTime   @updatedAt
-  classes   Class[]
-  timeSlot  TimeSlot[]
-  group     Group[]
+  id      Int     @id @default(autoincrement())
+  name    String
+  order   Int
+  enabled Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  classes  Class[]
+  timeSlot TimeSlot[]
+  group    Group[]
 }
 
 model Subject {
-  id        Int      @id @default(autoincrement())
-  name      String
-  enabled   Boolean  @default(true)
+  id      Int     @id @default(autoincrement())
+  name    String
+  enabled Boolean @default(true)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  grades    Grade[]
-  group     Group[]
+
+  grades Grade[]
+  group  Group[]
 }
 
 model User {
-  id                 Int                  @id @default(autoincrement())
-  firstName          String
-  lastName           String
-  email              String?              @unique
-  password           String
-  enabled            Boolean              @default(true)
-  createdAt          DateTime             @default(now())
-  updatedAt          DateTime             @updatedAt
+  id        Int     @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String? @unique
+  password  String
+  enabled   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   role               Role
   presence           Presence[]
   disciplinaryReport DisciplinaryReport[]
@@ -75,27 +83,31 @@ model User {
 }
 
 model Class {
-  id            Int         @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   name          String
   schoolLevelId Int
-  enabled       Boolean     @default(true)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  schoolLevel   SchoolLevel @relation(fields: [schoolLevelId], references: [id])
-  students      Student[]
-  userClasss    UserClass[]
+  enabled       Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  schoolLevel SchoolLevel @relation(fields: [schoolLevelId], references: [id])
+  students    Student[]
+  userClasss  UserClass[]
 }
 
 model Student {
-  id                  Int                  @id @default(autoincrement())
-  firstName           String
-  lastName            String
-  dateOfBirth         DateTime?
-  classId             Int?
-  contactEmail        String?
-  enabled             Boolean              @default(true)
-  createdAt           DateTime             @default(now())
-  updatedAt           DateTime             @updatedAt
+  id           Int       @id @default(autoincrement())
+  firstName    String
+  lastName     String
+  dateOfBirth  DateTime?
+  classId      Int?
+  contactEmail String?
+  enabled      Boolean   @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   class               Class?               @relation(fields: [classId], references: [id])
   grades              Grade[]
   disciplinaryReports DisciplinaryReport[]
@@ -104,55 +116,63 @@ model Student {
 }
 
 model Grade {
-  id            Int         @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   value         Float
   studentId     Int
   subjectId     Int
   gradePeriodId Int
   groupId       Int
-  enabled       Boolean     @default(true)
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime    @updatedAt
-  student       Student     @relation(fields: [studentId], references: [id])
-  subject       Subject     @relation(fields: [subjectId], references: [id])
-  gradePeriod   GradePeriod @relation(fields: [gradePeriodId], references: [id])
+  enabled       Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  student     Student     @relation(fields: [studentId], references: [id])
+  subject     Subject     @relation(fields: [subjectId], references: [id])
+  gradePeriod GradePeriod @relation(fields: [gradePeriodId], references: [id])
 }
 
 model TimeSlot {
-  id            Int          @id @default(autoincrement())
+  id            Int     @id @default(autoincrement())
   name          String?
   startTime     String
   endTime       String
   schoolLevelId Int?
-  enabled       Boolean      @default(true)
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  schoolLevel   SchoolLevel? @relation(fields: [schoolLevelId], references: [id])
-  presence      Presence[]
+  enabled       Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  schoolLevel SchoolLevel? @relation(fields: [schoolLevelId], references: [id])
+  presence    Presence[]
 }
 
 model Group {
-  id            Int            @id @default(autoincrement())
-  name          String
-  subjectId     Int
-  schoolLevelId Int
-  enabled       Boolean        @default(true)
-  createdAt     DateTime       @default(now())
-  updatedAt     DateTime       @updatedAt
+  id        Int     @id @default(autoincrement())
+  name      String
+  subjectId Int
+  enabled   Boolean @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   subject       Subject        @relation(fields: [subjectId], references: [id])
-  schoolLevel   SchoolLevel    @relation(fields: [schoolLevelId], references: [id])
   StudentGroup  StudentGroup[]
   userGroup     UserGroup[]
+  SchoolLevel   SchoolLevel?   @relation(fields: [schoolLevelId], references: [id])
+  schoolLevelId Int?
 }
 
 model GradePeriod {
-  id            Int                       @id @default(autoincrement())
-  name          String
-  startDate     DateTime
-  endDate       DateTime
-  enabled       Boolean                   @default(true)
-  createdAt     DateTime                  @default(now())
-  updatedAt     DateTime                  @updatedAt
+  id        Int      @id @default(autoincrement())
+  name      String
+  startDate DateTime
+  endDate   DateTime
+  enabled   Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   grades        Grade[]
   academicYears GradePeriodAcademicYear[]
 }
@@ -168,12 +188,14 @@ model Presence {
   groupId        Int
   processed      Boolean       @default(false)
   notified       Boolean       @default(false)
-  createdAt      DateTime      @default(now())
-  updatedAt      DateTime      @updatedAt
-  user           User          @relation(fields: [userId], references: [id])
-  student        Student       @relation(fields: [studentId], references: [id])
-  academicYear   AcademicYear  @relation(fields: [academicYearId], references: [id])
-  timeSlot       TimeSlot      @relation(fields: [timeSlotId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user         User         @relation(fields: [userId], references: [id])
+  student      Student      @relation(fields: [studentId], references: [id])
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
+  timeSlot     TimeSlot     @relation(fields: [timeSlotId], references: [id])
 
   @@index([studentId, date])
 }
@@ -184,10 +206,12 @@ model DisciplinaryReport {
   createdById Int
   date        DateTime
   description String
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  createdBy   User     @relation(fields: [createdById], references: [id])
-  student     Student  @relation(fields: [studentId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  createdBy User    @relation(fields: [createdById], references: [id])
+  student   Student @relation(fields: [studentId], references: [id])
 }
 
 model ApiKey {
@@ -197,43 +221,49 @@ model ApiKey {
   userId    Int
   expiresAt DateTime
   enabled   Boolean  @default(true)
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  user      User     @relation(fields: [userId], references: [id])
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 // Many to Many relations, between GradePeriod and AcademicYear
 model GradePeriodAcademicYear {
-  id             Int          @id @default(autoincrement())
+  id             Int @id @default(autoincrement())
   gradePeriodId  Int
   academicYearId Int
-  gradePeriod    GradePeriod  @relation(fields: [gradePeriodId], references: [id])
-  academicYear   AcademicYear @relation(fields: [academicYearId], references: [id])
+
+  gradePeriod  GradePeriod  @relation(fields: [gradePeriodId], references: [id])
+  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
 }
 
 // Many to Many relations, between User and Class
 model UserClass {
-  id      Int   @id @default(autoincrement())
+  id      Int @id @default(autoincrement())
   userId  Int
   classId Int
-  user    User  @relation(fields: [userId], references: [id])
-  class   Class @relation(fields: [classId], references: [id])
+
+  user  User  @relation(fields: [userId], references: [id])
+  class Class @relation(fields: [classId], references: [id])
 }
 
 // Many to Many relations, between User and Group
 model UserGroup {
-  id      Int   @id @default(autoincrement())
+  id      Int @id @default(autoincrement())
   userId  Int
   groupId Int
-  user    User  @relation(fields: [userId], references: [id])
-  group   Group @relation(fields: [groupId], references: [id])
+
+  user  User  @relation(fields: [userId], references: [id])
+  group Group @relation(fields: [groupId], references: [id])
 }
 
 // Many to Many relations, between Student and Group
 model StudentGroup {
-  id        Int     @id @default(autoincrement())
+  id        Int @id @default(autoincrement())
   studentId Int
   groupId   Int
-  student   Student @relation(fields: [studentId], references: [id])
-  group     Group   @relation(fields: [groupId], references: [id])
+
+  student Student @relation(fields: [studentId], references: [id])
+  group   Group   @relation(fields: [groupId], references: [id])
 }

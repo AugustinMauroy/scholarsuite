@@ -1,27 +1,28 @@
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
+import { EllipsisVerticalIcon } from 'lucide-react';
 import { useMemo } from 'react';
-import Badge from '@/components/Common/Badge';
 import Button from '@/components/Common/Button';
 import { getAcronymFromString } from '@/utils/string';
 import styles from './index.module.css';
-import type { Student } from '@prisma/client';
+import type { Student, Class } from '@prisma/client';
 import type { FC, ComponentProps } from 'react';
 
 type StudentCardProps = {
   student: {
     firstName: Student['firstName'];
     lastName: Student['lastName'];
+    className?: Class['name'];
   };
-  badge?: ComponentProps<typeof Badge>;
   image?: string;
   actions?: ComponentProps<typeof Button>[];
+  withInfo?: boolean;
 };
 
 const StudentCard: FC<StudentCardProps> = ({
   student,
-  badge,
   image,
   actions,
+  withInfo,
 }) => {
   const acronym = useMemo(
     () => getAcronymFromString(`${student.firstName} ${student.lastName}`),
@@ -47,14 +48,23 @@ const StudentCard: FC<StudentCardProps> = ({
           </span>
         )}
         <div className={styles.content}>
-          <h3>
-            {student.firstName} {student.lastName}
-          </h3>
-          {badge && <Badge {...badge} />}
+          <h3 className={styles.firstName}>{student.firstName}</h3>
+          <h3 className={styles.lastName}>{student.lastName}</h3>
+          {student.className && (
+            <small className={styles.className}>{student.className}</small>
+          )}
+          {withInfo && (
+            <button className={styles.more}>
+              <EllipsisVerticalIcon />
+            </button>
+          )}
         </div>
       </div>
       <div className={styles.actions}>
-        {actions && actions.map((action, i) => <Button key={i} {...action} />)}
+        {actions &&
+          actions.map((action, i) => (
+            <Button key={i} className={styles.action} {...action} />
+          ))}
       </div>
     </div>
   );

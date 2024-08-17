@@ -1,68 +1,56 @@
 .nav {
-  .header {
-    @apply flex
-      h-14
-      w-full
-      items-center
-      justify-start
-      border-b-2
-      border-r
-      bg-white
-      p-2
-      dark:border-gray-700
-      dark:bg-gray-800
-      dark:shadow-none;
-
-    .button {
-      @apply rounded-md
-        p-2
-        hover:bg-gray-100
-        dark:hover:bg-gray-800;
-
-      .toggleIcon {
-        @apply size-6
-          text-gray-600
-          dark:text-gray-400;
-      }
-    }
-  }
-
-  .section {
-    @apply flex
-      h-[calc(100vh-3.5rem)]
-      w-full
-      flex-col
-      items-start
-      justify-between
-      divide-y
-      divide-gray-200
-      bg-white
-      shadow-lg
-      dark:divide-gray-700
-      dark:border-r
-      dark:border-gray-700
-      dark:bg-gray-800
-      dark:shadow-none;
-  }
-
-  .sectionClose {
-    @apply hidden;
-  }
+  @apply flex
+    h-screen
+    w-60
+    flex-col
+    items-start
+    justify-between
+    divide-y
+    divide-gray-200
+    overflow-y-scroll
+    bg-white
+    shadow-lg
+    dark:divide-gray-700
+    dark:border-r
+    dark:border-gray-700
+    dark:bg-gray-800
+    dark:shadow-none;
 
   .topLinks {
-    @apply w-full
-      space-y-1
-      divide-y
-      divide-gray-200
-      py-2
-      dark:divide-gray-700;
+    @apply w-full;
 
-    .accordionMenu {
+    .logo {
+      @apply h-14
+          border-b-2
+          px-2
+          transition-transform
+          dark:border-gray-800;
+
+      &:hover {
+        @apply scale-105;
+      }
+    }
+
+    .linkList {
+      @apply max-h-1/2
+        overflow-y-scroll
+        border-b-2
+        px-2
+        dark:border-gray-800;
+
       h3 {
-        @apply cursor-pointer
-            px-2
-            font-semibold
-            dark:text-gray-200;
+        @apply sticky
+          top-0
+          cursor-pointer
+          bg-gradient-to-b
+          from-white
+          to-white/80
+          px-2
+          text-xl
+          font-semibold
+          dark:from-gray-800
+          dark:to-gray-800/80
+          dark:text-gray-200;
       }
     }
   }
@@ -70,7 +58,7 @@
   .links {
     @apply flex
       flex-col
-      gap-2
+      gap-2.5
       px-2;
 
     a {
@@ -87,16 +75,13 @@
           underline
           dark:text-teal-400;
       }
-
-      svg {
-        @apply size-5;
-      }
     }
   }
 
   .bottomElements {
     @apply mb-4
       flex
+      w-full
       flex-col
       gap-2
       px-2;

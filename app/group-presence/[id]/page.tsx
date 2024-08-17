@@ -1,8 +1,9 @@
 'use client';
+import { ThumbsUpIcon, UserXIcon, HourglassIcon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import BaseLayout from '@/components/Layout/Base';
-import StudentCard from '@/components/Student/NewStudentCard';
+import StudentCard from '@/components/Student/StudentCard';
 import Selector from '@/components/TimeSlot/Selector';
 import styles from './page.module.css';
 import type { PatchBody } from '@/types/presence';
@@ -12,6 +13,7 @@ import type {
   TimeSlot,
   Presence,
   PresenceState,
+  Class,
 } from '@prisma/client';
 import type { FC } from 'react';
 
@@ -19,7 +21,10 @@ type PageProps = {
   params: { id: string };
 };
 
-type StudentWithPresence = Student & { presence: Presence[] };
+type StudentWithPresence = Student & {
+  presence: Presence[];
+  class: Class | null;
+};
 
 type GroupWithStudents = Group & {
   StudentGroup: {
@@ -246,6 +251,7 @@ const Page: FC<PageProps> = ({ params }) => {
             student={{
               firstName: studentGroup.student.firstName,
               lastName: studentGroup.student.lastName,
+              className: studentGroup.student.class?.name,
             }}
             image={`http://localhost:3000/api/content/student-picture/${studentGroup.student.id}`}
             actions={[
@@ -255,7 +261,12 @@ const Page: FC<PageProps> = ({ params }) => {
                     ? 'solid'
                     : 'outline',
                 variant: 'success',
-                children: 'Present',
+                children: (
+                  <>
+                    <ThumbsUpIcon />
+                    Present
+                  </>
+                ),
                 onClick: () =>
                   handleStudentClick(studentGroup.student, 'PRESENT'),
               },
@@ -265,7 +276,12 @@ const Page: FC<PageProps> = ({ params }) => {
                     ? 'solid'
                     : 'outline',
                 variant: 'danger',
-                children: 'Absent',
+                children: (
+                  <>
+                    <UserXIcon />
+                    Absent
+                  </>
+                ),
                 onClick: () =>
                   handleStudentClick(studentGroup.student, 'ABSENT'),
               },
@@ -275,7 +291,12 @@ const Page: FC<PageProps> = ({ params }) => {
                     ? 'solid'
                     : 'outline',
                 variant: 'warning',
-                children: 'Late',
+                children: (
+                  <>
+                    <HourglassIcon />
+                    Late
+                  </>
+                ),
                 onClick: () => handleStudentClick(studentGroup.student, 'LATE'),
               },
             ]}

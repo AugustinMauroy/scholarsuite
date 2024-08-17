@@ -1,6 +1,7 @@
-import { Home } from 'lucide-react';
 import { getServerSession } from 'next-auth';
+import { getTranslations } from 'next-intl/server';
 import Environment from '@/components/Common/Environement';
+import Logo from '@/components/Common/Logo';
 import UserAvatar from '@/components/Common/UserAvatar';
 import nextAuthConfig from '@/lib/auth';
 import prisma from '@/lib/prisma';
@@ -9,75 +10,51 @@ import type { FC } from 'react';
 
 const NavBar: FC = async () => {
   const session = await getServerSession(nextAuthConfig);
+  const t = await getTranslations('components.layout.navbar');
   if (!session) return null;
 
   const user = session.user;
-  const schoolLevels = await prisma.schoolLevel.findMany({
-    include: {
-      group: {
-        where: {
-          userGroup: {
-            some: {
-              userId: user.id,
-            },
-          },
+  const groups = await prisma.group.findMany({
+    where: {
+      userGroup: {
+        some: {
+          userId: user.id,
         },
       },
     },
-    where: {
-      group: {
-        some: {
-          userGroup: {
-            some: {
-              userId: user.id,
-            },
-          },
-        },
-      },
+    // don't give all fields, to the client
+    select: {
+      id: true,
+      name: true,
     },
   });
-  const PresenceAccordionItems = schoolLevels.map(schoolLevel => ({
-    label: schoolLevel.name,
-    children: schoolLevel.group.map(group => ({
-      label: group.name,
-      href: `/group/${group.id}`,
-    })),
+  const presenceGroups = groups.map(group => ({
+    label: group.name,
+    href: `/group-presence/${group.id}`,
   }));
-  let links = [{ label: 'Disciplinary Report', href: '/disciplinaryReport' }];
+  let links = [{ label: t('disciplinaryReport'), href: '/disciplinaryReport' }];
 
   switch (user.role) {
     case 'ADMIN':
       links.push(
-        { label: 'Presence Review', href: '/presence' },
-        { label: 'Admin Dashboard', href: '/administration' }
+        { label: t('presence'), href: '/presence' },
+        { label: t('admin'), href: '/administration' }
       );
       break;
     case 'MANAGER':
-      links.push({ label: 'Presence Review', href: '/presence' });
+      links.push({ label: t('presence'), href: '/presence' });
   }
 
   return (
     <ContainerNav
-      topLinks={[
-        {
-          label: (
-            <>
-              <Home />
-              ScholarSuite
-            </>
-          ),
-          href: '/',
-        },
-      ]}
-      accordionMenu={[
-        {
-          title: 'Presence for Groups',
-          items: PresenceAccordionItems,
-        },
-      ]}
+      logo={<Logo />}
+      linkList={{
+        title: t('presenceGroup'),
+        items: presenceGroups,
+      }}
       links={links}
       bottomElements={[
-        { label: 'About', href: '/about' },
+        { label: t('about'), href: '/about' },
         { label: <UserAvatar /> },
         { label: <Environment /> },
       ]}

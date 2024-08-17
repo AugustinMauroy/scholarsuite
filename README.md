@@ -1,5 +1,9 @@
-# ScholarSuite
-
+<p align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/logo-dark.svg">
+      <img src="./assets/logo-light.svg" width="200px">
+    </picture>
+</p>
 ScholarSuite is a grade management application for schools. It allows to manage students, classes, school levels, subjects and grades.
 
 > [!IMPORTANT]

@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { styleText } from 'node:util';
 import { PrismaClient } from '@prisma/client';
 import { encode } from '@/utils/crypto.ts';
@@ -33,6 +34,10 @@ if (users.length) {
   );
   process.exit(0);
 } else {
+  console.log(
+    styleText('green', '✓') + ' Starting seeding database for development'
+  );
+
   await prisma.user.createMany({
     data: [
       {
@@ -57,6 +62,14 @@ if (users.length) {
   });
 
   users = await prisma.user.findMany();
+  const admin = users.find(user => user.role === 'ADMIN');
+
+  if (!admin) {
+    console.log(
+      styleText('red', '⨯') + ' Admin user not found in the database'
+    );
+    process.exit(0);
+  }
 
   /* Belgian school levels */
   await prisma.schoolLevel.createMany({
@@ -75,6 +88,36 @@ if (users.length) {
       { name: '6ème secondaire', order: 12 },
     ],
   });
+
+  const secondaire4 = await prisma.schoolLevel.findFirst({
+    where: {
+      name: '4ème secondaire',
+    },
+  });
+  const secondaire5 = await prisma.schoolLevel.findFirst({
+    where: {
+      name: '5ème secondaire',
+    },
+  });
+  const secondaire6 = await prisma.schoolLevel.findFirst({
+    where: {
+      name: '6ème secondaire',
+    },
+  });
+
+  if (!secondaire4 || !secondaire5 || !secondaire6) {
+    const pathToFile = resolve(__dirname, 'prisma/seed-dev.ts');
+
+    console.log(
+      styleText('red', '⨯') +
+        ' School levels not found in the database\n' +
+        styleText('red', '⨯') +
+        ' Please check the' +
+        styleText('yellow', pathToFile) +
+        ' file'
+    );
+    process.exit(0);
+  }
 
   /* Create 3 classes for each secondary school level */
   await prisma.class.createMany({
@@ -254,6 +297,54 @@ if (users.length) {
         firstName: 'Olivia',
         lastName: 'Williams',
       },
+      {
+        firstName: 'Jean Christophe',
+        lastName: 'Van Damme',
+      },
+      {
+        firstName: 'Christoph Doom',
+        lastName: 'Scheider',
+      },
+      {
+        firstName: 'Richard',
+        lastName: 'Zven Kruspe',
+      },
+      {
+        firstName: 'Till',
+        lastName: 'Lindemann',
+      },
+      {
+        firstName: 'Paul',
+        lastName: 'Landers',
+      },
+      {
+        firstName: 'Christian',
+        lastName: 'Lorenz',
+      },
+      {
+        firstName: 'Oliver',
+        lastName: 'Riedel',
+      },
+      {
+        firstName: 'Bruce',
+        lastName: 'Wayne',
+      },
+      {
+        firstName: 'Clark',
+        lastName: 'Kent',
+      },
+      {
+        firstName: 'Peter',
+        lastName: 'Parker',
+      },
+      {
+        firstName: 'Tony',
+        lastName: 'Stark',
+      },
+      {
+        firstName: 'Steve',
+        lastName: 'Rogers',
+      },
     ],
   });
 
@@ -282,53 +373,54 @@ if (users.length) {
     ],
   });
 
-  await prisma.disciplinaryReport.createMany({
-    data: [
-      {
-        description: 'Student was caught cheating during the exam',
-        date: now,
-        createdById: 1,
-        studentId: 1,
-      },
-      {
-        description: 'Bob was imitating a chicken during the class',
-        // one day before
-        date: new Date(now.setDate(now.getDate() - 1)),
-        createdById: 1,
-        studentId: 2,
-      },
-      {
-        description: 'Charlie was caught smoking in the school',
-        date: new Date(now.setDate(now.getDate() - 1)),
-        createdById: 1,
-        studentId: 3,
-      },
-      {
-        description: "Alice won' t stop talking during the revision",
-        date: new Date(now.setDate(now.getDate() - 1)),
-        createdById: 1,
-        studentId: 1,
-      },
-      {
-        description: 'Student was caught using a mobile phone during the exam',
-        date: new Date(now.setDate(now.getDate() - 2)),
-        createdById: 1,
-        studentId: 4,
-      },
-      {
-        description: 'Student was late for class three times this week',
-        date: new Date(now.setDate(now.getDate() - 3)),
-        createdById: 1,
-        studentId: 5,
-      },
-      {
-        description: 'Student was caught vandalizing school property',
-        date: new Date(now.setDate(now.getDate() - 4)),
-        createdById: 1,
-        studentId: 6,
-      },
-    ],
+  const science = await prisma.subject.findFirst({
+    where: {
+      name: 'Science',
+    },
   });
+
+  if (!science) {
+    const pathToFile = resolve(__dirname, 'prisma/seed-dev.ts');
+    let stack = new Error().stack;
+    stack = stack ? stack : pathToFile;
+
+    console.log(
+      styleText('red', '⨯') +
+        ' Science subject not found in the database\n' +
+        styleText('red', '⨯') +
+        ' Please check the' +
+        styleText('yellow', stack) +
+        ' file'
+    );
+    process.exit(0);
+  }
+
+  const DISCIPLINES_REPORT_MESSAGES = [
+    'Student was caught cheating during the exam',
+    '--firstName-- was imitating a chicken during the class',
+    '--firstName-- was caught smoking in the school',
+    "--firstName-- won' t stop talking during the revision",
+    'Student was caught using a mobile phone during the exam',
+    'Student was late for class three times this week',
+    '--firstName-- was caught bullying another student',
+  ];
+
+  for (let i = 0; i < DISCIPLINES_REPORT_MESSAGES.length; i++) {
+    const random = Math.floor(Math.random() * students.length);
+    const message = DISCIPLINES_REPORT_MESSAGES[i].replace(
+      '--firstName--',
+      students[random].firstName
+    );
+
+    await prisma.disciplinaryReport.create({
+      data: {
+        date: new Date(now.setDate(now.getDate() - i)),
+        description: message,
+        createdById: admin.id,
+        studentId: students[random].id,
+      },
+    });
+  }
 
   /* Create the Create schedule (timeslot) */
   await prisma.timeSlot.createMany({
@@ -390,48 +482,48 @@ if (users.length) {
     data: [
       {
         name: 'Siences de base gp1',
-        subjectId: 2,
-        schoolLevelId: 10,
+        subjectId: science.id,
+        schoolLevelId: secondaire4.id,
       },
       {
         name: 'Siences de base gp2',
-        subjectId: 2,
-        schoolLevelId: 10,
+        subjectId: science.id,
+        schoolLevelId: secondaire4.id,
       },
       {
         name: 'Siences générales',
-        subjectId: 2,
-        schoolLevelId: 10,
+        subjectId: science.id,
+        schoolLevelId: secondaire4.id,
       },
       {
         name: 'Siences de base gp1',
-        subjectId: 2,
-        schoolLevelId: 11,
+        subjectId: science.id,
+        schoolLevelId: secondaire5.id,
       },
       {
         name: 'Siences de base gp2',
-        subjectId: 2,
-        schoolLevelId: 11,
+        subjectId: science.id,
+        schoolLevelId: secondaire5.id,
       },
       {
         name: 'Siences générales',
-        subjectId: 2,
-        schoolLevelId: 11,
+        subjectId: science.id,
+        schoolLevelId: secondaire5.id,
       },
       {
         name: 'Siences de base gp1',
-        subjectId: 2,
-        schoolLevelId: 12,
+        subjectId: science.id,
+        schoolLevelId: secondaire6.id,
       },
       {
         name: 'Siences de base gp2',
-        subjectId: 2,
-        schoolLevelId: 12,
+        subjectId: science.id,
+        schoolLevelId: secondaire6.id,
       },
       {
         name: 'Siences générales',
-        subjectId: 2,
-        schoolLevelId: 12,
+        subjectId: science.id,
+        schoolLevelId: secondaire6.id,
       },
     ],
   });
