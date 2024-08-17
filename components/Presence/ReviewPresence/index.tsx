@@ -4,7 +4,14 @@ import { useState, useEffect, useMemo } from 'react';
 import Button from '@/components/Common/Button';
 import ReviewPresenceCard from '../ReviewPresenceCard';
 import styles from './index.module.css';
-import type { Class, Presence, Student, TimeSlot, User } from '@prisma/client';
+import type {
+  Class,
+  Presence,
+  Student,
+  TimeSlot,
+  User,
+  PresenceAudit,
+} from '@prisma/client';
 import type { FC } from 'react';
 
 type PresenceState = Presence & {
@@ -13,6 +20,7 @@ type PresenceState = Presence & {
   };
   timeSlot: TimeSlot;
   user: User;
+  PresenceAudit: (PresenceAudit & { user: User })[];
 };
 
 const LIMIT = 5;

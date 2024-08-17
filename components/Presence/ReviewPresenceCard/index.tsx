@@ -1,7 +1,14 @@
 import classNames from 'classnames';
 import { CheckIcon, CheckCircleIcon, BellIcon } from 'lucide-react';
 import styles from './index.module.css';
-import type { Class, Presence, Student, TimeSlot, User } from '@prisma/client';
+import type {
+  Class,
+  Presence,
+  Student,
+  TimeSlot,
+  User,
+  PresenceAudit,
+} from '@prisma/client';
 import type { FC } from 'react';
 
 type ReviewPresenceCardProps = {
@@ -11,6 +18,7 @@ type ReviewPresenceCardProps = {
     };
     user: User;
     timeSlot: TimeSlot;
+    PresenceAudit: (PresenceAudit & { user: User })[];
   };
   processPresence: (id: number) => void;
   notifyStudent: (id: number) => void;
@@ -61,6 +69,19 @@ const ReviewPresenceCard: FC<ReviewPresenceCardProps> = ({
       By {presence.user.firstName} {presence.user.lastName}
     </span>
     <span>{presence.state}</span>
+    {presence.PresenceAudit.length > 0 && (
+      <div className={styles.audit}>
+        <h4>Audit :</h4>
+        <ul>
+          {presence.PresenceAudit.map(audit => (
+            <li key={audit.id}>
+              {new Date(audit.date).toLocaleString()} - {audit.user.firstName}{' '}
+              {audit.user.lastName} - {audit.state}
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
   </div>
 );
 
