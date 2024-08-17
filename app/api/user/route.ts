@@ -8,8 +8,6 @@ export const GET = async (req: Request): Promise<Response> => {
 
   if (!session)
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
-  if (session.user.role !== 'ADMIN')
-    return Response.json({ error: 'Unauthorized (bad role)' }, { status: 401 });
 
   const users = await prisma.user.findMany({
     select: {
@@ -17,7 +15,6 @@ export const GET = async (req: Request): Promise<Response> => {
       firstName: true,
       lastName: true,
       email: true,
-      role: true,
       enabled: true,
     },
   });
@@ -30,8 +27,6 @@ export const PUT = async (req: Request): Promise<Response> => {
 
   if (!session)
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
-  if (session.user.role !== 'ADMIN')
-    return Response.json({ error: 'Unauthorized (bad role)' }, { status: 401 });
 
   const { firstName, lastName, email, role } = await req.json();
 
@@ -47,7 +42,6 @@ export const PUT = async (req: Request): Promise<Response> => {
       lastName:
         lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase(),
       email: !email ? null : (email as string | null),
-      role: role,
       password,
     },
   });

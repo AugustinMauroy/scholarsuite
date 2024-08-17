@@ -13,37 +13,49 @@ const NavBar: FC = async () => {
   const t = await getTranslations('components.layout.navbar');
   if (!session) return null;
 
-  const user = session.user;
-  const groups = await prisma.group.findMany({
-    where: {
-      userGroup: {
-        some: {
-          userId: user.id,
+  const permissions = await prisma.userPermission
+    .findMany({
+      where: {
+        userId: session.user.id,
+      },
+      select: {
+        permission: {
+          select: {
+            name: true,
+          },
         },
       },
-    },
-    // don't give all fields, to the client
-    select: {
-      id: true,
-      name: true,
-    },
-  });
+    })
+    .then(data => data.map(({ permission }) => permission.name));
+
+  const groups = permissions.includes('create_presence')
+    ? await prisma.group.findMany({
+        where: {
+          userGroup: {
+            some: {
+              userId: session.user.id,
+            },
+          },
+        },
+        // don't give all fields, to the client
+        select: {
+          id: true,
+          name: true,
+        },
+      })
+    : [];
   const presenceGroups = groups.map(group => ({
     label: group.name,
     href: `/group-presence/${group.id}`,
   }));
-  let links = [{ label: t('disciplinaryReport'), href: '/disciplinaryReport' }];
+  let links = [] as { label: string; href: string }[];
 
-  switch (user.role) {
-    case 'ADMIN':
-      links.push(
-        { label: t('presence'), href: '/presence' },
-        { label: t('admin'), href: '/administration' }
-      );
-      break;
-    case 'MANAGER':
-      links.push({ label: t('presence'), href: '/presence' });
-  }
+  if (permissions.includes('disciplinaryReport'))
+    links.push({ label: t('disciplinaryReport'), href: '/disciplinaryReport' });
+  if (permissions.includes('full_admin'))
+    links.push({ label: t('admin'), href: '/administration' });
+  if (permissions.includes('review_presence'))
+    links.push({ label: t('presence'), href: '/presence' });
 
   return (
     <ContainerNav

@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import rightAcces from '@/utils/rightAcces';
+import rightAccess from '@/utils/rightAccess';
 
 type Params = {
   params: {
@@ -11,7 +11,7 @@ export const PATCH = async (
   req: Request,
   { params }: Params
 ): Promise<Response> => {
-  if (!(await rightAcces(['ADMIN'])))
+  if (!(await rightAccess(['ADMIN'])))
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
   const body = await req.json();

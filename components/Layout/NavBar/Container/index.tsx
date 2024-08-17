@@ -30,7 +30,7 @@ const ContainerNav: FC<ContainerNavProps> = ({
       <div className={styles.logo}>
         <Link href="/">{logo}</Link>
       </div>
-      {linkList && (
+      {linkList.items.length > 0 && (
         <div className={styles.linkList}>
           <h3>{linkList.title}</h3>
           <LinkList items={linkList.items} />

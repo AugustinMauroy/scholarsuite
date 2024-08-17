@@ -2,6 +2,7 @@ import { resolve } from 'node:path';
 import { styleText } from 'node:util';
 import { PrismaClient } from '@prisma/client';
 import { encode } from '@/utils/crypto.ts';
+import { BASE_PERMISSION } from './basePermision.ts';
 
 const now = new Date();
 
@@ -44,31 +45,53 @@ if (users.length) {
         firstName: 'Admin',
         lastName: 'Admin',
         password: await encode('password'),
-        role: 'ADMIN',
       },
       {
         firstName: 'Teacher',
         lastName: 'Teacher',
         password: await encode('password'),
-        role: 'TEACHER',
       },
       {
         firstName: 'Manager',
         lastName: 'Manager',
         password: await encode('password'),
-        role: 'MANAGER',
       },
     ],
   });
 
+  await prisma.permission
+    .createMany({
+      data: BASE_PERMISSION,
+    })
+    .catch(() => {
+      console.log(
+        styleText('red', '⨯') +
+          ' Error while seeding permissions\n' +
+          styleText('red', '⨯') +
+          " It's needed for the viability of the application"
+      );
+      process.exit(0);
+    });
+
   users = await prisma.user.findMany();
-  const admin = users.find(user => user.role === 'ADMIN');
+  const permissions = await prisma.permission.findMany();
+  const admin = users.find(user => user.firstName === 'Admin');
 
   if (!admin) {
     console.log(
       styleText('red', '⨯') + ' Admin user not found in the database'
     );
     process.exit(0);
+  }
+
+  // assign all permissions to the admin user
+  for (const permission of permissions) {
+    await prisma.userPermission.create({
+      data: {
+        userId: admin.id,
+        permissionId: permission.id,
+      },
+    });
   }
 
   /* Belgian school levels */

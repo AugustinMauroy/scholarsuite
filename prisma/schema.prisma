@@ -10,17 +10,21 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum Role {
-  ADMIN
-  MANAGER
-  TEACHER
-}
-
 enum PresenceState {
   PRESENT
   ABSENT
   LATE
   EXCUSED
+}
+
+model Permission {
+  id      Int     @id @default(autoincrement())
+  name    String
+  enabled Boolean @default(true)
+
+  createdAt      DateTime         @default(now())
+  updatedAt      DateTime         @updatedAt
+  UserPermission UserPermission[]
 }
 
 model AcademicYear {
@@ -75,7 +79,6 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  role               Role
   presence           Presence[]
   disciplinaryReport DisciplinaryReport[]
   userClass          UserClass[]
@@ -83,6 +86,7 @@ model User {
   userGroup          UserGroup[]
   PresenceAuditBy    PresenceAudit[]      @relation(name: "ChangedByUser")
   PresenceAuditUser  PresenceAudit[]      @relation(name: "User")
+  UserPermission     UserPermission[]
 }
 
 model Class {
@@ -292,4 +296,14 @@ model StudentGroup {
 
   student Student @relation(fields: [studentId], references: [id])
   group   Group   @relation(fields: [groupId], references: [id])
+}
+
+// Many to Many relations, between User and Permission
+model UserPermission {
+  id           Int @id @default(autoincrement())
+  userId       Int
+  permissionId Int
+
+  user       User       @relation(fields: [userId], references: [id])
+  permission Permission @relation(fields: [permissionId], references: [id])
 }

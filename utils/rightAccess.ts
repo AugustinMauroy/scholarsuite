@@ -1,17 +1,18 @@
 import { getServerSession } from 'next-auth';
-import prisma from '@/lib/prisma';
 import nextAuthConfig from '@/lib/auth';
-import type { Role } from '@prisma/client';
+import prisma from '@/lib/prisma';
 
-type Acces = Role | 'all' | 'api';
+type Access = 'all' | 'api' | string;
 /**
  * Note: use "all" is a bad practice
- * it's can be usefull for dev but not for production
+ * it's can be use-full for testing
  */
-const rightAcces = async (
-  authorized: Acces[],
+const rightAccess = async (
+  authorized: Access[],
   req?: Request
 ): Promise<boolean> => {
+  if (authorized.includes('all')) return true;
+
   if (req) {
     try {
       const body = await req.json();
@@ -37,10 +38,24 @@ const rightAcces = async (
   const session = await getServerSession(nextAuthConfig);
   if (!session) return false;
 
-  const { role } = session.user;
-  if (authorized.includes(role)) return true;
+  const userPermission = await prisma.userPermission.findMany({
+    where: {
+      userId: session.user.id,
+    },
+    include: {
+      permission: true,
+    },
+  });
+
+  if (userPermission.length === 0) return false;
+
+  const permission = userPermission.map(p => p.permission.name);
+
+  for (const p of permission) {
+    if (authorized.includes(p)) return true;
+  }
 
   return false;
 };
 
-export default rightAcces;
+export default rightAccess;

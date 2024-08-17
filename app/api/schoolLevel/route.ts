@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import rightAcces from '@/utils/rightAcces';
+import rightAccess from '@/utils/rightAccess';
 import type { SchoolLevel } from '@prisma/client';
 
 export const GET = async (req: Request) => {
@@ -15,9 +15,6 @@ export const GET = async (req: Request) => {
 };
 
 export const PUT = async (req: Request) => {
-  if (!(await rightAcces(['ADMIN'])))
-    return Response.json({ error: 'Unauthorized' }, { status: 401 });
-
   const schoolLevel = (await req.json()) as SchoolLevel;
 
   const newSchoolLevel = await prisma.schoolLevel.create({
@@ -30,7 +27,7 @@ export const PUT = async (req: Request) => {
 };
 
 export const PATCH = async (req: Request) => {
-  if (!(await rightAcces(['ADMIN'])))
+  if (!(await rightAccess(['ADMIN'])))
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
   const { id, order, ...schoolLevelData } = (await req.json()) as SchoolLevel;

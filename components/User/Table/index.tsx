@@ -8,7 +8,6 @@ import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import Label from '@/components/Common/Label';
 import List from '@/components/Common/List';
-import Select from '@/components/Common/Select';
 import GroupList from '@/components/User/GroupsList';
 import { useToast } from '@/hooks/useToast';
 import type { Patch } from '@/types/patch';
@@ -221,7 +220,6 @@ const UsersTable: FC = () => {
             <th>First Name</th>
             <th>Last Name</th>
             <th>Email</th>
-            <th>Role</th>
             <th>Enabled</th>
             <th>Actions</th>
           </tr>
@@ -232,7 +230,6 @@ const UsersTable: FC = () => {
               <td>{user.firstName}</td>
               <td>{user.lastName}</td>
               <td>{user.email}</td>
-              <td>{user.role}</td>
               <td>
                 <Input type="checkbox" checked={user.enabled} disabled />
               </td>
@@ -272,21 +269,6 @@ const UsersTable: FC = () => {
             value={selectedUser?.email ?? ''}
             onChange={e =>
               setSelectedUser({ ...selectedUser, email: e.target.value })
-            }
-          />
-          <Select
-            label="Role"
-            values={[
-              { value: 'ADMIN', label: 'Admin' },
-              { value: 'TEACHER', label: 'Teacher' },
-              { value: 'STUDENT', label: 'Student' },
-            ]}
-            defaultValue={selectedUser.role.toString()}
-            onChange={v =>
-              setSelectedUser({
-                ...selectedUser,
-                role: v as User['role'],
-              })
             }
           />
           <Label>Classes</Label>

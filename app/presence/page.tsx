@@ -1,11 +1,11 @@
 import { notFound } from 'next/navigation';
 import BaseLayout from '@/components/Layout/Base';
 import ReviewPresence from '@/components/Presence/ReviewPresence';
-import rightAcces from '@/utils/rightAcces';
+import rightAccess from '@/utils/rightAccess';
 import type { FC } from 'react';
 
 const Page: FC = async () => {
-  const access = await rightAcces(['MANAGER', 'ADMIN']);
+  const access = await rightAccess(['review_presence']);
   if (!access) notFound();
 
   return (
