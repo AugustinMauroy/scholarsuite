@@ -33,8 +33,9 @@ model AcademicYear {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  presences    Presence[]
-  gradePeriods GradePeriodAcademicYear[]
+  presences     Presence[]
+  gradePeriods  GradePeriodAcademicYear[]
+  PresenceAudit PresenceAudit[]
 }
 
 model SchoolLevel {
@@ -80,6 +81,8 @@ model User {
   userClass          UserClass[]
   apiKey             ApiKey[]
   userGroup          UserGroup[]
+  PresenceAuditBy    PresenceAudit[]      @relation(name: "ChangedByUser")
+  PresenceAuditUser  PresenceAudit[]      @relation(name: "User")
 }
 
 model Class {
@@ -143,8 +146,9 @@ model TimeSlot {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  schoolLevel SchoolLevel? @relation(fields: [schoolLevelId], references: [id])
-  presence    Presence[]
+  schoolLevel   SchoolLevel?    @relation(fields: [schoolLevelId], references: [id])
+  presence      Presence[]
+  PresenceAudit PresenceAudit[]
 }
 
 model Group {
@@ -192,12 +196,34 @@ model Presence {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  user         User         @relation(fields: [userId], references: [id])
-  student      Student      @relation(fields: [studentId], references: [id])
-  academicYear AcademicYear @relation(fields: [academicYearId], references: [id])
-  timeSlot     TimeSlot     @relation(fields: [timeSlotId], references: [id])
+  user          User            @relation(fields: [userId], references: [id])
+  student       Student         @relation(fields: [studentId], references: [id])
+  academicYear  AcademicYear    @relation(fields: [academicYearId], references: [id])
+  timeSlot      TimeSlot        @relation(fields: [timeSlotId], references: [id])
+  PresenceAudit PresenceAudit[]
 
   @@index([studentId, date])
+}
+
+model PresenceAudit {
+  id             Int           @id @default(autoincrement())
+  presenceId     Int
+  state          PresenceState
+  date           DateTime
+  userId         Int
+  academicYearId Int
+  timeSlotId     Int
+  groupId        Int
+  processed      Boolean
+  notified       Boolean
+  changedBy      Int
+  changedAt      DateTime      @default(now())
+
+  presence      Presence     @relation(fields: [presenceId], references: [id])
+  academicYear  AcademicYear @relation(fields: [academicYearId], references: [id])
+  timeSlot      TimeSlot     @relation(fields: [timeSlotId], references: [id])
+  changedByUser User         @relation(name: "ChangedByUser", fields: [changedBy], references: [id])
+  user          User         @relation(name: "User", fields: [userId], references: [id])
 }
 
 model DisciplinaryReport {

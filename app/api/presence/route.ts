@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import type { PatchBody } from '@/types/presence';
 
+// API where we process presence from `/group-presence/[id]`
 export const PATCH = async (req: Request): Promise<Response> => {
   const body: PatchBody = await req.json().catch(() => null);
 
@@ -99,6 +100,20 @@ export const PATCH = async (req: Request): Promise<Response> => {
       await prisma.presence.update({
         where: { id: presence.id },
         data: { ...item, userId },
+      });
+      await prisma.presenceAudit.create({
+        data: {
+          presenceId: presence.id,
+          state: presence.state,
+          date: presence.date,
+          userId: presence.userId,
+          academicYearId: presence.academicYearId,
+          timeSlotId: presence.timeSlotId,
+          groupId: presence.groupId,
+          processed: presence.processed,
+          notified: presence.notified,
+          changedBy: userId,
+        },
       });
     } else {
       await prisma.presence.create({
