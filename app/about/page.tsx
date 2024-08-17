@@ -24,8 +24,8 @@ const Page: FC = async () => {
         <Environment forceDisplay />
       </Label>
       <Label>
-        MySQL:
-        <Environment kind="mysql" forceDisplay />
+        PostgreSQL:
+        <Environment kind="postgresql" forceDisplay />
       </Label>
       <Label>
         NextJS:

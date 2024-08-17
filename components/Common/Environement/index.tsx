@@ -6,14 +6,19 @@ import type { FC } from 'react';
 
 // Expected type for environment variables
 type Raw = {
-  'VERSION()': string;
+  version: string;
 };
 
 type EnvironmentProps = {
   forceDisplay?: boolean;
-  kind?: 'env' | 'info' | 'deps' | 'mysql';
+  kind?: 'env' | 'info' | 'deps' | 'postgresql';
   deps?: string[];
 };
+
+// PostgreSQL 15.4 on aarch64-apple-darwin21.6.0, compiled by Apple clang version 14.0.0 (clang-1400.0.29.102), 64-bit
+// to
+// 15.4
+const postgresqlRegex = /PostgreSQL (\d+\.\d+)/;
 
 const Environment: FC<EnvironmentProps> = async ({
   forceDisplay,
@@ -26,7 +31,7 @@ const Environment: FC<EnvironmentProps> = async ({
   if (!display) return null;
 
   const packageJson = await getPackage();
-  const mysqlVersion = await prisma.$queryRaw<Raw[]>`SELECT VERSION()`;
+  const postgresqlVersion = await prisma.$queryRaw<Raw[]>`SELECT VERSION()`;
 
   return (
     <div
@@ -35,7 +40,7 @@ const Environment: FC<EnvironmentProps> = async ({
         [styles.production]:
           kind === 'info' ||
           kind === 'deps' ||
-          kind === 'mysql' ||
+          kind === 'postgresql' ||
           env === 'production',
       })}
     >
@@ -51,7 +56,9 @@ const Environment: FC<EnvironmentProps> = async ({
             return found && `${dep}@${found}`;
           })
           .join(', ')}
-      {kind === 'mysql' && mysqlVersion[0]['VERSION()']}
+
+      {kind === 'postgresql' &&
+        postgresqlVersion[0]?.version.match(postgresqlRegex)?.[1]}
     </div>
   );
 };

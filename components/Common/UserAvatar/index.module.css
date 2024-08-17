@@ -15,10 +15,10 @@
     bg-white
     p-2
     shadow-lg
-    dark:shadow-none
     dark:border
     dark:border-gray-700
-    dark:bg-gray-900;
+    dark:bg-gray-900
+    dark:shadow-none;
 
   a {
     @apply flex
