@@ -115,20 +115,46 @@ export const PATCH = async (req: Request): Promise<Response> => {
     }
   }
 
-  const result = await prisma.presence.findMany({
+  // Don't send result back to client
+  // But send fresh data to client
+  // it's same as GET /api/group/[id]
+  const groupData = await prisma.group.findUnique({
     where: {
-      date: {
-        gte: new Date(date),
-        lt: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
+      id: groupId,
+    },
+    include: {
+      StudentGroup: {
+        include: {
+          student: {
+            include: {
+              class: true,
+              presence: {
+                where: {
+                  date: {
+                    gte: new Date(
+                      now.getFullYear(),
+                      now.getMonth(),
+                      now.getDate()
+                    ),
+                    lt: new Date(
+                      now.getFullYear(),
+                      now.getMonth(),
+                      now.getDate() + 1
+                    ),
+                  },
+                  timeSlotId,
+                },
+              },
+            },
+          },
+        },
       },
-      timeSlotId,
-      userId,
     },
   });
 
   return Response.json(
     {
-      data: result,
+      data: groupData,
     },
     { status: 200 }
   );

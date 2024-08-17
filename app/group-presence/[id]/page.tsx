@@ -5,6 +5,7 @@ import { useState, useEffect } from 'react';
 import BaseLayout from '@/components/Layout/Base';
 import StudentCard from '@/components/Student/StudentCard';
 import Selector from '@/components/TimeSlot/Selector';
+import { useToast } from '@/hooks/useToast';
 import styles from './page.module.css';
 import type { PatchBody } from '@/types/presence';
 import type {
@@ -34,6 +35,7 @@ type GroupWithStudents = Group & {
 
 const Page: FC<PageProps> = ({ params }) => {
   const session = useSession();
+  const toast = useToast();
   const [groupData, setGroupData] = useState<GroupWithStudents | null>(null);
   const [timeSlot, setTimeSlot] = useState<TimeSlot[] | null>(null);
   const [currentTimeslot, setCurrentTimeslot] = useState<TimeSlot | null>(null);
@@ -135,45 +137,22 @@ const Page: FC<PageProps> = ({ params }) => {
       })
         .then(res => res.json())
         .then(data => {
-          if (data.error) {
-            throw new Error(data.error);
-          }
-          setGroupData(prev => {
-            if (!prev) return prev;
+          if (data.error) throw new Error(data.error);
 
-            return {
-              ...prev,
-              StudentGroup: prev.StudentGroup.map(studentGroup => {
-                const presence = data.data.find(
-                  (presence: Presence) =>
-                    presence.studentId === studentGroup.student.id
-                );
-
-                if (!presence) return studentGroup;
-
-                return {
-                  ...studentGroup,
-                  student: {
-                    ...studentGroup.student,
-                    presence: [
-                      ...studentGroup.student.presence.filter(
-                        p => p.timeSlotId !== presence.timeSlotId
-                      ),
-                      presence,
-                    ],
-                  },
-                };
-              }),
-            };
-          });
+          // data.data is the updated presence
+          setGroupData(data.data);
           setPatch({
             ...patch,
             data: [],
           });
+          toast({
+            kind: 'success',
+            message: 'Presence updated successfully',
+          });
         });
 
       // 1000ms = 1s
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, [patch]);
@@ -198,10 +177,10 @@ const Page: FC<PageProps> = ({ params }) => {
   ) => {
     if (!currentTimeslot) return;
 
-    setPatch({
-      ...patch,
+    setPatch(prevPatch => ({
+      ...prevPatch,
       data: [
-        ...patch.data.filter(data => data.studentId !== student.id),
+        ...prevPatch.data.filter(data => data.studentId !== student.id),
         {
           id: student.presence.find(
             presence => presence.timeSlotId === currentTimeslot.id
@@ -210,7 +189,7 @@ const Page: FC<PageProps> = ({ params }) => {
           state,
         },
       ],
-    });
+    }));
   };
 
   if (!groupData) return <BaseLayout title="Loading..." />;
