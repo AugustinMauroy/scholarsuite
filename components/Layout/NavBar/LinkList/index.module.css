@@ -1,0 +1,21 @@
+.panel {
+  @apply flex
+    flex-col;
+
+  a {
+    @apply truncate
+      px-2.5
+      py-2
+      font-medium;
+
+    &:hover {
+      @apply bg-gray-100
+        dark:bg-gray-800;
+    }
+
+    &.active {
+      @apply bg-violet-500
+        text-white;
+    }
+  }
+}

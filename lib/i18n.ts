@@ -1,4 +1,5 @@
 import { headers } from 'next/headers';
+import { getRequestConfig } from 'next-intl/server';
 import localeConfig from '@/i18n/config.json' assert { type: 'json' };
 
 // As set of available and enabled locales for the website
@@ -59,3 +60,12 @@ export const getTimeZone = () => {
 
   return timeZone || 'UTC';
 };
+
+export default getRequestConfig(async () => {
+  const locale = getLanguage();
+
+  return {
+    locale,
+    messages: await getMessages(locale),
+  };
+});

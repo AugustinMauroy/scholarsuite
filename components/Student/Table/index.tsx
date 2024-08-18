@@ -1,11 +1,7 @@
 'use client';
-import {
-  PencilIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-} from '@heroicons/react/24/solid';
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { PencilIcon, CheckCircleIcon, TriangleAlertIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import Avatar from '@/components/Common/Avatar';
 import Button from '@/components/Common/Button';
@@ -76,7 +72,7 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             Error updating groups
           </>
         ),

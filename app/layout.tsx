@@ -1,9 +1,9 @@
 import classNames from 'classnames';
 import { getServerSession } from 'next-auth/next';
-import Header from '@/components/Layout/Header';
+import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import NavBar from '@/components/Layout/NavBar';
 import nextAuthConfig from '@/lib/auth';
-import { getLanguage, getTimeZone, getMessages } from '@/lib/i18n';
+import { getTimeZone } from '@/lib/i18n';
 import AuthProvider from '@/providers/auth';
 import LocaleProvider from '@/providers/locale';
 import { ToastProvider } from '@/providers/toastProvider';
@@ -13,25 +13,24 @@ import type { FC, PropsWithChildren } from 'react';
 import '@/styles/globals.css';
 
 const generateMetadata = async (): Promise<Metadata> => {
-  const language = getLanguage();
-  const messages = await getMessages(language);
+  const t = await getTranslations('app.metadata');
 
   return {
-    title: messages.app.metadata.title,
-    description: messages.app.metadata.description,
+    title: t('title'),
+    description: t('description'),
     // @TODO use .env to set the base URL
     metadataBase: new URL(`http://localhost:3000`),
   };
 };
 
 const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
-  const language = getLanguage();
+  const locale = await getLocale();
+  const messages = await getMessages();
   const timeZone = getTimeZone();
-  const messages = await getMessages(language);
   const sessionData = await getServerSession(nextAuthConfig);
 
   return (
-    <html lang={language}>
+    <html lang={locale}>
       <body
         className={classNames({
           [styles.body]: sessionData,
@@ -39,7 +38,7 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
       >
         <AuthProvider>
           <LocaleProvider
-            locale={language}
+            locale={locale}
             messages={messages}
             timeZone={timeZone}
           >
@@ -47,10 +46,7 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
               {sessionData ? (
                 <>
                   <NavBar />
-                  <div className={styles.wrapper}>
-                    <Header />
-                    {children}
-                  </div>
+                  <div className={styles.wrapper}>{children}</div>
                 </>
               ) : (
                 children

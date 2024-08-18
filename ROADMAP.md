@@ -2,7 +2,7 @@
 
 ## Introduction
 
-ScholarSuite 1.0 is the first version of ScholarSuite, a school management application. It allows to manage users, school levels, classes, students, attendance, disciplinary reports and much more.
+ScholarSuite 1.0 is a school management application that allows for managing users, school levels, classes, students, attendance, disciplinary reports, and more.
 
 ## Technologies
 
@@ -18,6 +18,7 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
 - [react-pdf-tailwind](https://www.npmjs.com/package/react-pdf-tailwind)
 - [nodemailer](https://nodemailer.com/)
 - [react-email](https://nodemailer.com)
+- [postgreSQL](https://www.postgresql.org/)
 
 ## Features
 
@@ -47,6 +48,7 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [x] Last name
   - [x] Date of birth
   - [x] Class
+  - [x] Contact email
   - [x] State (enabled or disabled)
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
@@ -59,6 +61,8 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [ ] A value
   - [ ] A student
   - [ ] A subject
+  - [ ] A grade period
+  - [ ] A group
   - [ ] CSV file template management
   - [ ] Importing grades from a CSV file
   - [ ] User interface for entering grades
@@ -67,6 +71,7 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [x] Date (`date` date db type), only the day is taken into account because the time depends on the time slot
   - [x] User (teacher, or administrator)
   - [x] Time slot
+  - [x] Group
   - [x] Treated (for educators who can process absences)
   - [x] School year
   - [x] Creation date (internal use or for fraud verification)
@@ -82,13 +87,15 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [x] Name
   - [x] Start time
   - [x] End time
+  - [x] School level (optional)
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
-- [ ] **Grading period**
+- [ ] **Grading period management**
       Represents a grading period (trimester, semester, etc...).
   - [ ] Name
   - [ ] Start date
   - [ ] End date
+  - [ ] Academic year(s)
   - [ ] Creation date (internal use)
   - [ ] Modification date (internal use)
 - [ ] **Report card management**
@@ -99,6 +106,7 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [x] Subject
   - [x] User(s)
   - [x] Student(s)
+  - [x] School level (optional)
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
 - [x] **School year management**
@@ -106,6 +114,7 @@ ScholarSuite 1.0 is the first version of ScholarSuite, a school management appli
   - [x] Name
   - [x] Start date
   - [x] End date
+  - [x] Archived (boolean)
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
 - [x] **API Key management**

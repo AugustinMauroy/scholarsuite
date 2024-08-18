@@ -1,5 +1,5 @@
-import { styleText } from 'node:util';
 import readline from 'node:readline';
+import { styleText } from 'node:util';
 import { PrismaClient } from '@prisma/client';
 import { encode } from '@/utils/crypto.ts';
 

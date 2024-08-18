@@ -1,11 +1,11 @@
 'use client';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {
   PlusIcon,
   CheckCircleIcon,
-  ExclamationTriangleIcon,
+  TriangleAlertIcon,
   PencilIcon,
-} from '@heroicons/react/24/solid';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
 import EditModal from '@/components/Common/EditModal';
@@ -33,7 +33,7 @@ const Table: FC = () => {
           kind: 'error',
           message: (
             <>
-              <ExclamationTriangleIcon />
+              <TriangleAlertIcon />
               Failed to fetch subjects
             </>
           ),
@@ -49,7 +49,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             Subject name cannot be empty
           </>
         ),
@@ -74,7 +74,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             {subject.error}
           </>
         ),
@@ -101,7 +101,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             Subject name cannot be empty
           </>
         ),
@@ -127,7 +127,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             {subject.error}
           </>
         ),

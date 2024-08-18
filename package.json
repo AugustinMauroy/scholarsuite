@@ -26,7 +26,6 @@
     "db:seed-prod": "node --no-warnings --loader=nodejs-loaders/dev/alias --loader=nodejs-loaders/dev/tsx prisma/seed-prod.ts"
   },
   "dependencies": {
-    "@heroicons/react": "~2.1.5",
     "@prisma/client": "~5.14.0",
     "@radix-ui/react-avatar": "~1.1.0",
     "@radix-ui/react-dialog": "~1.1.1",
@@ -37,7 +36,7 @@
     "@radix-ui/react-tabs": "~1.1.0",
     "@radix-ui/react-toast": "~1.2.1",
     "classnames": "~2.5.1",
-    "framer-motion": "~11.3.19",
+    "lucide-react": "^0.424.0",
     "next": "~14.2.5",
     "next-auth": "~4.24.7",
     "next-intl": "~3.17.2",

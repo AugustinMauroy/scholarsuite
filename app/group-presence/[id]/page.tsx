@@ -1,9 +1,12 @@
 'use client';
+import { ThumbsUpIcon, UserXIcon, HourglassIcon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
+import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
 import BaseLayout from '@/components/Layout/Base';
 import StudentCard from '@/components/Student/StudentCard';
 import Selector from '@/components/TimeSlot/Selector';
+import { useToast } from '@/hooks/useToast';
 import styles from './page.module.css';
 import type { PatchBody } from '@/types/presence';
 import type {
@@ -12,6 +15,7 @@ import type {
   TimeSlot,
   Presence,
   PresenceState,
+  Class,
 } from '@prisma/client';
 import type { FC } from 'react';
 
@@ -19,7 +23,10 @@ type PageProps = {
   params: { id: string };
 };
 
-type StudentWithPresence = Student & { presence: Presence[] };
+type StudentWithPresence = Student & {
+  presence: Presence[];
+  class: Class | null;
+};
 
 type GroupWithStudents = Group & {
   StudentGroup: {
@@ -28,7 +35,10 @@ type GroupWithStudents = Group & {
 };
 
 const Page: FC<PageProps> = ({ params }) => {
+  const tPage = useTranslations('app.groupPresence');
+  const tShared = useTranslations('shared');
   const session = useSession();
+  const toast = useToast();
   const [groupData, setGroupData] = useState<GroupWithStudents | null>(null);
   const [timeSlot, setTimeSlot] = useState<TimeSlot[] | null>(null);
   const [currentTimeslot, setCurrentTimeslot] = useState<TimeSlot | null>(null);
@@ -130,45 +140,21 @@ const Page: FC<PageProps> = ({ params }) => {
       })
         .then(res => res.json())
         .then(data => {
-          if (data.error) {
-            throw new Error(data.error);
-          }
-          setGroupData(prev => {
-            if (!prev) return prev;
+          if (data.error) throw new Error(data.error);
 
-            return {
-              ...prev,
-              StudentGroup: prev.StudentGroup.map(studentGroup => {
-                const presence = data.data.find(
-                  (presence: Presence) =>
-                    presence.studentId === studentGroup.student.id
-                );
-
-                if (!presence) return studentGroup;
-
-                return {
-                  ...studentGroup,
-                  student: {
-                    ...studentGroup.student,
-                    presence: [
-                      ...studentGroup.student.presence.filter(
-                        p => p.timeSlotId !== presence.timeSlotId
-                      ),
-                      presence,
-                    ],
-                  },
-                };
-              }),
-            };
-          });
+          setGroupData(data.data);
           setPatch({
             ...patch,
             data: [],
           });
+          toast({
+            kind: 'success',
+            message: tPage('toast.success'),
+          });
         });
 
       // 1000ms = 1s
-    }, 1000);
+    }, 500);
 
     return () => clearTimeout(timeout);
   }, [patch]);
@@ -187,82 +173,40 @@ const Page: FC<PageProps> = ({ params }) => {
       : setCurrentTimeslot(timeSlot[currentIndex + 1]);
   };
 
-  const handleStudentClick = (student: StudentWithPresence) => {
+  const handleStudentClick = (
+    student: StudentWithPresence,
+    state: PresenceState = 'PRESENT'
+  ) => {
     if (!currentTimeslot) return;
 
-    setPatch({
-      ...patch,
+    setPatch(prevPatch => ({
+      ...prevPatch,
       data: [
-        ...patch.data.filter(data => data.studentId !== student.id),
+        ...prevPatch.data.filter(data => data.studentId !== student.id),
         {
           id: student.presence.find(
             presence => presence.timeSlotId === currentTimeslot.id
           )?.id,
           studentId: student.id,
-          state: 'PRESENT',
+          state,
         },
       ],
-    });
+    }));
   };
 
-  const handleStudentContextMenu = (student: StudentWithPresence) => {
-    if (!currentTimeslot) return;
-
-    setPatch(prev => {
-      const state = student.presence.find(
-        presence => presence.timeSlotId === currentTimeslot.id
-      )?.state;
-
-      const presence = prev.data.find(data => data.studentId === student.id);
-
-      if (presence) {
-        return {
-          ...prev,
-          data: [
-            ...prev.data.filter(data => data.studentId !== student.id),
-            {
-              studentId: student.id,
-              state:
-                presence.state === 'PRESENT'
-                  ? 'ABSENT'
-                  : presence.state === 'ABSENT'
-                    ? 'LATE'
-                    : 'ABSENT',
-            },
-          ],
-        };
-      }
-
-      return {
-        ...prev,
-        data: [
-          ...prev.data.filter(data => data.studentId !== student.id),
-          {
-            id: student.presence.find(
-              presence => presence.timeSlotId === currentTimeslot.id
-            )?.id,
-            studentId: student.id,
-            state:
-              state === 'PRESENT'
-                ? 'ABSENT'
-                : state === 'ABSENT'
-                  ? 'LATE'
-                  : 'ABSENT',
-          },
-        ],
-      };
-    });
-  };
-
-  if (!groupData) return <BaseLayout title="Loading..." />;
+  if (!groupData) return <BaseLayout title={tShared('loading')} />;
 
   return (
     <BaseLayout
       title={groupData.name}
+      description={
+        groupData.StudentGroup.length === 0 ? tPage('noStudents') : undefined
+      }
       sectionClassName={styles.studentList}
       actions={
         currentTimeslot &&
-        timeSlot && (
+        timeSlot &&
+        groupData.StudentGroup.length > 0 && (
           <Selector
             name={
               currentTimeslot.name ??
@@ -279,17 +223,64 @@ const Page: FC<PageProps> = ({ params }) => {
         )
       }
     >
-      {groupData.StudentGroup.map(studentGroup => (
-        <StudentCard
-          key={studentGroup.student.id}
-          firstName={studentGroup.student.firstName}
-          lastName={studentGroup.student.lastName}
-          state={getPresence(studentGroup.student)}
-          image={`http://localhost:3000/api/content/student-picture/${studentGroup.student.id}`}
-          onClick={() => handleStudentClick(studentGroup.student)}
-          onContextMenu={() => handleStudentContextMenu(studentGroup.student)}
-        />
-      ))}
+      {groupData.StudentGroup.length > 0 &&
+        groupData.StudentGroup.map(studentGroup => (
+          <StudentCard
+            key={studentGroup.student.id}
+            student={{
+              firstName: studentGroup.student.firstName,
+              lastName: studentGroup.student.lastName,
+              className: studentGroup.student.class?.name,
+            }}
+            image={`http://localhost:3000/api/content/student-picture/${studentGroup.student.id}`}
+            actions={[
+              {
+                kind:
+                  getPresence(studentGroup.student) === 'PRESENT'
+                    ? 'solid'
+                    : 'outline',
+                variant: 'success',
+                children: (
+                  <>
+                    <ThumbsUpIcon />
+                    {tShared('presenceState.present')}
+                  </>
+                ),
+                onClick: () =>
+                  handleStudentClick(studentGroup.student, 'PRESENT'),
+              },
+              {
+                kind:
+                  getPresence(studentGroup.student) === 'ABSENT'
+                    ? 'solid'
+                    : 'outline',
+                variant: 'danger',
+                children: (
+                  <>
+                    <UserXIcon />
+                    {tShared('presenceState.absent')}
+                  </>
+                ),
+                onClick: () =>
+                  handleStudentClick(studentGroup.student, 'ABSENT'),
+              },
+              {
+                kind:
+                  getPresence(studentGroup.student) === 'LATE'
+                    ? 'solid'
+                    : 'outline',
+                variant: 'warning',
+                children: (
+                  <>
+                    <HourglassIcon />
+                    {tShared('presenceState.late')}
+                  </>
+                ),
+                onClick: () => handleStudentClick(studentGroup.student, 'LATE'),
+              },
+            ]}
+          />
+        ))}
     </BaseLayout>
   );
 };

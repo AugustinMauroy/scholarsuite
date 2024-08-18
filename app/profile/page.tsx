@@ -1,6 +1,6 @@
 'use client';
-import { XMarkIcon } from '@heroicons/react/24/outline';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
+import { X } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -73,7 +73,7 @@ const Page: FC = () => {
         <DialogPrimitive.Overlay className={styles.modalOverlay} />
         <DialogPrimitive.Content className={styles.modalContent}>
           <DialogPrimitive.Close asChild>
-            <XMarkIcon className={styles.closeIcon} />
+            <X className={styles.closeIcon} />
           </DialogPrimitive.Close>
           <DialogPrimitive.Title asChild>
             <h2>{t('edit')}</h2>

@@ -1,9 +1,8 @@
-import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/24/solid';
 import classNames from 'classnames';
+import { ChevronLeftIcon, ChevronRightIcon } from 'lucide-react';
 import { useLocale } from 'next-intl';
 import { useState, useEffect, forwardRef } from 'react';
 import styles from './index.module.css';
-import type { FC } from 'react';
 
 type CalendarProps = {
   onChange?: (date: Date) => void;

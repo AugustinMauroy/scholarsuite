@@ -1,8 +1,7 @@
 'use client';
-import { XMarkIcon, PlusIcon } from '@heroicons/react/24/solid';
+import { X, Plus } from 'lucide-react';
 import { useState, useEffect, useMemo } from 'react';
 import TagList from '@/components/Common/TagList';
-import Input from '../Input';
 import styles from './index.module.css';
 import type { Tag } from '@/types/tag';
 import type { FC } from 'react';
@@ -47,7 +46,7 @@ const List: FC<ListProps> = ({ list, activeList, onTagClick, onTagRemove }) => {
         tags={activeList}
         onClick={onTagRemove}
         className={styles.activeList}
-        icon={<XMarkIcon />}
+        icon={<X />}
       />
       <input
         className={styles.input}
@@ -70,7 +69,7 @@ const List: FC<ListProps> = ({ list, activeList, onTagClick, onTagRemove }) => {
               setSearchQuery('');
               setFocus(false);
             }}
-            icon={<PlusIcon />}
+            icon={<Plus />}
           />
         </div>
       )}

@@ -1,59 +1,73 @@
 import * as AvatarPrimitive from '@radix-ui/react-avatar';
-import classNames from 'classnames';
+import { EllipsisVerticalIcon } from 'lucide-react';
+import { useMemo } from 'react';
+import Button from '@/components/Common/Button';
 import { getAcronymFromString } from '@/utils/string';
 import styles from './index.module.css';
-import type { PresenceState } from '@prisma/client';
-import type { FC } from 'react';
+import type { Student, Class } from '@prisma/client';
+import type { FC, ComponentProps } from 'react';
 
 type StudentCardProps = {
-  state?: PresenceState;
-  firstName: string;
-  lastName: string;
+  student: {
+    firstName: Student['firstName'];
+    lastName: Student['lastName'];
+    className?: Class['name'];
+  };
   image?: string;
-  onContextMenu?: () => void;
-  onClick?: () => void;
+  actions?: ComponentProps<typeof Button>[];
+  withInfo?: boolean;
 };
 
 const StudentCard: FC<StudentCardProps> = ({
-  state,
-  firstName,
-  lastName,
-  onContextMenu,
-  onClick,
+  student,
   image,
-}) => (
-  <div
-    className={styles.card}
-    onClick={onClick}
-    onContextMenu={e => {
-      e.preventDefault();
-      onContextMenu && onContextMenu();
-    }}
-  >
-    <AvatarPrimitive.Root className={styles.avatar}>
-      <AvatarPrimitive.Image
-        loading="lazy"
-        src={image}
-        alt={getAcronymFromString(firstName + ' ' + lastName)}
-        className={styles.image}
-        height={240}
-        width={160}
-      />
-      <AvatarPrimitive.Fallback delayMs={250} className={styles.fallback}>
-        {getAcronymFromString(firstName + ' ' + lastName)}
-      </AvatarPrimitive.Fallback>
-    </AvatarPrimitive.Root>
-    <p
-      className={classNames(
-        styles.state,
-        state && styles[state.toLocaleLowerCase()]
-      )}
-    >
-      {state}
-    </p>
-    <p className={styles.firstName}>{firstName}</p>
-    <p className={styles.lastName}>{lastName}</p>
-  </div>
-);
+  actions,
+  withInfo,
+}) => {
+  const acronym = useMemo(
+    () => getAcronymFromString(`${student.firstName} ${student.lastName}`),
+    [student.firstName, student.lastName]
+  );
+
+  return (
+    <div className={styles.studentCard}>
+      <div className={styles.info}>
+        {image ? (
+          <AvatarPrimitive.Root className={styles.avatar}>
+            <AvatarPrimitive.Image
+              src={image}
+              alt={acronym}
+              loading="lazy"
+              className={styles.avatar}
+            />
+            <AvatarPrimitive.Fallback>{acronym}</AvatarPrimitive.Fallback>
+          </AvatarPrimitive.Root>
+        ) : (
+          <span className={styles.avatar}>
+            <span className={styles.avatar}>{acronym}</span>
+          </span>
+        )}
+        <div className={styles.content}>
+          <h3 className={styles.firstName}>{student.firstName}</h3>
+          <h3 className={styles.lastName}>{student.lastName}</h3>
+          {student.className && (
+            <small className={styles.className}>{student.className}</small>
+          )}
+          {withInfo && (
+            <button className={styles.more}>
+              <EllipsisVerticalIcon />
+            </button>
+          )}
+        </div>
+      </div>
+      <div className={styles.actions}>
+        {actions &&
+          actions.map((action, i) => (
+            <Button key={i} className={styles.action} {...action} />
+          ))}
+      </div>
+    </div>
+  );
+};
 
 export default StudentCard;

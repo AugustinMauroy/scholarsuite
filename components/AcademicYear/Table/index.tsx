@@ -1,11 +1,11 @@
 'use client';
+import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {
   PencilIcon,
   CheckCircleIcon,
-  ExclamationTriangleIcon,
+  TriangleAlertIcon,
   PlusIcon,
-} from '@heroicons/react/24/solid';
-import * as DialogPrimitive from '@radix-ui/react-dialog';
+} from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
 import EditModal from '@/components/Common/EditModal';
@@ -35,7 +35,7 @@ const Table: FC = () => {
           kind: 'error',
           message: (
             <>
-              <ExclamationTriangleIcon />
+              <TriangleAlertIcon />
               Failed to fetch academic years
             </>
           ),
@@ -51,7 +51,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             Academic year cannot be empty
           </>
         ),
@@ -64,7 +64,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             Invalid date format
           </>
         ),
@@ -90,7 +90,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             {academicYear.error}
           </>
         ),
@@ -117,7 +117,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             Academic year cannot be empty
           </>
         ),
@@ -130,7 +130,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             Invalid date format
           </>
         ),
@@ -157,7 +157,7 @@ const Table: FC = () => {
       toast({
         message: (
           <>
-            <ExclamationTriangleIcon />
+            <TriangleAlertIcon />
             {academicYear.error}
           </>
         ),

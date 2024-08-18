@@ -1,6 +1,7 @@
 import prisma from '@/lib/prisma';
 import type { PatchBody } from '@/types/presence';
 
+// API where we process presence from `/group-presence/[id]`
 export const PATCH = async (req: Request): Promise<Response> => {
   const body: PatchBody = await req.json().catch(() => null);
 
@@ -100,6 +101,20 @@ export const PATCH = async (req: Request): Promise<Response> => {
         where: { id: presence.id },
         data: { ...item, userId },
       });
+      await prisma.presenceAudit.create({
+        data: {
+          presenceId: presence.id,
+          state: presence.state,
+          date: presence.date,
+          userId: presence.userId,
+          academicYearId: presence.academicYearId,
+          timeSlotId: presence.timeSlotId,
+          groupId: presence.groupId,
+          processed: presence.processed,
+          notified: presence.notified,
+          changedBy: userId,
+        },
+      });
     } else {
       await prisma.presence.create({
         data: {
@@ -115,20 +130,46 @@ export const PATCH = async (req: Request): Promise<Response> => {
     }
   }
 
-  const result = await prisma.presence.findMany({
+  // Don't send result back to client
+  // But send fresh data to client
+  // it's same as GET /api/group/[id]
+  const groupData = await prisma.group.findUnique({
     where: {
-      date: {
-        gte: new Date(date),
-        lt: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
+      id: groupId,
+    },
+    include: {
+      StudentGroup: {
+        include: {
+          student: {
+            include: {
+              class: true,
+              presence: {
+                where: {
+                  date: {
+                    gte: new Date(
+                      now.getFullYear(),
+                      now.getMonth(),
+                      now.getDate()
+                    ),
+                    lt: new Date(
+                      now.getFullYear(),
+                      now.getMonth(),
+                      now.getDate() + 1
+                    ),
+                  },
+                  timeSlotId,
+                },
+              },
+            },
+          },
+        },
       },
-      timeSlotId,
-      userId,
     },
   });
 
   return Response.json(
     {
-      data: result,
+      data: groupData,
     },
     { status: 200 }
   );

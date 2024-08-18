@@ -66,6 +66,7 @@ export const POST = async (
         include: {
           student: {
             include: {
+              class: true,
               presence: {
                 where: {
                   date: {

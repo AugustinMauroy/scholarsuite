@@ -1,8 +1,4 @@
-import {
-  UserGroupIcon,
-  UsersIcon,
-  CalendarDaysIcon,
-} from '@heroicons/react/20/solid';
+import { CalendarDays, User, UsersRound } from 'lucide-react';
 import Link from 'next/link';
 import BaseLayout from '@/components/Layout/Base';
 import styles from './page.module.css';
@@ -11,7 +7,7 @@ import type { FC } from 'react';
 const CARDS = [
   {
     title: 'Manage Students',
-    icon: UserGroupIcon,
+    icon: UsersRound,
     links: [
       { href: '/administration/students', text: 'View Students' },
       { href: '/administration/students/add', text: 'Add Student' },
@@ -30,7 +26,7 @@ const CARDS = [
   },
   {
     title: 'Manage Users',
-    icon: UsersIcon,
+    icon: User,
     links: [
       { href: '/administration/users', text: 'View Users' },
       { href: '/administration/users/add', text: 'Add User' },
@@ -45,7 +41,7 @@ const CARDS = [
   },
   {
     title: 'Academic Years',
-    icon: CalendarDaysIcon,
+    icon: CalendarDays,
     links: [
       { href: '/administration/academicYear', text: 'Manage Academic Years' },
     ],
@@ -61,7 +57,10 @@ const CARDS = [
 ];
 
 const Page: FC = async () => (
-  <BaseLayout sectionClassName={styles.section}>
+  <BaseLayout
+    sectionClassName={styles.section}
+    title="Administration Dashboard"
+  >
     {CARDS.map(({ title, links, icon: Icon }) => (
       <div className={styles.card} key={title}>
         <h2>

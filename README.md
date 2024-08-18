@@ -1,4 +1,9 @@
-# ScholarSuite
+<p align="center">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="./assets/logo-dark.svg">
+      <img src="./assets/logo-light.svg" width="200px">
+    </picture>
+</p>
 
 ScholarSuite is a grade management application for schools. It allows to manage students, classes, school levels, subjects and grades.
 
@@ -11,8 +16,8 @@ ScholarSuite is a grade management application for schools. It allows to manage 
 
 **Prerequisites:**
 
-- Node.js (v22.6.0) and npm _(provided with Node.js)_
-- MySQL
+- [Node.js](https://nodejs.org/) (LTS version)
+- [PostgreSQL](https://www.postgresql.org/) (version 15 or higher)
 
 1. Clone the repository
 2. Install dependencies (without development dependencies)

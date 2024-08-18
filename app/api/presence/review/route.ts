@@ -75,22 +75,22 @@ export const POST = async (req: Request): Promise<Response> => {
       },
       timeSlot: true,
       user: true,
+      PresenceAudit: {
+        include: {
+          changedByUser: true,
+          user: true,
+        },
+        orderBy: {
+          changedAt: 'desc',
+        },
+      },
     },
-    orderBy: [
-      {
-        createdAt: 'asc',
-      },
-      {
-        processed: 'asc',
-      },
-    ],
-  } as any;
-
-  const data = await prisma.presence.findMany({
-    ...query,
+    orderBy: [{ processed: 'asc' }, { createdAt: 'asc' }],
     skip: pagination?.page * pagination?.limit,
     take: pagination?.limit,
-  });
+  } as any;
+
+  const data = await prisma.presence.findMany(query);
   const max = await prisma.presence.count({ where: query.where });
 
   return Response.json({ data, max }, { status: 200 });

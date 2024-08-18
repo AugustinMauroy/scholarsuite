@@ -20,6 +20,13 @@ const config: StorybookConfig = {
   },
   previewBody: `<style>:root { color-scheme: light; } html[data-theme="dark"] { color-scheme: dark; }
       #storybook-root { height: 100vh; width: 100vw; }
+      body {
+        @apply min-h-screen
+        bg-white
+        text-gray-950
+        dark:bg-gray-950
+        dark:text-gray-50;
+      }
     </style>`,
   webpack: async config => ({
     ...config,

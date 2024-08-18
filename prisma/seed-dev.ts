@@ -1,3 +1,4 @@
+import { resolve } from 'node:path';
 import { styleText } from 'node:util';
 import { PrismaClient } from '@prisma/client';
 import { encode } from '@/utils/crypto.ts';
@@ -33,6 +34,10 @@ if (users.length) {
   );
   process.exit(0);
 } else {
+  console.log(
+    styleText('green', '✓') + ' Starting seeding database for development'
+  );
+
   await prisma.user.createMany({
     data: [
       {
@@ -57,6 +62,14 @@ if (users.length) {
   });
 
   users = await prisma.user.findMany();
+  const admin = users.find(user => user.role === 'ADMIN');
+
+  if (!admin) {
+    console.log(
+      styleText('red', '⨯') + ' Admin user not found in the database'
+    );
+    process.exit(0);
+  }
 
   /* Belgian school levels */
   await prisma.schoolLevel.createMany({
@@ -75,6 +88,36 @@ if (users.length) {
       { name: '6ème secondaire', order: 12 },
     ],
   });
+
+  const secondaire4 = await prisma.schoolLevel.findFirst({
+    where: {
+      name: '4ème secondaire',
+    },
+  });
+  const secondaire5 = await prisma.schoolLevel.findFirst({
+    where: {
+      name: '5ème secondaire',
+    },
+  });
+  const secondaire6 = await prisma.schoolLevel.findFirst({
+    where: {
+      name: '6ème secondaire',
+    },
+  });
+
+  if (!secondaire4 || !secondaire5 || !secondaire6) {
+    const pathToFile = resolve(__dirname, 'prisma/seed-dev.ts');
+
+    console.log(
+      styleText('red', '⨯') +
+        ' School levels not found in the database\n' +
+        styleText('red', '⨯') +
+        ' Please check the' +
+        styleText('yellow', pathToFile) +
+        ' file'
+    );
+    process.exit(0);
+  }
 
   /* Create 3 classes for each secondary school level */
   await prisma.class.createMany({
@@ -100,102 +143,224 @@ if (users.length) {
     ],
   });
 
+  const classes = await prisma.class.findMany();
+
+  // bind user to classes
+  for (const user of users) {
+    for (const _class of classes) {
+      await prisma.userClass.create({
+        data: {
+          userId: user.id,
+          classId: _class.id,
+        },
+      });
+    }
+  }
+
   await prisma.student.createMany({
     data: [
       {
         firstName: 'Alice',
         lastName: 'Dubois',
-        dateOfBirth: now,
-        classId: 1,
+        dateOfBirth: new Date('2010-01-01'),
       },
       {
         firstName: 'Bob',
         lastName: 'Martin',
-        dateOfBirth: now,
-        classId: 1,
+        dateOfBirth: new Date('2010-01-01'),
       },
       {
         firstName: 'Charlie',
         lastName: 'Brown',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'David',
         lastName: 'Smith',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Eve',
         lastName: 'Johnson',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Frank',
         lastName: 'Williams',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Grace',
         lastName: 'Jones',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Hugo',
         lastName: 'Garcia',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Isabel',
         lastName: 'Martinez',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Jack',
         lastName: 'Brown',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Karl',
         lastName: 'Schmidt',
-        dateOfBirth: now,
-        classId: 1,
       },
       {
         firstName: 'Linda',
         lastName: 'Davis',
-        dateOfBirth: now,
-        classId: 1,
+      },
+      {
+        firstName: 'Oliver',
+        lastName: 'White',
+      },
+      {
+        firstName: 'Sophia',
+        lastName: 'Green',
+      },
+      {
+        firstName: 'Ethan',
+        lastName: 'Black',
+      },
+      {
+        firstName: 'Ava',
+        lastName: 'Brown',
+      },
+      {
+        firstName: 'Liam',
+        lastName: 'Taylor',
+      },
+      {
+        firstName: 'Mia',
+        lastName: 'Johnson',
+      },
+      {
+        firstName: 'Noah',
+        lastName: 'Smith',
+      },
+      {
+        firstName: 'Emma',
+        lastName: 'Williams',
+      },
+      {
+        firstName: 'Olivia',
+        lastName: 'Jones',
+      },
+      {
+        firstName: 'William',
+        lastName: 'Garcia',
+      },
+      {
+        firstName: 'James',
+        lastName: 'Martinez',
+      },
+      {
+        firstName: 'Benjamin',
+        lastName: 'Brown',
+      },
+      {
+        firstName: 'Elijah',
+        lastName: 'Schmidt',
+      },
+      {
+        firstName: 'Lucas',
+        lastName: 'Davis',
+      },
+      {
+        firstName: 'Michael',
+        lastName: 'White',
+      },
+      {
+        firstName: 'Alexander',
+        lastName: 'Green',
+      },
+      {
+        firstName: 'Daniel',
+        lastName: 'Black',
+      },
+      {
+        firstName: 'Henry',
+        lastName: 'Brown',
+      },
+      {
+        firstName: 'Joseph',
+        lastName: 'Taylor',
+      },
+      {
+        firstName: 'David',
+        lastName: 'Johnson',
+      },
+      {
+        firstName: 'Sophia',
+        lastName: 'Smith',
+      },
+      {
+        firstName: 'Olivia',
+        lastName: 'Williams',
+      },
+      {
+        firstName: 'Jean Christophe',
+        lastName: 'Van Damme',
+      },
+      {
+        firstName: 'Christoph Doom',
+        lastName: 'Scheider',
+      },
+      {
+        firstName: 'Richard',
+        lastName: 'Zven Kruspe',
+      },
+      {
+        firstName: 'Till',
+        lastName: 'Lindemann',
+      },
+      {
+        firstName: 'Paul',
+        lastName: 'Landers',
+      },
+      {
+        firstName: 'Christian',
+        lastName: 'Lorenz',
+      },
+      {
+        firstName: 'Oliver',
+        lastName: 'Riedel',
+      },
+      {
+        firstName: 'Bruce',
+        lastName: 'Wayne',
+      },
+      {
+        firstName: 'Clark',
+        lastName: 'Kent',
+      },
+      {
+        firstName: 'Peter',
+        lastName: 'Parker',
+      },
+      {
+        firstName: 'Tony',
+        lastName: 'Stark',
+      },
+      {
+        firstName: 'Steve',
+        lastName: 'Rogers',
       },
     ],
   });
 
   const students = await prisma.student.findMany();
 
-  // assing class to teacher
-  await prisma.userClass.createMany({
-    data: [
-      {
-        userId: 1,
-        classId: 1,
+  // half student in 5a and half in 6a
+  for (let i = 0; i < students.length; i++) {
+    await prisma.student.update({
+      where: {
+        id: students[i].id,
       },
-      {
-        userId: 2,
-        classId: 1,
+      data: {
+        classId: i % 2 === 0 ? 15 : 18,
       },
-      {
-        userId: 3,
-        classId: 1,
-      },
-    ],
-  });
+    });
+  }
 
   await prisma.subject.createMany({
     data: [
@@ -208,35 +373,54 @@ if (users.length) {
     ],
   });
 
-  await prisma.disciplinaryReport.createMany({
-    data: [
-      {
-        description: 'Student was caught cheating during the exam',
-        date: now,
-        createdById: 1,
-        studentId: 1,
-      },
-      {
-        description: 'Bob was imitating a chicken during the class',
-        // one day before
-        date: new Date(now.setDate(now.getDate() - 1)),
-        createdById: 1,
-        studentId: 2,
-      },
-      {
-        description: 'Charlie was caught smoking in the school',
-        date: new Date(now.setDate(now.getDate() - 1)),
-        createdById: 1,
-        studentId: 3,
-      },
-      {
-        description: "Alice won' t stop talking during the revision",
-        date: new Date(now.setDate(now.getDate() - 1)),
-        createdById: 1,
-        studentId: 1,
-      },
-    ],
+  const science = await prisma.subject.findFirst({
+    where: {
+      name: 'Science',
+    },
   });
+
+  if (!science) {
+    const pathToFile = resolve(__dirname, 'prisma/seed-dev.ts');
+    let stack = new Error().stack;
+    stack = stack ? stack : pathToFile;
+
+    console.log(
+      styleText('red', '⨯') +
+        ' Science subject not found in the database\n' +
+        styleText('red', '⨯') +
+        ' Please check the' +
+        styleText('yellow', stack) +
+        ' file'
+    );
+    process.exit(0);
+  }
+
+  const DISCIPLINES_REPORT_MESSAGES = [
+    'Student was caught cheating during the exam',
+    '--firstName-- was imitating a chicken during the class',
+    '--firstName-- was caught smoking in the school',
+    "--firstName-- won' t stop talking during the revision",
+    'Student was caught using a mobile phone during the exam',
+    'Student was late for class three times this week',
+    '--firstName-- was caught bullying another student',
+  ];
+
+  for (let i = 0; i < DISCIPLINES_REPORT_MESSAGES.length; i++) {
+    const random = Math.floor(Math.random() * students.length);
+    const message = DISCIPLINES_REPORT_MESSAGES[i].replace(
+      '--firstName--',
+      students[random].firstName
+    );
+
+    await prisma.disciplinaryReport.create({
+      data: {
+        date: new Date(now.setDate(now.getDate() - i)),
+        description: message,
+        createdById: admin.id,
+        studentId: students[random].id,
+      },
+    });
+  }
 
   /* Create the Create schedule (timeslot) */
   await prisma.timeSlot.createMany({
@@ -298,48 +482,48 @@ if (users.length) {
     data: [
       {
         name: 'Siences de base gp1',
-        subjectId: 2,
-        schoolLevelId: 10,
+        subjectId: science.id,
+        schoolLevelId: secondaire4.id,
       },
       {
         name: 'Siences de base gp2',
-        subjectId: 2,
-        schoolLevelId: 10,
+        subjectId: science.id,
+        schoolLevelId: secondaire4.id,
       },
       {
         name: 'Siences générales',
-        subjectId: 2,
-        schoolLevelId: 10,
+        subjectId: science.id,
+        schoolLevelId: secondaire4.id,
       },
       {
         name: 'Siences de base gp1',
-        subjectId: 2,
-        schoolLevelId: 11,
+        subjectId: science.id,
+        schoolLevelId: secondaire5.id,
       },
       {
         name: 'Siences de base gp2',
-        subjectId: 2,
-        schoolLevelId: 11,
+        subjectId: science.id,
+        schoolLevelId: secondaire5.id,
       },
       {
         name: 'Siences générales',
-        subjectId: 2,
-        schoolLevelId: 11,
+        subjectId: science.id,
+        schoolLevelId: secondaire5.id,
       },
       {
         name: 'Siences de base gp1',
-        subjectId: 2,
-        schoolLevelId: 12,
+        subjectId: science.id,
+        schoolLevelId: secondaire6.id,
       },
       {
         name: 'Siences de base gp2',
-        subjectId: 2,
-        schoolLevelId: 12,
+        subjectId: science.id,
+        schoolLevelId: secondaire6.id,
       },
       {
         name: 'Siences générales',
-        subjectId: 2,
-        schoolLevelId: 12,
+        subjectId: science.id,
+        schoolLevelId: secondaire6.id,
       },
     ],
   });
@@ -358,18 +542,37 @@ if (users.length) {
     }
   }
 
-  // bind all students to all groups
-  for (const student of students) {
-    for (const group of groups) {
-      await prisma.studentGroup.create({
-        data: {
-          studentId: student.id,
-          groupId: group.id,
-        },
-      });
-    }
+  // bind students 5 to gp 1 and 6 to gp 2 across all school levels
+  const gp1 = groups.filter(group => group.name.includes('gp1'));
+  const gp2 = groups.filter(group => group.name.includes('gp2'));
+  const students5 = await prisma.student.findMany({
+    where: {
+      classId: 15,
+    },
+  });
+  const students6 = await prisma.student.findMany({
+    where: {
+      classId: 18,
+    },
+  });
+
+  for (let i = 0; i < students5.length; i++) {
+    await prisma.studentGroup.create({
+      data: {
+        studentId: students5[i].id,
+        groupId: gp1[i % 3].id,
+      },
+    });
+  }
+  for (let i = 0; i < students6.length; i++) {
+    await prisma.studentGroup.create({
+      data: {
+        studentId: students6[i].id,
+        groupId: gp2[i % 3].id,
+      },
+    });
   }
 
   await prisma.$disconnect();
-  console.log(styleText('green', '✓') + ' Seeded database for developement');
+  console.log(styleText('green', '✓') + ' Seeded database for development');
 }

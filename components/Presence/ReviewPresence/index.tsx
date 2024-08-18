@@ -4,7 +4,14 @@ import { useState, useEffect, useMemo } from 'react';
 import Button from '@/components/Common/Button';
 import ReviewPresenceCard from '../ReviewPresenceCard';
 import styles from './index.module.css';
-import type { Class, Presence, Student, TimeSlot, User } from '@prisma/client';
+import type {
+  Class,
+  Presence,
+  Student,
+  TimeSlot,
+  User,
+  PresenceAudit,
+} from '@prisma/client';
 import type { FC } from 'react';
 
 type PresenceState = Presence & {
@@ -13,6 +20,7 @@ type PresenceState = Presence & {
   };
   timeSlot: TimeSlot;
   user: User;
+  PresenceAudit: (PresenceAudit & { user: User })[];
 };
 
 const LIMIT = 5;
@@ -72,42 +80,51 @@ const ReviewPresence: FC = () => {
 
   return (
     <main className={styles.wrapper}>
-      <div className={styles.pagination}>
-        <Button
-          kind="outline"
-          onClick={() => setPage(page => Math.max(page - 1, 0))}
-          disabled={page === 0}
-        >
-          Previous
-        </Button>
-        {pageList.map(p => (
-          <button
-            key={p}
-            onClick={() => setPage(p)}
-            className={classNames([
-              { [styles.active]: p === page },
-              styles.page,
-            ])}
-          >
-            {p + 1}
-          </button>
-        ))}
-        <Button
-          kind="outline"
-          onClick={() => setPage(page => Math.min(page + 1, pageList.length))}
-          disabled={page === pageList.length - 1}
-        >
-          Next
-        </Button>
-      </div>
-      {presence.map(presence => (
-        <ReviewPresenceCard
-          key={presence.id}
-          presence={presence}
-          processPresence={handleProcessed}
-          notifyStudent={() => {}}
-        />
-      ))}
+      {presence.length === 0 && (
+        <h2 className={styles.empty}>There is no presence to review</h2>
+      )}
+      {presence.length > 0 && (
+        <>
+          <div className={styles.pagination}>
+            <Button
+              kind="outline"
+              onClick={() => setPage(page => Math.max(page - 1, 0))}
+              disabled={page === 0}
+            >
+              Previous
+            </Button>
+            {pageList.map(p => (
+              <button
+                key={p}
+                onClick={() => setPage(p)}
+                className={classNames([
+                  { [styles.active]: p === page },
+                  styles.page,
+                ])}
+              >
+                {p + 1}
+              </button>
+            ))}
+            <Button
+              kind="outline"
+              onClick={() =>
+                setPage(page => Math.min(page + 1, pageList.length))
+              }
+              disabled={page === pageList.length - 1}
+            >
+              Next
+            </Button>
+          </div>
+          {presence.map(presence => (
+            <ReviewPresenceCard
+              key={presence.id}
+              presence={presence}
+              processPresence={handleProcessed}
+              notifyStudent={() => {}}
+            />
+          ))}
+        </>
+      )}
     </main>
   );
 };

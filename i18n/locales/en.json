@@ -1,8 +1,20 @@
 {
+  "shared": {
+    "presenceState": {
+      "present": "Present",
+      "absent": "Absent",
+      "late": "Late",
+      "excused": "Excused"
+    },
+    "loading": "Loading..."
+  },
   "app": {
     "metadata": {
       "title": "SchoolarSuite",
-      "description": ""
+      "description": "ScholarSuite is a grade management application for schools. It allows to manage students, classes, school levels, subjects and grades."
+    },
+    "landing": {
+      "title": "Welcome back, {firstName} {lastName}!"
     },
     "notFound": {
       "title": "404 - Not Found",
@@ -26,35 +38,41 @@
       "dropzone": {
         "title": "Drop your profile picture here"
       }
+    },
+    "groupPresence": {
+      "noStudents": "No students in this group",
+      "toast": {
+        "success": "Presence updated successfully"
+      }
+    },
+    "about": {
+      "title": "About",
+      "description": "Get an overview of ScholarSuite \"backend\" information..",
+      "environment": "Environment:",
+      "license": "License:"
     }
   },
   "components": {
-    "layout": {
-      "header": {
+    "common": {
+      "userAvatar": {
         "profile": "Profile",
         "signout": "Sign Out"
       }
-    }
-  },
-  "common": {
-    "breadcrumb": {
-      "administration": "Administration",
-      "academicYear": "Academic Year",
-      "classes": "Classes",
-      "schoolLevels": "School Levels",
-      "students": "Students",
-      "timeSlots": "Time Slots",
-      "users": "Users",
-      "class": "Class",
-      "disciplinaryReport": "Disciplinary Report",
-      "presence": "Presence",
-      "profile": "Profile",
-      "add": "Add",
-      "about": "About the app",
-      "subjects": "Subjects",
-      "groups": "Groups",
-      "group": "Group",
-      "timeSlot": "Time Slot"
+    },
+    "layout": {
+      "navbar": {
+        "presence": "Review",
+        "presenceGroup": "Presence",
+        "admin": "Administration",
+        "about": "About",
+        "disciplinaryReport": "Disciplinary"
+      }
+    },
+    "timeSlot": {
+      "selector": {
+        "prev": "Previous",
+        "next": "Next"
+      }
     }
   }
 }

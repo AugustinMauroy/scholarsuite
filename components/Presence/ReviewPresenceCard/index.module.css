@@ -67,4 +67,14 @@
     @apply text-gray-500
       dark:text-gray-400;
   }
+
+  h4 {
+    @apply text-lg
+      dark:text-gray-200;
+  }
+
+  ul {
+    @apply list-inside
+      list-disc;
+  }
 }

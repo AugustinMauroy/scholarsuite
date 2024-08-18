@@ -1,99 +1,81 @@
-.card {
-  @apply w-36
-    cursor-pointer
-    select-none
-    rounded-xl
+.studentCard {
+  @apply flex
+    size-fit
+    w-80
+    flex-col
+    gap-4
+    rounded-lg
+    border-2
+    border-gray-100
     bg-white
-    shadow-lg
-    transition
-    duration-300
-    ease-in-out
-    dark:border-2
-    dark:border-gray-50
-    dark:bg-black
-    dark:shadow-none;
+    object-fill
+    p-2
+    shadow-md
+    dark:border-gray-700
+    dark:bg-gray-800;
 
-  &:hover {
-    @apply shadow-xl
-      dark:shadow-none;
-  }
-
-  .avatar {
+  .info {
     @apply flex
-      flex-col
-      items-center
-      justify-center
-      rounded-t-xl
-      bg-gray-200
-      dark:bg-gray-800;
+      flex-row
+      gap-2;
 
-    .image {
-      @apply aspect-[3/4]
-        h-full
-        w-36
-        rounded-t-xl;
-    }
-
-    .fallback {
+    .avatar {
       @apply flex
-        aspect-[3/4]
-        h-full
-        w-36
+        size-12
         items-center
         justify-center
-        text-6xl;
+        rounded-md
+        bg-gray-200
+        text-lg
+        font-semibold
+        lg:size-16
+        dark:bg-gray-700;
+    }
+
+    .content {
+      @apply flex-1;
+
+      .firstName {
+        @apply text-lg
+          font-bold
+          leading-3
+          text-gray-800
+          dark:text-gray-300;
+      }
+
+      .lastName {
+        @apply font-semibold
+          text-gray-800
+          dark:text-gray-300;
+      }
+
+      small {
+        @apply mt-2
+          text-xs
+          font-normal
+          text-gray-800
+          dark:text-gray-300;
+      }
     }
   }
 
-  .state {
+  .actions {
     @apply flex
-      h-8
-      w-full
-      flex-row
-      items-center
-      justify-center
-      text-center
-      text-lg
-      font-semibold
-      lowercase
-      text-white
-      transition
-      duration-75
-      dark:text-black;
+        flex-row
+        items-center
+        justify-center
+        gap-4;
 
-    &.present {
-      @apply bg-green-600
-        dark:bg-green-500;
+    .action {
+      @apply w-1/3
+        flex-col
+        gap-0
+        text-xs
+        font-semibold;
+
+      svg {
+        @apply size-4;
+      }
     }
-
-    &.absent {
-      @apply bg-red-600
-        dark:bg-red-500;
-    }
-
-    &.late {
-      @apply bg-orange-600
-        dark:bg-orange-500;
-    }
-
-    &.excused {
-      @apply bg-blue-600
-        dark:bg-blue-500;
-    }
-  }
-
-  .firstName {
-    @apply pt-2
-      text-center
-      font-semibold;
-  }
-
-  .lastName {
-    @apply pb-2
-      text-center
-      text-sm
-      font-medium
-      text-gray-500
-      dark:text-gray-400;
   }
 }
