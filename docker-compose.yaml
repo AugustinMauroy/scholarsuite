@@ -1,33 +1,35 @@
 services:
-  mysql:
+  postgres:
     ports:
-      - 3306:3306
-    container_name: mysql
-    image: mysql:latest
+      - 5432:5432
+    container_name: postgres
+    image: postgres:16
     volumes:
-      - my-datavolume:/var/lib/mysql
+      - postgres_data:/var/lib/postgresql/data
     environment:
-      - MYSQL_ROOT_PASSWORD=password
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=scholarsuite
     networks:
       - app-network
     healthcheck:
-      test: ["CMD-SHELL", "mysql -h 127.0.0.1 -u root -ppassword -e 'SELECT 1'"]
+      test: ["CMD-SHELL", "pg_isready -U postgres -d scholarsuite"]
       interval: 10s
       timeout: 10s
-      retries: 10
+      retries: 3
   app:
     ports:
       - 3000:3000
     container_name: app
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
     build : ./
     networks:
       - app-network
 
 volumes:
-  my-datavolume:
+  postgres_data:
 
 networks:
   app-network:

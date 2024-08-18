@@ -1,22 +1,32 @@
 #!/bin/bash
 
-# Wait for the database to be available
-# You might want to use a script to check if the DB is ready
-# Example: ./wait-for-db.sh
+# Debugging output
+echo "Starting entry script..."
 
-npm run db:generate
+# Ensure we're in the right directory
+echo "Current directory: $(pwd)"
 
-npm run db:push
+# Check if npm scripts are available
+echo "Available npm scripts:"
+npm run || { echo "npm run failed"; exit 1; }
 
+# Run database commands
+echo "Running db:generate..."
+npm run db:generate || { echo "db:generate failed"; exit 1; }
+
+echo "Running db:push..."
+npm run db:push || { echo "db:push failed"; exit 1; }
+
+# Check NODE_ENV and run appropriate commands
 if [ "$NODE_ENV" = "production" ]; then
-    npm run db:seed-prod
-    npm run build
-    npm start
+    echo "Running in production mode..."
+    npm run db:seed-prod || { echo "db:seed-prod failed"; exit 1; }
+    npm run build || { echo "build failed"; exit 1; }
+    npm start || { echo "npm start failed"; exit 1; }
 else
-    npm run db:seed-dev
-    npm run dev
+    echo "Running in development mode..."
+    npm run db:seed-dev || { echo "db:seed-dev failed"; exit 1; }
+    npm run dev || { echo "npm run dev failed"; exit 1; }
 fi
 
-# Start your application
-
-
+echo "Script execution completed."
