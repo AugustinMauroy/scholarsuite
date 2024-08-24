@@ -8,6 +8,4 @@ RUN npm ci
 
 COPY . .
 
-RUN chmod +x entrypoint.sh
-
-ENTRYPOINT ["/bin/sh", "entrypoint.sh"]
+ENTRYPOINT ["node", "entrypoint.js"]

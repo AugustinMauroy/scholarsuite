@@ -13,7 +13,7 @@ services:
     networks:
       - app-network
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres -d scholarsuite"]
+      test: ['CMD-SHELL', 'pg_isready -U postgres -d scholarsuite']
       interval: 10s
       timeout: 10s
       retries: 3
@@ -24,7 +24,7 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    build : ./
+    build: ./
     networks:
       - app-network
 

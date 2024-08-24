@@ -124,7 +124,7 @@ ScholarSuite 1.0 is a school management application that allows for managing use
   - [x] Expiration date
   - [x] Creation date (internal use)
   - [x] Modification date (internal use)
-- [x] \*_Many-to-Many relations_
+- [x] _Many-to-Many relations_
   - [x] Between User and Class
   - [x] Between User and Group
   - [x] Between Student and Group
@@ -141,7 +141,7 @@ ScholarSuite 1.0 is a school management application that allows for managing use
 - [ ] Integration tests (E2E)
 - [ ] Visual testing (Storybook)
 - [ ] Markdown documentation, for maintainers, contributors and users
-- [ ] Docker (to be discussed)
+- [x] Docker, for development and production
 - [ ] SSO (to be discussed)
 
 ## Others
