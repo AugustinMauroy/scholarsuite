@@ -47,20 +47,28 @@ turbo build
 npm start
 ```
 
-**Starting application using docker compose:**
-**Starting the application in dev mode**
+Sure, here's an improved version of the Docker documentation section:
 
-```bash
-docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up
-```
+### Running ScholarSuite using Docker
 
-**Starting the application in prod mode**
+To run ScholarSuite using Docker, you can use the provided `docker-compose.yaml` file along with a specific environment file. This will start the application and its dependencies in separate containers.
+
+#### Prerequisites
+
+- [Docker](https://www.docker.com/)
+- [Docker Compose](https://docs.docker.com/compose/)
+
+To start the production environment, run the following command:
 
 ```bash
 docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up
 ```
-If new image should be build during docker compose up.
-Append the "--build" command to above comments
+
+This will start the application and its dependencies in detached mode, meaning that the terminal will be free to use for other tasks.
+
+#### Building Docker Images
+
+If you make any changes to the application code or its dependencies, you may need to rebuild the Docker images. To do this, append the `--build` flag to the `docker-compose up` command:
 
 ```bash
 docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up --build
@@ -72,11 +80,15 @@ or
 docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up --build
 ```
 
-To build docker compose down, use
+### Stopping the Containers
+
+To stop the containers, run the following command:
 
 ```bash
 docker-compose down
 ```
+
+This will stop and remove the containers, networks, and volumes created by `docker-compose up`.
 
 ## Docs
 

@@ -25,7 +25,7 @@ cd scholarsuite
 git checkout -b <BRANCH_NAME>
 ```
 
-5. Start the development environment.
+5. Start the development environment without Docker.
 
 ```bash
 npm install
@@ -36,6 +36,12 @@ npx turbo dev # or turbo dev if you have Turbo installed globally
 ```
 
 Above, we start by installing the project dependencies, then we copy the `.env.example` file to `.env` to set the environment variables _(remember to update it according to your environment)_. Then, we generate the migrations and run them to create the database tables. Finally, we start the development environment.
+
+5. _bis_ Start the development environment with Docker.
+
+```bash
+docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up --build
+```
 
 6. Make your changes.
 

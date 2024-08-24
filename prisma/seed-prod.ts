@@ -57,16 +57,50 @@ if (users.length) {
     ],
   });
 
-  if (process.env.USE_DEFAULT_PRESET == 'true') {
-    if (process.env.USE_BELGIUM_SCHOOL_LVLS == 'true') {
+  if (
+    process.env.USE_BELGIUM_SCHOOL_LVLS ||
+    process.env.USE_BELGIUM_SCHOOL_LVLS
+  ) {
+    if (process.env.USE_BELGIUM_SCHOOL_LVLS === 'true') {
       await prisma.schoolLevel.createMany({
         data: BELGIAN_SCHOOL_LEVELS,
       });
-    } else {
+    }
+    if (process.env.USE_FRENCH_SCHOOL_LVLS === 'true') {
       await prisma.schoolLevel.createMany({
         data: FRENCH_SCHOOL_LEVELS,
       });
     }
+  } else {
+    console.log('Do you want to seed school levels? (y/n) [default: n]');
+
+    rl.question(
+      'Do you want to seed school levels? (y/n) [default: n]',
+      async answer => {
+        if (answer === 'y') {
+          rl.question(
+            'Which school levels do you want to seed? (belgium, french) [default: belgium]',
+            async answer => {
+              if (answer === 'belgium') {
+                await prisma.schoolLevel.createMany({
+                  data: BELGIAN_SCHOOL_LEVELS,
+                });
+              } else if (answer === 'french') {
+                await prisma.schoolLevel.createMany({
+                  data: FRENCH_SCHOOL_LEVELS,
+                });
+              } else {
+                console.log(
+                  styleText('red', '⨯') + ' School levels not seeded'
+                );
+              }
+            }
+          );
+        } else {
+          console.log(styleText('red', '⨯') + ' School levels not seeded');
+        }
+      }
+    );
   }
 
   await prisma.$disconnect();
