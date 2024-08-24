@@ -47,6 +47,37 @@ turbo build
 npm start
 ```
 
+**Starting application using docker compose:**
+**Starting the application in dev mode**
+
+```bash
+docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up
+```
+
+**Starting the application in prod mode**
+
+```bash
+docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up
+```
+If new image should be build during docker compose up.
+Append the "--build" command to above comments
+
+```bash
+docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up --build
+```
+
+or
+
+```bash
+docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up --build
+```
+
+To build docker compose down, use
+
+```bash
+docker-compose down
+```
+
 ## Docs
 
 - [Roadmap](./ROADMAP.md)

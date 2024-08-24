@@ -57,36 +57,18 @@ if (users.length) {
     ],
   });
 
-  rl.question(
-    'Do you want to use the default preset? (yes/no): ',
-    async answer => {
-      if (answer === 'yes') {
-        rl.question(
-          'Do you want to use the Belgian school levels? (yes/no): ',
-          async answer => {
-            if (answer === 'yes') {
-              await prisma.schoolLevel.createMany({
-                data: BELGIAN_SCHOOL_LEVELS,
-              });
-            } else {
-              await prisma.schoolLevel.createMany({
-                data: FRENCH_SCHOOL_LEVELS,
-              });
-            }
-            rl.close();
-
-            await prisma.$disconnect();
-
-            console.log(styleText('green', '✓') + ' Seed completed');
-          }
-        );
-      } else {
-        rl.close();
-
-        await prisma.$disconnect();
-
-        console.log(styleText('green', '✓') + ' Seed completed');
-      }
+  if (process.env.USE_DEFAULT_PRESET == 'true') {
+    if (process.env.USE_BELGIUM_SCHOOL_LVLS == 'true') {
+      await prisma.schoolLevel.createMany({
+        data: BELGIAN_SCHOOL_LEVELS,
+      });
+    } else {
+      await prisma.schoolLevel.createMany({
+        data: FRENCH_SCHOOL_LEVELS,
+      });
     }
-  );
+  }
+
+  await prisma.$disconnect();
+  console.log(styleText('green', '✓') + ' Seed completed');
 }

@@ -1,0 +1,35 @@
+services:
+  postgres:
+    ports:
+      - 5432:5432
+    container_name: postgres
+    image: postgres:16
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=scholarsuite
+    networks:
+      - app-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d scholarsuite"]
+      interval: 10s
+      timeout: 10s
+      retries: 3
+  app:
+    ports:
+      - 3000:3000
+    container_name: app
+    depends_on:
+      postgres:
+        condition: service_healthy
+    build : ./
+    networks:
+      - app-network
+
+volumes:
+  postgres_data:
+
+networks:
+  app-network:
