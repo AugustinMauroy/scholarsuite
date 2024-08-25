@@ -124,8 +124,6 @@ export const PATCH = async (req: Request): Promise<Response> => {
   if (processed !== undefined) data['processed'] = processed;
   if (state !== undefined) data['state'] = state;
 
-  console.log(data);
-
   const presence = await prisma.presence.update({
     where: { id },
     data: data,

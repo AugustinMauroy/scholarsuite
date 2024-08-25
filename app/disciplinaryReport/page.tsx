@@ -33,8 +33,6 @@ const Page: FC = () => {
       .then(data => setDisciplinaryReports(data.data));
   }, []);
 
-  console.log(disciplinaryReports);
-
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     fetch('/api/disciplinaryReport', {

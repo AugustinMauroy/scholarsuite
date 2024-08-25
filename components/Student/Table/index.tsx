@@ -49,7 +49,6 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
       })),
     [possibleClasses]
   );
-  console.log('selectClassValue', selectClassValue);
 
   const handlePatch = async () => {
     const res = await fetch('/api/student/group', {

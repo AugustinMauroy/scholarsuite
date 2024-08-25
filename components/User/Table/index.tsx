@@ -49,8 +49,6 @@ const UsersTable: FC = () => {
   const handlePatchClass = () => {
     if (!userClassesPatch || userClassesPatch.data.length === 0) return;
 
-    console.log(userClassesPatch);
-
     fetch('/api/user/class', {
       method: 'PATCH',
       headers: {
