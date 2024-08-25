@@ -1,0 +1,40 @@
+.content {
+  @apply z-10
+    m-1.5
+    flex
+    flex-col
+    rounded-lg
+    bg-white
+    shadow-lg
+    dark:border
+    dark:border-gray-700
+    dark:bg-gray-900
+    dark:shadow-none;
+
+  [role='menuitem'] {
+    @apply flex
+      flex-row
+      items-center
+      gap-2
+      px-4
+      py-2;
+
+    &:hover:not(button) {
+      @apply bg-gray-100
+        outline-none
+        dark:bg-gray-800;
+    }
+
+    &:focus:not(button) {
+      @apply bg-gray-100
+        outline-none
+        ring-2
+        ring-violet-500
+        dark:bg-gray-800;
+    }
+  }
+
+  button[role='menuitem'] {
+    @apply m-1.5;
+  }
+}

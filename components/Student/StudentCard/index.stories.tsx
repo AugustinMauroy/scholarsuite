@@ -8,6 +8,7 @@ type Meta = MetaObj<typeof StudentCard>;
 export const Default: Story = {
   args: {
     student: {
+      id: 1,
       firstName: 'John',
       lastName: 'Doe',
     },
@@ -17,6 +18,7 @@ export const Default: Story = {
 export const WithImage: Story = {
   args: {
     student: {
+      id: 2,
       firstName: 'Jane',
       lastName: 'Doe',
     },
@@ -27,6 +29,7 @@ export const WithImage: Story = {
 export const WithActions: Story = {
   args: {
     student: {
+      id: 3,
       firstName: 'Bob',
       lastName: 'Smith',
     },
@@ -53,6 +56,7 @@ export const WithActions: Story = {
 export const WithImageAndActions: Story = {
   args: {
     student: {
+      id: 4,
       firstName: 'Alice',
       lastName: 'Johnson',
     },
@@ -80,6 +84,7 @@ export const WithImageAndActions: Story = {
 export const PresentUsage: Story = {
   args: {
     student: {
+      id: 5,
       firstName: 'Alice',
       lastName: 'Johnson',
       className: '6th A',
@@ -108,6 +113,7 @@ export const PresentUsage: Story = {
 export const FrenchPresentUsage: Story = {
   args: {
     student: {
+      id: 6,
       firstName: 'Alice',
       lastName: 'Johnson',
       className: '6th A',
@@ -136,6 +142,7 @@ export const FrenchPresentUsage: Story = {
 export const PresentUsageIcon: Story = {
   args: {
     student: {
+      id: 5,
       firstName: 'Alice',
       lastName: 'Johnson',
       className: '6th A',
@@ -164,6 +171,7 @@ export const PresentUsageIcon: Story = {
 export const PresentUsageIconWithText: Story = {
   args: {
     student: {
+      id: 5,
       firstName: 'Alice',
       lastName: 'Johnson',
       className: '6th A',
@@ -207,6 +215,7 @@ export const PresentUsageIconWithText: Story = {
 export const PresentUsageIconWithTextDutch: Story = {
   args: {
     student: {
+      id: 5,
       firstName: 'Jean Christophe',
       lastName: 'Van Damme',
       className: '6th A',

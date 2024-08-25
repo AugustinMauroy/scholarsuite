@@ -1,6 +1,8 @@
 'use client';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
+import { useSearchParams } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import BackTo from '@/components/Common/BackTo';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
 import Tabs from '@/components/Common/Tabs';
@@ -16,6 +18,9 @@ type DisciplinaryState = DisciplinaryReport & {
 
 const Page: FC = () => {
   const toast = useToast();
+  const searchParams = useSearchParams();
+  const tabKey = searchParams.get('tab-key');
+  const defaultTab = tabKey === 'create' ? 'create' : 'see';
   const [disciplinaryReports, setDisciplinaryReports] = useState<
     DisciplinaryState[] | null
   >(null);
@@ -26,7 +31,7 @@ const Page: FC = () => {
   );
 
   useEffect(() => {
-    fetch('/api/disciplinaryReport', {
+    fetch('/api/disciplinary-report', {
       method: 'GET',
     })
       .then(res => res.json())
@@ -35,7 +40,7 @@ const Page: FC = () => {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
-    fetch('/api/disciplinaryReport', {
+    fetch('/api/disciplinary-report', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -68,9 +73,10 @@ const Page: FC = () => {
 
   return (
     <>
+      <BackTo />
       <Tabs
         className="mx-auto w-1/2"
-        defaultValue="see"
+        defaultValue={defaultTab}
         tabs={[
           { key: 'see', label: 'See disciplinary report' },
           { key: 'create', label: 'Create disciplinary report' },

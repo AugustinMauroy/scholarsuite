@@ -7,19 +7,6 @@
 }
 
 .content {
-  @apply mx-1.5
-    flex
-    flex-col
-    gap-4
-    rounded-lg
-    bg-white
-    p-2
-    shadow-lg
-    dark:border
-    dark:border-gray-700
-    dark:bg-gray-900
-    dark:shadow-none;
-
   a {
     @apply flex
       flex-row

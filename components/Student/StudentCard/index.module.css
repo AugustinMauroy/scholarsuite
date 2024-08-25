@@ -1,5 +1,6 @@
 .studentCard {
-  @apply flex
+  @apply relative
+    flex
     size-fit
     w-80
     flex-col
@@ -13,6 +14,31 @@
     shadow-md
     dark:border-gray-700
     dark:bg-gray-800;
+
+  .trigger {
+    @apply absolute
+      right-4
+      top-4
+      w-fit
+      rounded-sm
+      border
+      border-transparent
+      p-1
+      hover:border-gray-300
+      hover:bg-gray-100
+      focus:outline-none
+      focus:ring
+      focus:ring-gray-300
+      dark:hover:border-gray-500
+      dark:hover:bg-gray-700
+      dark:focus:ring-gray-500;
+
+    svg {
+      @apply size-6
+        text-gray-800
+        dark:text-gray-100;
+    }
+  }
 
   .info {
     @apply flex

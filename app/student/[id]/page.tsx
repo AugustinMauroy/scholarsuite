@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation';
+import BackTo from '@/components/Common/BackTo';
 import BaseLayout from '@/components/Layout/Base';
 import prisma from '@/lib/prisma';
-import BackTo from '.';
 import type { FC } from 'react';
 
 type PageProps = {

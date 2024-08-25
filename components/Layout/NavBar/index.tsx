@@ -32,7 +32,9 @@ const NavBar: FC = async () => {
     label: group.name,
     href: `/group-presence/${group.id}`,
   }));
-  let links = [{ label: t('disciplinaryReport'), href: '/disciplinaryReport' }];
+  let links = [
+    { label: t('disciplinaryReport'), href: '/disciplinary-report' },
+  ];
 
   switch (user.role) {
     case 'ADMIN':

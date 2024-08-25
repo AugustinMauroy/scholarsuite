@@ -224,11 +224,12 @@ const Page: FC<PageProps> = ({ params }) => {
       {groupData.StudentGroup.length > 0 &&
         groupData.StudentGroup.map(studentGroup => (
           <StudentCard
+            withInfo
+            from={`/group-presence/${params.id}`}
             key={studentGroup.student.id}
             student={{
-              firstName: studentGroup.student.firstName,
-              lastName: studentGroup.student.lastName,
               className: studentGroup.student.class?.name,
+              ...studentGroup.student,
             }}
             image={`http://localhost:3000/api/content/student-picture/${studentGroup.student.id}`}
             actions={[
