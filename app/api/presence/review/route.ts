@@ -61,6 +61,9 @@ export const POST = async (req: Request): Promise<Response> => {
         {
           state: 'LATE',
         },
+        {
+          state: 'EXCUSED',
+        },
       ],
       studentId: {
         in: studentIdsUnderTutelage,
@@ -93,15 +96,39 @@ export const POST = async (req: Request): Promise<Response> => {
   const data = await prisma.presence.findMany(query);
   const max = await prisma.presence.count({ where: query.where });
 
+  // not processed first then processed then excused last
+  data.sort((a, b) => {
+    if (a.processed === b.processed) {
+      if (a.state === b.state) {
+        return 0;
+      }
+
+      return a.state === 'EXCUSED' ? 1 : -1;
+    }
+
+    return a.processed ? 1 : -1;
+  });
+
   return Response.json({ data, max }, { status: 200 });
 };
 
 export const PATCH = async (req: Request): Promise<Response> => {
-  const { id, processed } = await req.json();
+  const { id, processed, state } = (await req.json()) as {
+    id: number;
+    processed?: boolean;
+    state?: string;
+  };
+
+  const data = {} as any;
+
+  if (processed !== undefined) data['processed'] = processed;
+  if (state !== undefined) data['state'] = state;
+
+  console.log(data);
 
   const presence = await prisma.presence.update({
     where: { id },
-    data: { processed },
+    data: data,
   });
 
   return Response.json({ data: presence }, { status: 200 });

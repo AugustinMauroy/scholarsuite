@@ -68,13 +68,18 @@
       dark:text-gray-400;
   }
 
-  h4 {
-    @apply text-lg
-      dark:text-gray-200;
+  .badge {
+    @apply w-fit;
   }
 
-  ul {
-    @apply list-inside
-      list-disc;
+  details {
+    @apply flex
+      flex-col
+      gap-2;
+
+    summary {
+      @apply text-lg
+        dark:text-gray-200;
+    }
   }
 }

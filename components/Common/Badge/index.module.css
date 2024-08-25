@@ -80,3 +80,16 @@
       dark:bg-yellow-700;
   }
 }
+
+.info {
+  @apply bg-blue-50
+    text-blue-600
+    ring-blue-500/10
+    dark:bg-blue-800
+    dark:text-blue-300;
+
+  &[role='button']:hover {
+    @apply ring-blue-500/20
+      dark:bg-blue-700;
+  }
+}

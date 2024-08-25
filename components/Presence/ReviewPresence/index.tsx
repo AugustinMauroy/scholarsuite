@@ -78,6 +78,26 @@ const ReviewPresence: FC = () => {
     }
   };
 
+  const handleExcused = async (id: number) => {
+    const response = await fetch('/api/presence/review', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id, state: 'EXCUSED' }),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+
+      setPresence(presence =>
+        presence.map(p =>
+          p.id === data.data.id ? { ...p, state: 'EXCUSED' } : p
+        )
+      );
+    }
+  };
+
   return (
     <main className={styles.wrapper}>
       {presence.length === 0 && (
@@ -121,6 +141,7 @@ const ReviewPresence: FC = () => {
               presence={presence}
               processPresence={handleProcessed}
               notifyStudent={() => {}}
+              justifyPresence={handleExcused}
             />
           ))}
         </>

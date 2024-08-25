@@ -152,8 +152,6 @@ const Page: FC<PageProps> = ({ params }) => {
             message: tPage('toast.success'),
           });
         });
-
-      // 1000ms = 1s
     }, 500);
 
     return () => clearTimeout(timeout);
