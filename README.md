@@ -71,12 +71,6 @@ This will start the application and its dependencies in detached mode, meaning t
 If you make any changes to the application code or its dependencies, you may need to rebuild the Docker images. To do this, append the `--build` flag to the `docker-compose up` command:
 
 ```bash
-docker-compose -f docker-compose.yaml -f docker-compose.dev.yaml up --build
-```
-
-or
-
-```bash
 docker-compose -f docker-compose.yaml -f docker-compose.prod.yaml up --build
 ```
 
