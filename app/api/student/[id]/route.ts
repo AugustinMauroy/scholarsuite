@@ -16,7 +16,7 @@ export const PATCH = async (req: Request, { params }: Params) => {
   const file = formData.get('file') as File | null;
 
   const student = await prisma.student.update({
-    include: { class: true },
+    include: { Class: true },
     where: { id: parseInt(id, 10) },
     data: {
       firstName,

@@ -3,7 +3,7 @@ import BaseLayout from '@/components/Layout/Base';
 import type { FC } from 'react';
 
 const Page: FC = () => (
-  <BaseLayout>
+  <BaseLayout title="Groups" description="Manage your groups">
     <Table />
   </BaseLayout>
 );

@@ -16,7 +16,7 @@ const NavBar: FC = async () => {
   const user = session.user;
   const groups = await prisma.group.findMany({
     where: {
-      userGroup: {
+      UserGroup: {
         some: {
           userId: user.id,
         },

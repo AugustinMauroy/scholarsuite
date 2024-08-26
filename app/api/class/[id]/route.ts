@@ -18,12 +18,12 @@ export const GET = async (
       id: parseInt(id),
     },
     include: {
-      students: {
+      Students: {
         where: {
           enabled: true,
         },
         include: {
-          presence: true,
+          Presence: true,
         },
       },
     },
@@ -50,12 +50,12 @@ export const POST = async (
         id: id,
       },
       include: {
-        students: {
+        Students: {
           where: {
             enabled: true,
           },
           include: {
-            presence: true,
+            Presence: true,
           },
         },
       },
@@ -90,12 +90,12 @@ export const POST = async (
       id: id,
     },
     include: {
-      students: {
+      Students: {
         where: {
           enabled: true,
         },
         include: {
-          presence: {
+          Presence: {
             where: {
               date: {
                 gte: new Date(now.getFullYear(), now.getMonth(), now.getDate()),

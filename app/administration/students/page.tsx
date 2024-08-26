@@ -6,13 +6,13 @@ import type { FC } from 'react';
 const Page: FC = async () => {
   const students = await prisma.student.findMany({
     include: {
-      class: true,
+      Class: true,
     },
   });
 
   const possibleClasses = await prisma.class.findMany({
     include: {
-      schoolLevel: true,
+      SchoolLevel: true,
     },
   });
 

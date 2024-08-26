@@ -140,10 +140,10 @@ export const PATCH = async (req: Request): Promise<Response> => {
     include: {
       StudentGroup: {
         include: {
-          student: {
+          Student: {
             include: {
-              class: true,
-              presence: {
+              Class: true,
+              Presence: {
                 where: {
                   date: {
                     gte: new Date(

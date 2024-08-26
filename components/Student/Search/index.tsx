@@ -4,7 +4,7 @@ import type { Student, Class } from '@prisma/client';
 import type { FC } from 'react';
 
 type StudentsState = Student & {
-  class: Class | null;
+  Class: Class | null;
 };
 
 type StudentSearchProps = {
@@ -75,9 +75,9 @@ const StudentSearch: FC<StudentSearchProps> = ({ studentId, setStudentId }) => {
               className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               {student.firstName} {student.lastName}{' '}
-              {student?.class?.name && (
+              {student?.Class?.name && (
                 <span className="text-sm text-gray-500 dark:text-gray-400">
-                  ({student.class.name})
+                  ({student.Class.name})
                 </span>
               )}
             </li>

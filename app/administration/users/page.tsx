@@ -3,7 +3,7 @@ import UsersTable from '@/components/User/Table';
 import type { FC } from 'react';
 
 const Page: FC = () => (
-  <BaseLayout>
+  <BaseLayout title="Users" description="Manage your users">
     <UsersTable />
   </BaseLayout>
 );

@@ -18,8 +18,8 @@ import type { Patch } from '@/types/patch';
 import type { Student, Class } from '@prisma/client';
 import type { FC } from 'react';
 
-type StudentState = Student & { class: Class | null };
-type ClassWithSchoolLevel = Class & { schoolLevel: { name: string } };
+type StudentState = Student & { Class: Class | null };
+type ClassWithSchoolLevel = Class & { SchoolLevel: { name: string } };
 
 type TableProps = {
   students: StudentState[];
@@ -42,7 +42,7 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
       possibleClasses.map(c => ({
         label: (
           <>
-            {c.name} <small>{c.schoolLevel.name}</small>
+            {c.name} <small>{c.SchoolLevel.name}</small>
           </>
         ),
         value: c.id.toString(),
@@ -149,7 +149,7 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
               <td>
                 <Input type="checkbox" checked={student.enabled} disabled />
               </td>
-              <td>{student.class?.name}</td>
+              <td>{student.Class?.name}</td>
               <td>{student.contactEmail}</td>
               <td>
                 <DialogPrimitive.Trigger asChild>
@@ -234,7 +234,7 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
               label="Class"
               inline
               values={selectClassValue}
-              defaultValue={selectedStudent.class?.id.toString()}
+              defaultValue={selectedStudent.Class?.id.toString()}
               onChange={v =>
                 setSelectedStudent({
                   ...selectedStudent,

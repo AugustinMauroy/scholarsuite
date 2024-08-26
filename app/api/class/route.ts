@@ -27,7 +27,7 @@ export const POST = async (req: Request) => {
 
   const classes = await prisma.class.findMany({
     where: {
-      userClasss: {
+      UserClasss: {
         some: {
           userId,
         },

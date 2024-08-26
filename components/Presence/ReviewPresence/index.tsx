@@ -15,11 +15,11 @@ import type {
 import type { FC } from 'react';
 
 type PresenceState = Presence & {
-  student: Student & {
-    class: Class | null;
+  Student: Student & {
+    Class: Class | null;
   };
-  timeSlot: TimeSlot;
-  user: User;
+  TimeSlot: TimeSlot;
+  User: User;
   PresenceAudit: (PresenceAudit & { user: User })[];
 };
 

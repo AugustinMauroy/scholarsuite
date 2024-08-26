@@ -16,11 +16,11 @@ import type { FC } from 'react';
 
 type ReviewPresenceCardProps = {
   presence: Presence & {
-    student: Student & {
-      class: Class | null;
+    Student: Student & {
+      Class: Class | null;
     };
-    user: User;
-    timeSlot: TimeSlot;
+    User: User;
+    TimeSlot: TimeSlot;
     PresenceAudit: (PresenceAudit & { user: User })[];
   };
   processPresence?: (id: number) => void;
@@ -84,7 +84,7 @@ const ReviewPresenceCard: FC<ReviewPresenceCardProps> = ({
             </button>
           )}
         </div>
-        {presence.student.contactEmail &&
+        {presence.Student.contactEmail &&
           !presence.notified &&
           notifyStudent && (
             <button
@@ -98,14 +98,14 @@ const ReviewPresenceCard: FC<ReviewPresenceCardProps> = ({
       </div>
       <span>
         {format.dateTime(new Date(presence.date), formatConfig)} -{' '}
-        {presence.timeSlot.name}
+        {presence.TimeSlot.name}
       </span>
       <span>
-        {presence.student.firstName} {presence.student.lastName}{' '}
-        <small className={styles.class}>({presence.student.class?.name})</small>
+        {presence.Student.firstName} {presence.Student.lastName}{' '}
+        <small className={styles.class}>({presence.Student.Class?.name})</small>
       </span>
       <span>
-        By {presence.user.firstName} {presence.user.lastName}
+        By {presence.User.firstName} {presence.User.lastName}
       </span>
       <Badge className={styles.badge} kind={getkind(presence.state)}>
         {presence.state}

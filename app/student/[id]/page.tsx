@@ -12,10 +12,10 @@ const Page: FC<PageProps> = async ({ params }) => {
   const student = await prisma.student.findUnique({
     where: { id: Number(params.id) },
     include: {
-      class: true,
+      Class: true,
       StudentGroup: {
         include: {
-          group: true,
+          Group: true,
         },
       },
     },
@@ -55,7 +55,7 @@ const Page: FC<PageProps> = async ({ params }) => {
       <h1>
         {student.firstName} {student.lastName}
       </h1>
-      {student.class && <p>Class : {student.class.name}</p>}
+      {student.Class && <p>Class : {student.Class.name}</p>}
       {student.dateOfBirth && (
         <p>Born : {student.dateOfBirth.toDateString()}</p>
       )}
@@ -64,8 +64,8 @@ const Page: FC<PageProps> = async ({ params }) => {
       {student.StudentGroup && (
         <ul className="list-disc">
           <label>Groups:</label>
-          {student.StudentGroup.map(({ group }) => (
-            <li key={group.id}>{group.name}</li>
+          {student.StudentGroup.map(({ Group }) => (
+            <li key={Group.id}>{Group.name}</li>
           ))}
         </ul>
       )}

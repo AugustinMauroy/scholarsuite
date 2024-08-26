@@ -6,12 +6,12 @@ import type { FC } from 'react';
 const Page: FC = async () => {
   const classes = await prisma.class.findMany({
     include: {
-      schoolLevel: true,
+      SchoolLevel: true,
     },
   });
 
   return (
-    <BaseLayout>
+    <BaseLayout title="Classes" description="Manage your classes">
       <Table classes={classes} />
     </BaseLayout>
   );

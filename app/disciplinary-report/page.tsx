@@ -12,8 +12,8 @@ import type { DisciplinaryReport, User, Student } from '@prisma/client';
 import type { FC, FormEvent } from 'react';
 
 type DisciplinaryState = DisciplinaryReport & {
-  createdBy: User;
-  student: Student;
+  CreatedBy: User;
+  Student: Student;
 };
 
 const Page: FC = () => {
@@ -88,14 +88,14 @@ const Page: FC = () => {
               {disciplinaryReports.map(disciplinaryReport => (
                 <li key={disciplinaryReport.id}>
                   <h2 className="text-xl">
-                    {disciplinaryReport.student.firstName}
+                    {disciplinaryReport.Student.firstName}
                   </h2>
                   <p>{disciplinaryReport.description}</p>
                   <p>
                     {new Date(disciplinaryReport.date).toLocaleDateString()}
                   </p>
                   <p className="text-sm">
-                    Created by: {disciplinaryReport.createdBy.firstName}
+                    Created by: {disciplinaryReport.CreatedBy.firstName}
                   </p>
                 </li>
               ))}

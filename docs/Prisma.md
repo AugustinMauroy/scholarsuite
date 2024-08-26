@@ -20,7 +20,43 @@ The data models used in ScholarSuite are as follows:
 - `LATE`: late presence state
 - `EXCUSED`: excused presence state
 
-### 3. `AcademicYear`
+### 3. `AbsencePeriodStatus`
+
+- `PENDING`: pending absence period status
+- `JUSTIFIED`: justified absence period status
+- `UNJUSTIFIED`: unjustified absence period status
+
+### 4. `AbsencePeriod`
+
+- `id`: unique identifier for the absence period
+- `studentId`: identifier of the student for the absence period
+- `firstAbsence`: start date of the absence period
+- `lastAbsence`: end date of the absence period
+- `nextPresence`: optional date of the next presence
+- `academicYearId`: identifier of the academic year for the absence period
+- `status`: status of the absence period
+- `justifyFromDate`: optional start date for justification
+- `justifyToDate`: optional end date for justification
+- `justifyFromTimeSlot`: optional identifier of the start time slot for justification
+- `justifyToTimeSlot`: optional identifier of the end time slot for justification
+- `createdAt`: creation date of the absence period for internal use
+- `updatedAt`: modification date of the absence period for internal use
+- `Student`: relationship with the student of the absence period
+- `AcademicYear`: relationship with the academic year of the absence period
+- `Comments`: relationship with the comments of the absence period
+
+### 5. `AbsencePeriodComment`
+
+- `id`: unique identifier for the absence period comment
+- `userId`: identifier of the user who made the comment
+- `absencePeriodId`: identifier of the absence period for the comment
+- `comment`: comment text
+- `createdAt`: creation date of the absence period comment for internal use
+- `updatedAt`: modification date of the absence period comment for internal use
+- `User`: relationship with the user who made the comment
+- `AbsencePeriod`: relationship with the absence period for the comment
+
+### 6. `AcademicYear`
 
 - `id`: unique identifier for the academic year
 - `name`: name of the academic year
@@ -29,10 +65,12 @@ The data models used in ScholarSuite are as follows:
 - `archives`: indicates if the academic year is archived (default: false)
 - `createdAt`: creation date of the academic year for internal use
 - `updatedAt`: modification date of the academic year for internal use
-- `presences`: relationship with the presences of the academic year
-- `gradePeriods`: relationship with the grading periods of the academic year
+- `Presences`: relationship with the presences of the academic year
+- `GradePeriods`: relationship with the grading periods of the academic year
+- `PresenceAudit`: relationship with the presence audits of the academic year
+- `AbsencePeriod`: relationship with the absence periods of the academic year
 
-### 4. `SchoolLevel`
+### 7. `SchoolLevel`
 
 - `id`: unique identifier for the school level
 - `name`: name of the school level
@@ -40,21 +78,21 @@ The data models used in ScholarSuite are as follows:
 - `enabled`: indicates if the school level is enabled (default: true)
 - `createdAt`: creation date of the school level for internal use
 - `updatedAt`: modification date of the school level for internal use
-- `classes`: relationship with the classes of the school level
-- `timeSlots`: relationship with the time slots of the school level
-- `groups`: relationship with the groups of the school level
+- `Classes`: relationship with the classes of the school level
+- `TimeSlot`: relationship with the time slots of the school level
+- `Group`: relationship with the groups of the school level
 
-### 5. `Subject`
+### 8. `Subject`
 
 - `id`: unique identifier for the subject
 - `name`: name of the subject
 - `enabled`: indicates if the subject is enabled (default: true)
 - `createdAt`: creation date of the subject for internal use
 - `updatedAt`: modification date of the subject for internal use
-- `grades`: relationship with the grades of the subject
-- `groups`: relationship with the groups of the subject
+- `Grades`: relationship with the grades of the subject
+- `Group`: relationship with the groups of the subject
 
-### 6. `User`
+### 9. `User`
 
 - `id`: unique identifier for the user
 - `firstName`: first name of the user
@@ -65,13 +103,16 @@ The data models used in ScholarSuite are as follows:
 - `enabled`: state of the user (enabled or disabled) (default: true)
 - `createdAt`: creation date of the user for internal use
 - `updatedAt`: modification date of the user for internal use
-- `presences`: relationship with the presences of the user
-- `disciplinaryReports`: relationship with the disciplinary reports of the user
-- `userClasses`: relationship with the classes of the user (teacher or administrator)
-- `apiKeys`: relationship with the API keys of the user
-- `userGroups`: relationship with the groups of the user
+- `Presence`: relationship with the presences of the user
+- `DisciplinaryReport`: relationship with the disciplinary reports of the user
+- `UserClass`: relationship with the classes of the user (teacher or administrator)
+- `ApiKey`: relationship with the API keys of the user
+- `UserGroup`: relationship with the groups of the user
+- `PresenceAuditBy`: relationship with the presence audits made by the user
+- `PresenceAuditUser`: relationship with the presence audits for the user
+- `AbsencePeriodComment`: relationship with the comments of the absence periods of the user
 
-### 7. `Class`
+### 10. `Class`
 
 - `id`: unique identifier for the class
 - `name`: name of the class
@@ -80,10 +121,10 @@ The data models used in ScholarSuite are as follows:
 - `enabled`: indicates if the class is enabled (default: true)
 - `createdAt`: creation date of the class for internal use
 - `updatedAt`: modification date of the class for internal use
-- `students`: relationship with the students of the class
-- `userClasses`: relationship with the users (teachers or administrators) of the class
+- `Students`: relationship with the students of the class
+- `UserClasss`: relationship with the users (teachers or administrators) of the class
 
-### 8. `Student`
+### 11. `Student`
 
 - `id`: unique identifier for the student
 - `firstName`: first name of the student
@@ -95,12 +136,13 @@ The data models used in ScholarSuite are as follows:
 - `enabled`: state of the student (enabled or disabled) (default: true)
 - `createdAt`: creation date of the student for internal use
 - `updatedAt`: modification date of the student for internal use
-- `grades`: relationship with the grades of the student
-- `disciplinaryReports`: relationship with the disciplinary reports of the student
-- `presences`: relationship with the presences of the student
-- `studentGroups`: relationship with the groups of the student
+- `Grades`: relationship with the grades of the student
+- `DisciplinaryReports`: relationship with the disciplinary reports of the student
+- `Presence`: relationship with the presences of the student
+- `StudentGroup`: relationship with the groups of the student
+- `AbsencePeriod`: relationship with the absence periods of the student
 
-### 9. `Grade`
+### 12. `Grade`
 
 - `id`: unique identifier for the grade
 - `value`: value of the grade
@@ -116,7 +158,7 @@ The data models used in ScholarSuite are as follows:
 - `createdAt`: creation date of the grade for internal use
 - `updatedAt`: modification date of the grade for internal use
 
-### 10. `TimeSlot`
+### 13. `TimeSlot`
 
 - `id`: unique identifier for the time slot
 - `name`: optional name of the time slot
@@ -127,12 +169,14 @@ The data models used in ScholarSuite are as follows:
 - `enabled`: indicates if the time slot is enabled (default: true)
 - `createdAt`: creation date of the time slot for internal use
 - `updatedAt`: modification date of the time slot for internal use
-- `presences`: relationship with the presences of the time slot
+- `Presence`: relationship with the presences of the time slot
+- `PresenceAudit`: relationship with the presence audits of the time slot
 
-### 11. `Group`
+### 14. `Group`
 
 - `id`: unique identifier for the group
-- `name`: name of the group
+- `ref`: reference of the group
+- `name`: optional name of the group
 - `subject`: relationship with the subject of the group
 - `subjectId`: identifier of the subject of the group
 - `schoolLevel`: optional relationship with the school level of the group
@@ -140,10 +184,10 @@ The data models used in ScholarSuite are as follows:
 - `enabled`: indicates if the group is enabled (default: true)
 - `createdAt`: creation date of the group for internal use
 - `updatedAt`: modification date of the group for internal use
-- `studentGroups`: relationship with the students of the group
-- `userGroups`: relationship with the users of the group
+- `StudentGroup`: relationship with the students of the group
+- `UserGroup`: relationship with the users of the group
 
-### 12. `GradePeriod`
+### 15. `GradePeriod`
 
 - `id`: unique identifier for the grading period
 - `name`: name of the grading period
@@ -152,10 +196,10 @@ The data models used in ScholarSuite are as follows:
 - `enabled`: indicates if the grading period is enabled (default: true)
 - `createdAt`: creation date of the grading period for internal use
 - `updatedAt`: modification date of the grading period for internal use
-- `grades`: relationship with the grades of the grading period
-- `academicYears`: relationship with the academic years associated with the grading period
+- `Grades`: relationship with the grades of the grading period
+- `AcademicYears`: relationship with the academic years associated with the grading period
 
-### 13. `Presence`
+### 16. `Presence`
 
 - `id`: unique identifier for the presence
 - `student`: relationship with the student of the presence
@@ -174,8 +218,29 @@ The data models used in ScholarSuite are as follows:
 - `notified`: indicates if the presence has been notified (default: false)
 - `createdAt`: creation date of the presence for internal use
 - `updatedAt`: modification date of the presence for internal use
+- `PresenceAudit`: relationship with the presence audits of the presence
 
-### 14. `DisciplinaryReport`
+### 17. `PresenceAudit`
+
+- `id`: unique identifier for the presence audit
+- `presenceId`: identifier of the presence for the audit
+- `state`: state of the presence (present, absent, etc.)
+- `date`: date and time of the presence
+- `userId`: identifier of the user responsible for recording the presence
+- `academicYearId`: identifier of the academic year of the presence
+- `timeSlotId`: identifier of the time slot of the presence
+- `groupId`: identifier of the group of the presence
+- `processed`: indicates if the presence has been processed
+- `notified`: indicates if the presence has been notified
+- `changedBy`: identifier of the user who made the change
+- `changedAt`: date and time of the change
+- `Presence`: relationship with the presence for the audit
+- `AcademicYear`: relationship with the academic year of the presence
+- `TimeSlot`: relationship with the time slot of the presence
+- `ChangedByUser`: relationship with the user who made the change
+- `User`: relationship with the user responsible for recording the presence
+
+### 18. `DisciplinaryReport`
 
 - `id`: unique identifier for the disciplinary report
 - `student`: relationship with the student concerned by the disciplinary report
@@ -187,7 +252,7 @@ The data models used in ScholarSuite are as follows:
 - `createdAt`: creation date of the disciplinary report for internal use
 - `updatedAt`: modification date of the disciplinary report for internal use
 
-### 15. `ApiKey`
+### 19. `ApiKey`
 
 - `id`: unique identifier for the API key
 - `name`: name of the API key
@@ -197,7 +262,7 @@ The data models used in ScholarSuite are as follows:
 - `enabled`: indicates if the API key is enabled (default: true)
 - `createdAt`: creation date of the API key for internal use
 - `updatedAt`: modification date of the API key for internal use
-- `user`: relationship with the user associated with the API key
+- `User`: relationship with the user associated with the API key
 
 ### Many-to-Many Relationships
 

@@ -33,11 +33,11 @@ export const POST = async (req: Request): Promise<Response> => {
       id: session.user.id,
     },
     include: {
-      userClass: {
+      UserClass: {
         include: {
-          class: {
+          Class: {
             include: {
-              students: true,
+              Students: true,
             },
           },
         },
@@ -48,9 +48,9 @@ export const POST = async (req: Request): Promise<Response> => {
   if (!userWithClasses)
     return Response.json({ error: 'User not found' }, { status: 404 });
 
-  const studentIdsUnderTutelage = userWithClasses.userClass
-    .flatMap(cu => cu.class.students)
-    .map(s => s.id);
+  const studentIdsUnderTutelage = userWithClasses.UserClass.flatMap(
+    cu => cu.Class.Students
+  ).map(s => s.id);
 
   const query = {
     where: {
@@ -71,17 +71,17 @@ export const POST = async (req: Request): Promise<Response> => {
       academicYearId: currentAcademicYear.id,
     },
     include: {
-      student: {
+      Student: {
         include: {
-          class: true,
+          Class: true,
         },
       },
-      timeSlot: true,
-      user: true,
+      TimeSlot: true,
+      User: true,
       PresenceAudit: {
         include: {
-          changedByUser: true,
-          user: true,
+          ChangedByUser: true,
+          User: true,
         },
         orderBy: {
           changedAt: 'desc',

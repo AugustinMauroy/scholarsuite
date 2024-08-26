@@ -78,7 +78,7 @@ const Page: FC = () => {
   };
 
   return (
-    <BaseLayout sectionClassName={styles.formWrapper}>
+    <BaseLayout sectionClassName={styles.formWrapper} title="Add User">
       <form onSubmit={handleSubmit}>
         <Input
           label="First Name"

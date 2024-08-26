@@ -9,7 +9,7 @@ import { useToast } from '@/hooks/useToast';
 import type { Class, SchoolLevel } from '@prisma/client';
 import type { FC } from 'react';
 
-type ClassState = Class & { schoolLevel: SchoolLevel | null };
+type ClassState = Class & { SchoolLevel: SchoolLevel | null };
 
 type TableProps = {
   classes: ClassState[];
@@ -75,7 +75,7 @@ const ClassTable: FC<TableProps> = ({ classes }) => {
           {classList.map(classItem => (
             <tr key={classItem.id}>
               <td>{classItem.name}</td>
-              <td>{classItem.schoolLevel?.name}</td>
+              <td>{classItem.SchoolLevel?.name}</td>
               <td>
                 <DialogPrimitive.Trigger asChild>
                   <Button onClick={() => setSelectedClass(classItem)}>

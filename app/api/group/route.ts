@@ -3,7 +3,8 @@ import prisma from '@/lib/prisma';
 export const GET = async (req: Request) => {
   const groups = await prisma.group.findMany({
     include: {
-      subject: true,
+      Subject: true,
+      SchoolLevel: true,
     },
   });
 
@@ -28,7 +29,7 @@ export const PUT = async (req: Request) => {
       subjectId,
     },
     include: {
-      subject: true,
+      Subject: true,
     },
   });
 
@@ -53,7 +54,7 @@ export const PATCH = async (req: Request) => {
       subjectId,
     },
     include: {
-      subject: true,
+      Subject: true,
     },
   });
 

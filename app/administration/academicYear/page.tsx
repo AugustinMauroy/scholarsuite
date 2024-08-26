@@ -3,7 +3,7 @@ import BaseLayout from '@/components/Layout/Base';
 import type { FC } from 'react';
 
 const Page: FC = () => (
-  <BaseLayout>
+  <BaseLayout title="Academic Years" description="Manage your academic years">
     <Table />
   </BaseLayout>
 );

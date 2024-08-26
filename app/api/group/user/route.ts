@@ -16,7 +16,7 @@ export const POST = async (req: Request) => {
 
   const groups = await prisma.group.findMany({
     where: {
-      userGroup: {
+      UserGroup: {
         some: {
           userId,
         },

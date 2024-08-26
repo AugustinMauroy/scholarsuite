@@ -24,13 +24,13 @@ type PageProps = {
 };
 
 type StudentWithPresence = Student & {
-  presence: Presence[];
-  class: Class | null;
+  Presence: Presence[];
+  Class: Class | null;
 };
 
 type GroupWithStudents = Group & {
   StudentGroup: {
-    student: StudentWithPresence;
+    Student: StudentWithPresence;
   }[];
 };
 
@@ -63,7 +63,7 @@ const Page: FC<PageProps> = ({ params }) => {
 
     if (!currentTimeslot) return;
 
-    return student.presence.find(
+    return student.Presence.find(
       presence => presence.timeSlotId === currentTimeslot.id
     )?.state;
   };
@@ -182,7 +182,7 @@ const Page: FC<PageProps> = ({ params }) => {
       data: [
         ...prevPatch.data.filter(data => data.studentId !== student.id),
         {
-          id: student.presence.find(
+          id: student.Presence.find(
             presence => presence.timeSlotId === currentTimeslot.id
           )?.id,
           studentId: student.id,
@@ -226,16 +226,16 @@ const Page: FC<PageProps> = ({ params }) => {
           <StudentCard
             withInfo
             from={`/group-presence/${params.id}`}
-            key={studentGroup.student.id}
+            key={studentGroup.Student.id}
             student={{
-              className: studentGroup.student.class?.name,
-              ...studentGroup.student,
+              className: studentGroup.Student.Class?.name,
+              ...studentGroup.Student,
             }}
-            image={`http://localhost:3000/api/content/student-picture/${studentGroup.student.id}`}
+            image={`http://localhost:3000/api/content/student-picture/${studentGroup.Student.id}`}
             actions={[
               {
                 kind:
-                  getPresence(studentGroup.student) === 'PRESENT'
+                  getPresence(studentGroup.Student) === 'PRESENT'
                     ? 'solid'
                     : 'outline',
                 variant: 'success',
@@ -246,11 +246,11 @@ const Page: FC<PageProps> = ({ params }) => {
                   </>
                 ),
                 onClick: () =>
-                  handleStudentClick(studentGroup.student, 'PRESENT'),
+                  handleStudentClick(studentGroup.Student, 'PRESENT'),
               },
               {
                 kind:
-                  getPresence(studentGroup.student) === 'ABSENT'
+                  getPresence(studentGroup.Student) === 'ABSENT'
                     ? 'solid'
                     : 'outline',
                 variant: 'danger',
@@ -261,11 +261,11 @@ const Page: FC<PageProps> = ({ params }) => {
                   </>
                 ),
                 onClick: () =>
-                  handleStudentClick(studentGroup.student, 'ABSENT'),
+                  handleStudentClick(studentGroup.Student, 'ABSENT'),
               },
               {
                 kind:
-                  getPresence(studentGroup.student) === 'LATE'
+                  getPresence(studentGroup.Student) === 'LATE'
                     ? 'solid'
                     : 'outline',
                 variant: 'warning',
@@ -275,7 +275,7 @@ const Page: FC<PageProps> = ({ params }) => {
                     {tShared('presenceState.late')}
                   </>
                 ),
-                onClick: () => handleStudentClick(studentGroup.student, 'LATE'),
+                onClick: () => handleStudentClick(studentGroup.Student, 'LATE'),
               },
             ]}
           />

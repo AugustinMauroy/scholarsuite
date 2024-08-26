@@ -28,7 +28,7 @@ export const POST = async (req: Request) => {
       },
     },
     include: {
-      class: true,
+      Class: true,
     },
   });
 

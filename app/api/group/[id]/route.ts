@@ -23,9 +23,9 @@ export const POST = async (
       include: {
         StudentGroup: {
           include: {
-            student: {
+            Student: {
               include: {
-                presence: true,
+                Presence: true,
               },
             },
           },
@@ -64,10 +64,10 @@ export const POST = async (
     include: {
       StudentGroup: {
         include: {
-          student: {
+          Student: {
             include: {
-              class: true,
-              presence: {
+              Class: true,
+              Presence: {
                 where: {
                   date: {
                     gte: new Date(

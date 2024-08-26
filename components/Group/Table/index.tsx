@@ -16,8 +16,8 @@ import type { Group, SchoolLevel, Subject } from '@prisma/client';
 import type { FC } from 'react';
 
 type GroupsWithRelations = Group & {
-  schoolLevel: SchoolLevel;
-  subject: Subject;
+  SchoolLevel: SchoolLevel | null;
+  Subject: Subject | null;
 };
 
 const Table: FC = () => {
@@ -184,8 +184,8 @@ const Table: FC = () => {
           {groups.map(group => (
             <tr key={group.id}>
               <td>{group.name}</td>
-              <td>{group.schoolLevel?.name}</td>
-              <td>{group.subject?.name}</td>
+              <td>{group.SchoolLevel?.name}</td>
+              <td>{group.Subject?.name}</td>
               <td>
                 <DialogPrimitive.Trigger asChild>
                   <Button
