@@ -33,8 +33,11 @@ const List: FC<ListProps> = ({ list, activeList, onTagClick, onTagRemove }) => {
       return;
     }
 
-    const result = searchList.filter(tag =>
-      tag.name.toLowerCase().includes(searchQuery.toLowerCase())
+    // search on name if name exists, otherwise search on ref
+    const result = searchList.filter(
+      tag =>
+        tag.name?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tag.ref?.toLowerCase().includes(searchQuery.toLowerCase())
     );
 
     setSearchResult(result);

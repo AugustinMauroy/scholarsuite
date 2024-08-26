@@ -1,4 +1,5 @@
 'use client';
+// @TODO: Add to adminstrate ref of group
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {
   PencilIcon,
@@ -192,7 +193,7 @@ const Table: FC = () => {
                     kind="outline"
                     onClick={() => {
                       setGroupId(group.id);
-                      setName(group.name);
+                      setName(group.name || '');
                       setSchoolLevelId(group.schoolLevelId);
                       setSubjectId(group.subjectId);
                       setIsAdding(false);

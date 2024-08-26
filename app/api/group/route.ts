@@ -24,6 +24,8 @@ export const PUT = async (req: Request) => {
 
   const groups = await prisma.group.create({
     data: {
+      // @TODO: add ref to admin ui
+      ref: name.replace(/\s/g, '-').toLowerCase(), // haky way to generate ref
       name,
       schoolLevelId,
       subjectId,

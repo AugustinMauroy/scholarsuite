@@ -115,6 +115,54 @@ export const PATCH = async (req: Request): Promise<Response> => {
           changedBy: userId,
         },
       });
+
+      // Check if the state is ABSENT
+      if (item.state === 'ABSENT') {
+        const absencePeriod = await prisma.absencePeriod.findFirst({
+          where: {
+            studentId: item.studentId,
+            lastAbsenceId: presence.id,
+          },
+        });
+
+        if (absencePeriod) {
+          // Update the last absence record
+          await prisma.absencePeriod.update({
+            where: { id: absencePeriod.id },
+            data: { lastAbsenceId: presence.id },
+          });
+        } else {
+          // Create a new absence period
+          await prisma.absencePeriod.create({
+            data: {
+              studentId: item.studentId,
+              firstAbsenceID: presence.id,
+              lastAbsenceId: presence.id,
+              academicYearId: academicYear.id,
+              status: 'PENDING',
+            },
+          });
+        }
+      } else if (
+        item.state === 'PRESENT' ||
+        item.state === 'LATE' ||
+        item.state === 'EXCUSED'
+      ) {
+        const absencePeriod = await prisma.absencePeriod.findFirst({
+          where: {
+            studentId: item.studentId,
+            nextPresenceId: presence.id,
+          },
+        });
+
+        if (absencePeriod) {
+          // Update the next presence record
+          await prisma.absencePeriod.update({
+            where: { id: absencePeriod.id },
+            data: { nextPresenceId: presence.id },
+          });
+        }
+      }
     } else {
       await prisma.presence.create({
         data: {

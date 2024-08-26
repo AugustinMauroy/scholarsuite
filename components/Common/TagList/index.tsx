@@ -15,7 +15,7 @@ const TagList: FC<TagListProps> = ({ tags, onClick, className, icon }) => (
   <div className={classNames(styles.tagList, className)}>
     {tags?.map(tag => (
       <Badge key={tag.id} onClick={() => onClick(tag)}>
-        {tag.name}
+        {tag.name || tag.ref || tag.id}
         {icon}
       </Badge>
     ))}

@@ -25,11 +25,12 @@ const NavBar: FC = async () => {
     // don't give all fields, to the client
     select: {
       id: true,
+      ref: true,
       name: true,
     },
   });
   const presenceGroups = groups.map(group => ({
-    label: group.name,
+    label: group.name || group.ref,
     href: `/group-presence/${group.id}`,
   }));
   let links = [

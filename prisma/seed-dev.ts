@@ -473,55 +473,64 @@ if (users.length) {
     ],
   });
 
-  const academicYear = getCurrentAcademicYear();
+  const generatedAcademicYearData = getCurrentAcademicYear();
   await prisma.academicYear.create({
-    data: academicYear,
+    data: generatedAcademicYearData,
   });
 
   await prisma.group.createMany({
     data: [
       {
-        name: 'Siences de base gp1',
+        ref: 'sc_base_gp1_4',
+        name: 'Siences de base gp1 4ème',
         subjectId: science.id,
         schoolLevelId: secondaire4.id,
       },
       {
-        name: 'Siences de base gp2',
+        ref: 'sc_base_4',
+        name: 'Siences de base gp2 4ème',
         subjectId: science.id,
         schoolLevelId: secondaire4.id,
       },
       {
-        name: 'Siences générales',
+        ref: 'sc_gen_4',
+        name: 'Siences générales 4ème',
         subjectId: science.id,
         schoolLevelId: secondaire4.id,
       },
       {
-        name: 'Siences de base gp1',
+        ref: 'sc_base_gp1_5',
+        name: 'Siences de base gp1 5ème',
         subjectId: science.id,
         schoolLevelId: secondaire5.id,
       },
       {
-        name: 'Siences de base gp2',
+        ref: 'sc_base_gp2_5',
+        name: 'Siences de base gp2 5ème',
         subjectId: science.id,
         schoolLevelId: secondaire5.id,
       },
       {
-        name: 'Siences générales',
+        ref: 'sc_gen_5',
+        name: 'Siences générales 5ème',
         subjectId: science.id,
         schoolLevelId: secondaire5.id,
       },
       {
-        name: 'Siences de base gp1',
+        ref: 'sc_base_gp1_6',
+        name: 'Siences de base gp1 6ème',
         subjectId: science.id,
         schoolLevelId: secondaire6.id,
       },
       {
-        name: 'Siences de base gp2',
+        ref: 'sc_base_gp2_6',
+        name: 'Siences de base gp2 6ème',
         subjectId: science.id,
         schoolLevelId: secondaire6.id,
       },
       {
-        name: 'Siences générales',
+        ref: 'sc_gen_6',
+        name: 'Siences générales 6ème',
         subjectId: science.id,
         schoolLevelId: secondaire6.id,
       },
@@ -543,8 +552,8 @@ if (users.length) {
   }
 
   // bind students 5 to gp 1 and 6 to gp 2 across all school levels
-  const gp1 = groups.filter(group => group.name.includes('gp1'));
-  const gp2 = groups.filter(group => group.name.includes('gp2'));
+  const gp1 = groups.filter(group => group.ref.includes('gp1'));
+  const gp2 = groups.filter(group => group.ref.includes('gp2'));
   const students5 = await prisma.student.findMany({
     where: {
       classId: 15,
@@ -560,17 +569,143 @@ if (users.length) {
     await prisma.studentGroup.create({
       data: {
         studentId: students5[i].id,
-        groupId: gp1[i % 3].id,
+        groupId: gp1[i % gp1.length].id,
       },
     });
   }
+
   for (let i = 0; i < students6.length; i++) {
     await prisma.studentGroup.create({
       data: {
         studentId: students6[i].id,
-        groupId: gp2[i % 3].id,
+        groupId: gp2[i % gp2.length].id,
       },
     });
+  }
+
+  const timeSlots = await prisma.timeSlot.findMany();
+  const academicYear = await prisma.academicYear.findFirst();
+
+  if (!academicYear) {
+    console.log(
+      styleText('red', '⨯') + ' Academic year not found in the database'
+    );
+    process.exit(0);
+  }
+  if (!timeSlots.length) {
+    console.log(
+      styleText('red', '⨯') + ' Time slots not found in the database'
+    );
+    process.exit(0);
+  }
+
+  // Simulate a week of data for each student
+  const daysInWeek = 7;
+  for (let day = 0; day < daysInWeek; day++) {
+    const date = new Date(now.getTime());
+    date.setDate(now.getDate() - day);
+
+    // 90% of students are present
+    // if a student is absent, make it 50% that he/she is absent for the whole day
+    for (const student of students) {
+      const isPresent = Math.random() < 0.9;
+
+      if (isPresent) {
+        // Student is present, create a presence record for each time slot
+        for (const timeSlot of timeSlots) {
+          await prisma.presence.create({
+            data: {
+              studentId: student.id,
+              state: 'PRESENT',
+              date,
+              userId: admin.id,
+              academicYearId: academicYear.id,
+              timeSlotId: timeSlot.id,
+              groupId: groups[0].id, // Arbitrary group ID
+            },
+          });
+        }
+      } else {
+        // Student is absent, create an absence record for the whole day
+        const isAbsentForWholeDay = Math.random() < 0.5;
+
+        if (isAbsentForWholeDay) {
+          if (isAbsentForWholeDay) {
+            // Student is absent for the whole day, create an absence record for each time slot
+            for (const timeSlot of timeSlots) {
+              await prisma.presence.create({
+                data: {
+                  studentId: student.id,
+                  state: 'ABSENT',
+                  date,
+                  userId: admin.id,
+                  academicYearId: academicYear.id,
+                  timeSlotId: timeSlot.id,
+                  groupId: groups[0].id, // Arbitrary group ID
+                },
+              });
+            }
+          }
+        } else {
+          // Student is absent for some time slots, create absence records for those time slots
+          for (const timeSlot of timeSlots) {
+            const isAbsent = Math.random() < 0.5;
+
+            if (isAbsent) {
+              await prisma.presence.create({
+                data: {
+                  studentId: student.id,
+                  state: 'ABSENT',
+                  date,
+                  userId: admin.id,
+                  academicYearId: academicYear.id,
+                  timeSlotId: timeSlot.id,
+                  groupId: groups[0].id, // Arbitrary group ID
+                },
+              });
+            }
+          }
+        }
+      }
+    }
+  }
+
+  // After creating presence records, you can create absencePeriod records
+  for (const student of students) {
+    const absences = await prisma.presence.findMany({
+      where: {
+        studentId: student.id,
+        state: 'ABSENT',
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+
+    let currentAbsencePeriod = null;
+    for (const absence of absences) {
+      if (
+        !currentAbsencePeriod ||
+        currentAbsencePeriod.lastAbsenceId !== absence.id - 1
+      ) {
+        // Start a new absence period
+        currentAbsencePeriod = await prisma.absencePeriod.create({
+          data: {
+            studentId: student.id,
+            firstAbsenceID: absence.id,
+            lastAbsenceId: absence.id,
+            academicYearId: academicYear.id,
+            status: 'PENDING',
+          },
+        });
+      } else {
+        // Update the existing absence period
+        await prisma.absencePeriod.update({
+          where: { id: currentAbsencePeriod.id },
+          data: { lastAbsenceId: absence.id },
+        });
+      }
+    }
   }
 
   await prisma.$disconnect();

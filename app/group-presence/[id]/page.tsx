@@ -196,7 +196,7 @@ const Page: FC<PageProps> = ({ params }) => {
 
   return (
     <BaseLayout
-      title={groupData.name}
+      title={groupData.name ?? groupData.ref}
       description={
         groupData.StudentGroup.length === 0 ? tPage('noStudents') : undefined
       }
