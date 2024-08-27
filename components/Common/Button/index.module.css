@@ -14,8 +14,7 @@
     disabled:cursor-not-allowed;
 
   svg {
-    @apply size-5
-      fill-current;
+    @apply size-5;
   }
 }
 

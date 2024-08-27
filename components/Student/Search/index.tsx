@@ -27,7 +27,6 @@ const StudentSearch: FC<StudentSearchProps> = ({ studentId, setStudentId }) => {
       if (response.ok) {
         const data = await response.json();
         if (data.error) {
-          console.error(data.error);
           setStudents([]);
 
           return;
