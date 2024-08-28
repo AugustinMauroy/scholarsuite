@@ -31,7 +31,7 @@ export const ToastProvider: FC<PropsWithChildren<ToastProps>> = ({
   const [toast, dispatch] = useState<ToastContextType>(null);
 
   useEffect(() => {
-    const timeout = setTimeout(() => dispatch(null), toast?.duration ?? 5000);
+    const timeout = setTimeout(() => dispatch(null), toast?.duration ?? 2000);
 
     return () => clearTimeout(timeout);
   }, [toast]);

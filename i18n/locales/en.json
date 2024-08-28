@@ -1,6 +1,6 @@
 {
   "shared": {
-    "presenceState": {
+    "attendanceState": {
       "present": "Present",
       "absent": "Absent",
       "late": "Late",
@@ -39,10 +39,10 @@
         "title": "Drop your profile picture here"
       }
     },
-    "groupPresence": {
+    "groupAttendance": {
       "noStudents": "No students in this group",
       "toast": {
-        "success": "Presence updated successfully"
+        "success": "Attendance updated successfully"
       }
     },
     "about": {
@@ -61,8 +61,8 @@
     },
     "layout": {
       "navbar": {
-        "presence": "Review",
-        "presenceGroup": "Presence",
+        "attendance": "Review",
+        "attendanceGroup": "Attendance",
         "admin": "Administration",
         "about": "About",
         "disciplinaryReport": "Disciplinary"

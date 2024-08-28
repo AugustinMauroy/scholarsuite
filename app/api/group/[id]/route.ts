@@ -25,7 +25,7 @@ export const POST = async (
           include: {
             Student: {
               include: {
-                Presence: true,
+                Attendance: true,
               },
             },
           },
@@ -67,7 +67,7 @@ export const POST = async (
           Student: {
             include: {
               Class: true,
-              Presence: {
+              Attendance: {
                 where: {
                   date: {
                     gte: new Date(

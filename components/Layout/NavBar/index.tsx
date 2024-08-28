@@ -29,9 +29,9 @@ const NavBar: FC = async () => {
       name: true,
     },
   });
-  const presenceGroups = groups.map(group => ({
+  const attendanceGroups = groups.map(group => ({
     label: group.name || group.ref,
-    href: `/group-presence/${group.id}`,
+    href: `/group-attendance/${group.id}`,
   }));
   let links = [
     { label: t('disciplinaryReport'), href: '/disciplinary-report' },
@@ -40,20 +40,20 @@ const NavBar: FC = async () => {
   switch (user.role) {
     case 'ADMIN':
       links.push(
-        { label: t('presence'), href: '/presence' },
+        { label: t('attendance'), href: '/attendance' },
         { label: t('admin'), href: '/administration' }
       );
       break;
     case 'MANAGER':
-      links.push({ label: t('presence'), href: '/presence' });
+      links.push({ label: t('attendance'), href: '/attendance' });
   }
 
   return (
     <ContainerNav
       logo={<Logo />}
       linkList={{
-        title: t('presenceGroup'),
-        items: presenceGroups,
+        title: t('attendanceGroup'),
+        items: attendanceGroups,
       }}
       links={links}
       bottomElements={[

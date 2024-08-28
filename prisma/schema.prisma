@@ -16,11 +16,10 @@ enum Role {
   TEACHER
 }
 
-enum PresenceState {
+enum AttendanceState {
   PRESENT
   ABSENT
   LATE
-  EXCUSED
 }
 
 enum AbsencePeriodStatus {
@@ -30,26 +29,28 @@ enum AbsencePeriodStatus {
 }
 
 model AbsencePeriod {
-  id                  Int                 @id @default(autoincrement())
-  studentId           Int
-  firstAbsenceID      Int
-  lastAbsenceId       Int
-  nextPresenceId      Int?
-  academicYearId      Int
-  status              AbsencePeriodStatus
-  justifyFromDate     DateTime?
-  justifyToDate       DateTime?
-  justifyFromTimeSlot Int?
-  justifyToTimeSlot   Int?
+  id                    Int                 @id @default(autoincrement())
+  studentId             Int
+  firstAbsenceID        Int
+  lastAbsenceId         Int
+  nextPresenceId        Int?
+  academicYearId        Int
+  status                AbsencePeriodStatus
+  justifyFromDate       DateTime?
+  justifyToDate         DateTime?
+  // @TODO: add relation to TimeSlot
+  justifyFromTimeSlotId Int?
+  justifyToTimeSlotId   Int?
+  enabled               Boolean             @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   Student      Student                @relation(fields: [studentId], references: [id])
   AcademicYear AcademicYear           @relation(fields: [academicYearId], references: [id])
-  FirstAbsence Presence               @relation(fields: [firstAbsenceID], references: [id], name: "FirstAbsence")
-  LastAbsence  Presence               @relation(fields: [lastAbsenceId], references: [id], name: "LastAbsence")
-  NextPresence Presence?              @relation(fields: [nextPresenceId], references: [id], name: "NextPresence")
+  FirstAbsence Attendance             @relation(fields: [firstAbsenceID], references: [id], name: "FirstAbsence")
+  LastAbsence  Attendance             @relation(fields: [lastAbsenceId], references: [id], name: "LastAbsence")
+  NextPresence Attendance?            @relation(fields: [nextPresenceId], references: [id], name: "NextPresence")
   Comments     AbsencePeriodComment[]
 }
 
@@ -76,10 +77,10 @@ model AcademicYear {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Presences     Presence[]
-  GradePeriods  GradePeriodAcademicYear[]
-  PresenceAudit PresenceAudit[]
-  AbsencePeriod AbsencePeriod[]
+  Attendance      Attendance[]
+  GradePeriods    GradePeriodAcademicYear[]
+  AttendanceAudit AttendanceAudit[]
+  AbsencePeriod   AbsencePeriod[]
 }
 
 model SchoolLevel {
@@ -120,13 +121,13 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Presence             Presence[]
+  Attendance           Attendance[]
   DisciplinaryReport   DisciplinaryReport[]
   UserClass            UserClass[]
   ApiKey               ApiKey[]
   UserGroup            UserGroup[]
-  PresenceAuditBy      PresenceAudit[]        @relation(name: "ChangedByUser")
-  PresenceAuditUser    PresenceAudit[]        @relation(name: "User")
+  AttendanceAuditBy    AttendanceAudit[]      @relation(name: "ChangedByUser")
+  AttendanceAuditUser  AttendanceAudit[]      @relation(name: "User")
   AbsencePeriodComment AbsencePeriodComment[]
 }
 
@@ -159,7 +160,7 @@ model Student {
   Class               Class?               @relation(fields: [classId], references: [id])
   Grades              Grade[]
   DisciplinaryReports DisciplinaryReport[]
-  Presence            Presence[]
+  Attendance          Attendance[]
   StudentGroup        StudentGroup[]
   AbsencePeriod       AbsencePeriod[]
 }
@@ -181,20 +182,29 @@ model Grade {
   GradePeriod GradePeriod @relation(fields: [gradePeriodId], references: [id])
 }
 
+model TimeSlotGroup {
+  id   Int    @id @default(autoincrement())
+  name String
+
+  TimeSlot TimeSlot[]
+}
+
 model TimeSlot {
-  id            Int     @id @default(autoincrement())
-  name          String?
-  startTime     String
-  endTime       String
-  schoolLevelId Int?
-  enabled       Boolean @default(true)
+  id              Int     @id @default(autoincrement())
+  name            String?
+  startTime       String // should be XX:XX min is 00:00 max is 23:59
+  endTime         String // should be XX:XX min is 00:00 max is 23:59
+  schoolLevelId   Int?
+  timeSlotGroupId Int
+  enabled         Boolean @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  SchoolLevel   SchoolLevel?    @relation(fields: [schoolLevelId], references: [id])
-  Presence      Presence[]
-  PresenceAudit PresenceAudit[]
+  SchoolLevel     SchoolLevel?      @relation(fields: [schoolLevelId], references: [id])
+  TimeSlotGroup   TimeSlotGroup     @relation(fields: [timeSlotGroupId], references: [id])
+  Attendance      Attendance[]
+  AttendanceAudit AttendanceAudit[]
 }
 
 model Group {
@@ -212,6 +222,7 @@ model Group {
   StudentGroup StudentGroup[]
   UserGroup    UserGroup[]
   SchoolLevel  SchoolLevel?   @relation(fields: [schoolLevelId], references: [id])
+  Attendance   Attendance[]
 }
 
 model GradePeriod {
@@ -228,37 +239,38 @@ model GradePeriod {
   AcademicYears GradePeriodAcademicYear[]
 }
 
-model Presence {
-  id             Int           @id @default(autoincrement())
+model Attendance {
+  id             Int             @id @default(autoincrement())
   studentId      Int
-  state          PresenceState
+  state          AttendanceState
   date           DateTime
   userId         Int
   academicYearId Int
   timeSlotId     Int
   groupId        Int
-  processed      Boolean       @default(false)
-  notified       Boolean       @default(false)
+  processed      Boolean         @default(false)
+  notified       Boolean         @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  User          User            @relation(fields: [userId], references: [id])
-  Student       Student         @relation(fields: [studentId], references: [id])
-  AcademicYear  AcademicYear    @relation(fields: [academicYearId], references: [id])
-  TimeSlot      TimeSlot        @relation(fields: [timeSlotId], references: [id])
-  PresenceAudit PresenceAudit[]
-  FirstAbsence  AbsencePeriod[] @relation(name: "FirstAbsence")
-  LastAbsence   AbsencePeriod[] @relation(name: "LastAbsence")
-  NextPresence  AbsencePeriod[] @relation(name: "NextPresence")
+  User            User              @relation(fields: [userId], references: [id])
+  Student         Student           @relation(fields: [studentId], references: [id])
+  AcademicYear    AcademicYear      @relation(fields: [academicYearId], references: [id])
+  TimeSlot        TimeSlot          @relation(fields: [timeSlotId], references: [id])
+  Group           Group             @relation(fields: [groupId], references: [id])
+  AttendanceAudit AttendanceAudit[]
+  FirstAbsence    AbsencePeriod[]   @relation(name: "FirstAbsence")
+  LastAbsence     AbsencePeriod[]   @relation(name: "LastAbsence")
+  NextPresence    AbsencePeriod[]   @relation(name: "NextPresence")
 
   @@index([studentId, date])
 }
 
-model PresenceAudit {
-  id             Int           @id @default(autoincrement())
-  presenceId     Int
-  state          PresenceState
+model AttendanceAudit {
+  id             Int             @id @default(autoincrement())
+  attendanceId   Int
+  state          AttendanceState
   date           DateTime
   userId         Int
   academicYearId Int
@@ -267,9 +279,9 @@ model PresenceAudit {
   processed      Boolean
   notified       Boolean
   changedBy      Int
-  changedAt      DateTime      @default(now())
+  changedAt      DateTime        @default(now())
 
-  Presence      Presence     @relation(fields: [presenceId], references: [id])
+  Attendance    Attendance   @relation(fields: [attendanceId], references: [id])
   AcademicYear  AcademicYear @relation(fields: [academicYearId], references: [id])
   TimeSlot      TimeSlot     @relation(fields: [timeSlotId], references: [id])
   ChangedByUser User         @relation(name: "ChangedByUser", fields: [changedBy], references: [id])

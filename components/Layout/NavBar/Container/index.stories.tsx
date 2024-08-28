@@ -14,7 +14,7 @@ export const Default: Story = {
   },
   args: {
     linkList: {
-      title: 'Presence',
+      title: 'Attendance',
       items: [
         { href: '/group/1', label: 'Group 1' },
         { href: '/1-2', label: 'Group 2' },

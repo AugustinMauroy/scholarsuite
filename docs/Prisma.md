@@ -13,12 +13,12 @@ The data models used in ScholarSuite are as follows:
 - `MANAGER`: manager role
 - `TEACHER`: teacher role
 
-### 2. `PresenceState`
+### 2. `AttendanceState`
 
-- `PRESENT`: present presence state
-- `ABSENT`: absent presence state
-- `LATE`: late presence state
-- `EXCUSED`: excused presence state
+- `PRESENT`: present attendance state
+- `ABSENT`: absent attendance state
+- `LATE`: late attendance state
+- `EXCUSED`: excused attendance state
 
 ### 3. `AbsencePeriodStatus`
 
@@ -30,19 +30,23 @@ The data models used in ScholarSuite are as follows:
 
 - `id`: unique identifier for the absence period
 - `studentId`: identifier of the student for the absence period
-- `firstAbsence`: start date of the absence period
-- `lastAbsence`: end date of the absence period
-- `nextPresence`: optional date of the next presence
+- `firstAbsenceID`: identifier of the first absence in the period
+- `lastAbsenceId`: identifier of the last absence in the period
+- `nextPresenceId`: optional identifier of the next presence
 - `academicYearId`: identifier of the academic year for the absence period
 - `status`: status of the absence period
 - `justifyFromDate`: optional start date for justification
 - `justifyToDate`: optional end date for justification
 - `justifyFromTimeSlot`: optional identifier of the start time slot for justification
 - `justifyToTimeSlot`: optional identifier of the end time slot for justification
+- `enabled`: indicates if the absence period is enabled (default: true)
 - `createdAt`: creation date of the absence period for internal use
 - `updatedAt`: modification date of the absence period for internal use
 - `Student`: relationship with the student of the absence period
 - `AcademicYear`: relationship with the academic year of the absence period
+- `FirstAbsence`: relationship with the first absence in the period
+- `LastAbsence`: relationship with the last absence in the period
+- `NextPresence`: optional relationship with the next presence
 - `Comments`: relationship with the comments of the absence period
 
 ### 5. `AbsencePeriodComment`
@@ -65,9 +69,9 @@ The data models used in ScholarSuite are as follows:
 - `archives`: indicates if the academic year is archived (default: false)
 - `createdAt`: creation date of the academic year for internal use
 - `updatedAt`: modification date of the academic year for internal use
-- `Presences`: relationship with the presences of the academic year
+- `Attendance`: relationship with the attendance records of the academic year
 - `GradePeriods`: relationship with the grading periods of the academic year
-- `PresenceAudit`: relationship with the presence audits of the academic year
+- `AttendanceAudit`: relationship with the attendance audits of the academic year
 - `AbsencePeriod`: relationship with the absence periods of the academic year
 
 ### 7. `SchoolLevel`
@@ -99,28 +103,28 @@ The data models used in ScholarSuite are as follows:
 - `lastName`: last name of the user
 - `email`: optional email address of the user
 - `password`: hashed password of the user
-- `role`: role of the user (ADMIN, MANAGER, or TEACHER)
 - `enabled`: state of the user (enabled or disabled) (default: true)
+- `role`: role of the user (ADMIN, MANAGER, or TEACHER)
 - `createdAt`: creation date of the user for internal use
 - `updatedAt`: modification date of the user for internal use
-- `Presence`: relationship with the presences of the user
+- `Attendance`: relationship with the attendance records of the user
 - `DisciplinaryReport`: relationship with the disciplinary reports of the user
 - `UserClass`: relationship with the classes of the user (teacher or administrator)
 - `ApiKey`: relationship with the API keys of the user
 - `UserGroup`: relationship with the groups of the user
-- `PresenceAuditBy`: relationship with the presence audits made by the user
-- `PresenceAuditUser`: relationship with the presence audits for the user
+- `AttendanceAuditBy`: relationship with the attendance audits made by the user
+- `AttendanceAuditUser`: relationship with the attendance audits for the user
 - `AbsencePeriodComment`: relationship with the comments of the absence periods of the user
 
 ### 10. `Class`
 
 - `id`: unique identifier for the class
 - `name`: name of the class
-- `schoolLevel`: relationship with the school level of the class
 - `schoolLevelId`: identifier of the school level of the class
 - `enabled`: indicates if the class is enabled (default: true)
 - `createdAt`: creation date of the class for internal use
 - `updatedAt`: modification date of the class for internal use
+- `SchoolLevel`: relationship with the school level of the class
 - `Students`: relationship with the students of the class
 - `UserClasss`: relationship with the users (teachers or administrators) of the class
 
@@ -130,15 +134,15 @@ The data models used in ScholarSuite are as follows:
 - `firstName`: first name of the student
 - `lastName`: last name of the student
 - `dateOfBirth`: date of birth of the student
-- `class`: relationship with the class of the student
 - `classId`: identifier of the class of the student
 - `contactEmail`: contact email address of the student
 - `enabled`: state of the student (enabled or disabled) (default: true)
 - `createdAt`: creation date of the student for internal use
 - `updatedAt`: modification date of the student for internal use
+- `Class`: relationship with the class of the student
 - `Grades`: relationship with the grades of the student
 - `DisciplinaryReports`: relationship with the disciplinary reports of the student
-- `Presence`: relationship with the presences of the student
+- `Attendance`: relationship with the attendance records of the student
 - `StudentGroup`: relationship with the groups of the student
 - `AbsencePeriod`: relationship with the absence periods of the student
 
@@ -146,17 +150,16 @@ The data models used in ScholarSuite are as follows:
 
 - `id`: unique identifier for the grade
 - `value`: value of the grade
-- `student`: relationship with the student of the grade
 - `studentId`: identifier of the student of the grade
-- `subject`: relationship with the subject of the grade
 - `subjectId`: identifier of the subject of the grade
-- `gradePeriod`: relationship with the grading period of the grade
 - `gradePeriodId`: identifier of the grading period of the grade
-- `group`: relationship with the group of the grade
 - `groupId`: identifier of the group of the grade
 - `enabled`: indicates if the grade is enabled (default: true)
 - `createdAt`: creation date of the grade for internal use
 - `updatedAt`: modification date of the grade for internal use
+- `Student`: relationship with the student of the grade
+- `Subject`: relationship with the subject of the grade
+- `GradePeriod`: relationship with the grading period of the grade
 
 ### 13. `TimeSlot`
 
@@ -164,28 +167,29 @@ The data models used in ScholarSuite are as follows:
 - `name`: optional name of the time slot
 - `startTime`: start time of the time slot (in string format)
 - `endTime`: end time of the time slot (in string format)
-- `schoolLevel`: optional relationship with the school level of the time slot
 - `schoolLevelId`: optional identifier of the school level of the time slot
 - `enabled`: indicates if the time slot is enabled (default: true)
 - `createdAt`: creation date of the time slot for internal use
 - `updatedAt`: modification date of the time slot for internal use
-- `Presence`: relationship with the presences of the time slot
-- `PresenceAudit`: relationship with the presence audits of the time slot
+- `SchoolLevel`: optional relationship with the school level of the time slot
+- `Attendance`: relationship with the attendance records of the time slot
+- `AttendanceAudit`: relationship with the attendance audits of the time slot
 
 ### 14. `Group`
 
 - `id`: unique identifier for the group
 - `ref`: reference of the group
 - `name`: optional name of the group
-- `subject`: relationship with the subject of the group
 - `subjectId`: identifier of the subject of the group
-- `schoolLevel`: optional relationship with the school level of the group
 - `schoolLevelId`: optional identifier of the school level of the group
 - `enabled`: indicates if the group is enabled (default: true)
 - `createdAt`: creation date of the group for internal use
 - `updatedAt`: modification date of the group for internal use
+- `Subject`: relationship with the subject of the group
 - `StudentGroup`: relationship with the students of the group
 - `UserGroup`: relationship with the users of the group
+- `SchoolLevel`: optional relationship with the school level of the group
+- `Attendance`: relationship with the attendance records of the group
 
 ### 15. `GradePeriod`
 
@@ -199,58 +203,60 @@ The data models used in ScholarSuite are as follows:
 - `Grades`: relationship with the grades of the grading period
 - `AcademicYears`: relationship with the academic years associated with the grading period
 
-### 16. `Presence`
+### 16. `Attendance`
 
-- `id`: unique identifier for the presence
-- `student`: relationship with the student of the presence
-- `studentId`: identifier of the student of the presence
-- `state`: state of the presence (present, absent, etc.)
-- `date`: date and time of the presence
-- `user`: relationship with the user responsible for recording the presence
-- `userId`: identifier of the user responsible for recording the presence
-- `academicYear`: relationship with the academic year of the presence
-- `academicYearId`: identifier of the academic year of the presence
-- `timeSlot`: relationship with the time slot of the presence
-- `timeSlotId`: identifier of the time slot of the presence
-- `group`: relationship with the group of the presence
-- `groupId`: identifier of the group of the presence
-- `processed`: indicates if the presence has been processed (default: false)
-- `notified`: indicates if the presence has been notified (default: false)
-- `createdAt`: creation date of the presence for internal use
-- `updatedAt`: modification date of the presence for internal use
-- `PresenceAudit`: relationship with the presence audits of the presence
+- `id`: unique identifier for the attendance record
+- `studentId`: identifier of the student of the attendance record
+- `state`: state of the attendance record (present, absent, etc.)
+- `date`: date and time of the attendance record
+- `userId`: identifier of the user responsible for recording the attendance
+- `academicYearId`: identifier of the academic year of the attendance record
+- `timeSlotId`: identifier of the time slot of the attendance record
+- `groupId`: identifier of the group of the attendance record
+- `processed`: indicates if the attendance record has been processed (default: false)
+- `notified`: indicates if the attendance record has been notified (default: false)
+- `createdAt`: creation date of the attendance record for internal use
+- `updatedAt`: modification date of the attendance record for internal use
+- `User`: relationship with the user responsible for recording the attendance
+- `Student`: relationship with the student of the attendance record
+- `AcademicYear`: relationship with the academic year of the attendance record
+- `TimeSlot`: relationship with the time slot of the attendance record
+- `Group`: relationship with the group of the attendance record
+- `AttendanceAudit`: relationship with the attendance audits of the attendance record
+- `FirstAbsence`: relationship with the first absence in the period
+- `LastAbsence`: relationship with the last absence in the period
+- `NextPresence`: optional relationship with the next presence
 
-### 17. `PresenceAudit`
+### 17. `AttendanceAudit`
 
-- `id`: unique identifier for the presence audit
-- `presenceId`: identifier of the presence for the audit
-- `state`: state of the presence (present, absent, etc.)
-- `date`: date and time of the presence
-- `userId`: identifier of the user responsible for recording the presence
-- `academicYearId`: identifier of the academic year of the presence
-- `timeSlotId`: identifier of the time slot of the presence
-- `groupId`: identifier of the group of the presence
-- `processed`: indicates if the presence has been processed
-- `notified`: indicates if the presence has been notified
+- `id`: unique identifier for the attendance audit
+- `attendanceId`: identifier of the attendance record for the audit
+- `state`: state of the attendance record (present, absent, etc.)
+- `date`: date and time of the attendance record
+- `userId`: identifier of the user responsible for recording the attendance
+- `academicYearId`: identifier of the academic year of the attendance record
+- `timeSlotId`: identifier of the time slot of the attendance record
+- `processed`: indicates if the attendance record has been processed
+- `notified`: indicates if the attendance record has been notified
 - `changedBy`: identifier of the user who made the change
 - `changedAt`: date and time of the change
-- `Presence`: relationship with the presence for the audit
-- `AcademicYear`: relationship with the academic year of the presence
-- `TimeSlot`: relationship with the time slot of the presence
+- `Attendance`: relationship with the attendance record for the audit
+- `AcademicYear`: relationship with the academic year of the attendance record
+- `TimeSlot`: relationship with the time slot of the attendance record
 - `ChangedByUser`: relationship with the user who made the change
-- `User`: relationship with the user responsible for recording the presence
+- `User`: relationship with the user responsible for recording the attendance
 
 ### 18. `DisciplinaryReport`
 
 - `id`: unique identifier for the disciplinary report
-- `student`: relationship with the student concerned by the disciplinary report
 - `studentId`: identifier of the student concerned by the disciplinary report
 - `createdById`: identifier of the user who created the disciplinary report
-- `createdBy`: relationship with the user who created the disciplinary report
 - `date`: date of the disciplinary report
 - `description`: description of the disciplinary report
 - `createdAt`: creation date of the disciplinary report for internal use
 - `updatedAt`: modification date of the disciplinary report for internal use
+- `CreatedBy`: relationship with the user who created the disciplinary report
+- `Student`: relationship with the student concerned by the disciplinary report
 
 ### 19. `ApiKey`
 

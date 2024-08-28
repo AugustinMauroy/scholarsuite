@@ -83,12 +83,13 @@ const StudentCard: FC<StudentCardProps> = ({
             )}
           </div>
         </div>
-        <div className={styles.actions}>
-          {actions &&
-            actions.map((action, i) => (
+        {actions && (
+          <div className={styles.actions}>
+            {actions.map((action, i) => (
               <Button key={i} className={styles.action} {...action} />
             ))}
-        </div>
+          </div>
+        )}
       </div>
       <DropDownMenu>
         <DropdownMenuPrimitive.Item asChild>

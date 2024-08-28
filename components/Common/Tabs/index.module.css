@@ -18,6 +18,8 @@
         text-sm
         font-semibold
         text-gray-800
+        transition-colors
+        duration-200
         dark:text-gray-200;
 
       .tabSecondaryLabel {
@@ -27,14 +29,26 @@
       }
 
       &[data-state='active'] {
-        @apply border-b-teal-600
-          text-teal-600
-          dark:border-b-teal-400
-          dark:text-teal-400;
+        @apply border-b-violet-600
+          text-violet-600
+          dark:border-b-violet-400
+          dark:text-violet-400;
 
         .tabSecondaryLabel {
-          @apply text-teal-800
-          dark:text-teal-600;
+          @apply text-violet-800
+          dark:text-violet-600;
+        }
+      }
+
+      &:not([data-state='active']):hover {
+        @apply border-b-gray-400
+          text-gray-900
+          dark:border-b-gray-600
+          dark:text-gray-100;
+
+        .tabSecondaryLabel {
+          @apply text-gray-700
+          dark:text-gray-500;
         }
       }
     }

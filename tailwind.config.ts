@@ -1,9 +1,5 @@
 import type { Config } from 'tailwindcss';
 
-if (process.env.CUSTOM_COLOR && typeof process.env.CUSTOM_COLOR !== 'string') {
-  throw new Error('CUSTOM_COLOR must be a string');
-}
-
 export default {
   content: ['./**/*.tsx'],
   theme: {

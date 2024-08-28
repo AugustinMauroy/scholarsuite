@@ -1,23 +1,28 @@
 import classNames from 'classnames';
+import { forwardRef } from 'react';
 import Label from '@/components/Common/Label';
 import styles from './index.module.css';
-import type { FC, InputHTMLAttributes } from 'react';
+import type { FC, InputHTMLAttributes, ReactNode, Ref } from 'react';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
-  label?: string;
+  label?: ReactNode;
   inline?: boolean;
 };
 
-const Input: FC<InputProps> = ({ label, inline, type, ...inputProps }) => (
-  <div
-    className={classNames(styles.inputWrapper, {
-      [styles.inline]: inline,
-      [styles.checkbox]: type === 'checkbox',
-    })}
-  >
-    {label && <Label>{label}</Label>}
-    <input className={styles.input} type={type} {...inputProps} />
-  </div>
+const Input = forwardRef<HTMLInputElement, InputProps>(
+  ({ label, inline, type, ...inputProps }, ref) => (
+    <div
+      className={classNames(styles.inputWrapper, {
+        [styles.inline]: inline,
+        [styles.checkbox]: type === 'checkbox',
+      })}
+    >
+      {label && <Label>{label}</Label>}
+      <input className={styles.input} type={type} ref={ref} {...inputProps} />
+    </div>
+  )
 );
+
+Input.displayName = 'Input';
 
 export default Input;

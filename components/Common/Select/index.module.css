@@ -35,12 +35,16 @@
       focus:border-gray-500
       focus:ring-1
       focus:ring-gray-500
+      data-[highlighted]:bg-violet-500
+      data-[highlighted]:text-white
       data-[placeholder]:text-gray-800
+      data-[highlighted]:outline-none
       dark:border-gray-800
       dark:bg-gray-950
       dark:text-white
       dark:focus:border-gray-600
       dark:focus:ring-gray-600
+      dark:data-[highlighted]:bg-violet-600
       dark:data-[placeholder]:text-gray-200;
   }
 
@@ -125,11 +129,11 @@
 
   .text {
     @apply text-gray-900
-      data-[highlighted]:bg-gray-100
+      data-[highlighted]:bg-teal-500
       data-[disabled]:text-gray-600
       data-[highlighted]:text-gray-900
       dark:text-white
-      dark:data-[highlighted]:bg-gray-900
+      dark:data-[highlighted]:bg-teal-600
       dark:data-[disabled]:text-gray-700;
   }
 

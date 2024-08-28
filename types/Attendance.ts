@@ -1,10 +1,10 @@
-import type { PresenceState } from '@prisma/client';
+import type { AttendanceState } from '@prisma/client';
 
 export type PatchBody = {
   data: {
     id?: number;
     studentId: number;
-    state: PresenceState;
+    state: AttendanceState;
   }[];
   timeSlotId: number;
   userId: number;

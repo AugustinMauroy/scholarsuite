@@ -1,5 +1,5 @@
+import Component from '@/components/Attendance/AbsencePeriodsList';
 import BaseLayout from '@/components/Layout/Base/index.tsx';
-import Component from '@/components/Presence/AbsencePeriodsList/index.tsx';
 import type { FC } from 'react';
 
 const AbsencePeriodPage: FC = () => (

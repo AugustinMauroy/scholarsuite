@@ -9,6 +9,16 @@
     dark:bg-gray-900
     dark:shadow-lg;
 
+  button {
+    @apply focus:outline-none
+      focus:ring-2
+      focus:ring-violet-500
+      focus:ring-offset-2
+      focus:ring-offset-white
+      dark:focus:ring-violet-600
+      dark:focus:ring-offset-gray-900;
+  }
+
   .header {
     @apply flex
       items-center
@@ -68,14 +78,14 @@
 
       &.today {
         @apply font-bold
-          text-teal-700
-          dark:text-teal-300;
+          text-violet-700
+          dark:text-violet-300;
       }
 
       &.selected {
-        @apply bg-teal-500
+        @apply bg-violet-500
           text-white
-          dark:bg-teal-300
+          dark:bg-violet-300
           dark:text-gray-900;
       }
     }

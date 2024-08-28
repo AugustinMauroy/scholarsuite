@@ -1,7 +1,10 @@
+import { AbsencePeriodStatus } from '@prisma/client';
 import prisma from '@/lib/prisma';
 
 export const POST = async (req: Request): Promise<Response> => {
-  const { groupId } = await req.json().catch(() => ({}));
+  const { groupId, selectedStatus } = await req.json().catch(() => ({}));
+
+  const status = selectedStatus ?? AbsencePeriodStatus.PENDING;
 
   if (!groupId)
     Response.json({ error: 'Group ID is required' }, { status: 400 });
@@ -23,6 +26,7 @@ export const POST = async (req: Request): Promise<Response> => {
 
   const absencePeriods = await prisma.absencePeriod.findMany({
     where: {
+      status: status,
       studentId: {
         in: studentIds,
       },

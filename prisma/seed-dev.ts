@@ -422,6 +422,18 @@ if (users.length) {
     });
   }
 
+  /* Create timeslot group */
+  await prisma.timeSlotGroup.createMany({
+    data: [
+      {
+        name: 'Matin',
+      },
+      {
+        name: 'Après-midi',
+      },
+    ],
+  });
+
   /* Create the Create schedule (timeslot) */
   await prisma.timeSlot.createMany({
     data: [
@@ -429,46 +441,55 @@ if (users.length) {
         name: '08:25 - 09:15',
         startTime: '08:25',
         endTime: '09:15',
+        timeSlotGroupId: 1,
       },
       {
         name: '09:15 - 10:05',
         startTime: '09:15',
         endTime: '10:05',
+        timeSlotGroupId: 1,
       },
       {
         name: '10:05 - 10:55',
         startTime: '10:05',
         endTime: '10:55',
+        timeSlotGroupId: 1,
       },
       {
         name: '10:55 - 11:10',
         startTime: '11:10',
         endTime: '12:00',
+        timeSlotGroupId: 1,
       },
       {
         name: '12:00 - 12:50',
         startTime: '12:00',
         endTime: '12:50',
+        timeSlotGroupId: 2,
       },
       {
         name: '12:50 - 13:40',
         startTime: '12:50',
         endTime: '13:40',
+        timeSlotGroupId: 2,
       },
       {
         name: '13:40 - 14:30',
         startTime: '13:40',
         endTime: '14:30',
+        timeSlotGroupId: 2,
       },
       {
         name: '14:30 - 15:20',
         startTime: '14:30',
         endTime: '15:20',
+        timeSlotGroupId: 2,
       },
       {
         name: '15:20 - 16:10',
         startTime: '15:20',
         endTime: '16:10',
+        timeSlotGroupId: 2,
       },
     ],
   });
@@ -597,115 +618,6 @@ if (users.length) {
       styleText('red', '⨯') + ' Time slots not found in the database'
     );
     process.exit(0);
-  }
-
-  // Simulate a week of data for each student
-  const daysInWeek = 7;
-  for (let day = 0; day < daysInWeek; day++) {
-    const date = new Date(now.getTime());
-    date.setDate(now.getDate() - day);
-
-    // 90% of students are present
-    // if a student is absent, make it 50% that he/she is absent for the whole day
-    for (const student of students) {
-      const isPresent = Math.random() < 0.9;
-
-      if (isPresent) {
-        // Student is present, create a presence record for each time slot
-        for (const timeSlot of timeSlots) {
-          await prisma.presence.create({
-            data: {
-              studentId: student.id,
-              state: 'PRESENT',
-              date,
-              userId: admin.id,
-              academicYearId: academicYear.id,
-              timeSlotId: timeSlot.id,
-              groupId: groups[0].id, // Arbitrary group ID
-            },
-          });
-        }
-      } else {
-        // Student is absent, create an absence record for the whole day
-        const isAbsentForWholeDay = Math.random() < 0.5;
-
-        if (isAbsentForWholeDay) {
-          if (isAbsentForWholeDay) {
-            // Student is absent for the whole day, create an absence record for each time slot
-            for (const timeSlot of timeSlots) {
-              await prisma.presence.create({
-                data: {
-                  studentId: student.id,
-                  state: 'ABSENT',
-                  date,
-                  userId: admin.id,
-                  academicYearId: academicYear.id,
-                  timeSlotId: timeSlot.id,
-                  groupId: groups[0].id, // Arbitrary group ID
-                },
-              });
-            }
-          }
-        } else {
-          // Student is absent for some time slots, create absence records for those time slots
-          for (const timeSlot of timeSlots) {
-            const isAbsent = Math.random() < 0.5;
-
-            if (isAbsent) {
-              await prisma.presence.create({
-                data: {
-                  studentId: student.id,
-                  state: 'ABSENT',
-                  date,
-                  userId: admin.id,
-                  academicYearId: academicYear.id,
-                  timeSlotId: timeSlot.id,
-                  groupId: groups[0].id, // Arbitrary group ID
-                },
-              });
-            }
-          }
-        }
-      }
-    }
-  }
-
-  // After creating presence records, you can create absencePeriod records
-  for (const student of students) {
-    const absences = await prisma.presence.findMany({
-      where: {
-        studentId: student.id,
-        state: 'ABSENT',
-      },
-      orderBy: {
-        date: 'asc',
-      },
-    });
-
-    let currentAbsencePeriod = null;
-    for (const absence of absences) {
-      if (
-        !currentAbsencePeriod ||
-        currentAbsencePeriod.lastAbsenceId !== absence.id - 1
-      ) {
-        // Start a new absence period
-        currentAbsencePeriod = await prisma.absencePeriod.create({
-          data: {
-            studentId: student.id,
-            firstAbsenceID: absence.id,
-            lastAbsenceId: absence.id,
-            academicYearId: academicYear.id,
-            status: 'PENDING',
-          },
-        });
-      } else {
-        // Update the existing absence period
-        await prisma.absencePeriod.update({
-          where: { id: currentAbsencePeriod.id },
-          data: { lastAbsenceId: absence.id },
-        });
-      }
-    }
   }
 
   await prisma.$disconnect();

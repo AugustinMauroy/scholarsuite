@@ -41,6 +41,8 @@ export const PUT = async (req: Request): Promise<Response> => {
 
   const timeSlot = await prisma.timeSlot.create({
     data: {
+      // @TOD: implement timeSlotGroupId
+      timeSlotGroupId: 1,
       name,
       startTime,
       endTime,

@@ -32,7 +32,7 @@ const Page: FC<PageProps> = async ({ params }) => {
   });
   const numbOfAbsent =
     currentAcademicYear &&
-    (await prisma.presence.count({
+    (await prisma.attendance.count({
       where: {
         studentId: Number(params.id),
         state: 'ABSENT',
@@ -41,7 +41,7 @@ const Page: FC<PageProps> = async ({ params }) => {
     }));
   const numbOfLate =
     currentAcademicYear &&
-    (await prisma.presence.count({
+    (await prisma.attendance.count({
       where: {
         studentId: Number(params.id),
         state: 'LATE',

@@ -8,13 +8,13 @@ import StudentCard from '@/components/Student/StudentCard';
 import Selector from '@/components/TimeSlot/Selector';
 import { useToast } from '@/hooks/useToast';
 import styles from './page.module.css';
-import type { PatchBody } from '@/types/presence';
+import type { PatchBody } from '@/types/Attendance';
 import type {
   Student,
   Group,
   TimeSlot,
-  Presence,
-  PresenceState,
+  Attendance,
+  AttendanceState,
   Class,
 } from '@prisma/client';
 import type { FC } from 'react';
@@ -23,19 +23,19 @@ type PageProps = {
   params: { id: string };
 };
 
-type StudentWithPresence = Student & {
-  Presence: Presence[];
+type StudentWithAttendance = Student & {
+  Attendance: Attendance[];
   Class: Class | null;
 };
 
 type GroupWithStudents = Group & {
   StudentGroup: {
-    Student: StudentWithPresence;
+    Student: StudentWithAttendance;
   }[];
 };
 
 const Page: FC<PageProps> = ({ params }) => {
-  const tPage = useTranslations('app.groupPresence');
+  const tPage = useTranslations('app.groupAttendance');
   const tShared = useTranslations('shared');
   const session = useSession();
   const toast = useToast();
@@ -51,20 +51,20 @@ const Page: FC<PageProps> = ({ params }) => {
     date: currentDate,
   });
 
-  const getPresence = (
-    student: StudentWithPresence
-  ): PresenceState | undefined => {
-    // check patch data first then check student presence
-    const presence = patch.data.find(data => data.studentId === student.id);
+  const getAttendance = (
+    student: StudentWithAttendance
+  ): AttendanceState | undefined => {
+    // check patch data first then check student attendance
+    const attendance = patch.data.find(data => data.studentId === student.id);
 
-    if (presence) {
-      return presence.state;
+    if (attendance) {
+      return attendance.state;
     }
 
     if (!currentTimeslot) return;
 
-    return student.Presence.find(
-      presence => presence.timeSlotId === currentTimeslot.id
+    return student.Attendance.find(
+      attendance => attendance.timeSlotId === currentTimeslot.id
     )?.state;
   };
 
@@ -134,7 +134,7 @@ const Page: FC<PageProps> = ({ params }) => {
       return;
 
     const timeout = setTimeout(() => {
-      fetch('/api/presence', {
+      fetch('/api/attendance', {
         body: JSON.stringify(patch),
         method: 'PATCH',
       })
@@ -152,7 +152,7 @@ const Page: FC<PageProps> = ({ params }) => {
             message: tPage('toast.success'),
           });
         });
-    }, 500);
+    }, 150);
 
     return () => clearTimeout(timeout);
   }, [patch]);
@@ -172,8 +172,8 @@ const Page: FC<PageProps> = ({ params }) => {
   };
 
   const handleStudentClick = (
-    student: StudentWithPresence,
-    state: PresenceState = 'PRESENT'
+    student: StudentWithAttendance,
+    state: AttendanceState = 'PRESENT'
   ) => {
     if (!currentTimeslot) return;
 
@@ -182,8 +182,8 @@ const Page: FC<PageProps> = ({ params }) => {
       data: [
         ...prevPatch.data.filter(data => data.studentId !== student.id),
         {
-          id: student.Presence.find(
-            presence => presence.timeSlotId === currentTimeslot.id
+          id: student.Attendance.find(
+            attendance => attendance.timeSlotId === currentTimeslot.id
           )?.id,
           studentId: student.id,
           state,
@@ -225,7 +225,7 @@ const Page: FC<PageProps> = ({ params }) => {
         groupData.StudentGroup.map(studentGroup => (
           <StudentCard
             withInfo
-            from={`/group-presence/${params.id}`}
+            from={`/group-attendance/${params.id}`}
             key={studentGroup.Student.id}
             student={{
               className: studentGroup.Student.Class?.name,
@@ -235,14 +235,14 @@ const Page: FC<PageProps> = ({ params }) => {
             actions={[
               {
                 kind:
-                  getPresence(studentGroup.Student) === 'PRESENT'
+                  getAttendance(studentGroup.Student) === 'PRESENT'
                     ? 'solid'
                     : 'outline',
                 variant: 'success',
                 children: (
                   <>
                     <ThumbsUpIcon />
-                    {tShared('presenceState.present')}
+                    {tShared('attendanceState.present')}
                   </>
                 ),
                 onClick: () =>
@@ -250,14 +250,14 @@ const Page: FC<PageProps> = ({ params }) => {
               },
               {
                 kind:
-                  getPresence(studentGroup.Student) === 'ABSENT'
+                  getAttendance(studentGroup.Student) === 'ABSENT'
                     ? 'solid'
                     : 'outline',
                 variant: 'danger',
                 children: (
                   <>
                     <UserXIcon />
-                    {tShared('presenceState.absent')}
+                    {tShared('attendanceState.absent')}
                   </>
                 ),
                 onClick: () =>
@@ -265,14 +265,14 @@ const Page: FC<PageProps> = ({ params }) => {
               },
               {
                 kind:
-                  getPresence(studentGroup.Student) === 'LATE'
+                  getAttendance(studentGroup.Student) === 'LATE'
                     ? 'solid'
                     : 'outline',
                 variant: 'warning',
                 children: (
                   <>
                     <HourglassIcon />
-                    {tShared('presenceState.late')}
+                    {tShared('attendanceState.late')}
                   </>
                 ),
                 onClick: () => handleStudentClick(studentGroup.Student, 'LATE'),
