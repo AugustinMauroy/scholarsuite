@@ -99,61 +99,64 @@ export const PATCH = async (req: Request): Promise<Response> => {
       });
 
       /**
-       * pour trouver la previos présence c'est rechercher la présence pour l'étudiant
+       * Pour trouver la précédente présence, c'est rechercher la présence pour l'étudiant
        * de la même année académique dont la date est strictement inférieure à la date de la présence
-       * (comparaison y coupris date et heure)
+       * (comparaison y compris date et heure)
        */
 
       /**
-       * pour trouver la prochaine présence c'est rechercher la présence pour l'étudiant
+       * Pour trouver la prochaine présence, c'est rechercher la présence pour l'étudiant
        * de la même année académique dont la date minimum qui est strictement supérieure à la date de la présence
        */
 
       if (item.state === 'ABSENT') {
         /**
-         * - if no past Absenceperiode neded to create => P +A || P -P +A P || +A P
+         * - if no past Absenceperiode needed to create => P +A || P -P +A P || +A P
          *   previous = null && next = null
          *   previous = P && next = null
          *   previous = null && next = P
          *   Action:
-         *    - Check if period already exist => startAbsencePeriod > presence.date && presence.date < startAbsencePeriod
-         *    - if exist update it and log the change
+         *    - Check if period already exists => startAbsencePeriod > presence.date && presence.date < startAbsencePeriod
+         *    - if exists update it and log the change
          *    - if not create it
          * - if to extend by begin => P +A A
          *   previous = P && next = A && current != A
-         *    Action:
-         *    - Check if period already exist => preiodeAbsence.firstAttendance.date == nextAbsencePeriod.nextAttendance.date
+         *   Action:
+         *    - Check if period already exists => preiodeAbsence.firstAttendance.date == nextAbsencePeriod.nextAttendance.date
          *    - if not found create it and log error
          *    - if found update
-         * - if to exten by the end => P A + A
+         * - if to extend by the end => P A + A
          *   previous = A && next = A && current != A
          *   Action:
-         *   - Check if period already exist => preiodeAbsence.lastAttendance.date == nextAbsencePeriod.firstAttendance.date
-         *   - if not found create it and log error
-         *   - if found update
-         * - If need need to merge with the next Absenceperiode => A -P +A A
-         *    previous = A && next = A && current = A
-         *    Action:
-         *    - check if presious period exist => preiodeAbsence.lastAttendance.date == nextAbsencePeriod.firstAttendance.date
-         *    - check if next period exist => preiodeAbsence.firstAttendance.date == nextAbsencePeriod.lastAttendance.date
+         *    - Check if period already exists => preiodeAbsence.lastAttendance.date == nextAbsencePeriod.firstAttendance.date
+         *    - if not found create it and log error
+         *    - if found update
+         * - If need to merge with the next Absenceperiode => A -P +A A
+         *   previous = A && next = A && current = A
+         *   Action:
+         *    - check if previous period exists => preiodeAbsence.lastAttendance.date == nextAbsencePeriod.firstAttendance.date
+         *    - check if next period exists => preiodeAbsence.firstAttendance.date == nextAbsencePeriod.lastAttendance.date
          *    - if not found create it and log error
          *    - if found update and soft delete the next period
+         *
+         * Dans les actions, on ne peut PAS étendre par le début, étendre par la fin ou merger des périodes d’absence déjà justifiées (positivement ou injustifié).
+         * Dans ce cas, il faut juste créer une nouvelle période d’absence.
          */
       } else if (item.state === 'PRESENT' || item.state === 'LATE') {
         /**
          * - if Absenceperiode need to be ended => P AAA + P
          *   previous = A && next != A && current != A
-         *   Acitons:
-         *    - Check if period already exist => preiodeAbsence.lastAttendance.date == presence.date
-         *    - if exist update
+         *   Actions:
+         *    - Check if period already exists => preiodeAbsence.lastAttendance.date == presence.date
+         *    - if exists update
          *    - if not create it and log error
          * - if Absenceperiode need to be split => P AAA +P AAA P
          *   previous = A && next = A && current = A
-         * - if Absenceperiode need to be shortened by the bengin => P -A +P AAA P
+         * - if Absenceperiode need to be shortened by the beginning => P -A +P AAA P
          *   previous = (P || L) && next = A && current = A
          * - if Absenceperiode need to be shortened by the end => P AAA +P -A P
          *   previous = A && next = (P || L) && current = A
-         * - if Absenceperiode need to be deleted (soft delete (enebled) => P -A +P P
+         * - if Absenceperiode need to be deleted (soft delete enabled) => P -A +P P
          *   previous != A  && next != A && current = A
          */
       }
