@@ -72,6 +72,7 @@ model AcademicYear {
   name      String
   startDate DateTime
   endDate   DateTime
+  current   Boolean  @default(false)
   archives  Boolean  @default(false)
 
   createdAt DateTime @default(now())

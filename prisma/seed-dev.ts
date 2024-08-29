@@ -496,7 +496,10 @@ if (users.length) {
 
   const generatedAcademicYearData = getCurrentAcademicYear();
   await prisma.academicYear.create({
-    data: generatedAcademicYearData,
+    data: {
+      current: true,
+      ...generatedAcademicYearData
+    },
   });
 
   await prisma.group.createMany({
