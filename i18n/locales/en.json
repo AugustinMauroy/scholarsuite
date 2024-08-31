@@ -14,7 +14,8 @@
       "description": "ScholarSuite is a grade management application for schools. It allows to manage students, classes, school levels, subjects and grades."
     },
     "landing": {
-      "title": "Welcome back, {firstName} {lastName}!"
+      "title": "Welcome back, {firstName} {lastName}!",
+      "description": "Current academic year: {academicYear}"
     },
     "notFound": {
       "title": "404 - Not Found",

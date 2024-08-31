@@ -2,7 +2,7 @@ import classNames from 'classnames';
 import { forwardRef } from 'react';
 import Label from '@/components/Common/Label';
 import styles from './index.module.css';
-import type { FC, InputHTMLAttributes, ReactNode, Ref } from 'react';
+import type { InputHTMLAttributes, ReactNode } from 'react';
 
 type InputProps = InputHTMLAttributes<HTMLInputElement> & {
   label?: ReactNode;

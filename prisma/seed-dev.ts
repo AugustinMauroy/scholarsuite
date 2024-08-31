@@ -1,29 +1,10 @@
 import { resolve } from 'node:path';
 import { styleText } from 'node:util';
 import { PrismaClient } from '@prisma/client';
+import { generateCurrentAcademicYear } from '@/utils/academicYear.ts';
 import { encode } from '@/utils/crypto.ts';
 
 const now = new Date();
-
-const getCurrentAcademicYear = () => {
-  const data = {
-    startDate: now,
-    endDate: now,
-    name: '',
-  };
-
-  if (now.getMonth() < 8) {
-    data.name = `${now.getFullYear() - 1}-${now.getFullYear()}`;
-    data.startDate = new Date(now.getFullYear() - 1, 8, 1);
-    data.endDate = new Date(now.getFullYear(), 7, 31);
-  } else {
-    data.name = `${now.getFullYear()}-${now.getFullYear() + 1}`;
-    data.startDate = new Date(now.getFullYear(), 8, 1);
-    data.endDate = new Date(now.getFullYear() + 1, 7, 31);
-  }
-
-  return data;
-};
 
 const prisma = new PrismaClient();
 let users = await prisma.user.findMany();
@@ -494,11 +475,11 @@ if (users.length) {
     ],
   });
 
-  const generatedAcademicYearData = getCurrentAcademicYear();
+  const generatedAcademicYearData = generateCurrentAcademicYear();
   await prisma.academicYear.create({
     data: {
       current: true,
-      ...generatedAcademicYearData
+      ...generatedAcademicYearData,
     },
   });
 

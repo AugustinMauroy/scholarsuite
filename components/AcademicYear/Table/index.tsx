@@ -11,7 +11,7 @@ import Button from '@/components/Common/Button';
 import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
-import { isPossible } from '@/utils/academicYear';
+import { generateCurrentAcademicYear, isPossible } from '@/utils/academicYear';
 import type { AcademicYear } from '@prisma/client';
 import type { FC } from 'react';
 
@@ -45,6 +45,24 @@ const Table: FC = () => {
 
     fetchAcademicYears();
   }, []);
+
+  const handleOpenModal = (edit: boolean, academicYear?: AcademicYear) => {
+    if (academicYear) {
+      setAcademicYearId(academicYear.id);
+      setName(academicYear.name);
+      setStartDate(
+        new Date(academicYear.startDate).toISOString().split('T')[0]
+      );
+      setEndDate(new Date(academicYear.endDate).toISOString().split('T')[0]);
+    } else {
+      const preGeneratedData = generateCurrentAcademicYear();
+      setName(preGeneratedData.name);
+      setStartDate(preGeneratedData.startDate.toISOString().split('T')[0]);
+      setEndDate(preGeneratedData.endDate.toISOString().split('T')[0]);
+    }
+
+    setIsAdding(edit);
+  };
 
   const handleAdd = async () => {
     if (!name || !startDate || !endDate) {
@@ -190,7 +208,7 @@ const Table: FC = () => {
       <DialogPrimitive.Trigger asChild>
         <Button
           kind="outline"
-          onClick={() => setIsAdding(true)}
+          onClick={() => handleOpenModal(true)}
           className="mb-4"
         >
           <PlusIcon />
@@ -204,6 +222,7 @@ const Table: FC = () => {
             <th>Start Date</th>
             <th>End Date</th>
             <th>Actions</th>
+            <th>Current</th>
           </tr>
         </thead>
         <tbody>
@@ -213,18 +232,17 @@ const Table: FC = () => {
               <td>{new Date(academicYear.startDate).toLocaleDateString()}</td>
               <td>{new Date(academicYear.endDate).toLocaleDateString()}</td>
               <td>
+                <Input
+                  disabled
+                  checked={academicYear.current}
+                  type="checkbox"
+                />
+              </td>
+              <td>
                 <DialogPrimitive.Trigger asChild>
                   <Button
                     kind="outline"
-                    onClick={() => {
-                      setAcademicYearId(academicYear.id);
-                      setName(academicYear.name);
-                      setStartDate(
-                        new Date(academicYear.startDate).toISOString()
-                      );
-                      setEndDate(new Date(academicYear.endDate).toISOString());
-                      setIsAdding(false);
-                    }}
+                    onClick={() => handleOpenModal(false, academicYear)}
                   >
                     <PencilIcon />
                     Edit

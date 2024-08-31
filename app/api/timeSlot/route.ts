@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import { isValidTime, isValidTimeRange } from '@/utils/timeslot';
 import type { TimeSlot } from '@prisma/client';
 
 export const GET = async (req: Request): Promise<Response> => {
@@ -12,20 +13,16 @@ export const GET = async (req: Request): Promise<Response> => {
 export const PUT = async (req: Request): Promise<Response> => {
   const { name, startTime, endTime } = (await req.json()) as TimeSlot;
 
-  // timeSlot should be XX:XX min is 00:00 max is 23:59
-  const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
-  if (!regex.test(startTime) || !regex.test(endTime)) {
+  if (!isValidTime(startTime) || !isValidTime(endTime))
     return Response.json({
       error: 'Invalid time format',
     });
-  }
 
   // check if time slot is possible start time is less than end time
-  if (startTime >= endTime) {
+  if (!isValidTimeRange(startTime, endTime))
     return Response.json({
       error: 'Invalid time slot range',
     });
-  }
 
   // check if time slot overlap
   const timeSlots = await prisma.timeSlot.findMany();

@@ -11,15 +11,16 @@ import Button from '@/components/Common/Button';
 import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
+import { isValidTimeRange, isValidTime } from '@/utils/timeslot';
 import type { TimeSlot } from '@prisma/client';
 import type { FC } from 'react';
-
-// timeSlot should be XX:XX min is 00:00 max is 23:59
-const regex = /^([01]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
 const Table: FC = () => {
   const toast = useToast();
   const [timeSlots, setTimeSlots] = useState<TimeSlot[]>([]);
+  const [validTimeRange, setValidTimeRange] = useState(true);
+  const [validStartTime, setValidStartTime] = useState(true);
+  const [validEndTime, setValidEndTime] = useState(true);
   const [isAdding, setIsAdding] = useState(false);
   const [timeSlotId, setTimeSlotId] = useState<number>();
   const [name, setName] = useState('');
@@ -31,6 +32,20 @@ const Table: FC = () => {
       .then(res => res.json())
       .then(({ data }) => setTimeSlots(data));
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (startTime.length > 0 && endTime.length > 0)
+        setValidTimeRange(isValidTimeRange(startTime, endTime));
+      if (startTime.length > 0) setValidStartTime(isValidTime(startTime));
+      if (endTime.length > 0) setValidEndTime(isValidTime(endTime));
+
+      if (startTime.length === 0) setValidStartTime(true);
+      if (endTime.length === 0) setValidEndTime(true);
+    }, 500);
+
+    return () => clearInterval(interval);
+  }, [startTime, endTime]);
 
   const handleAdd = async () => {
     if (!startTime || !endTime) {
@@ -46,19 +61,7 @@ const Table: FC = () => {
 
       return;
     }
-    if (!regex.test(startTime) || !regex.test(endTime)) {
-      toast({
-        message: (
-          <>
-            <TriangleAlertIcon />
-            Invalid time format
-          </>
-        ),
-        kind: 'error',
-      });
-
-      return;
-    }
+    if (!validEndTime || !validStartTime || !validTimeRange) return;
 
     const timeSlot = await fetch('/api/timeSlot', {
       method: 'PUT',
@@ -116,19 +119,7 @@ const Table: FC = () => {
 
       return;
     }
-    if (!regex.test(startTime) || !regex.test(endTime)) {
-      toast({
-        message: (
-          <>
-            <TriangleAlertIcon />
-            Invalid time format
-          </>
-        ),
-        kind: 'error',
-      });
-
-      return;
-    }
+    if (!validEndTime || !validStartTime || !validTimeRange) return;
 
     const timeSlot = await fetch('/api/timeSlot', {
       method: 'PATCH',
@@ -226,6 +217,21 @@ const Table: FC = () => {
         title={isAdding ? 'Add Time Slot' : 'Edit TimeSlot'}
         onClose={() => setIsAdding(false)}
       >
+        {(!validStartTime || !validEndTime || !validTimeRange) && (
+          <div className="color-red-600 dark:color-red-100 mb-4 rounded border border-red-400 bg-red-100 p-2 dark:border-red-600 dark:bg-red-500">
+            <TriangleAlertIcon />
+            {(!validStartTime || !validEndTime) && (
+              <p>The correct format is HH:MM</p>
+            )}
+            {!validStartTime && <p>Invalid Start Time</p>}
+            {!validEndTime && <p>Invalid End Time</p>}
+            {!validTimeRange && (
+              <p>
+                Invalid Time Range (Start Time should be less than End Time)
+              </p>
+            )}
+          </div>
+        )}
         <Input
           type="text"
           name="name"

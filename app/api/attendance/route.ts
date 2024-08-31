@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import type { PatchBody } from '@/types/Attendance';
+import type { PatchBody } from '@/types/attendance';
 
 // API where we process attendance from `/group-attendance/[id]`
 export const PATCH = async (req: Request): Promise<Response> => {

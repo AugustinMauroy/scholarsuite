@@ -8,7 +8,7 @@ import StudentCard from '@/components/Student/StudentCard';
 import Selector from '@/components/TimeSlot/Selector';
 import { useToast } from '@/hooks/useToast';
 import styles from './page.module.css';
-import type { PatchBody } from '@/types/Attendance';
+import type { PatchBody } from '@/types/attendance';
 import type {
   Student,
   Group,
