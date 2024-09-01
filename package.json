@@ -49,12 +49,12 @@
     "react-dom": "~18.3.1"
   },
   "devDependencies": {
-    "@storybook/addon-a11y": "~8.2.6",
-    "@storybook/addon-essentials": "~8.2.6",
-    "@storybook/addon-interactions": "~8.2.6",
-    "@storybook/addon-links": "~8.2.6",
-    "@storybook/addon-themes": "~8.2.6",
-    "@storybook/nextjs": "~8.2.6",
+    "@storybook/addon-a11y": "~8.2.9",
+    "@storybook/addon-essentials": "~8.2.9",
+    "@storybook/addon-interactions": "~8.2.9",
+    "@storybook/addon-links": "~8.2.9",
+    "@storybook/addon-themes": "~8.2.9",
+    "@storybook/nextjs": "~8.2.9",
     "@storybook/react": "~8.2.4",
     "@testing-library/react": "^16.0.0",
     "@types/node": "~20.14.13",
