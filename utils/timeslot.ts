@@ -13,3 +13,12 @@ export const isValidTimeRange = (startTime: string, endTime: string) => {
 
   return start < end;
 };
+
+/**
+ * This function will return the hour and minute of a time string
+ */
+export const getValue = (time: string): { hour: number; minute: number } => {
+  const [hour, minute] = time.split(':').map(n => parseInt(n));
+
+  return { hour, minute };
+};

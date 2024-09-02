@@ -35,7 +35,7 @@ model AbsencePeriod {
   lastAbsenceId         Int
   nextPresenceId        Int?
   academicYearId        Int
-  status                AbsencePeriodStatus
+  status                AbsencePeriodStatus @default(PENDING)
   justifyFromDate       DateTime?
   justifyToDate         DateTime?
   // @TODO: add relation to TimeSlot

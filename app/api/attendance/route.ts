@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import { getValue } from '@/utils/timeslot';
 import type { PatchBody } from '@/types/attendance';
 
 // API where we process attendance from `/group-attendance/[id]`
@@ -16,13 +17,15 @@ export const PATCH = async (req: Request): Promise<Response> => {
     return Response.json({ error: 'missing required fields' }, { status: 400 });
   }
 
-  const timeSlot = await prisma.timeSlot.findUnique({
+  const currentTimeSlot = await prisma.timeSlot.findUnique({
     where: { id: timeSlotId },
   });
 
-  if (!timeSlot) {
+  if (!currentTimeSlot) {
     return Response.json({ error: 'timeslot not found' }, { status: 404 });
   }
+  const timeSlotHour = getValue(currentTimeSlot.startTime).hour;
+  const timeSlotMinute = getValue(currentTimeSlot.startTime).minute;
 
   const now = new Date();
   const academicYear = await prisma.academicYear.findFirst({
@@ -67,17 +70,18 @@ export const PATCH = async (req: Request): Promise<Response> => {
       );
     }
 
-    const currentAttendance = await prisma.attendance.findFirst({
+    let currentAttendance = await prisma.attendance.findFirst({
       where: {
         date: {
           gte: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
           lt: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
         },
-        timeSlotId: timeSlot.id,
+        timeSlotId: currentTimeSlot.id,
         studentId: item.studentId,
       },
     });
 
+    // attendance proccess + audit
     if (currentAttendance) {
       await prisma.attendance.update({
         where: { id: currentAttendance.id },
@@ -97,69 +101,6 @@ export const PATCH = async (req: Request): Promise<Response> => {
           changedBy: userId,
         },
       });
-
-      /**
-       * Pour trouver la précédente présence, c'est rechercher la présence pour l'étudiant
-       * de la même année académique dont la date est strictement inférieure à la date de la présence
-       * (comparaison y compris date et heure)
-       */
-
-      /**
-       * Pour trouver la prochaine présence, c'est rechercher la présence pour l'étudiant
-       * de la même année académique dont la date minimum qui est strictement supérieure à la date de la présence
-       */
-
-      if (item.state === 'ABSENT') {
-        /**
-         * - if no past Absenceperiode needed to create => P +A || P -P +A P || +A P
-         *   previous = null && next = null
-         *   previous = P && next = null
-         *   previous = null && next = P
-         *   Action:
-         *    - Check if period already exists => startAbsencePeriod > presence.date && presence.date < startAbsencePeriod
-         *    - if exists update it and log the change
-         *    - if not create it
-         * - if to extend by begin => P +A A
-         *   previous = P && next = A && current != A
-         *   Action:
-         *    - Check if period already exists => preiodeAbsence.firstAttendance.date == nextAbsencePeriod.nextAttendance.date
-         *    - if not found create it and log error
-         *    - if found update
-         * - if to extend by the end => P A + A
-         *   previous = A && next = A && current != A
-         *   Action:
-         *    - Check if period already exists => preiodeAbsence.lastAttendance.date == nextAbsencePeriod.firstAttendance.date
-         *    - if not found create it and log error
-         *    - if found update
-         * - If need to merge with the next Absenceperiode => A -P +A A
-         *   previous = A && next = A && current = A
-         *   Action:
-         *    - check if previous period exists => preiodeAbsence.lastAttendance.date == nextAbsencePeriod.firstAttendance.date
-         *    - check if next period exists => preiodeAbsence.firstAttendance.date == nextAbsencePeriod.lastAttendance.date
-         *    - if not found create it and log error
-         *    - if found update and soft delete the next period
-         *
-         * Dans les actions, on ne peut PAS étendre par le début, étendre par la fin ou merger des périodes d’absence déjà justifiées (positivement ou injustifié).
-         * Dans ce cas, il faut juste créer une nouvelle période d’absence.
-         */
-      } else if (item.state === 'PRESENT' || item.state === 'LATE') {
-        /**
-         * - if Absenceperiode need to be ended => P AAA + P
-         *   previous = A && next != A && current != A
-         *   Actions:
-         *    - Check if period already exists => preiodeAbsence.lastAttendance.date == presence.date
-         *    - if exists update
-         *    - if not create it and log error
-         * - if Absenceperiode need to be split => P AAA +P AAA P
-         *   previous = A && next = A && current = A
-         * - if Absenceperiode need to be shortened by the beginning => P -A +P AAA P
-         *   previous = (P || L) && next = A && current = A
-         * - if Absenceperiode need to be shortened by the end => P AAA +P -A P
-         *   previous = A && next = (P || L) && current = A
-         * - if Absenceperiode need to be deleted (soft delete enabled) => P -A +P P
-         *   previous != A  && next != A && current = A
-         */
-      }
     } else {
       await prisma.attendance.create({
         data: {
@@ -167,13 +108,582 @@ export const PATCH = async (req: Request): Promise<Response> => {
           userId,
           timeSlotId,
           groupId,
-          // @TODO: Use timeslot to have hour and minute
-          // put hour and minute to 0
-          date: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+          date: new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            timeSlotHour,
+            timeSlotMinute
+          ),
           studentId: item.studentId,
           academicYearId: academicYear.id,
         },
       });
+    }
+
+    // Proccess absence period
+    currentAttendance = await prisma.attendance.findFirst({
+      where: {
+        date: {
+          gte: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+          lt: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
+        },
+        timeSlotId: currentTimeSlot.id,
+        studentId: item.studentId,
+      },
+    });
+
+    if (!currentAttendance) {
+      return Response.json(
+        { error: `attendance not found id: ${item.studentId}` },
+        { status: 404 }
+      );
+    }
+
+    /**
+     * Pour trouver la précédente présence, c'est rechercher la présence pour l'étudiant
+     * de la même année académique dont la date est strictement inférieure à la date de la présence
+     * (comparaison y compris date et heure)
+     */
+    const previousAttendance = await prisma.attendance.findFirst({
+      where: {
+        date: {
+          lt: new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            timeSlotHour,
+            timeSlotMinute
+          ),
+        },
+        timeSlotId: currentTimeSlot.id,
+        studentId: item.studentId,
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+
+    /**
+     * Pour trouver la prochaine présence, c'est rechercher la présence pour l'étudiant
+     * de la même année académique dont la date minimum qui est strictement supérieure à la date de la présence
+     */
+    const nextAttendance = await prisma.attendance.findFirst({
+      where: {
+        date: {
+          gt: new Date(
+            date.getFullYear(),
+            date.getMonth(),
+            date.getDate(),
+            timeSlotHour,
+            timeSlotMinute
+          ),
+        },
+        timeSlotId: currentTimeSlot.id,
+        studentId: item.studentId,
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+    const currentPeriod = await prisma.absencePeriod.findFirst({
+      where: {
+        FirstAbsence: {
+          date: {
+            gt: new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              timeSlotHour,
+              timeSlotMinute
+            ),
+          },
+        },
+        LastAbsence: {
+          date: {
+            lt: new Date(
+              date.getFullYear(),
+              date.getMonth(),
+              date.getDate(),
+              timeSlotHour,
+              timeSlotMinute
+            ),
+          },
+        },
+      },
+    });
+
+    // @DEBUG
+    console.log('DEBUG: ');
+    console.log('item: ', item);
+    console.log('currentAttendance: ', currentAttendance);
+    console.log('previousAttendance: ', previousAttendance);
+    console.log('nextAttendance: ', nextAttendance);
+    console.log('currentPeriod: ', currentPeriod);
+
+    if (item.state === 'ABSENT') {
+      /**
+       * - if no past Absenceperiode needed to create => P +A || P -P +A P || +A P
+       *   (previous = null && next = null) ||
+       *   (previous = P && next = null) ||
+       *   (previous = null && next = P)
+       *   Action:
+       *    - Check if period already exists => startAbsencePeriod > presence.date && presence.date < startAbsencePeriod
+       *    - if exists update it and log the change
+       *    - if not create it
+       * - if to extend by begin => P +A A
+       *   previous = P && next = A && current != A
+       *   Action:
+       *    - Check if period already exists => preiodeAbsence.firstAttendance.date == nextAbsencePeriod.nextAttendance.date
+       *    - if not found create it and log error
+       *    - if found update
+       * - if to extend by the end => P A + A
+       *   previous = A && next = A && current != A
+       *   Action:
+       *    - Check if period already exists => preiodeAbsence.lastAttendance.date == nextAbsencePeriod.firstAttendance.date
+       *    - if not found create it and log error
+       *    - if found update
+       * - If need to merge with the next Absenceperiode => A -P +A A
+       *   previous = A && next = A && current = A
+       *   Action:
+       *    - check if previous period exists => preiodeAbsence.lastAttendance.date == nextAbsencePeriod.firstAttendance.date
+       *    - check if next period exists => preiodeAbsence.firstAttendance.date == nextAbsencePeriod.lastAttendance.date
+       *    - if not found create it and log error
+       *    - if found update and soft delete the next period
+       *
+       * Dans les actions, on ne peut PAS étendre par le début, étendre par la fin ou merger des périodes d’absence déjà justifiées (positivement ou injustifié).
+       * Dans ce cas, il faut juste créer une nouvelle période d’absence.
+       */
+      if (
+        (!previousAttendance && !nextAttendance) ||
+        (previousAttendance?.state !== 'ABSENT' && !nextAttendance) ||
+        (!previousAttendance && nextAttendance?.state !== 'ABSENT')
+      ) {
+        // Create new absence period
+        console.log('create new absence period');
+
+        if (currentPeriod) {
+          await prisma.absencePeriod.update({
+            where: { id: currentPeriod.id },
+            data: {
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+            },
+          });
+          console.error(
+            'Absence period already exists\n When trying to create new absence period'
+          );
+        } else {
+          await prisma.absencePeriod.create({
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              Student: {
+                connect: {
+                  id: item.studentId,
+                },
+              },
+              AcademicYear: {
+                connect: {
+                  id: academicYear.id,
+                },
+              },
+            },
+          });
+        }
+      } else if (
+        previousAttendance?.state === 'PRESENT' &&
+        nextAttendance?.state === 'ABSENT'
+      ) {
+        // extend by the beginning
+        console.log('extend by the beginning');
+
+        if (currentPeriod) {
+          await prisma.absencePeriod.update({
+            where: { id: currentPeriod.id },
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+            },
+          });
+        } else {
+          await prisma.absencePeriod.create({
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              Student: {
+                connect: {
+                  id: item.studentId,
+                },
+              },
+              AcademicYear: {
+                connect: {
+                  id: academicYear.id,
+                },
+              },
+            },
+          });
+          console.error(
+            'Absence period not found\n When trying to extend by the beginning'
+          );
+        }
+      } else if (
+        previousAttendance?.state === 'ABSENT' &&
+        nextAttendance?.state === 'ABSENT'
+      ) {
+        // extend by the end
+        console.log('extend by the end');
+
+        if (currentPeriod) {
+          await prisma.absencePeriod.update({
+            where: { id: currentPeriod.id },
+            data: {
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+            },
+          });
+        } else {
+          await prisma.absencePeriod.create({
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              Student: {
+                connect: {
+                  id: item.studentId,
+                },
+              },
+              AcademicYear: {
+                connect: {
+                  id: academicYear.id,
+                },
+              },
+            },
+          });
+          console.error(
+            'Absence period not found\n When trying to extend by the end'
+          );
+        }
+      } else if (
+        previousAttendance?.state === 'ABSENT' &&
+        nextAttendance?.state === 'ABSENT'
+      ) {
+        // merge with the next Absenceperiode
+        console.log('merge with the next Absenceperiode');
+
+        if (currentPeriod) {
+          await prisma.absencePeriod.update({
+            where: { id: currentPeriod.id },
+            data: {
+              LastAbsence: {
+                connect: {
+                  id: nextAttendance.id,
+                },
+              },
+            },
+          });
+          await prisma.absencePeriod.update({
+            where: { id: currentPeriod.id },
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: previousAttendance.id,
+                },
+              },
+            },
+          });
+          await prisma.absencePeriod.update({
+            where: { id: nextAttendance.id },
+            data: {
+              enabled: false,
+            },
+          });
+        } else {
+          await prisma.absencePeriod.create({
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: previousAttendance.id,
+                },
+              },
+              LastAbsence: {
+                connect: {
+                  id: nextAttendance.id,
+                },
+              },
+              Student: {
+                connect: {
+                  id: item.studentId,
+                },
+              },
+              AcademicYear: {
+                connect: {
+                  id: academicYear.id,
+                },
+              },
+            },
+          });
+          console.error(
+            'Absence period not found\n When trying to merge with the next Absenceperiode'
+          );
+        }
+      }
+    } else if (item.state === 'PRESENT' || item.state === 'LATE') {
+      /**
+       * - if Absenceperiode need to be ended => P AAA + P
+       *   previous = A && next != A && current != A
+       *   Actions:
+       *    - Check if period already exists => preiodeAbsence.lastAttendance.date == presence.date
+       *    - if exists update
+       *    - if not create it and log error
+       * - if Absenceperiode need to be split => P AAA +P AAA P
+       *   previous = A && next = A && current = A
+       * - if Absenceperiode need to be shortened by the beginning => P -A +P AAA P
+       *   previous = (P || L) && next = A && current = A
+       * - if Absenceperiode need to be shortened by the end => P AAA +P -A P
+       *   previous = A && next = (P || L) && current = A
+       * - if Absenceperiode need to be deleted (soft delete enabled) => P -A +P P
+       *   previous != A  && next != A && current = A
+       */
+      if (
+        previousAttendance?.state === 'ABSENT' &&
+        nextAttendance?.state !== 'ABSENT'
+      ) {
+        // end absence period
+
+        if (currentPeriod) {
+          await prisma.absencePeriod.update({
+            where: { id: currentPeriod.id },
+            data: {
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+            },
+          });
+        } else {
+          await prisma.absencePeriod.create({
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              Student: {
+                connect: {
+                  id: item.studentId,
+                },
+              },
+              AcademicYear: {
+                connect: {
+                  id: academicYear.id,
+                },
+              },
+            },
+          });
+          console.error(
+            'Absence period not found\n When trying to end absence period'
+          );
+        }
+      } else if (
+        previousAttendance?.state === 'ABSENT' &&
+        nextAttendance?.state === 'ABSENT'
+      ) {
+        // split absence period
+
+        if (currentPeriod) {
+          await prisma.absencePeriod.update({
+            where: { id: currentPeriod.id },
+            data: {
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+            },
+          });
+        } else {
+          await prisma.absencePeriod.create({
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              Student: {
+                connect: {
+                  id: item.studentId,
+                },
+              },
+              AcademicYear: {
+                connect: {
+                  id: academicYear.id,
+                },
+              },
+            },
+          });
+          console.error(
+            'Absence period not found\n When trying to split absence period'
+          );
+        }
+      } else if (
+        (previousAttendance?.state === 'PRESENT' ||
+          previousAttendance?.state === 'LATE') &&
+        nextAttendance?.state === 'ABSENT'
+      ) {
+        // shorten absence period by the beginning
+
+        if (currentPeriod) {
+          await prisma.absencePeriod.update({
+            where: { id: currentPeriod.id },
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+            },
+          });
+        } else {
+          await prisma.absencePeriod.create({
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              Student: {
+                connect: {
+                  id: item.studentId,
+                },
+              },
+              AcademicYear: {
+                connect: {
+                  id: academicYear.id,
+                },
+              },
+            },
+          });
+          console.error(
+            'Absence period not found\n When trying to shorten absence period by the beginning'
+          );
+        }
+      } else if (
+        previousAttendance?.state === 'ABSENT' &&
+        (nextAttendance?.state === 'PRESENT' ||
+          nextAttendance?.state === 'LATE')
+      ) {
+        // shorten absence period by the end
+        console.log('shorten absence period by the end');
+
+        if (currentPeriod) {
+          await prisma.absencePeriod.update({
+            where: { id: currentPeriod.id },
+            data: {
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+            },
+          });
+        } else {
+          await prisma.absencePeriod.create({
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              LastAbsence: {
+                connect: {
+                  id: currentAttendance.id,
+                },
+              },
+              Student: {
+                connect: {
+                  id: item.studentId,
+                },
+              },
+              AcademicYear: {
+                connect: {
+                  id: academicYear.id,
+                },
+              },
+            },
+          });
+          console.error(
+            'Absence period not found\n When trying to shorten absence period by the end'
+          );
+        }
+      } else if (
+        previousAttendance?.state !== 'ABSENT' &&
+        nextAttendance?.state !== 'ABSENT'
+      ) {
+        // delete absence period
+        console.log('delete absence period');
+
+        if (currentPeriod) {
+          await prisma.absencePeriod.update({
+            where: { id: currentPeriod.id },
+            data: {
+              enabled: false,
+            },
+          });
+        } else {
+          console.error(
+            'Absence period not found\n When trying to delete absence period'
+          );
+        }
+      }
     }
   }
 
