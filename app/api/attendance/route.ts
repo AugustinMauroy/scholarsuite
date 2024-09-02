@@ -148,6 +148,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
     const previousAttendance = await prisma.attendance.findFirst({
       where: {
         date: {
+          // less than
           lt: new Date(
             date.getFullYear(),
             date.getMonth(),
@@ -156,8 +157,8 @@ export const PATCH = async (req: Request): Promise<Response> => {
             timeSlotMinute
           ),
         },
-        timeSlotId: currentTimeSlot.id,
         studentId: item.studentId,
+        academicYearId: academicYear.id,
       },
       orderBy: {
         date: 'desc',
@@ -171,6 +172,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
     const nextAttendance = await prisma.attendance.findFirst({
       where: {
         date: {
+          // greater than
           gt: new Date(
             date.getFullYear(),
             date.getMonth(),
@@ -179,18 +181,31 @@ export const PATCH = async (req: Request): Promise<Response> => {
             timeSlotMinute
           ),
         },
-        timeSlotId: currentTimeSlot.id,
         studentId: item.studentId,
+        academicYearId: academicYear.id,
       },
       orderBy: {
         date: 'asc',
       },
     });
+
+    /**
+     * Pour trouver la période d'absence actuelle, c'est rechercher la période d'absence pour l'étudiant
+     * de la même année académique dont la première présence est inférieure ou égale à la date de la présence
+     * et la dernière présence est supérieure ou égale à la date de la présence
+     */
     const currentPeriod = await prisma.absencePeriod.findFirst({
       where: {
+        Student: {
+          id: item.studentId,
+        },
+        AcademicYear: {
+          id: academicYear.id,
+        },
         FirstAbsence: {
           date: {
-            gt: new Date(
+            // less than or equal to
+            lte: new Date(
               date.getFullYear(),
               date.getMonth(),
               date.getDate(),
@@ -201,7 +216,8 @@ export const PATCH = async (req: Request): Promise<Response> => {
         },
         LastAbsence: {
           date: {
-            lt: new Date(
+            // greater than or equal to
+            gte: new Date(
               date.getFullYear(),
               date.getMonth(),
               date.getDate(),
@@ -274,7 +290,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             },
           });
           console.error(
-            'Absence period already exists\n When trying to create new absence period'
+            'Absence period already exists\nWhen trying to create new absence period'
           );
         } else {
           await prisma.absencePeriod.create({
@@ -346,12 +362,12 @@ export const PATCH = async (req: Request): Promise<Response> => {
             },
           });
           console.error(
-            'Absence period not found\n When trying to extend by the beginning'
+            'Absence period not found\nWhen trying to extend by the beginning'
           );
         }
       } else if (
         previousAttendance?.state === 'ABSENT' &&
-        nextAttendance?.state === 'ABSENT'
+        !nextAttendance?.state
       ) {
         // extend by the end
         console.log('extend by the end');
@@ -393,7 +409,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             },
           });
           console.error(
-            'Absence period not found\n When trying to extend by the end'
+            'Absence period not found\nWhen trying to extend by the end'
           );
         }
       } else if (
@@ -456,9 +472,11 @@ export const PATCH = async (req: Request): Promise<Response> => {
             },
           });
           console.error(
-            'Absence period not found\n When trying to merge with the next Absenceperiode'
+            'Absence period not found\nWhen trying to merge with the next Absenceperiode'
           );
         }
+      } else {
+        console.warn('Any case matched');
       }
     } else if (item.state === 'PRESENT' || item.state === 'LATE') {
       /**
@@ -482,6 +500,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
         nextAttendance?.state !== 'ABSENT'
       ) {
         // end absence period
+        console.log('end absence period');
 
         if (currentPeriod) {
           await prisma.absencePeriod.update({
@@ -520,7 +539,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             },
           });
           console.error(
-            'Absence period not found\n When trying to end absence period'
+            'Absence period not found\nWhen trying to end absence period'
           );
         }
       } else if (
@@ -566,7 +585,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             },
           });
           console.error(
-            'Absence period not found\n When trying to split absence period'
+            'Absence period not found\nWhen trying to split absence period'
           );
         }
       } else if (
@@ -613,7 +632,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             },
           });
           console.error(
-            'Absence period not found\n When trying to shorten absence period by the beginning'
+            'Absence period not found\nWhen trying to shorten absence period by the beginning'
           );
         }
       } else if (
@@ -661,7 +680,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             },
           });
           console.error(
-            'Absence period not found\n When trying to shorten absence period by the end'
+            'Absence period not found\nWhen trying to shorten absence period by the end'
           );
         }
       } else if (
@@ -680,9 +699,11 @@ export const PATCH = async (req: Request): Promise<Response> => {
           });
         } else {
           console.error(
-            'Absence period not found\n When trying to delete absence period'
+            'Absence period not found\nWhen trying to delete absence period'
           );
         }
+      } else {
+        console.warn('Any case matched');
       }
     }
   }
