@@ -202,30 +202,40 @@ export const PATCH = async (req: Request): Promise<Response> => {
         AcademicYear: {
           id: academicYear.id,
         },
-        FirstAbsence: {
-          date: {
-            // less than or equal to
-            lte: new Date(
-              date.getFullYear(),
-              date.getMonth(),
-              date.getDate(),
-              timeSlotHour,
-              timeSlotMinute
-            ),
+        OR: [
+          {
+            FirstAbsence: {
+              date: {
+                // less than or equal to
+                lte: new Date(
+                  date.getFullYear(),
+                  date.getMonth(),
+                  date.getDate(),
+                  timeSlotHour,
+                  timeSlotMinute
+                ),
+              },
+            },
           },
-        },
-        LastAbsence: {
-          date: {
-            // greater than or equal to
-            gte: new Date(
-              date.getFullYear(),
-              date.getMonth(),
-              date.getDate(),
-              timeSlotHour,
-              timeSlotMinute
-            ),
+          {
+            LastAbsence: {
+              date: {
+                // greater than or equal to
+                gte: new Date(
+                  date.getFullYear(),
+                  date.getMonth(),
+                  date.getDate(),
+                  timeSlotHour,
+                  timeSlotMinute
+                ),
+              },
+            },
           },
-        },
+        ],
+      },
+      include: {
+        FirstAbsence: true,
+        LastAbsence: true,
       },
     });
 
@@ -684,6 +694,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
           );
         }
       } else if (
+        currentPeriod &&
         previousAttendance?.state !== 'ABSENT' &&
         nextAttendance?.state !== 'ABSENT'
       ) {
