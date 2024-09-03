@@ -58,8 +58,8 @@ const NavBar: FC = async () => {
       links={links}
       bottomElements={[
         { label: t('about'), href: '/about' },
-        { label: <UserAvatar /> },
-        { label: <Environment /> },
+        { label: <UserAvatar key="userAvatar" /> },
+        { label: <Environment key="env" /> },
       ]}
     />
   );

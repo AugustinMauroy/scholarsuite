@@ -30,7 +30,7 @@ The data models used in ScholarSuite are as follows:
 
 - `id`: unique identifier for the absence period
 - `studentId`: identifier of the student for the absence period
-- `firstAbsenceID`: identifier of the first absence in the period
+- `d`: identifier of the first absence in the period
 - `lastAbsenceId`: identifier of the last absence in the period
 - `nextPresenceId`: optional identifier of the next presence
 - `academicYearId`: identifier of the academic year for the absence period

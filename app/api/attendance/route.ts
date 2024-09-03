@@ -24,18 +24,13 @@ export const PATCH = async (req: Request): Promise<Response> => {
   if (!currentTimeSlot) {
     return Response.json({ error: 'timeslot not found' }, { status: 404 });
   }
-  const timeSlotHour = getValue(currentTimeSlot.startTime).hour;
-  const timeSlotMinute = getValue(currentTimeSlot.startTime).minute;
+  const { hour: timeSlotHour, minute: timeSlotMinute } = getValue(
+    currentTimeSlot.startTime
+  );
 
-  const now = new Date();
   const academicYear = await prisma.academicYear.findFirst({
     where: {
-      startDate: {
-        lte: now,
-      },
-      endDate: {
-        gte: now,
-      },
+      current: true,
     },
   });
 
@@ -81,6 +76,14 @@ export const PATCH = async (req: Request): Promise<Response> => {
       },
     });
 
+    const attendanceDate = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),
+      timeSlotHour,
+      timeSlotMinute
+    );
+
     // attendance proccess + audit
     if (currentAttendance) {
       await prisma.attendance.update({
@@ -108,13 +111,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
           userId,
           timeSlotId,
           groupId,
-          date: new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            timeSlotHour,
-            timeSlotMinute
-          ),
+          date: attendanceDate,
           studentId: item.studentId,
           academicYearId: academicYear.id,
         },
@@ -140,104 +137,81 @@ export const PATCH = async (req: Request): Promise<Response> => {
       );
     }
 
-    /**
-     * Pour trouver la précédente présence, c'est rechercher la présence pour l'étudiant
-     * de la même année académique dont la date est strictement inférieure à la date de la présence
-     * (comparaison y compris date et heure)
-     */
-    const previousAttendance = await prisma.attendance.findFirst({
-      where: {
-        date: {
-          // less than
-          lt: new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            timeSlotHour,
-            timeSlotMinute
-          ),
-        },
-        studentId: item.studentId,
-        academicYearId: academicYear.id,
-      },
-      orderBy: {
-        date: 'desc',
-      },
-    });
-
-    /**
-     * Pour trouver la prochaine présence, c'est rechercher la présence pour l'étudiant
-     * de la même année académique dont la date minimum qui est strictement supérieure à la date de la présence
-     */
-    const nextAttendance = await prisma.attendance.findFirst({
-      where: {
-        date: {
-          // greater than
-          gt: new Date(
-            date.getFullYear(),
-            date.getMonth(),
-            date.getDate(),
-            timeSlotHour,
-            timeSlotMinute
-          ),
-        },
-        studentId: item.studentId,
-        academicYearId: academicYear.id,
-      },
-      orderBy: {
-        date: 'asc',
-      },
-    });
-
-    /**
-     * Pour trouver la période d'absence actuelle, c'est rechercher la période d'absence pour l'étudiant
-     * de la même année académique dont la première présence est inférieure ou égale à la date de la présence
-     * et la dernière présence est supérieure ou égale à la date de la présence
-     */
-    const currentPeriod = await prisma.absencePeriod.findFirst({
-      where: {
-        Student: {
-          id: item.studentId,
-        },
-        AcademicYear: {
-          id: academicYear.id,
-        },
-        OR: [
-          {
-            FirstAbsence: {
-              date: {
-                // less than or equal to
-                lte: new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate(),
-                  timeSlotHour,
-                  timeSlotMinute
-                ),
-              },
+    const [previousAttendance, nextAttendance, currentPeriod] =
+      await Promise.all([
+        /**
+         * Pour trouver la période d'absence actuelle, c'est rechercher la période d'absence pour l'étudiant
+         * de la même année académique dont la première présence est inférieure ou égale à la date de la présence
+         * et la dernière présence est supérieure ou égale à la date de la présence
+         */
+        prisma.attendance.findFirst({
+          where: {
+            date: {
+              // less than
+              lt: attendanceDate,
             },
+            studentId: item.studentId,
+            academicYearId: academicYear.id,
           },
-          {
-            LastAbsence: {
-              date: {
-                // greater than or equal to
-                gte: new Date(
-                  date.getFullYear(),
-                  date.getMonth(),
-                  date.getDate(),
-                  timeSlotHour,
-                  timeSlotMinute
-                ),
-              },
+          orderBy: {
+            date: 'desc',
+          },
+        }),
+        /**
+         * Pour trouver la prochaine présence, c'est rechercher la présence pour l'étudiant
+         * de la même année académique dont la date minimum qui est strictement supérieure à la date de la présence
+         */
+        prisma.attendance.findFirst({
+          where: {
+            date: {
+              // greater than
+              gt: attendanceDate,
             },
+            studentId: item.studentId,
+            academicYearId: academicYear.id,
           },
-        ],
-      },
-      include: {
-        FirstAbsence: true,
-        LastAbsence: true,
-      },
-    });
+          orderBy: {
+            date: 'asc',
+          },
+        }),
+        /**
+         * Pour trouver la précédente présence, c'est rechercher la présence pour l'étudiant
+         * de la même année académique dont la date est strictement inférieure à la date de la présence
+         * (comparaison y compris date et heure)
+         */
+        prisma.absencePeriod.findFirst({
+          where: {
+            Student: {
+              id: item.studentId,
+            },
+            AcademicYear: {
+              id: academicYear.id,
+            },
+            OR: [
+              {
+                FirstAbsence: {
+                  date: {
+                    // less than or equal to
+                    lte: attendanceDate,
+                  },
+                },
+              },
+              {
+                LastAbsence: {
+                  date: {
+                    // greater than or equal to
+                    gte: attendanceDate,
+                  },
+                },
+              },
+            ],
+          },
+          include: {
+            FirstAbsence: true,
+            LastAbsence: true,
+          },
+        }),
+      ]);
 
     // @DEBUG
     console.log('DEBUG: ');
@@ -557,6 +531,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
         nextAttendance?.state === 'ABSENT'
       ) {
         // split absence period
+        console.log('split absence period');
 
         if (currentPeriod) {
           await prisma.absencePeriod.update({
@@ -604,6 +579,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
         nextAttendance?.state === 'ABSENT'
       ) {
         // shorten absence period by the beginning
+        console.log('shorten absence period by the beginning');
 
         if (currentPeriod) {
           await prisma.absencePeriod.update({
@@ -723,6 +699,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
   // Don't send result back to client
   // But send fresh data to client
   // it's same as GET /api/group/[id]
+  const now = new Date();
   const groupData = await prisma.group.findUnique({
     where: {
       id: groupId,

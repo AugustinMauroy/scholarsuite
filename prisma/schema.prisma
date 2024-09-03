@@ -31,7 +31,7 @@ enum AbsencePeriodStatus {
 model AbsencePeriod {
   id                    Int                 @id @default(autoincrement())
   studentId             Int
-  firstAbsenceID        Int
+  firstAbsenceId        Int
   lastAbsenceId         Int
   nextPresenceId        Int?
   academicYearId        Int
@@ -48,7 +48,7 @@ model AbsencePeriod {
 
   Student      Student                @relation(fields: [studentId], references: [id])
   AcademicYear AcademicYear           @relation(fields: [academicYearId], references: [id])
-  FirstAbsence Attendance             @relation(fields: [firstAbsenceID], references: [id], name: "FirstAbsence")
+  FirstAbsence Attendance             @relation(fields: [firstAbsenceId], references: [id], name: "FirstAbsence")
   LastAbsence  Attendance             @relation(fields: [lastAbsenceId], references: [id], name: "LastAbsence")
   NextPresence Attendance?            @relation(fields: [nextPresenceId], references: [id], name: "NextPresence")
   Comments     AbsencePeriodComment[]

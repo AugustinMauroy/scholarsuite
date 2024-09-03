@@ -26,6 +26,7 @@ export const POST = async (
             Student: {
               include: {
                 Attendance: true,
+                Class: true,
               },
             },
           },
