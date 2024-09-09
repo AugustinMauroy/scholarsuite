@@ -303,7 +303,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
           });
         }
       } else if (
-        previousAttendance?.state === 'PRESENT' &&
+        previousAttendance?.state === 'PRESENT' ||
         nextAttendance?.state === 'ABSENT'
       ) {
         // extend by the beginning

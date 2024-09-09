@@ -1,0 +1,29 @@
+.title {
+  @apply mb-2
+    text-lg
+    font-medium;
+}
+
+.list {
+  @apply space-y-4;
+
+  .item {
+    @apply rounded-lg
+    border
+    border-gray-200
+    p-4
+    dark:border-gray-700;
+
+    .meta {
+      @apply mb-2
+        text-sm
+        text-gray-500
+        dark:text-gray-400;
+    }
+  }
+}
+
+.noItems {
+  @apply text-gray-500
+    dark:text-gray-400;
+}
