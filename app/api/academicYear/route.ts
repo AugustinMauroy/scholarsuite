@@ -1,7 +1,7 @@
 import prisma from '@/lib/prisma';
 import { isPossible } from '@/utils/academicYear';
 
-export const GET = async (req: Request): Promise<Response> => {
+export const GET = async (): Promise<Response> => {
   const academicYears = await prisma.academicYear.findMany();
 
   return Response.json({ data: academicYears }, { status: 200 });

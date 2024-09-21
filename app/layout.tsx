@@ -1,8 +1,7 @@
 import classNames from 'classnames';
-import { getServerSession } from 'next-auth/next';
 import { getLocale, getMessages, getTranslations } from 'next-intl/server';
 import NavBar from '@/components/Layout/NavBar';
-import nextAuthConfig from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import { getTimeZone } from '@/lib/i18n';
 import AuthProvider from '@/providers/auth';
 import LocaleProvider from '@/providers/locale';
@@ -27,7 +26,7 @@ const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
   const locale = await getLocale();
   const messages = await getMessages();
   const timeZone = getTimeZone();
-  const sessionData = await getServerSession(nextAuthConfig);
+  const sessionData = await auth();
 
   return (
     <html lang={locale}>

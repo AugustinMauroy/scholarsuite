@@ -84,6 +84,7 @@ const Calendar = forwardRef<HTMLButtonElement, CalendarProps>(
             className={styles.button}
             onClick={() => handleChangeMonth('prev')}
             aria-label="Previous month"
+            ref={ref}
           >
             <ChevronLeftIcon />
           </button>

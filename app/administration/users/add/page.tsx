@@ -6,15 +6,21 @@ import Select from '@/components/Common/Select';
 import BaseLayout from '@/components/Layout/Base';
 import { useToast } from '@/hooks/useToast';
 import styles from './page.module.css';
+import type { User } from '@prisma/client';
 import type { FC, FormEvent } from 'react';
 
 const Page: FC = () => {
   const toast = useToast();
-  const [user, setUser] = useState({
+  // type user but without "enabled" and "id"
+  const [user, setUser] = useState<
+    Pick<User, 'firstName' | 'lastName' | 'email'> & {
+      role: User['role'] | null;
+    }
+  >({
     firstName: '',
     lastName: '',
     email: '',
-    role: 0,
+    role: null,
   });
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -22,24 +28,16 @@ const Page: FC = () => {
     if (
       !user.firstName ||
       !user.lastName ||
-      (typeof user.role !== 'number' && user.role <= 0)
+      !user.email ||
+      user.role === null
     ) {
       toast({
         message: (
           <>
-            Please fill in all fields
-            {user.role < 0 ? (
-              <>
-                <br />
-                Invalid role
-              </>
-            ) : null}
-            {!user.firstName || !user.lastName ? (
-              <>
-                <br />
-                Missing fields for user
-              </>
-            ) : null}
+            {user.firstName === '' && <li>First name</li>}
+            {user.lastName === '' && <li>Last name</li>}
+            {user.email === '' && <li>Email</li>}
+            {user.role === null && <li>Role</li>}
           </>
         ),
         kind: 'error',
@@ -71,7 +69,7 @@ const Page: FC = () => {
           firstName: '',
           lastName: '',
           email: '',
-          role: 0,
+          role: null,
         });
       }
     });
@@ -98,10 +96,10 @@ const Page: FC = () => {
         <Select
           inline
           label="Role"
-          onChange={v => setUser({ ...user, role: parseInt(v, 10) })}
+          onChange={v => setUser({ ...user, role: v as User['role'] })}
           values={[
-            { value: '0', label: 'Admin' },
-            { value: '1', label: 'Teacher' },
+            { value: 'ADMIN', label: 'Admin' },
+            { value: 'TEACHER', label: 'Teacher' },
           ]}
         />
         <Button type="submit">Ajouter</Button>

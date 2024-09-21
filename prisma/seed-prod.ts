@@ -51,6 +51,7 @@ if (users.length) {
       {
         firstName: 'admin',
         lastName: 'admin',
+        email: 'admin',
         password: await encode('password'),
         role: 'ADMIN',
       },

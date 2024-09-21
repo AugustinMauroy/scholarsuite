@@ -2,7 +2,7 @@ import prisma from '@/lib/prisma';
 import { isValidTime, isValidTimeRange } from '@/utils/timeslot';
 import type { TimeSlot } from '@prisma/client';
 
-export const GET = async (req: Request): Promise<Response> => {
+export const GET = async (): Promise<Response> => {
   const timeSlots = await prisma.timeSlot.findMany();
 
   return Response.json({

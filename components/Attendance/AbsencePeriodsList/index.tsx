@@ -66,23 +66,25 @@ const AbsencePeriodsList: FC = () => {
     }).then(response => {
       if (response.ok) {
         response.json().then(data => {
-          const absencePeriods = data.data.map((absencePeriod: any) => ({
-            ...absencePeriod,
-            FirstAbsence: {
-              ...absencePeriod.FirstAbsence,
-              date: new Date(absencePeriod.FirstAbsence.date),
-            },
-            LastAbsence: {
-              ...absencePeriod.LastAbsence,
-              date: new Date(absencePeriod.LastAbsence.date),
-            },
-            NextPresence: absencePeriod.NextPresence
-              ? {
-                  ...absencePeriod.NextPresence,
-                  date: new Date(absencePeriod.NextPresence.date),
-                }
-              : null,
-          }));
+          const absencePeriods = data.data.map(
+            (absencePeriod: AbsenceWithRelations) => ({
+              ...absencePeriod,
+              FirstAbsence: {
+                ...absencePeriod.FirstAbsence,
+                date: new Date(absencePeriod.FirstAbsence.date),
+              },
+              LastAbsence: {
+                ...absencePeriod.LastAbsence,
+                date: new Date(absencePeriod.LastAbsence.date),
+              },
+              NextPresence: absencePeriod.NextPresence
+                ? {
+                    ...absencePeriod.NextPresence,
+                    date: new Date(absencePeriod.NextPresence.date),
+                  }
+                : null,
+            })
+          );
           setAbsencePeriods(absencePeriods);
         });
       }

@@ -2,7 +2,7 @@ import prisma from '@/lib/prisma';
 import rightAcces from '@/utils/rightAcces';
 import type { SchoolLevel } from '@prisma/client';
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
   const schoolLevels = await prisma.schoolLevel.findMany({
     orderBy: {
       order: 'asc',

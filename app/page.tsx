@@ -1,12 +1,11 @@
-import { getServerSession } from 'next-auth';
 import { getTranslations } from 'next-intl/server';
 import BaseLayout from '@/components/Layout/Base';
-import nextAuthConfig from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import type { FC } from 'react';
 
 const Page: FC = async () => {
-  const session = await getServerSession(nextAuthConfig);
+  const session = await auth();
   const t = await getTranslations('app.landing');
 
   const firstName = session?.user?.firstName;

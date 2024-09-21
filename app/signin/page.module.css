@@ -46,4 +46,21 @@
       lg:w-1/3
       lg:gap-4;
   }
+
+  .providersWrapper {
+    @apply w-2/3
+      lg:w-1/3;
+
+    .providers {
+      @apply mt-4
+        flex
+        flex-col
+        w-full
+        gap-2;
+
+      .button {
+        @apply !w-full;
+      }
+    }
+  }
 }

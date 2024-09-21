@@ -172,7 +172,7 @@ We use [prisma][] to manage our database and data models. For more information o
 - Functions should be exported at their definition:
 
 ```ts
-export const GET = async (req: Request) => {
+export const POST = async (req: Request) => {
   // code here
 };
 ```

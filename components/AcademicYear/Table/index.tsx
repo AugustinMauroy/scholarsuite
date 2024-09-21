@@ -44,6 +44,7 @@ const Table: FC = () => {
     };
 
     fetchAcademicYears();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleOpenModal = (edit: boolean, academicYear?: AcademicYear) => {

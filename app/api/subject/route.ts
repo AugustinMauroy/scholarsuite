@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 
-export const GET = async (req: Request): Promise<Response> => {
+export const GET = async (): Promise<Response> => {
   const subjects = await prisma.subject.findMany();
 
   return Response.json({ data: subjects }, { status: 200 });

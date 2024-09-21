@@ -1,4 +1,4 @@
-import { readFile, readdir, writeFile, mkdir, rm } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
 import { join } from 'node:path';
 import prisma from '@/lib/prisma';
 

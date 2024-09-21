@@ -1,5 +1,11 @@
 {
-  "extends": ["next/core-web-vitals", "plugin:storybook/recommended"],
+  "extends": [
+    "next",
+    "next/core-web-vitals",
+    "next/typeScript",
+    "plugin:storybook/recommended",
+    "prettier"
+  ],
   "rules": {
     "semi": ["error", "always"],
     "no-restricted-syntax": [
@@ -33,18 +39,13 @@
             "group": "type",
             "position": "before"
           }
-        ],
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
+        ]
       }
     ],
+    "react/jsx-no-undef": "off",
     "padding-line-between-statements": [
       "error",
       { "blankLine": "always", "prev": "*", "next": "return" }
-    ],
-    "react/jsx-no-undef": "off",
-    "react-hooks/exhaustive-deps": "off"
+    ]
   }
 }

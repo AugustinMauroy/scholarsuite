@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
   const groups = await prisma.group.findMany({
     include: {
       Subject: true,

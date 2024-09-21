@@ -111,14 +111,13 @@ model Subject {
 }
 
 model User {
-  id        Int     @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   firstName String
   lastName  String
-  email     String? @unique
   password  String
-  enabled   Boolean @default(true)
+  enabled   Boolean  @default(true)
   role      Role
-
+  email     String   @unique
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 

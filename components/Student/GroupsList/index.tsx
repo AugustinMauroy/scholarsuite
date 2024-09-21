@@ -49,6 +49,7 @@ const GroupsList: FC<GroupsListProps> = ({ studentId, patch, setPatch }) => {
         }
         setGroupList(data.data);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {

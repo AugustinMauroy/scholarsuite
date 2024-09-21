@@ -1,24 +1,22 @@
-import { getServerSession } from 'next-auth';
 import { getTranslations } from 'next-intl/server';
 import Environment from '@/components/Common/Environement';
 import Logo from '@/components/Common/Logo';
 import UserAvatar from '@/components/Common/UserAvatar';
-import nextAuthConfig from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import ContainerNav from './Container';
 import type { FC } from 'react';
 
 const NavBar: FC = async () => {
-  const session = await getServerSession(nextAuthConfig);
+  const session = await auth();
   const t = await getTranslations('components.layout.navbar');
-  if (!session) return null;
+  if (!session || Number.isNaN(Number(session.user.id))) return null;
 
-  const user = session.user;
   const groups = await prisma.group.findMany({
     where: {
       UserGroup: {
         some: {
-          userId: user.id,
+          userId: Number(session.user.id),
         },
       },
     },
@@ -29,15 +27,16 @@ const NavBar: FC = async () => {
       name: true,
     },
   });
+
   const attendanceGroups = groups.map(group => ({
     label: group.name || group.ref,
     href: `/group-attendance/${group.id}`,
   }));
-  let links = [
+  const links = [
     { label: t('disciplinaryReport'), href: '/disciplinary-report' },
   ];
 
-  switch (user.role) {
+  switch (session.user.role) {
     case 'ADMIN':
       links.push(
         { label: t('attendance'), href: '/attendance' },

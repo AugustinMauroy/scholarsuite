@@ -75,7 +75,7 @@ const Page: FC<PageProps> = ({ params }) => {
       ...patch,
       userId: session.data.user.id,
     });
-  }, [session]);
+  }, [session, patch]);
 
   useEffect(() => {
     fetch('/api/timeSlot')
@@ -103,6 +103,7 @@ const Page: FC<PageProps> = ({ params }) => {
           timeSlotId: current.id,
         });
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -127,6 +128,7 @@ const Page: FC<PageProps> = ({ params }) => {
         }
         setGroupData(data.data);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentTimeslot, currentDate]);
 
   useEffect(() => {
@@ -155,7 +157,7 @@ const Page: FC<PageProps> = ({ params }) => {
     }, 150);
 
     return () => clearTimeout(timeout);
-  }, [patch]);
+  }, [patch, toast, tPage]);
 
   if (!session) return null;
 

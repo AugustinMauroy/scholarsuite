@@ -3,12 +3,12 @@ import prisma from '@/lib/prisma';
 export const POST = async (req: Request) => {
   const { userId } = await req.json();
 
-  if (!userId)
+  if (!userId || Number.isNaN(Number(userId)))
     return Response.json({ error: 'User ID is required' }, { status: 400 });
 
   const user = await prisma.user.findUnique({
     where: {
-      id: userId,
+      id: Number(userId),
     },
   });
 
@@ -18,7 +18,7 @@ export const POST = async (req: Request) => {
     where: {
       UserGroup: {
         some: {
-          userId,
+          userId: user.id,
         },
       },
     },

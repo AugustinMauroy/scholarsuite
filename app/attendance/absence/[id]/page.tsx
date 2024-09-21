@@ -62,6 +62,8 @@ const Page: FC<PageProps> = ({ params }) => {
     })
       .then(res => res.json())
       .then(data => {
+        if (data.error) throw new Error(data.error);
+
         setAbsence(prev => {
           if (prev === undefined) return prev;
           if (prev === null) return prev;

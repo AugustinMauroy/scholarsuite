@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
+import { isNodeError } from '@/utils/node';
 
-// use response.json()
 export const POST = async (req: Request): Promise<Response> => {
   try {
     const { comment, absencePeriodId, userId } = await req.json().catch(() => {
@@ -15,7 +15,7 @@ export const POST = async (req: Request): Promise<Response> => {
       throw new Error('Invalid absencePeriodId');
     }
 
-    if (!userId || typeof userId !== 'number') {
+    if (!userId || typeof userId !== 'string' || Number.isNaN(Number(userId))) {
       throw new Error('Invalid userId');
     }
 
@@ -28,7 +28,7 @@ export const POST = async (req: Request): Promise<Response> => {
     }
 
     const user = await prisma.user.findUnique({
-      where: { id: userId },
+      where: { id: Number(userId) },
     });
 
     if (!user) {
@@ -39,7 +39,7 @@ export const POST = async (req: Request): Promise<Response> => {
       data: {
         comment,
         absencePeriodId,
-        userId,
+        userId: user.id,
       },
     });
 
@@ -50,7 +50,11 @@ export const POST = async (req: Request): Promise<Response> => {
     });
 
     return Response.json({ data: comments });
-  } catch (error: any) {
-    return Response.json({ error: error.message }, { status: 400 });
+  } catch (error) {
+    if (isNodeError(error)) {
+      return Response.json({ error: error.message }, { status: 400 });
+    } else {
+      return Response.json({ error: 'Internal server error' }, { status: 500 });
+    }
   }
 };

@@ -1,6 +1,6 @@
 import prisma from '@/lib/prisma';
 
-export const GET = async (req: Request) => {
+export const GET = async () => {
   const classes = await prisma.class.findMany({});
 
   return Response.json(

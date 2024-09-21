@@ -1,8 +1,8 @@
 import prisma from '@/lib/prisma';
-import type { Patch } from '@/types/patch';
+import type { UserPatch } from '@/types/patch';
 
 export const PATCH = async (req: Request): Promise<Response> => {
-  const { id: userId, data } = (await req.json()) as Patch;
+  const { userId, data } = (await req.json()) as UserPatch;
 
   if (!userId || !data) return Response.json({ error: 'Invalid request' });
 

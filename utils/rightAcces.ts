@@ -1,6 +1,5 @@
-import { getServerSession } from 'next-auth';
+import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
-import nextAuthConfig from '@/lib/auth';
 import type { Role } from '@prisma/client';
 
 type Acces = Role | 'all' | 'api';
@@ -34,7 +33,7 @@ const rightAcces = async (
     }
   }
 
-  const session = await getServerSession(nextAuthConfig);
+  const session = await auth();
   if (!session) return false;
 
   const { role } = session.user;

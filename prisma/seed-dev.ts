@@ -24,18 +24,21 @@ if (users.length) {
       {
         firstName: 'Admin',
         lastName: 'Admin',
+        email: 'admin',
         password: await encode('password'),
         role: 'ADMIN',
       },
       {
         firstName: 'Teacher',
         lastName: 'Teacher',
+        email: 'teacher',
         password: await encode('password'),
         role: 'TEACHER',
       },
       {
         firstName: 'Manager',
         lastName: 'Manager',
+        email: 'manager',
         password: await encode('password'),
         role: 'MANAGER',
       },

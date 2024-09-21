@@ -41,7 +41,7 @@ const List: FC<ListProps> = ({ list, activeList, onTagClick, onTagRemove }) => {
     );
 
     setSearchResult(result);
-  }, [searchQuery]);
+  }, [searchQuery, searchList]);
 
   return (
     <div className={styles.list}>

@@ -396,10 +396,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             'Absence period not found\nWhen trying to extend by the end'
           );
         }
-      } else if (
-        previousAttendance?.state === 'ABSENT' &&
-        nextAttendance?.state === 'ABSENT'
-      ) {
+      } else if (previousAttendance?.state === 'ABSENT') {
         // merge with the next Absenceperiode
         console.log('merge with the next Absenceperiode');
 
@@ -409,7 +406,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             data: {
               LastAbsence: {
                 connect: {
-                  id: nextAttendance.id,
+                  id: nextAttendance?.id,
                 },
               },
             },
@@ -425,7 +422,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             },
           });
           await prisma.absencePeriod.update({
-            where: { id: nextAttendance.id },
+            where: { id: nextAttendance?.id },
             data: {
               enabled: false,
             },
@@ -440,7 +437,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
               },
               LastAbsence: {
                 connect: {
-                  id: nextAttendance.id,
+                  id: nextAttendance?.id,
                 },
               },
               Student: {

@@ -26,6 +26,9 @@ export const PATCH = async (
       { status: 400 }
     );
 
+  if (Number.isNaN(Number(params.id)))
+    return Response.json({ error: 'Invalid id' }, { status: 400 });
+
   const user = await prisma.user.update({
     where: { id: Number(params.id) },
     data: {

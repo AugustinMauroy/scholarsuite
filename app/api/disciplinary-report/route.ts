@@ -1,16 +1,18 @@
-import { getServerSession } from 'next-auth';
-import nextAuthConfig from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 
-export const GET = async (req: Request): Promise<Response> => {
-  const session = await getServerSession(nextAuthConfig);
+export const GET = async (): Promise<Response> => {
+  const session = await auth();
 
   if (!session)
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
 
+  if (Number.isNaN(Number(session.user.id)))
+    return Response.json({ error: 'Invalid user id' }, { status: 400 });
+
   const userWithClasses = await prisma.user.findUnique({
     where: {
-      id: session.user.id,
+      id: Number(session.user.id),
     },
     include: {
       UserClass: {
@@ -48,7 +50,7 @@ export const GET = async (req: Request): Promise<Response> => {
 };
 
 export const POST = async (req: Request): Promise<Response> => {
-  const session = await getServerSession(nextAuthConfig);
+  const session = await auth();
 
   if (!session) {
     return new Response(null, { status: 401 });

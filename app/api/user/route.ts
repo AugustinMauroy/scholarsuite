@@ -1,10 +1,9 @@
-import { getServerSession } from 'next-auth';
-import nextAuthConfig from '@/lib/auth';
+import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import { encode } from '@/utils/crypto';
 
-export const GET = async (req: Request): Promise<Response> => {
-  const session = await getServerSession(nextAuthConfig);
+export const GET = async (): Promise<Response> => {
+  const session = await auth();
 
   if (!session)
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -26,7 +25,7 @@ export const GET = async (req: Request): Promise<Response> => {
 };
 
 export const PUT = async (req: Request): Promise<Response> => {
-  const session = await getServerSession(nextAuthConfig);
+  const session = await auth();
 
   if (!session)
     return Response.json({ error: 'Unauthorized' }, { status: 401 });
@@ -38,7 +37,9 @@ export const PUT = async (req: Request): Promise<Response> => {
   if ((!firstName && !lastName) || !role)
     return Response.json({ error: 'Missing fields' }, { status: 400 });
 
-  const password = await encode(`${firstName}${lastName}`);
+  const password = await encode(
+    `${firstName[0]}${lastName}`.toLocaleLowerCase()
+  );
 
   const user = await prisma.user.create({
     data: {
@@ -46,7 +47,7 @@ export const PUT = async (req: Request): Promise<Response> => {
         firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase(),
       lastName:
         lastName.charAt(0).toUpperCase() + lastName.slice(1).toLowerCase(),
-      email: !email ? null : (email as string | null),
+      email: email,
       role: role,
       password,
     },

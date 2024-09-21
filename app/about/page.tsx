@@ -3,7 +3,7 @@ import { getTranslations } from 'next-intl/server';
 import Environment from '@/components/Common/Environement';
 import Label from '@/components/Common/Label';
 import BaseLayout from '@/components/Layout/Base';
-import styles from './index.module.css';
+import styles from './page.module.css';
 import type { FC } from 'react';
 
 const Page: FC = async () => {
@@ -40,6 +40,10 @@ const Page: FC = async () => {
       <Label>
         React-DOM:
         <Environment kind="deps" deps={['react-dom']} forceDisplay />
+      </Label>
+      <Label>
+        Next-Auth:
+        <Environment kind="deps" deps={['next-auth']} forceDisplay />
       </Label>
       <hr />
       <h2>License:</h2>

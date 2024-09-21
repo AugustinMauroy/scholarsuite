@@ -11,7 +11,7 @@ import List from '@/components/Common/List';
 import Select from '@/components/Common/Select';
 import GroupList from '@/components/User/GroupsList';
 import { useToast } from '@/hooks/useToast';
-import type { Patch } from '@/types/patch';
+import type { UserPatch } from '@/types/patch';
 import type { Tag } from '@/types/tag';
 import type { User, Class } from '@prisma/client';
 import type { FC } from 'react';
@@ -23,8 +23,12 @@ const UsersTable: FC = () => {
   const [selectedUser, setSelectedUser] = useState<User | null>(null);
   const [classes, setClasses] = useState<Class[]>([]);
   const [activeList, setActiveList] = useState<Class[]>([]);
-  const [userClassesPatch, setUserClassesPatch] = useState<Patch | null>(null);
-  const [userGroupsPatch, setUserGroupsPatch] = useState<Patch | null>(null);
+  const [userClassesPatch, setUserClassesPatch] = useState<UserPatch | null>(
+    null
+  );
+  const [userGroupsPatch, setUserGroupsPatch] = useState<UserPatch | null>(
+    null
+  );
 
   useEffect(() => {
     fetch('/api/user')
@@ -177,12 +181,12 @@ const UsersTable: FC = () => {
 
     if (!userClassesPatch) {
       setUserClassesPatch({
-        id: selectedUser.id,
+        userId: selectedUser.id,
         data: [{ opp: 'add', id: tag.id }],
       });
     } else {
       setUserClassesPatch({
-        id: selectedUser.id,
+        userId: selectedUser.id,
         data: [...userClassesPatch.data, { opp: 'add', id: tag.id }],
       });
     }
@@ -198,14 +202,14 @@ const UsersTable: FC = () => {
 
     if (!userClassesPatch) {
       setUserClassesPatch({
-        id: userId,
+        userId,
         data: [{ opp: 'remove', id: tag.id }],
       });
 
       return;
     } else {
       setUserClassesPatch({
-        id: userId,
+        userId,
         data: [...userClassesPatch.data, { opp: 'remove', id: tag.id }],
       });
     }

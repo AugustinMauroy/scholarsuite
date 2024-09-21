@@ -2,15 +2,15 @@
 import { useState, useEffect } from 'react';
 import List from '@/components/Common/List';
 import { useToast } from '@/hooks/useToast';
-import type { Patch } from '@/types/patch';
+import type { UserPatch } from '@/types/patch';
 import type { Tag } from '@/types/tag';
-import type { Group } from '@prisma/client';
+import type { Group, User } from '@prisma/client';
 import type { FC } from 'react';
 
 type GroupListProps = {
-  userId: number;
-  patch: Patch | null;
-  setPatch: (patch: Patch) => void;
+  userId: User['id'];
+  patch: UserPatch | null;
+  setPatch: (patch: UserPatch) => void;
 };
 
 const GroupList: FC<GroupListProps> = ({ userId, patch, setPatch }) => {
@@ -50,6 +50,7 @@ const GroupList: FC<GroupListProps> = ({ userId, patch, setPatch }) => {
         }
         setGroupList(data.data);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -68,14 +69,14 @@ const GroupList: FC<GroupListProps> = ({ userId, patch, setPatch }) => {
 
     if (!patch) {
       setPatch({
-        id: userId,
+        userId,
         data: [{ opp: 'add', id: tag.id }],
       });
 
       return;
     } else {
       setPatch({
-        id: userId,
+        userId,
         data: [...patch.data, { opp: 'add', id: tag.id }],
       });
     }
@@ -88,14 +89,14 @@ const GroupList: FC<GroupListProps> = ({ userId, patch, setPatch }) => {
 
     if (!patch) {
       setPatch({
-        id: userId,
+        userId,
         data: [{ opp: 'remove', id: tag.id }],
       });
 
       return;
     } else {
       setPatch({
-        id: userId,
+        userId,
         data: [...patch.data, { opp: 'remove', id: tag.id }],
       });
     }

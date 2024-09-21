@@ -48,7 +48,7 @@ const StudentCard: FC<StudentCardProps> = ({
         'tab-key': 'create',
         from: from ? from : '',
       }).toString(),
-    [student]
+    [student.id, from]
   );
 
   return (

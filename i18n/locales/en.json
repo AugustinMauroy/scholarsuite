@@ -25,11 +25,12 @@
     "signin": {
       "title": "Please authenticate",
       "description": "Please sign in to access to SchoolarSuite",
-      "firstName": "First Name",
-      "lastName": "Last Name",
+      "email": "Email",
       "password": "Password",
       "submit": "Sign In",
-      "credentialsError": "The credentials you provided are incorrect"
+      "credentialsError": "The credentials you provided are incorrect",
+      "or": "or",
+      "signInWith": "Sign in with {provider}"
     },
     "profile": {
       "title": "Profile",
