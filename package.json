@@ -75,7 +75,7 @@
     "storybook": "~8.3.2",
     "stylelint-config-standard": "~36.0.1",
     "stylelint-order": "~6.0.4",
-    "stylelint-selector-bem-pattern": "~4.0.0",
+    "stylelint-selector-bem-pattern": "~4.0.1",
     "tailwindcss": "~3.4.12",
     "turbo": "~2.1.2",
     "typescript": "~5.6.2",
