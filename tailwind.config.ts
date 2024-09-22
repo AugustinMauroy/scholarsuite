@@ -1,7 +1,11 @@
 import type { Config } from 'tailwindcss';
 
 export default {
-  content: ['./**/*.tsx'],
+  content: [
+    './.storybook/**/*.stories.tsx',
+    './app/**/*.tsx',
+    './components/**/*.tsx',
+  ],
   theme: {
     extend: {
       aspectRatio: {

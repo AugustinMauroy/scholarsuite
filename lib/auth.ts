@@ -2,7 +2,7 @@ import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import Github from 'next-auth/providers/github';
 import GitLab from 'next-auth/providers/gitlab';
-import Discord from 'next-auth/providers/discord';
+import Apple from 'next-auth/providers/apple';
 import Google from 'next-auth/providers/google';
 import { encode } from '@/utils/crypto';
 import type { Provider } from 'next-auth/providers';
@@ -11,7 +11,7 @@ export const providers: Provider[] = [
   Github,
   GitLab,
   Google,
-  Discord,
+  Apple,
   Credentials({
     name: 'Credentials',
     credentials: {
@@ -50,14 +50,16 @@ export const providers: Provider[] = [
   }),
 ];
 
-const disponibleProviders = providers.map(provider => {
-  // check if process.env has the required AUTH_[PROVIDER]_ID
-  const providerId = process.env[`AUTH_${provider.name.toUpperCase()}_ID`];
-  const providerSecret = process.env[`AUTH_${provider.name.toUpperCase()}_SECRET`];
+const disponibleProviders = providers
+  .map(provider => {
+    // check if process.env has the required AUTH_[PROVIDER]_ID
+    const providerId = process.env[`AUTH_${provider.name.toUpperCase()}_ID`];
+    const providerSecret =
+      process.env[`AUTH_${provider.name.toUpperCase()}_SECRET`];
 
-  if (providerId && providerSecret) return provider;
-})
-.filter(provider => provider);
+    if (providerId && providerSecret) return provider;
+  })
+  .filter(provider => provider);
 
 export const providerMap = disponibleProviders
   .map(provider => {

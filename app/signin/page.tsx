@@ -11,8 +11,8 @@ import type { FC, FormEvent } from 'react';
 
 type ProviderMap = {
   id?: string;
-  name?: string ;
-}
+  name?: string;
+};
 
 const SigninForm: FC = () => {
   const t = useTranslations('app.signin');

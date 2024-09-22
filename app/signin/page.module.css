@@ -54,8 +54,8 @@
     .providers {
       @apply mt-4
         flex
-        flex-col
         w-full
+        flex-col
         gap-2;
 
       .button {
