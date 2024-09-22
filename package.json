@@ -26,8 +26,10 @@
     "db:push": "prisma db push",
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
+    "db:format": "prisma format",
     "db:seed-dev": "node --no-warnings --loader=nodejs-loaders/dev/alias --loader=nodejs-loaders/dev/tsx prisma/seed-dev.ts",
-    "db:seed-prod": "node --no-warnings --loader=nodejs-loaders/dev/alias --loader=nodejs-loaders/dev/tsx prisma/seed-prod.ts"
+    "db:seed-prod": "node --no-warnings --loader=nodejs-loaders/dev/alias --loader=nodejs-loaders/dev/tsx prisma/seed-prod.ts",
+    "prepare": "husky"
   },
   "dependencies": {
     "@prisma/client": "~5.19.1",
@@ -68,7 +70,9 @@
     "eslint-config-next": "~14.2.13",
     "eslint-config-prettier": "~9.1.0",
     "eslint-plugin-storybook": "~0.8.0",
+    "husky": "^9.1.6",
     "jsdom": "^25.0.0",
+    "lint-staged": "^15.2.10",
     "postcss": "~8.4.40",
     "prettier": "~3.3.3",
     "prettier-plugin-tailwindcss": "~0.6.6",

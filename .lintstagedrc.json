@@ -1,0 +1,4 @@
+{
+  "**/*.{js,jsx,ts,tsx,json,css,md}": ["npm run format"],
+  "./prisma/schema.prisma": ["npm run db:format"]
+}
