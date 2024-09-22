@@ -137,12 +137,12 @@ ScholarSuite 1.0 is a school management application that allows for managing use
 - [ ] Design system and reusable components
 - [ ] No duplicated code
 - [ ] REST API, which can be used by third-party services
-- [x] Unit tests
+- [x] Unit tests **not complete**
 - [ ] Integration tests (E2E)
-- [ ] Visual testing (Storybook)
+- [x] Visual testing (Storybook) **not complete**
 - [ ] Markdown documentation, for maintainers, contributors and users
 - [x] Docker, for development and production
-- [ ] SSO (to be discussed)
+- [x] SSO (github, gitlab, google, apple)
 
 ## Others
 
