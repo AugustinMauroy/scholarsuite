@@ -40,7 +40,7 @@ const ContainerNav: FC<ContainerNavProps> = ({
         <ul className={styles.links}>
           {links.map(link => (
             <li key={link.href}>
-              <Link href={link.href}>{link.label}</Link>
+              <a href={link.href}>{link.label}</a>
             </li>
           ))}
         </ul>
@@ -50,9 +50,9 @@ const ContainerNav: FC<ContainerNavProps> = ({
       <div className={styles.bottomElements}>
         {bottomElements.map(link =>
           link.href ? (
-            <Link key={link.href} href={link.href}>
+            <a key={link.href} href={link.href}>
               {link.label}
-            </Link>
+            </a>
           ) : (
             link.label
           )
