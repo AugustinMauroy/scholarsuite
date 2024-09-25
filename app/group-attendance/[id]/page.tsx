@@ -75,7 +75,8 @@ const Page: FC<PageProps> = ({ params }) => {
       ...patch,
       userId: session.data.user.id,
     });
-  }, [session, patch]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [session]);
 
   useEffect(() => {
     fetch('/api/timeSlot')
@@ -157,7 +158,8 @@ const Page: FC<PageProps> = ({ params }) => {
     }, 150);
 
     return () => clearTimeout(timeout);
-  }, [patch, toast, tPage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [patch]);
 
   if (!session) return null;
 

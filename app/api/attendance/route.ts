@@ -44,9 +44,12 @@ export const PATCH = async (req: Request): Promise<Response> => {
       { status: 400 }
     );
   }
+  if (Number.isNaN(Number(userId))) {
+    return Response.json({ error: 'invalid userId' }, { status: 400 });
+  }
 
   const user = await prisma.user.findUnique({
-    where: { id: userId },
+    where: { id: Number(userId) },
   });
 
   if (!user) {
@@ -88,7 +91,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
     if (currentAttendance) {
       await prisma.attendance.update({
         where: { id: currentAttendance.id },
-        data: { ...item, userId },
+        data: { ...item, userId: Number(userId) },
       });
       await prisma.attendanceAudit.create({
         data: {
@@ -108,7 +111,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
       await prisma.attendance.create({
         data: {
           ...item,
-          userId,
+          userId: Number(userId),
           timeSlotId,
           groupId,
           date: attendanceDate,
