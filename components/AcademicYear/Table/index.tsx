@@ -12,6 +12,7 @@ import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
 import { generateCurrentAcademicYear, isPossible } from '@/utils/academicYear';
+import styles from './index.module.css';
 import type { AcademicYear } from '@prisma/client';
 import type { FC } from 'react';
 
@@ -210,7 +211,7 @@ const Table: FC = () => {
         <Button
           kind="outline"
           onClick={() => handleOpenModal(true)}
-          className="mb-4"
+          className={styles.button}
         >
           <PlusIcon />
           Add Academic Year

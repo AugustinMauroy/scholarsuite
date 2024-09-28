@@ -1,12 +1,14 @@
 'use client';
+import { AbsencePeriodStatus } from '@prisma/client';
 import { notFound } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
 import BaseLayout from '@/components/Layout/Base';
 import { useCommand } from '@/hooks/useCommand';
-import Messages from './AbsencePeriod/Messages';
-import Overview from './AbsencePeriod/Overview';
+import Messages from '@/components/AbsencePeriod/Messages';
+import Overview from '@/components/AbsencePeriod/Overview';
+import styles from './page.module.css';
 import type {
   AbsencePeriod,
   Student,
@@ -77,28 +79,57 @@ const Page: FC<PageProps> = ({ params }) => {
       });
   };
 
+  const handleStatusChange = (newStatus: AbsencePeriodStatus) => {
+    if (absence === undefined || absence === null) return;
+
+    fetch('/api/absence-period', {
+      method: 'PATCH',
+      body: JSON.stringify({
+        status: newStatus,
+        absencePeriodId: absence.id,
+      }),
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.error) throw new Error(data.error);
+
+        setAbsence(prev => {
+          if (prev === undefined) return prev;
+          if (prev === null) return prev;
+
+          return {
+            ...prev,
+            status: data.data.status,
+          };
+        });
+      });
+  };
+
   useCommand('Enter', handleAddComment);
 
-  if (absence === undefined) {
+  if (absence === undefined)
     return <BaseLayout title="Absence" description="Loading..." />;
-  }
   if (absence === null) notFound();
 
   return (
     <BaseLayout title={`Absence of ${absence.Student.firstName}`}>
-      <Overview absence={absence} />
-      <div className="mt-8">
+      <Overview
+        onStatusChange={status =>
+          handleStatusChange(status as AbsencePeriodStatus)
+        }
+        absence={absence}
+      />
+      <div className={styles.comments}>
         <Messages comments={absence.Comments} />
         {session.data?.user.id && (
           <>
             <textarea
-              className="mt-4 min-h-10 w-full resize-y rounded-lg border p-2 focus:outline-none focus:ring focus:ring-violet-500  dark:border-gray-700 dark:bg-gray-800"
               placeholder="Add a comment..."
               value={message}
               onChange={e => setMessage(e.target.value)}
             />
             <Button
-              className="float-right mt-4"
+              className={styles.addComment}
               onClick={handleAddComment}
               disabled={message.length === 0}
             >

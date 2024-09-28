@@ -1,5 +1,6 @@
 .page {
   @apply flex
+    h-full
     flex-col;
 
   header {

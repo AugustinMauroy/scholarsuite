@@ -13,8 +13,8 @@ const BackTo: FC = () => {
 
   return (
     <Button onClick={() => router.push(from)}>
-      <ArrowLeft className="size-5" />
-      <span className="ml-2">Back</span>
+      <ArrowLeft />
+      Back
     </Button>
   );
 };

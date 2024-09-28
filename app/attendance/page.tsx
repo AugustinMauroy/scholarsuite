@@ -1,4 +1,4 @@
-import Component from '@/components/Attendance/AbsencePeriodsList';
+import Component from '@/components/AbsencePeriod/List';
 import BaseLayout from '@/components/Layout/Base/index.tsx';
 import type { FC } from 'react';
 

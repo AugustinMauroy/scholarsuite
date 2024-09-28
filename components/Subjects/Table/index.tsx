@@ -11,6 +11,7 @@ import Button from '@/components/Common/Button';
 import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
+import styles from './index.module.css';
 import type { Subject } from '@prisma/client';
 import type { FC } from 'react';
 
@@ -162,7 +163,7 @@ const Table: FC = () => {
             setIsAdding(true);
             setName('');
           }}
-          className="mb-4"
+          className={styles.button}
         >
           <PlusIcon />
           Add Subject

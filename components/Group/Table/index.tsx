@@ -1,5 +1,4 @@
 'use client';
-// @TODO: Add to adminstrate ref of group
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import {
   PencilIcon,
@@ -13,6 +12,7 @@ import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import Select from '@/components/Common/Select';
 import { useToast } from '@/hooks/useToast';
+import styles from './index.module.css';
 import type { Group, SchoolLevel, Subject } from '@prisma/client';
 import type { FC } from 'react';
 
@@ -166,7 +166,7 @@ const Table: FC = () => {
         <Button
           kind="outline"
           onClick={() => setIsAdding(true)}
-          className="mb-4"
+          className={styles.button}
         >
           <PlusIcon />
           Add Group

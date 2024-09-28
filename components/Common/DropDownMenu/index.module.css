@@ -29,7 +29,7 @@
       @apply bg-gray-100
         outline-none
         ring-2
-        ring-violet-500
+        ring-teal-500
         dark:bg-gray-800;
     }
   }

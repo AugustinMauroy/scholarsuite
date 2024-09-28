@@ -14,7 +14,7 @@
     }
 
     &.active {
-      @apply bg-violet-500
+      @apply bg-teal-500
         text-white;
     }
   }

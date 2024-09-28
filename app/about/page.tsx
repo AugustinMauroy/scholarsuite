@@ -49,7 +49,7 @@ const Page: FC = async () => {
       <h2>License:</h2>
       <details>
         <summary>{license.split('\n')[0]}</summary>
-        <pre className="">{license.split('\n').slice(1).join('\n')}</pre>
+        <pre>{license.split('\n').slice(1).join('\n')}</pre>
       </details>
     </BaseLayout>
   );

@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation';
 import BackTo from '@/components/Common/BackTo';
 import BaseLayout from '@/components/Layout/Base';
 import prisma from '@/lib/prisma';
+import styles from './page.module.css';
 import type { FC } from 'react';
 
 type PageProps = {
@@ -62,7 +63,7 @@ const Page: FC<PageProps> = async ({ params }) => {
       {numbOfAbsent !== 0 && <p>Numb of Absent this year : {numbOfAbsent}</p>}
       {numbOfLate !== 0 && <p>Numb of Late this year : {numbOfLate}</p>}
       {student.StudentGroup && (
-        <ul className="list-disc">
+        <ul className={styles.groups}>
           <label>Groups:</label>
           {student.StudentGroup.map(({ Group }) => (
             <li key={Group.id}>{Group.name}</li>

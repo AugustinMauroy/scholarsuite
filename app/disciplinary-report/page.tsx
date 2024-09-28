@@ -8,6 +8,7 @@ import Input from '@/components/Common/Input';
 import Tabs from '@/components/Common/Tabs';
 import StudentSearch from '@/components/Student/Search';
 import { useToast } from '@/hooks/useToast';
+import styles from './page.module.css';
 import type { DisciplinaryReport, User, Student } from '@prisma/client';
 import type { FC, FormEvent } from 'react';
 
@@ -75,7 +76,7 @@ const Page: FC = () => {
     <>
       <BackTo />
       <Tabs
-        className="mx-auto w-1/2"
+        className={styles.tabs}
         defaultValue={defaultTab}
         tabs={[
           { key: 'see', label: 'See disciplinary report' },
@@ -84,17 +85,15 @@ const Page: FC = () => {
       >
         <TabsPrimitive.Content key="see" value="see">
           {disciplinaryReports ? (
-            <ul className="divide-y divide-gray-200 py-4">
+            <ul className={styles.list}>
               {disciplinaryReports.map(disciplinaryReport => (
                 <li key={disciplinaryReport.id}>
-                  <h2 className="text-xl">
-                    {disciplinaryReport.Student.firstName}
-                  </h2>
+                  <h2>{disciplinaryReport.Student.firstName}</h2>
                   <p>{disciplinaryReport.description}</p>
                   <p>
                     {new Date(disciplinaryReport.date).toLocaleDateString()}
                   </p>
-                  <p className="text-sm">
+                  <p className={styles.createdBy}>
                     Created by: {disciplinaryReport.CreatedBy.firstName}
                   </p>
                 </li>
@@ -108,7 +107,7 @@ const Page: FC = () => {
           )}
         </TabsPrimitive.Content>
         <TabsPrimitive.Content key="create" value="create" asChild>
-          <form className="space-y-4 py-4">
+          <form className={styles.form} onSubmit={handleSubmit}>
             <StudentSearch
               studentId={studentId}
               setStudentId={id => setStudentId(id)}
@@ -127,7 +126,7 @@ const Page: FC = () => {
               value={date}
               onChange={e => setDate(e.target.value)}
             />
-            <Button type="submit" className="w-full" onClick={handleSubmit}>
+            <Button type="submit" className={styles.submit}>
               Create
             </Button>
           </form>

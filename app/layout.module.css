@@ -6,7 +6,7 @@
   .wrapper {
     @apply flex
       size-full
-      max-h-screen
+      min-h-screen
       flex-col
       overflow-y-scroll;
   }

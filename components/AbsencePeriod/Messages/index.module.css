@@ -9,10 +9,10 @@
 
   .item {
     @apply rounded-lg
-    border
-    border-gray-200
-    p-4
-    dark:border-gray-700;
+      border
+      border-gray-200
+      p-4
+      dark:border-gray-700;
 
     .meta {
       @apply mb-2

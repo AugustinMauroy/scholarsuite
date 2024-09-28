@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Input from '@/components/Common/Input';
+import styles from './index.module.css';
 import type { Student, Class } from '@prisma/client';
 import type { FC } from 'react';
 
@@ -52,7 +53,7 @@ const StudentSearch: FC<StudentSearchProps> = ({ studentId, setStudentId }) => {
   }, [studentId]);
 
   return (
-    <div className="relative w-full">
+    <div className={styles.wrapper}>
       <Input
         value={search}
         onChange={e => setSearch(e.target.value)}
@@ -63,7 +64,7 @@ const StudentSearch: FC<StudentSearchProps> = ({ studentId, setStudentId }) => {
         }}
       />
       {focused && students.length > 0 && (
-        <ul className="absolute mt-2 max-h-60 w-full divide-y divide-gray-300 overflow-y-auto rounded border border-gray-300 bg-white dark:divide-gray-700 dark:border-gray-700 dark:bg-gray-800">
+        <ul className={styles.list}>
           {students.map(student => (
             <li
               key={student.id}
@@ -71,14 +72,9 @@ const StudentSearch: FC<StudentSearchProps> = ({ studentId, setStudentId }) => {
                 setStudentId(student.id);
                 setSearch(`${student.firstName} ${student.lastName}`);
               }}
-              className="cursor-pointer p-2 hover:bg-gray-100 dark:hover:bg-gray-700"
             >
               {student.firstName} {student.lastName}{' '}
-              {student?.Class?.name && (
-                <span className="text-sm text-gray-500 dark:text-gray-400">
-                  ({student.Class.name})
-                </span>
-              )}
+              {student?.Class?.name && <span>({student.Class.name})</span>}
             </li>
           ))}
         </ul>

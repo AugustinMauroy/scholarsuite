@@ -69,9 +69,7 @@ const SigninForm: FC = () => {
             name="password"
             required
           />
-          <Button type="submit" className="mt-4">
-            {t('submit')}
-          </Button>
+          <Button type="submit">{t('submit')}</Button>
         </form>
         {providerMap.length > 0 && (
           <div className={styles.providersWrapper}>

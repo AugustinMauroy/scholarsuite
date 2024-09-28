@@ -12,6 +12,7 @@ import EditModal from '@/components/Common/EditModal';
 import Input from '@/components/Common/Input';
 import { useToast } from '@/hooks/useToast';
 import { isValidTimeRange, isValidTime } from '@/utils/timeslot';
+import styles from './index.module.css';
 import type { TimeSlot } from '@prisma/client';
 import type { FC } from 'react';
 
@@ -170,7 +171,7 @@ const Table: FC = () => {
         <Button
           kind="outline"
           onClick={() => setIsAdding(true)}
-          className="mb-4"
+          className={styles.button}
         >
           <PlusIcon />
           Add Time Slot
@@ -218,7 +219,7 @@ const Table: FC = () => {
         onClose={() => setIsAdding(false)}
       >
         {(!validStartTime || !validEndTime || !validTimeRange) && (
-          <div className="color-red-600 dark:color-red-100 mb-4 rounded border border-red-400 bg-red-100 p-2 dark:border-red-600 dark:bg-red-500">
+          <div className={styles.error}>
             <TriangleAlertIcon />
             {(!validStartTime || !validEndTime) && (
               <p>The correct format is HH:MM</p>

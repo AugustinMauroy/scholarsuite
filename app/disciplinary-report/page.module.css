@@ -1,0 +1,27 @@
+.tabs {
+  @apply mx-auto
+    w-1/2;
+}
+
+.list {
+  @apply divide-y
+    divide-gray-200
+    py-4;
+
+  h2 {
+    @apply text-xl;
+  }
+
+  .createBy {
+    @apply text-sm;
+  }
+}
+
+.form {
+  @apply space-y-4
+    py-4;
+
+  .submit {
+    @apply w-full;
+  }
+}

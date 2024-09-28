@@ -1,0 +1,23 @@
+.comments {
+  @apply mt-8;
+
+  textarea {
+    @apply mt-4
+      min-h-10
+      w-full
+      resize-y
+      rounded-lg
+      border
+      p-2
+      focus:outline-none
+      focus:ring
+      focus:ring-teal-500
+      dark:border-gray-700
+      dark:bg-gray-800;
+  }
+
+  .addComment {
+    @apply float-right
+      mt-4;
+  }
+}

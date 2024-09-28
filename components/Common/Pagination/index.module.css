@@ -1,0 +1,41 @@
+.pagination {
+  @apply flex
+    items-center
+    justify-center
+    gap-2
+    lg:gap-4;
+
+  .item {
+    @apply cursor-pointer
+        rounded-md
+        border
+        border-transparent
+        px-4
+        py-2
+        text-gray-500
+        transition
+        duration-300
+        ease-in-out
+        dark:text-gray-400;
+
+    &.active {
+      @apply border-teal-500
+        bg-teal-500
+        text-white
+        dark:border-teal-600
+        dark:bg-teal-600;
+    }
+
+    &.inactive {
+      @apply hover:bg-gray-100
+        hover:text-gray-700
+        dark:hover:bg-gray-800
+        dark:hover:text-gray-300;
+    }
+  }
+
+  .ellipsis {
+    @apply text-gray-400
+      dark:text-gray-500;
+  }
+}

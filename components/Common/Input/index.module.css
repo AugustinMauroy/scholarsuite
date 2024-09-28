@@ -23,12 +23,12 @@
       duration-200
       focus:border-gray-500
       focus:ring-1
-      focus:ring-violet-500
+      focus:ring-teal-500
       dark:border-gray-800
       dark:bg-gray-950
       dark:text-white
       dark:focus:border-gray-600
-      dark:focus:ring-violet-600;
+      dark:focus:ring-teal-600;
 
     &:not([type='checkbox']) {
       @apply min-w-40;
@@ -62,20 +62,20 @@
         p-2.5
         text-sm
         font-medium
-        accent-violet-500
+        accent-teal-500
         focus:outline-none
         focus:ring-2
-        focus:ring-violet-500
+        focus:ring-teal-500
         dark:border-gray-800
         dark:bg-gray-950
-        dark:focus:ring-violet-600;
+        dark:focus:ring-teal-600;
     }
 
     .input:checked {
-      @apply border-violet-500
-        bg-violet-500
-        dark:border-violet-600
-        dark:bg-violet-600;
+      @apply border-teal-500
+        bg-teal-500
+        dark:border-teal-600
+        dark:bg-teal-600;
     }
 
     .input:checked::after {
@@ -97,7 +97,7 @@
     }
 
     .input:not(:checked):focus {
-      @apply dark:border-violet-600;
+      @apply dark:border-teal-600;
     }
   }
 }

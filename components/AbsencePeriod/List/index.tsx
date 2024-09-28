@@ -5,6 +5,8 @@ import { useSession } from 'next-auth/react';
 import { useEffect, useState, useMemo } from 'react';
 import Button from '@/components/Common/Button';
 import Select from '@/components/Common/Select';
+import Pagination from '@/components/Common/Pagination';
+import styles from './index.module.css';
 import type {
   AbsencePeriod,
   Student,
@@ -62,6 +64,7 @@ const AbsencePeriodsList: FC = () => {
       body: JSON.stringify({
         groupId: selectedGroup,
         selectedStatus: selectedStatus,
+        page: currentPage,
       }),
     }).then(response => {
       if (response.ok) {
@@ -89,7 +92,7 @@ const AbsencePeriodsList: FC = () => {
         });
       }
     });
-  }, [selectedGroup, selectedStatus]);
+  }, [selectedGroup, selectedStatus, currentPage]);
 
   const sortedAbsencePeriods = useMemo(() => {
     if (!absencePeriods) return [];
@@ -148,7 +151,7 @@ const AbsencePeriodsList: FC = () => {
 
   return (
     <>
-      <div className="mb-4 flex flex-row items-baseline gap-2">
+      <div className={styles.filters}>
         <Select
           label="Group"
           values={
@@ -158,7 +161,7 @@ const AbsencePeriodsList: FC = () => {
             })) || []
           }
           onChange={v => setSelectedGroup(parseInt(v))}
-          className="w-1/3"
+          className={styles.groupSelect}
         />
         <Select
           label="Status"
@@ -174,103 +177,89 @@ const AbsencePeriodsList: FC = () => {
         />
       </div>
       {absencePeriods !== null && absencePeriods.length > 0 ? (
-        <table>
-          <thead>
-            <th
-              className="cursor-pointer"
-              onClick={() => handleSort('studentName')}
-            >
-              Student
-              {sortBy === 'studentName' &&
-                (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
-            </th>
-            <th
-              className="cursor-pointer"
-              onClick={() => handleSort('firstAbsence')}
-            >
-              First Absence
-              {sortBy === 'firstAbsence' &&
-                (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
-            </th>
-            <th
-              className="cursor-pointer"
-              onClick={() => handleSort('lastAbsence')}
-            >
-              Last Absence
-              {sortBy === 'lastAbsence' &&
-                (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
-            </th>
-            <th
-              className="cursor-pointer"
-              onClick={() => handleSort('academicYear')}
-            >
-              Academic Year{' '}
-              {sortBy === 'academicYear' &&
-                (sortOrder === 'asc' ? (
-                  <ArrowUp className="ml-1 size-4" />
-                ) : (
-                  <ArrowDown className="ml-1 size-4" />
-                ))}
-            </th>
-            <th className="cursor-pointer" onClick={() => handleSort('status')}>
-              Status{' '}
-              {sortBy === 'status' &&
-                (sortOrder === 'asc' ? (
-                  <ArrowUp className="ml-1 size-4" />
-                ) : (
-                  <ArrowDown className="ml-1 size-4" />
-                ))}
-            </th>
-            <th>Actions</th>
-          </thead>
-          <tbody>
-            {currentAbsencePeriods.map(absencePeriod => (
-              <tr key={absencePeriod.id}>
-                <td>
-                  {absencePeriod.Student.firstName}{' '}
-                  {absencePeriod.Student.lastName}
-                  <small className="text-gray-500">
-                    {' '}
-                    {absencePeriod.Student.Class?.name}
-                  </small>
-                </td>
-                <td>{absencePeriod.FirstAbsence.date.toLocaleDateString()}</td>
-                <td>{absencePeriod.LastAbsence.date.toLocaleDateString()}</td>
-                <td>{absencePeriod.AcademicYear.name}</td>
-                <td>{absencePeriod.status}</td>
-                <td>
-                  <Button
-                    onClick={() =>
-                      router.push(`/attendance/absence/${absencePeriod.id}`)
-                    }
-                  >
-                    <Eye />
-                    View
-                  </Button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+        <div className={styles.table}>
+          <table>
+            <thead>
+              <th
+                className={styles.cursorPointer}
+                onClick={() => handleSort('studentName')}
+              >
+                Student
+                {sortBy === 'studentName' &&
+                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
+              </th>
+              <th
+                className={styles.cursorPointer}
+                onClick={() => handleSort('firstAbsence')}
+              >
+                First Absence
+                {sortBy === 'firstAbsence' &&
+                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
+              </th>
+              <th
+                className={styles.cursorPointer}
+                onClick={() => handleSort('lastAbsence')}
+              >
+                Last Absence
+                {sortBy === 'lastAbsence' &&
+                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
+              </th>
+              <th
+                className={styles.cursorPointer}
+                onClick={() => handleSort('academicYear')}
+              >
+                Academic Year{' '}
+                {sortBy === 'academicYear' &&
+                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
+              </th>
+              <th
+                className={styles.cursorPointer}
+                onClick={() => handleSort('status')}
+              >
+                Status{' '}
+                {sortBy === 'status' &&
+                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
+              </th>
+              <th>Actions</th>
+            </thead>
+            <tbody>
+              {currentAbsencePeriods.map(absencePeriod => (
+                <tr key={absencePeriod.id}>
+                  <td>
+                    {absencePeriod.Student.firstName}{' '}
+                    {absencePeriod.Student.lastName}
+                    <small> {absencePeriod.Student.Class?.name}</small>
+                  </td>
+                  <td>
+                    {absencePeriod.FirstAbsence.date.toLocaleDateString()}
+                  </td>
+                  <td>{absencePeriod.LastAbsence.date.toLocaleDateString()}</td>
+                  <td>{absencePeriod.AcademicYear.name}</td>
+                  <td>{absencePeriod.status}</td>
+                  <td>
+                    <Button
+                      onClick={() =>
+                        router.push(`/attendance/absence/${absencePeriod.id}`)
+                      }
+                    >
+                      <Eye />
+                      View
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          {totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={handlePageChange}
+            />
+          )}
+        </div>
       ) : (
         <p>No absence periods found</p>
-      )}
-      {totalPages > 1 && (
-        <div className="mt-4 flex justify-center">
-          {Array.from({ length: totalPages }, (_, i) => i + 1).map(page => (
-            <button
-              key={page}
-              className={`mx-1 rounded px-3 py-1 ${
-                page === currentPage
-                  ? 'bg-violet-500 text-white'
-                  : 'bg-gray-300'
-              }`}
-              onClick={() => handlePageChange(page)}
-            >
-              {page}
-            </button>
-          ))}
-        </div>
       )}
     </>
   );

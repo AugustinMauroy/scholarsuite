@@ -1,0 +1,33 @@
+.wrapper {
+  @apply relative
+    w-full;
+
+  .list {
+    @apply absolute
+      mt-2
+      max-h-60
+      w-full
+      divide-y
+      divide-gray-300
+      overflow-y-auto
+      rounded border
+      border-gray-300
+      bg-white
+      dark:divide-gray-700
+      dark:border-gray-700
+      dark:bg-gray-800;
+
+    li {
+      @apply cursor-pointer
+          p-2
+          hover:bg-gray-100
+          dark:hover:bg-gray-700;
+
+      span {
+        @apply text-sm
+            text-gray-500
+            dark:text-gray-400;
+      }
+    }
+  }
+}
