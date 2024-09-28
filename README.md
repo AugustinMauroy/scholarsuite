@@ -88,3 +88,4 @@ This will stop and remove the containers, networks, and volumes created by `dock
 
 - [Roadmap](./ROADMAP.md)
 - [Technical documentation](./docs/Technical.md)
+- interested in deploying your app on Vercel? Check out the [Vercel documentation](./docs/Vercel.md).
