@@ -35,8 +35,11 @@
     "profile": {
       "title": "Profile",
       "name": "Name: {firstName} {lastName}",
+      "email": "Email: {email}",
       "edit": "Edit Profile",
       "update": "Update Profile",
+      "preferedLanguage": "Prefered Language: {lang}",
+      "language": "Language",
       "dropzone": {
         "title": "Drop your profile picture here"
       }

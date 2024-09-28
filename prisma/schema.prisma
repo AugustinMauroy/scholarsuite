@@ -112,15 +112,16 @@ model Subject {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  firstName String
-  lastName  String
-  password  String
-  enabled   Boolean  @default(true)
-  role      Role
-  email     String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                Int      @id @default(autoincrement())
+  firstName         String
+  lastName          String
+  password          String
+  enabled           Boolean  @default(true)
+  role              Role
+  email             String   @unique
+  preferredLanguage String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
 
   Attendance           Attendance[]
   DisciplinaryReport   DisciplinaryReport[]

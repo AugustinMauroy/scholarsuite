@@ -1,6 +1,7 @@
 import { headers } from 'next/headers';
 import { getRequestConfig } from 'next-intl/server';
 import localeConfig from '@/i18n/config.json' assert { type: 'json' };
+import { auth } from './auth';
 
 // As set of available and enabled locales for the website
 // This is used for allowing us to redirect the user to any
@@ -40,16 +41,21 @@ export const getMessages = (locale: string) => {
   throw new Error(`Unsupported locale: ${locale}`);
 };
 
-export const getLanguage = () => {
+export const getLanguage = async () => {
+  const session = await auth();
   const headersList = headers();
   const acceptLanguage = headersList.get('accept-language');
   const languages = acceptLanguage
     ?.split(',')
     .map(lang => lang.split(';')[0])[1];
 
-  if (languages && availableLocaleCodes.includes(languages)) {
-    return languages;
-  }
+  if (
+    session?.user?.preferredLanguage &&
+    availableLocaleCodes.includes(session?.user?.preferredLanguage)
+  )
+    return session?.user?.preferredLanguage;
+
+  if (languages && availableLocaleCodes.includes(languages)) return languages;
 
   return defaultLocale?.code ?? 'en';
 };
@@ -62,10 +68,12 @@ export const getTimeZone = () => {
 };
 
 export default getRequestConfig(async () => {
-  const locale = getLanguage();
+  const locale = await getLanguage();
+  const timeZone = getTimeZone();
 
   return {
     locale,
+    timeZone,
     messages: await getMessages(locale),
   };
 });
