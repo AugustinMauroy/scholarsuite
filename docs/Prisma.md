@@ -18,7 +18,6 @@ The data models used in ScholarSuite are as follows:
 - `PRESENT`: present attendance state
 - `ABSENT`: absent attendance state
 - `LATE`: late attendance state
-- `EXCUSED`: excused attendance state
 
 ### 3. `AbsencePeriodStatus`
 
@@ -30,15 +29,15 @@ The data models used in ScholarSuite are as follows:
 
 - `id`: unique identifier for the absence period
 - `studentId`: identifier of the student for the absence period
-- `d`: identifier of the first absence in the period
+- `firstAbsenceId`: identifier of the first absence in the period
 - `lastAbsenceId`: identifier of the last absence in the period
 - `nextPresenceId`: optional identifier of the next presence
 - `academicYearId`: identifier of the academic year for the absence period
 - `status`: status of the absence period
 - `justifyFromDate`: optional start date for justification
 - `justifyToDate`: optional end date for justification
-- `justifyFromTimeSlot`: optional identifier of the start time slot for justification
-- `justifyToTimeSlot`: optional identifier of the end time slot for justification
+- `justifyFromTimeSlotId`: optional identifier of the start time slot for justification
+- `justifyToTimeSlotId`: optional identifier of the end time slot for justification
 - `enabled`: indicates if the absence period is enabled (default: true)
 - `createdAt`: creation date of the absence period for internal use
 - `updatedAt`: modification date of the absence period for internal use
@@ -66,6 +65,7 @@ The data models used in ScholarSuite are as follows:
 - `name`: name of the academic year
 - `startDate`: start date of the academic year
 - `endDate`: end date of the academic year
+- `current`: indicates if the academic year is current (default: false)
 - `archives`: indicates if the academic year is archived (default: false)
 - `createdAt`: creation date of the academic year for internal use
 - `updatedAt`: modification date of the academic year for internal use
@@ -101,10 +101,10 @@ The data models used in ScholarSuite are as follows:
 - `id`: unique identifier for the user
 - `firstName`: first name of the user
 - `lastName`: last name of the user
-- `email`: optional email address of the user
 - `password`: hashed password of the user
 - `enabled`: state of the user (enabled or disabled) (default: true)
 - `role`: role of the user (ADMIN, MANAGER, or TEACHER)
+- `email`: unique email address of the user
 - `createdAt`: creation date of the user for internal use
 - `updatedAt`: modification date of the user for internal use
 - `Attendance`: relationship with the attendance records of the user
@@ -133,13 +133,13 @@ The data models used in ScholarSuite are as follows:
 - `id`: unique identifier for the student
 - `firstName`: first name of the student
 - `lastName`: last name of the student
-- `dateOfBirth`: date of birth of the student
-- `classId`: identifier of the class of the student
-- `contactEmail`: contact email address of the student
+- `dateOfBirth`: optional date of birth of the student
+- `classId`: optional identifier of the class of the student
+- `contactEmail`: optional contact email address of the student
 - `enabled`: state of the student (enabled or disabled) (default: true)
 - `createdAt`: creation date of the student for internal use
 - `updatedAt`: modification date of the student for internal use
-- `Class`: relationship with the class of the student
+- `Class`: optional relationship with the class of the student
 - `Grades`: relationship with the grades of the student
 - `DisciplinaryReports`: relationship with the disciplinary reports of the student
 - `Attendance`: relationship with the attendance records of the student
@@ -161,21 +161,29 @@ The data models used in ScholarSuite are as follows:
 - `Subject`: relationship with the subject of the grade
 - `GradePeriod`: relationship with the grading period of the grade
 
-### 13. `TimeSlot`
+### 13. `TimeSlotGroup`
+
+- `id`: unique identifier for the time slot group
+- `name`: name of the time slot group
+- `TimeSlot`: relationship with the time slots of the group
+
+### 14. `TimeSlot`
 
 - `id`: unique identifier for the time slot
 - `name`: optional name of the time slot
 - `startTime`: start time of the time slot (in string format)
 - `endTime`: end time of the time slot (in string format)
 - `schoolLevelId`: optional identifier of the school level of the time slot
+- `timeSlotGroupId`: identifier of the time slot group
 - `enabled`: indicates if the time slot is enabled (default: true)
 - `createdAt`: creation date of the time slot for internal use
 - `updatedAt`: modification date of the time slot for internal use
 - `SchoolLevel`: optional relationship with the school level of the time slot
+- `TimeSlotGroup`: relationship with the time slot group
 - `Attendance`: relationship with the attendance records of the time slot
 - `AttendanceAudit`: relationship with the attendance audits of the time slot
 
-### 14. `Group`
+### 15. `Group`
 
 - `id`: unique identifier for the group
 - `ref`: reference of the group
@@ -191,7 +199,7 @@ The data models used in ScholarSuite are as follows:
 - `SchoolLevel`: optional relationship with the school level of the group
 - `Attendance`: relationship with the attendance records of the group
 
-### 15. `GradePeriod`
+### 16. `GradePeriod`
 
 - `id`: unique identifier for the grading period
 - `name`: name of the grading period
@@ -203,7 +211,7 @@ The data models used in ScholarSuite are as follows:
 - `Grades`: relationship with the grades of the grading period
 - `AcademicYears`: relationship with the academic years associated with the grading period
 
-### 16. `Attendance`
+### 17. `Attendance`
 
 - `id`: unique identifier for the attendance record
 - `studentId`: identifier of the student of the attendance record
@@ -227,7 +235,7 @@ The data models used in ScholarSuite are as follows:
 - `LastAbsence`: relationship with the last absence in the period
 - `NextPresence`: optional relationship with the next presence
 
-### 17. `AttendanceAudit`
+### 18. `AttendanceAudit`
 
 - `id`: unique identifier for the attendance audit
 - `attendanceId`: identifier of the attendance record for the audit
@@ -236,6 +244,7 @@ The data models used in ScholarSuite are as follows:
 - `userId`: identifier of the user responsible for recording the attendance
 - `academicYearId`: identifier of the academic year of the attendance record
 - `timeSlotId`: identifier of the time slot of the attendance record
+- `groupId`: identifier of the group of the attendance record
 - `processed`: indicates if the attendance record has been processed
 - `notified`: indicates if the attendance record has been notified
 - `changedBy`: identifier of the user who made the change
@@ -246,7 +255,7 @@ The data models used in ScholarSuite are as follows:
 - `ChangedByUser`: relationship with the user who made the change
 - `User`: relationship with the user responsible for recording the attendance
 
-### 18. `DisciplinaryReport`
+### 19. `DisciplinaryReport`
 
 - `id`: unique identifier for the disciplinary report
 - `studentId`: identifier of the student concerned by the disciplinary report
@@ -258,7 +267,7 @@ The data models used in ScholarSuite are as follows:
 - `CreatedBy`: relationship with the user who created the disciplinary report
 - `Student`: relationship with the student concerned by the disciplinary report
 
-### 19. `ApiKey`
+### 20. `ApiKey`
 
 - `id`: unique identifier for the API key
 - `name`: name of the API key

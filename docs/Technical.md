@@ -66,8 +66,8 @@ Finally, if you are not familiar with using Tailwind or using Tailwind with CSS 
 - We recommend creating mixins for reusable animations, effects, and more
   - You can create mixins in the `styles/mixins` folder
 
-> [!NOTE]\
-> Tailwind is already configured for this repository. You do not need to import a Tailwind module into your CSS module.\
+> [!NOTE]
+> Tailwind is already configured for this repository. You do not need to import a Tailwind module into your CSS module.
 > You can apply the Tailwind tokens with the `@apply` CSS rule of Tailwind. [Learn more about applying Tailwind classes with `@apply`](https://tailwindcss.com/docs/functions-and-directives#apply).
 
 ### Best Practices for Creating a Component
