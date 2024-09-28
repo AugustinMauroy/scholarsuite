@@ -1,11 +1,10 @@
-import * as AvatarPrimitive from '@radix-ui/react-avatar';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { EllipsisVerticalIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useMemo } from 'react';
 import Button from '@/components/Common/Button';
 import DropDownMenu from '@/components/Common/DropDownMenu';
-import { getAcronymFromString } from '@/utils/string';
+import StudentAvatar from '../StudentAvatar';
 import styles from './index.module.css';
 import type { Student, Class } from '@prisma/client';
 import type { FC, ComponentProps } from 'react';
@@ -17,7 +16,6 @@ type StudentCardProps = {
     lastName: Student['lastName'];
     className?: Class['name'];
   };
-  image?: string;
   actions?: ComponentProps<typeof Button>[];
   withInfo?: boolean;
   from?: string;
@@ -25,15 +23,10 @@ type StudentCardProps = {
 
 const StudentCard: FC<StudentCardProps> = ({
   student,
-  image,
   actions,
   withInfo,
   from,
 }) => {
-  const acronym = useMemo(
-    () => getAcronymFromString(`${student.firstName} ${student.lastName}`),
-    [student.firstName, student.lastName]
-  );
   const studentUrl = useMemo(
     () =>
       `/student/${student.id}?` +
@@ -60,21 +53,7 @@ const StudentCard: FC<StudentCardProps> = ({
           </DropdownMenuPrimitive.Trigger>
         )}
         <div className={styles.info}>
-          {image ? (
-            <AvatarPrimitive.Root className={styles.avatar}>
-              <AvatarPrimitive.Image
-                src={image}
-                alt={acronym}
-                loading="lazy"
-                className={styles.avatar}
-              />
-              <AvatarPrimitive.Fallback>{acronym}</AvatarPrimitive.Fallback>
-            </AvatarPrimitive.Root>
-          ) : (
-            <span className={styles.avatar}>
-              <span className={styles.avatar}>{acronym}</span>
-            </span>
-          )}
+          <StudentAvatar student={student} />
           <div className={styles.content}>
             <h3 className={styles.firstName}>{student.firstName}</h3>
             <h3 className={styles.lastName}>{student.lastName}</h3>

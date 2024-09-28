@@ -154,6 +154,7 @@ model Student {
   dateOfBirth  DateTime?
   classId      Int?
   contactEmail String?
+  image        Boolean   @default(false)
   enabled      Boolean   @default(true)
 
   createdAt DateTime @default(now())

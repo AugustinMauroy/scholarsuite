@@ -1,7 +1,9 @@
 import { notFound } from 'next/navigation';
 import BackTo from '@/components/Common/BackTo';
 import BaseLayout from '@/components/Layout/Base';
+import Label from '@/components/Common/Label';
 import prisma from '@/lib/prisma';
+import StudentAvatar from '@/components/Student/StudentAvatar';
 import styles from './page.module.css';
 import type { FC } from 'react';
 
@@ -10,6 +12,8 @@ type PageProps = {
 };
 
 const Page: FC<PageProps> = async ({ params }) => {
+  if (Number.isNaN(Number(params.id))) notFound();
+
   const student = await prisma.student.findUnique({
     where: { id: Number(params.id) },
     include: {
@@ -51,11 +55,11 @@ const Page: FC<PageProps> = async ({ params }) => {
     }));
 
   return (
-    <BaseLayout>
-      <BackTo />
-      <h1>
-        {student.firstName} {student.lastName}
-      </h1>
+    <BaseLayout
+      title={`${student.firstName} ${student.lastName}`}
+      actions={<BackTo />}
+    >
+      <StudentAvatar student={student} />
       {student.Class && <p>Class : {student.Class.name}</p>}
       {student.dateOfBirth && (
         <p>Born : {student.dateOfBirth.toDateString()}</p>
@@ -63,12 +67,14 @@ const Page: FC<PageProps> = async ({ params }) => {
       {numbOfAbsent !== 0 && <p>Numb of Absent this year : {numbOfAbsent}</p>}
       {numbOfLate !== 0 && <p>Numb of Late this year : {numbOfLate}</p>}
       {student.StudentGroup && (
-        <ul className={styles.groups}>
-          <label>Groups:</label>
-          {student.StudentGroup.map(({ Group }) => (
-            <li key={Group.id}>{Group.name}</li>
-          ))}
-        </ul>
+        <>
+          <Label>Groups</Label>
+          <ul className={styles.groups}>
+            {student.StudentGroup.map(({ Group }) => (
+              <li key={Group.id}>{Group.name}</li>
+            ))}
+          </ul>
+        </>
       )}
     </BaseLayout>
   );

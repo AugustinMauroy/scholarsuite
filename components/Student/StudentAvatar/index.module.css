@@ -10,8 +10,3 @@
     lg:size-16
     dark:bg-gray-700;
 }
-
-.groups {
-  @apply ml-4
-    list-disc;
-}

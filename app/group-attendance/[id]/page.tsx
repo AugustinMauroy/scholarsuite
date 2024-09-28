@@ -235,7 +235,6 @@ const Page: FC<PageProps> = ({ params }) => {
               className: studentGroup.Student.Class?.name,
               ...studentGroup.Student,
             }}
-            image={`http://localhost:3000/api/content/student-picture/${studentGroup.Student.id}`}
             actions={[
               {
                 kind:

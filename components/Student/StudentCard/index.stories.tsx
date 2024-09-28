@@ -22,7 +22,6 @@ export const WithImage: Story = {
       firstName: 'Jane',
       lastName: 'Doe',
     },
-    image: '/static/placeholder-4-3.jpeg',
   },
 };
 
@@ -60,7 +59,6 @@ export const WithImageAndActions: Story = {
       firstName: 'Alice',
       lastName: 'Johnson',
     },
-    image: '/static/placeholder-4-3.jpeg',
     actions: [
       {
         kind: 'outline',
@@ -89,7 +87,7 @@ export const PresentUsage: Story = {
       lastName: 'Johnson',
       className: '6th A',
     },
-    image: '/static/placeholder-4-3.jpeg',
+
     actions: [
       {
         kind: 'solid',
@@ -118,7 +116,6 @@ export const FrenchPresentUsage: Story = {
       lastName: 'Johnson',
       className: '6th A',
     },
-    image: '/static/placeholder-4-3.jpeg',
     actions: [
       {
         kind: 'solid',
@@ -147,7 +144,6 @@ export const PresentUsageIcon: Story = {
       lastName: 'Johnson',
       className: '6th A',
     },
-    image: '/static/placeholder-4-3.jpeg',
     actions: [
       {
         kind: 'solid',
@@ -176,7 +172,6 @@ export const PresentUsageIconWithText: Story = {
       lastName: 'Johnson',
       className: '6th A',
     },
-    image: '/static/placeholder-4-3.jpeg',
     actions: [
       {
         kind: 'solid',
@@ -220,7 +215,6 @@ export const PresentUsageIconWithTextDutch: Story = {
       lastName: 'Van Damme',
       className: '6th A',
     },
-    image: '/static/placeholder-4-3.jpeg',
     actions: [
       {
         kind: 'solid',
