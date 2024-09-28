@@ -1,6 +1,7 @@
 .page {
   @apply flex
     h-full
+    max-h-screen
     flex-col;
 
   header {
