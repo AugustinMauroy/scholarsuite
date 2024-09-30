@@ -29,6 +29,13 @@ enum AbsencePeriodStatus {
   UNJUSTIFIED
 }
 
+// Enum for reasons for hiding an absence period comment
+enum AbsencePeriodCommentHideReason {
+  SPAM
+  OFF_TOPIC
+  DUPLICATE
+}
+
 model AbsencePeriod {
   id                    Int                 @id @default(autoincrement())
   studentId             Int
@@ -39,7 +46,6 @@ model AbsencePeriod {
   status                AbsencePeriodStatus @default(PENDING)
   justifyFromDate       DateTime?
   justifyToDate         DateTime?
-  // @TODO: add relation to TimeSlot
   justifyFromTimeSlotId Int?
   justifyToTimeSlotId   Int?
   enabled               Boolean             @default(true)
@@ -56,13 +62,14 @@ model AbsencePeriod {
 }
 
 model AbsencePeriodComment {
-  id              Int    @id @default(autoincrement())
+  id              Int                             @id @default(autoincrement())
   userId          Int
   absencePeriodId Int
   comment         String
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  hideReason      AbsencePeriodCommentHideReason?
+  hidden          Boolean                         @default(false)
+  createdAt       DateTime                        @default(now())
+  updatedAt       DateTime                        @updatedAt
 
   User          User          @relation(fields: [userId], references: [id])
   AbsencePeriod AbsencePeriod @relation(fields: [absencePeriodId], references: [id])
