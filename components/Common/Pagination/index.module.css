@@ -19,11 +19,11 @@
         dark:text-gray-400;
 
     &.active {
-      @apply border-teal-500
-        bg-teal-500
+      @apply border-indigo-500
+        bg-indigo-500
         text-white
-        dark:border-teal-600
-        dark:bg-teal-600;
+        dark:border-indigo-600
+        dark:bg-indigo-600;
     }
 
     &.inactive {

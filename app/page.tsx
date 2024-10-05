@@ -16,12 +16,13 @@ const Page: FC = async () => {
   });
 
   return (
-    <BaseLayout
-      title={t('title', { firstName, lastName })}
-      description={t('description', {
-        academicYear: currentAcademicYear?.name,
-      })}
-    />
+    <BaseLayout title={t('title', { firstName, lastName })}>
+      <p>
+        {t('description', {
+          academicYear: currentAcademicYear?.name,
+        })}
+      </p>
+    </BaseLayout>
   );
 };
 

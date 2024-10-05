@@ -1,9 +1,22 @@
 .trigger {
-  @apply size-fit
+  @apply flex
+    size-fit
+    w-full
+    items-center
+    justify-start
+    gap-2
     rounded-full
     focus:outline-none
     focus:ring-2
-    focus:ring-teal-500;
+    focus:ring-indigo-500;
+
+  .name {
+    @apply truncate
+      text-sm
+      font-semibold
+      text-gray-800
+      dark:text-gray-200;
+  }
 }
 
 .content {

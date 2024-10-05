@@ -34,7 +34,7 @@
 
     a {
       @apply block
-        text-teal-500
+        text-indigo-500
         hover:underline;
     }
   }

@@ -72,7 +72,7 @@ const StudentCard: FC<StudentCardProps> = ({
       </div>
       <DropDownMenu>
         <DropdownMenuPrimitive.Item asChild>
-          <Link href={studentUrl}>View Profile</Link>
+          <Link href={studentUrl}>View Student</Link>
         </DropdownMenuPrimitive.Item>
         <DropdownMenuPrimitive.Item asChild>
           <Link href={disciplinaryReportUrl}>Write Disciplinary Report</Link>

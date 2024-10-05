@@ -20,6 +20,9 @@ const UserAvatar: FC = () => {
     <DropdownMenuPrimitive.Root>
       <DropdownMenuPrimitive.Trigger className={styles.trigger}>
         <Avatar src={sessionData.data?.user?.image || ''} alt={alt} />
+        <span className={styles.name}>
+          {sessionData.data?.user.firstName} {sessionData.data?.user.lastName}
+        </span>
       </DropdownMenuPrimitive.Trigger>
       <DropDownMenu className={styles.content}>
         <DropdownMenuPrimitive.Item asChild>

@@ -1,3 +1,5 @@
+import { MailIcon, UsersIcon, DatabaseIcon } from 'lucide-react';
+import Logo from '@/components/Common/Logo';
 import ContainerNav from '.';
 import type { Meta as MetaObj, StoryObj } from '@storybook/react';
 
@@ -13,29 +15,31 @@ export const Default: Story = {
     },
   },
   args: {
-    linkList: {
-      title: 'Attendance',
-      items: [
-        { href: '/group/1', label: 'Group 1' },
-        { href: '/1-2', label: 'Group 2' },
-        { href: '/1-3', label: 'Group 3' },
-        { href: '/group/2', label: 'Group 4' },
-        { href: '/2-2', label: 'Group 5' },
-        { href: '/2-3', label: 'Group 6' },
-        { href: '/group/3', label: 'Group 7' },
-        { href: '/3-2', label: 'Group 8' },
-        { href: '/3-3', label: 'Group 9' },
-      ],
-    },
-    links: [
-      { href: '/home', label: 'Home' },
-      { href: '/about', label: 'About' },
-      { href: '/contact', label: 'Contact' },
+    logo: <Logo />,
+    items: [
+      {
+        title: 'Attendance',
+        items: [
+          { href: '/group/1', label: 'Group 1' },
+          { href: '/group/2', label: 'Group 2' },
+          { href: '/group/3', label: 'Group 3' },
+          { href: '/group/4', label: 'Group 4' },
+          { href: '/group/5', label: 'Group 5' },
+          { href: '/group/6', label: 'Group 6' },
+          { href: '/group/7', label: 'Group 7' },
+          { href: '/group/8', label: 'Group 8' },
+          { href: '/group/9', label: 'Group 9' },
+        ],
+      },
+      {
+        href: '/disciplinary-report',
+        label: 'Disciplinary Report',
+        icon: <MailIcon />,
+      },
+      { href: '/attendance', label: 'Attendance Review', icon: <UsersIcon /> },
+      { href: '/administration', label: 'Admin', icon: <DatabaseIcon /> },
     ],
-    bottomElements: [
-      { href: '/terms', label: 'Terms' },
-      { href: '/privacy', label: 'Privacy' },
-    ],
+    bottomElements: [{ href: '/about', label: 'About' }],
   },
 };
 

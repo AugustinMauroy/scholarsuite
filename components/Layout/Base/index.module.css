@@ -5,14 +5,14 @@
     flex-col;
 
   header {
-    @apply flex
+    @apply mx-4
+      flex
       h-14
       flex-row
       items-center
       justify-between
       border-b-2
       border-gray-200
-      px-4
       dark:border-gray-800;
 
     h1 {

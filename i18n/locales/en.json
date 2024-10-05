@@ -52,7 +52,7 @@
     },
     "about": {
       "title": "About",
-      "description": "Get an overview of ScholarSuite \"backend\" information..",
+      "description": "Overview of ScholarSuite \"backend\" information",
       "environment": "Environment:",
       "license": "License:"
     }

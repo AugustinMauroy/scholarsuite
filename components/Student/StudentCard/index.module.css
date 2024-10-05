@@ -7,11 +7,10 @@
     gap-4
     rounded-lg
     border-2
-    border-gray-100
-    bg-white
+    border-gray-200
+    bg-gray-50
     object-fill
     p-2
-    shadow-md
     dark:border-gray-700
     dark:bg-gray-800;
 

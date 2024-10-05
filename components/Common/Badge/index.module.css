@@ -30,15 +30,15 @@
 }
 
 .secondary {
-  @apply bg-teal-50
-    text-teal-600
-    ring-teal-500/10
-    dark:bg-teal-800
-    dark:text-teal-300;
+  @apply bg-indigo-50
+    text-indigo-600
+    ring-indigo-500/10
+    dark:bg-indigo-800
+    dark:text-indigo-300;
 
   &[role='button']:hover {
-    @apply ring-teal-500/20
-      dark:bg-teal-700;
+    @apply ring-indigo-500/20
+      dark:bg-indigo-700;
   }
 }
 

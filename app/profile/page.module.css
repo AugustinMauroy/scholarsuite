@@ -1,6 +1,8 @@
 .page {
-  @apply flex
-    w-full
+  @apply absolute
+    inset-0
+    -z-10
+    flex
     flex-col
     items-center
     justify-center

@@ -20,35 +20,35 @@
 
 .primary {
   &.solid {
-    @apply bg-teal-500
+    @apply bg-indigo-500
       text-white;
 
     &:hover {
-      @apply bg-teal-600;
+      @apply bg-indigo-600;
     }
 
     &:active {
-      @apply bg-teal-700;
+      @apply bg-indigo-700;
     }
 
     &:disabled {
-      @apply bg-teal-400
+      @apply bg-indigo-400
         text-gray-500;
     }
   }
 
   &.outline {
     @apply border
-        border-teal-500
-        text-teal-500;
+        border-indigo-500
+        text-indigo-500;
 
     &:hover {
-      @apply bg-teal-500
+      @apply bg-indigo-500
             text-white;
     }
 
     &:active {
-      @apply bg-teal-600;
+      @apply bg-indigo-600;
     }
 
     &:disabled {

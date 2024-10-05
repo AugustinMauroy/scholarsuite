@@ -12,10 +12,10 @@
   button {
     @apply focus:outline-none
       focus:ring-2
-      focus:ring-teal-500
+      focus:ring-indigo-500
       focus:ring-offset-2
       focus:ring-offset-white
-      dark:focus:ring-teal-600
+      dark:focus:ring-indigo-600
       dark:focus:ring-offset-gray-900;
   }
 
@@ -78,14 +78,14 @@
 
       &.today {
         @apply font-bold
-          text-teal-700
-          dark:text-teal-300;
+          text-indigo-700
+          dark:text-indigo-300;
       }
 
       &.selected {
-        @apply bg-teal-500
+        @apply bg-indigo-500
           text-white
-          dark:bg-teal-300
+          dark:bg-indigo-300
           dark:text-gray-900;
       }
     }

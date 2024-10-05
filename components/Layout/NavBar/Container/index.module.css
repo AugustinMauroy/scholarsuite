@@ -1,78 +1,94 @@
 .nav {
   @apply flex
     h-screen
-    w-60
+    w-64
     flex-col
     items-start
     justify-between
-    divide-y
-    divide-gray-200
     overflow-y-scroll
-    bg-white
-    shadow-lg
-    dark:divide-gray-700
+    border-r
+    border-gray-200
+    bg-gray-50
     dark:border-r
-    dark:border-gray-700
-    dark:bg-gray-800
-    dark:shadow-none;
+    dark:border-r-gray-700
+    dark:bg-gray-800;
 
   .topLinks {
     @apply w-full;
 
     .logo {
       @apply h-14
-          border-b-2
-          px-2
-          transition-transform
-          dark:border-gray-800;
+        p-2;
 
-      &:hover {
-        @apply scale-105;
+      svg {
+        @apply h-10
+          transition-transform;
+
+        &:hover {
+          @apply scale-105;
+        }
       }
     }
 
-    .linkList {
-      @apply max-h-1/2
-        overflow-y-scroll
-        border-b-2
-        px-2
-        dark:border-gray-800;
+    .links {
+      @apply flex
+        flex-col
+        gap-2.5
+        px-2;
 
-      h3 {
-        @apply sticky
-          top-0
-          cursor-pointer
-          bg-gradient-to-b
-          from-white
-          to-white/80
-          text-xl
-          font-semibold
-          dark:from-gray-800
-          dark:to-gray-800/80
-          dark:text-gray-200;
+      .subLinks {
+        h3 {
+          @apply text-sm
+            font-semibold
+            text-gray-500
+            dark:text-gray-400;
+        }
+
+        .subLink {
+          @apply flex
+            items-center
+            gap-2
+            truncate
+            rounded
+            px-2
+            py-1
+            text-sm
+            font-medium
+            transition-colors
+            duration-200;
+
+          &:not(.active):hover {
+            @apply bg-gray-200
+              dark:bg-gray-700;
+          }
+
+          &.active {
+            @apply text-indigo-500
+              dark:text-indigo-400;
+          }
+        }
       }
-    }
-  }
 
-  .links {
-    @apply flex
-      flex-col
-      gap-2.5
-      px-2;
+      .link {
+        @apply flex
+          items-center
+          gap-2
+          text-wrap
+          rounded
+          p-2
+          transition-colors
+          duration-200;
 
-    a {
-      @apply inline-flex
-        flex-row
-        items-center
-        justify-center
-        gap-1
-        transition-colors
-        duration-200;
+        &:hover {
+          @apply bg-gray-200
+            dark:bg-gray-700;
+        }
 
-      &:hover {
-        @apply text-teal-500
-          underline
-          dark:text-teal-400;
+        &.active {
+          @apply bg-indigo-500
+            text-white
+            dark:bg-indigo-400;
+        }
       }
     }
   }
@@ -86,14 +102,17 @@
       px-2;
 
     a {
-      @apply text-sm
+      @apply flex
+        items-center
+        gap-2
+        rounded
+        p-2
         transition-colors
         duration-200;
 
       &:hover {
-        @apply text-teal-500
-          underline
-          dark:text-teal-400;
+        @apply bg-gray-200
+          dark:bg-gray-700;
       }
     }
   }

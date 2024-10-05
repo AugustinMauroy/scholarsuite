@@ -29,14 +29,14 @@
       }
 
       &[data-state='active'] {
-        @apply border-b-teal-600
-          text-teal-600
-          dark:border-b-teal-400
-          dark:text-teal-400;
+        @apply border-b-indigo-600
+          text-indigo-600
+          dark:border-b-indigo-400
+          dark:text-indigo-400;
 
         .tabSecondaryLabel {
-          @apply text-teal-800
-          dark:text-teal-600;
+          @apply text-indigo-800
+          dark:text-indigo-600;
         }
       }
 
