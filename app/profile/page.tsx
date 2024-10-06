@@ -1,6 +1,5 @@
 'use client';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
-import { X } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -11,6 +10,7 @@ import Select from '@/components/Common/Select';
 import { useToast } from '@/hooks/useToast';
 import { getAcronymFromString } from '@/utils/string';
 import { availableLocales } from '@/lib/i18nClients';
+import EditModal from '@/components/Common/EditModal';
 import styles from './page.module.css';
 import type { FC } from 'react';
 
@@ -112,14 +112,13 @@ const Page: FC = () => {
           </DialogPrimitive.Trigger>
         </div>
       </main>
-      <DialogPrimitive.Overlay className={styles.modalOverlay} />
-      <DialogPrimitive.Content className={styles.modalContent}>
-        <DialogPrimitive.Close asChild>
-          <X className={styles.closeIcon} />
-        </DialogPrimitive.Close>
-        <DialogPrimitive.Title asChild>
-          <h2>{t('edit')}</h2>
-        </DialogPrimitive.Title>
+      <EditModal
+        onClose={() => {
+          setFile(null);
+          setPreferedLanguage(null);
+        }}
+        title={t('edit')}
+      >
         <DropZone file={file} setFile={setFile} title={t('dropzone.title')} />
         <Select
           label={t('language')}
@@ -135,7 +134,7 @@ const Page: FC = () => {
             {t('update')}
           </Button>
         </DialogPrimitive.Close>
-      </DialogPrimitive.Content>
+      </EditModal>
     </DialogPrimitive.Root>
   );
 };

@@ -1,12 +1,11 @@
 .page {
-  @apply absolute
-    inset-0
-    -z-10
-    flex
+  @apply flex
+    w-full
     flex-col
     items-center
     justify-center
-    gap-4;
+    gap-4
+    lg:h-screen;
 
   h1 {
     @apply text-4xl

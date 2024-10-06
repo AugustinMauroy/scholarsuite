@@ -25,8 +25,12 @@ const EditModal: FC<PropsWithChildren<EditModalProps>> = ({
         <DialogPrimitive.Close asChild>
           <X className={styles.closeIcon} onClick={() => onClose()} />
         </DialogPrimitive.Close>
-        <DialogPrimitive.Title>{title}</DialogPrimitive.Title>
-        <DialogPrimitive.Description>{description}</DialogPrimitive.Description>
+        {title && <DialogPrimitive.Title>{title}</DialogPrimitive.Title>}
+        {description && (
+          <DialogPrimitive.Description>
+            {description}
+          </DialogPrimitive.Description>
+        )}
         {children}
       </DialogPrimitive.Content>
     </>
