@@ -173,20 +173,15 @@ const Messages: FC<MessagesProps> = ({ comments }) => {
                         setExpendHidden([...expendHidden, comment.id]);
                       }
                     }}
-                    className={classNames(
-                      'absolute right-2 top-2 transition-all duration-300',
-                      {
-                        'rotate-180 transform': expendHidden.includes(
-                          comment.id
-                        ),
-                      }
-                    )}
+                    className={classNames(styles.expendButton, {
+                      [styles.rotate]: expendHidden.includes(comment.id),
+                    })}
                   >
                     <ChevronDownIcon />
                   </button>
                   <p
-                    className={classNames('transition-all duration-300', {
-                      hidden: !expendHidden.includes(comment.id),
+                    className={classNames(styles.hiddenComment, {
+                      [styles.hidden]: !expendHidden.includes(comment.id),
                     })}
                   >
                     {expendHidden.includes(comment.id) && comment.comment}

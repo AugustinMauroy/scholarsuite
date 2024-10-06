@@ -69,6 +69,29 @@
         dark:text-red-400;
     }
 
+    .expendButton {
+      @apply absolute
+        right-2
+        top-2
+        transition-all
+        duration-300;
+
+      &.rotate {
+        @apply rotate-180
+          transform;
+      }
+    }
+
+    .hiddenComment {
+      @apply transition-all
+        duration-300;
+
+      &.hidden {
+        @apply h-0
+          overflow-hidden;
+      }
+    }
+
     .hide {
       @apply relative
         -mx-4
