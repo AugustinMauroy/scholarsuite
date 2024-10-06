@@ -18,6 +18,14 @@
       p-4
       dark:border-gray-700;
 
+    &:has(.deleted) {
+      @apply border-red-200
+        bg-red-100
+        p-1
+        dark:border-red-700
+        dark:bg-red-900;
+    }
+
     .trigger {
       @apply absolute
           right-4
@@ -44,10 +52,15 @@
     }
 
     .meta {
-      @apply mb-2
-        text-sm
+      @apply text-sm
         text-gray-500
         dark:text-gray-400;
+    }
+
+    .deleted {
+      @apply text-sm
+        text-red-500
+        dark:text-red-400;
     }
 
     .hide {

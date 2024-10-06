@@ -28,6 +28,8 @@ const Messages: FC<MessagesProps> = ({ comments }) => {
   };
 
   const handleHideComment = async (id: number) => {
+    if (!reason) return;
+
     await fetch('/api/absence-period/comment', {
       method: 'PATCH',
       body: JSON.stringify({
@@ -65,81 +67,91 @@ const Messages: FC<MessagesProps> = ({ comments }) => {
       <h2 className={styles.title}>Comments</h2>
       {comments.length > 0 ? (
         <ul className={styles.list}>
-          {comments.map(comment => (
-            <DropdownMenuPrimitive.Root key={comment.id}>
-              <li className={styles.item}>
-                <DropdownMenuPrimitive.Trigger className={styles.trigger}>
-                  <EllipsisVerticalIcon />
-                </DropdownMenuPrimitive.Trigger>
-                <p className={styles.meta}>
-                  {comment.User.firstName} {comment.User.lastName} -{' '}
-                  {f.dateTime(new Date(comment.createdAt), Options)}
-                </p>
-                {comment.hidden && (
-                  <p className="text-red-500">Hidden - {comment.hideReason}</p>
-                )}
-                {!comment.enabled && <p className="text-red-500">Deleted</p>}
-                {isHiding && selectedComment === comment.id && (
-                  <div className={styles.hide}>
-                    <p>
-                      Are you sure you want to hide this comment? Plese choose a
-                      reason.
+          {comments.map(
+            comment =>
+              (comment.enabled && (
+                <DropdownMenuPrimitive.Root key={comment.id}>
+                  <li className={styles.item}>
+                    <DropdownMenuPrimitive.Trigger className={styles.trigger}>
+                      <EllipsisVerticalIcon />
+                    </DropdownMenuPrimitive.Trigger>
+                    <p className={styles.meta}>
+                      {comment.User.firstName} {comment.User.lastName} -{' '}
+                      {f.dateTime(new Date(comment.createdAt), Options)}
                     </p>
-                    <span className={styles.hideActions}>
-                      <Select
-                        label="Reason"
-                        values={[
-                          {
-                            value: AbsencePeriodCommentHideReason.DUPLICATE,
-                            label: 'Duplicate',
-                          },
-                          {
-                            value: AbsencePeriodCommentHideReason.OFF_TOPIC,
-                            label: 'Off topic',
-                          },
-                          {
-                            value: AbsencePeriodCommentHideReason.SPAM,
-                            label: 'Spam',
-                          },
-                        ]}
-                        onChange={v => setReason(v)}
-                      />
-                      <Button onClick={() => handleHideComment(comment.id)}>
-                        Hide
-                      </Button>
-                    </span>
-                    <XIcon
-                      className={styles.closeIcon}
+                    {isHiding && selectedComment === comment.id && (
+                      <div className={styles.hide}>
+                        <p>
+                          Are you sure you want to hide this comment? Plese
+                          choose a reason.
+                        </p>
+                        <span className={styles.hideActions}>
+                          <Select
+                            label="Reason"
+                            values={[
+                              {
+                                value: AbsencePeriodCommentHideReason.DUPLICATE,
+                                label: 'Duplicate',
+                              },
+                              {
+                                value: AbsencePeriodCommentHideReason.OFF_TOPIC,
+                                label: 'Off topic',
+                              },
+                              {
+                                value: AbsencePeriodCommentHideReason.SPAM,
+                                label: 'Spam',
+                              },
+                            ]}
+                            onChange={v => setReason(v)}
+                          />
+                          <Button onClick={() => handleHideComment(comment.id)}>
+                            Hide
+                          </Button>
+                        </span>
+                        <XIcon
+                          className={styles.closeIcon}
+                          onClick={() => {
+                            setIsHiding(false);
+                            setSelectedComment(null);
+                          }}
+                        />
+                      </div>
+                    )}
+                    <p>{comment.comment}</p>
+                  </li>
+                  <DropDownMenu className={styles.menu} withPortal>
+                    <DropdownMenuPrimitive.Item
                       onClick={() => {
-                        setIsHiding(false);
-                        setSelectedComment(null);
+                        setIsHiding(true);
+                        setSelectedComment(comment.id);
                       }}
-                    />
-                  </div>
-                )}
-                <p>{comment.comment}</p>
-              </li>
-              <DropDownMenu className={styles.menu} withPortal>
-                <DropdownMenuPrimitive.Item
-                  onClick={() => {
-                    setIsHiding(true);
-                    setSelectedComment(comment.id);
-                  }}
-                >
-                  Hide
-                </DropdownMenuPrimitive.Item>
-                <DropdownMenuPrimitive.Item
-                  className={styles.delete}
-                  onClick={() => {
-                    handleDeleteComment(comment.id);
-                    setSelectedComment(comment.id);
-                  }}
-                >
-                  Delete
-                </DropdownMenuPrimitive.Item>
-              </DropDownMenu>
-            </DropdownMenuPrimitive.Root>
-          ))}
+                    >
+                      Hide
+                    </DropdownMenuPrimitive.Item>
+                    <DropdownMenuPrimitive.Item
+                      className={styles.delete}
+                      onClick={() => {
+                        handleDeleteComment(comment.id);
+                        setSelectedComment(comment.id);
+                      }}
+                    >
+                      Delete
+                    </DropdownMenuPrimitive.Item>
+                  </DropDownMenu>
+                </DropdownMenuPrimitive.Root>
+              )) ||
+              (!comment.enabled && (
+                <li className={styles.item}>
+                  <p className={styles.meta}>
+                    {comment.User.firstName} {comment.User.lastName} -{' '}
+                    {f.dateTime(new Date(comment.createdAt), Options)}
+                  </p>
+                  <p className={styles.deleted}>
+                    This comment has been deleted.
+                  </p>
+                </li>
+              ))
+          )}
         </ul>
       ) : (
         <p className={styles.noItems}>No comments yet.</p>
