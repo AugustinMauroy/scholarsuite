@@ -5,19 +5,20 @@
     flex-col;
 
   header {
-    @apply flex
-      h-14
-      flex-row
+    @apply mx-4
+      flex
+      flex-col
       items-center
       justify-between
       border-b-2
       border-gray-200
-      px-4
+      lg:flex-row
       dark:border-gray-800;
 
     h1 {
-      @apply text-2xl
-        font-bold;
+      @apply text-xl
+        font-bold
+        lg:text-2xl;
     }
 
     p {

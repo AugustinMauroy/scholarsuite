@@ -11,7 +11,7 @@
       p-2
       focus:outline-none
       focus:ring
-      focus:ring-teal-500
+      focus:ring-indigo-500
       dark:border-gray-700
       dark:bg-gray-800;
   }

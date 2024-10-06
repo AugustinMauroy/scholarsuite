@@ -4,23 +4,27 @@
     w-96
     flex-col
     rounded
+    border
+    border-gray-200
     bg-white
-    shadow
+    shadow-xl
+    dark:border-gray-800
     dark:bg-gray-900
     dark:shadow-lg;
 
   button {
     @apply focus:outline-none
       focus:ring-2
-      focus:ring-teal-500
+      focus:ring-indigo-500
       focus:ring-offset-2
       focus:ring-offset-white
-      dark:focus:ring-teal-600
+      dark:focus:ring-indigo-600
       dark:focus:ring-offset-gray-900;
   }
 
   .header {
-    @apply flex
+    @apply m-1
+      flex
       items-center
       justify-between
       border-b
@@ -31,7 +35,7 @@
 
     .button {
       @apply rounded
-      p-2
+      p-1
       transition-colors
       duration-200
       enabled:hover:bg-gray-200
@@ -78,14 +82,14 @@
 
       &.today {
         @apply font-bold
-          text-teal-700
-          dark:text-teal-300;
+          text-indigo-700
+          dark:text-indigo-300;
       }
 
       &.selected {
-        @apply bg-teal-500
+        @apply bg-indigo-500
           text-white
-          dark:bg-teal-300
+          dark:bg-indigo-300
           dark:text-gray-900;
       }
     }

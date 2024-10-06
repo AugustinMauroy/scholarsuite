@@ -13,6 +13,8 @@ const DropDownMenu: FC<
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
         sideOffset={5}
+        side="top"
+        align="start"
         className={classNames(styles.content, className)}
       >
         {children}
@@ -21,6 +23,8 @@ const DropDownMenu: FC<
   ) : (
     <DropdownMenuPrimitive.Content
       sideOffset={5}
+      side="top"
+      align="start"
       className={classNames(styles.content, className)}
     >
       {children}

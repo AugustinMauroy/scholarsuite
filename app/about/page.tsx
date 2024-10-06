@@ -11,12 +11,8 @@ const Page: FC = async () => {
   const license = await readFile('LICENSE', 'utf-8');
 
   return (
-    <BaseLayout
-      sectionClassName={styles.about}
-      title={t('title')}
-      description={t('description')}
-    >
-      <h2>{t('title')}</h2>
+    <BaseLayout sectionClassName={styles.about} title={t('title')}>
+      <h2>{t('description')}</h2>
       <Label>
         ScholarSuite:
         <Environment kind="env" forceDisplay />
@@ -46,7 +42,7 @@ const Page: FC = async () => {
         <Environment kind="deps" deps={['next-auth']} forceDisplay />
       </Label>
       <hr />
-      <h2>License:</h2>
+      <h2>License</h2>
       <details>
         <summary>{license.split('\n')[0]}</summary>
         <pre>{license.split('\n').slice(1).join('\n')}</pre>

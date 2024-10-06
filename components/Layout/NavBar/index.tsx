@@ -1,6 +1,7 @@
+import { MailIcon, UsersIcon, DatabaseIcon } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 import Environment from '@/components/Common/Environement';
-import Logo from '@/components/Common/Logo';
+import LogoText from '@/components/Common/LogoText';
 import UserAvatar from '@/components/Common/UserAvatar';
 import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
@@ -32,29 +33,35 @@ const NavBar: FC = async () => {
     label: group.name || group.ref,
     href: `/group-attendance/${group.id}`,
   }));
-  const links = [
-    { label: t('disciplinaryReport'), href: '/disciplinary-report' },
+
+  const items = [
+    { title: t('attendanceGroup'), items: attendanceGroups },
+    {
+      label: t('disciplinaryReport'),
+      href: '/disciplinary-report',
+      icon: <MailIcon />,
+    },
   ];
 
   switch (session.user.role) {
     case 'ADMIN':
-      links.push(
-        { label: t('attendance'), href: '/attendance' },
-        { label: t('admin'), href: '/administration' }
+      items.push(
+        { label: t('attendance'), href: '/attendance', icon: <UsersIcon /> },
+        { label: t('admin'), href: '/administration', icon: <DatabaseIcon /> }
       );
       break;
     case 'MANAGER':
-      links.push({ label: t('attendance'), href: '/attendance' });
+      items.push({
+        label: t('attendance'),
+        href: '/attendance',
+        icon: <UsersIcon />,
+      });
   }
 
   return (
     <ContainerNav
-      logo={<Logo />}
-      linkList={{
-        title: t('attendanceGroup'),
-        items: attendanceGroups,
-      }}
-      links={links}
+      logo={<LogoText />}
+      items={items}
       bottomElements={[
         { label: t('about'), href: '/about' },
         { label: <UserAvatar key="userAvatar" /> },

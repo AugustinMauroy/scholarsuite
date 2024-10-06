@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { signIn, useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
+import { LogInIcon } from 'lucide-react';
 import GlowingBackdrop from '@/components/Common/Background';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
@@ -69,7 +70,10 @@ const SigninForm: FC = () => {
             name="password"
             required
           />
-          <Button type="submit">{t('submit')}</Button>
+          <Button type="submit">
+            {t('submit')}
+            <LogInIcon />
+          </Button>
         </form>
         {providerMap.length > 0 && (
           <div className={styles.providersWrapper}>

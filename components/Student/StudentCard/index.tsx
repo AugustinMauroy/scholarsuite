@@ -55,8 +55,9 @@ const StudentCard: FC<StudentCardProps> = ({
         <div className={styles.info}>
           <StudentAvatar student={student} />
           <div className={styles.content}>
-            <h3 className={styles.firstName}>{student.firstName}</h3>
-            <h3 className={styles.lastName}>{student.lastName}</h3>
+            <h3 className={styles.name}>
+              {student.firstName} {student.lastName}
+            </h3>
             {student.className && (
               <small className={styles.className}>{student.className}</small>
             )}
@@ -72,7 +73,7 @@ const StudentCard: FC<StudentCardProps> = ({
       </div>
       <DropDownMenu>
         <DropdownMenuPrimitive.Item asChild>
-          <Link href={studentUrl}>View Profile</Link>
+          <Link href={studentUrl}>View Student</Link>
         </DropdownMenuPrimitive.Item>
         <DropdownMenuPrimitive.Item asChild>
           <Link href={disciplinaryReportUrl}>Write Disciplinary Report</Link>
