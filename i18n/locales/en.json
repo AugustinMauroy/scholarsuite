@@ -23,8 +23,7 @@
       "backHome": "Go back home"
     },
     "signin": {
-      "title": "Please authenticate",
-      "description": "Please sign in to access to SchoolarSuite",
+      "description": "Please sign in",
       "email": "Email",
       "password": "Password",
       "submit": "Sign In",

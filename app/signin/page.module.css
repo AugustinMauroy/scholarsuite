@@ -6,15 +6,14 @@
     items-center
     justify-center;
 
-  h1 {
-    @apply text-center
-      text-5xl
-      font-bold
-      lg:text-6xl;
+  .logo {
+    @apply h-auto
+      w-80;
   }
 
   p {
-    @apply text-center
+    @apply mt-4
+      text-center
       text-lg
       text-gray-500
       lg:text-xl

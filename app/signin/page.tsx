@@ -7,6 +7,7 @@ import { LogInIcon } from 'lucide-react';
 import GlowingBackdrop from '@/components/Common/Background';
 import Button from '@/components/Common/Button';
 import Input from '@/components/Common/Input';
+import LogoText from '@/components/Common/LogoText';
 import styles from './page.module.css';
 import type { FC, FormEvent } from 'react';
 
@@ -50,7 +51,7 @@ const SigninForm: FC = () => {
   return (
     <>
       <main className={styles.wrapper}>
-        <h1>{t('title')}</h1>
+        <LogoText className={styles.logo} />
         <p>{t('description')}</p>
         {searchParams.get('error') === 'CredentialsSignin' && (
           <div className={styles.error}>{t('credentialsError')}</div>

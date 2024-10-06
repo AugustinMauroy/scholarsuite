@@ -159,14 +159,16 @@ export const LogoTextDark: FC<SVGProps<SVGSVGElement>> = props => (
   </svg>
 );
 
-type LogoProps = {
-  className?: string;
-};
-
-const LogoText: FC<LogoProps> = ({ className }) => (
+const LogoText: FC<SVGProps<SVGSVGElement>> = ({ className, ...props }) => (
   <>
-    <LogoTextLight className={classNames('block dark:hidden', className)} />
-    <LogoTextDark className={classNames('hidden dark:block', className)} />
+    <LogoTextLight
+      className={classNames('block dark:hidden', className)}
+      {...props}
+    />
+    <LogoTextDark
+      className={classNames('hidden dark:block', className)}
+      {...props}
+    />
   </>
 );
 
