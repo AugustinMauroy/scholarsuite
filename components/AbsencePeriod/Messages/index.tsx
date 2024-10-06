@@ -1,9 +1,10 @@
 'use client';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { AbsencePeriodCommentHideReason } from '@prisma/client';
-import { EllipsisVerticalIcon, XIcon } from 'lucide-react';
+import { EllipsisVerticalIcon, XIcon, ChevronDownIcon } from 'lucide-react';
 import { useFormatter } from 'next-intl';
 import { useState } from 'react';
+import classNames from 'classnames';
 import DropDownMenu from '@/components/Common/DropDownMenu';
 import Select from '@/components/Common/Select';
 import Button from '@/components/Common/Button';
@@ -19,6 +20,7 @@ type MessagesProps = {
 const Messages: FC<MessagesProps> = ({ comments }) => {
   const [isHiding, setIsHiding] = useState<boolean>(false);
   const [selectedComment, setSelectedComment] = useState<number | null>(null);
+  const [expendHidden, setExpendHidden] = useState<Array<number> | never>([]);
   const [reason, setReason] = useState('');
   const f = useFormatter();
 
@@ -69,7 +71,7 @@ const Messages: FC<MessagesProps> = ({ comments }) => {
         <ul className={styles.list}>
           {comments.map(
             comment =>
-              (comment.enabled && (
+              (comment.enabled && !comment.hidden && (
                 <DropdownMenuPrimitive.Root key={comment.id}>
                   <li className={styles.item}>
                     <DropdownMenuPrimitive.Trigger className={styles.trigger}>
@@ -148,6 +150,46 @@ const Messages: FC<MessagesProps> = ({ comments }) => {
                   </p>
                   <p className={styles.deleted}>
                     This comment has been deleted.
+                  </p>
+                </li>
+              )) ||
+              (comment.hidden && (
+                <li className={styles.item}>
+                  <p className={styles.meta}>
+                    {comment.User.firstName} {comment.User.lastName} -{' '}
+                    {f.dateTime(new Date(comment.createdAt), Options)}
+                    <span className={styles.hidden}>
+                      This comment has been hidden - for {comment.hideReason}{' '}
+                      reason.
+                    </span>
+                  </p>
+                  <button
+                    onClick={() => {
+                      if (expendHidden.includes(comment.id)) {
+                        setExpendHidden(
+                          expendHidden.filter(id => id !== comment.id)
+                        );
+                      } else {
+                        setExpendHidden([...expendHidden, comment.id]);
+                      }
+                    }}
+                    className={classNames(
+                      'absolute right-2 top-2 transition-all duration-300',
+                      {
+                        'rotate-180 transform': expendHidden.includes(
+                          comment.id
+                        ),
+                      }
+                    )}
+                  >
+                    <ChevronDownIcon />
+                  </button>
+                  <p
+                    className={classNames('transition-all duration-300', {
+                      hidden: !expendHidden.includes(comment.id),
+                    })}
+                  >
+                    {expendHidden.includes(comment.id) && comment.comment}
                   </p>
                 </li>
               ))
