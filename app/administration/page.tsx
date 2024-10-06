@@ -1,4 +1,3 @@
-import { CalendarDays, User, UsersRound } from 'lucide-react';
 import Link from 'next/link';
 import BaseLayout from '@/components/Layout/Base';
 import styles from './page.module.css';
@@ -7,7 +6,6 @@ import type { FC } from 'react';
 const CARDS = [
   {
     title: 'Manage Students',
-    icon: UsersRound,
     links: [
       { href: '/administration/students', text: 'View Students' },
       { href: '/administration/students/add', text: 'Add Student' },
@@ -26,7 +24,6 @@ const CARDS = [
   },
   {
     title: 'Manage Users',
-    icon: User,
     links: [
       { href: '/administration/users', text: 'View Users' },
       { href: '/administration/users/add', text: 'Add User' },
@@ -41,7 +38,6 @@ const CARDS = [
   },
   {
     title: 'Academic Years',
-    icon: CalendarDays,
     links: [
       { href: '/administration/academicYear', text: 'Manage Academic Years' },
     ],
@@ -61,12 +57,9 @@ const Page: FC = async () => (
     sectionClassName={styles.section}
     title="Administration Dashboard"
   >
-    {CARDS.map(({ title, links, icon: Icon }) => (
+    {CARDS.map(({ title, links }) => (
       <div className={styles.card} key={title}>
-        <h2>
-          {Icon && <Icon />}
-          {title}
-        </h2>
+        <h2>{title}</h2>
         {links?.map(({ href, text }) => (
           <Link key={href} href={href}>
             {text}
