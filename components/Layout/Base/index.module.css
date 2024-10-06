@@ -7,17 +7,18 @@
   header {
     @apply mx-4
       flex
-      h-14
-      flex-row
+      flex-col
       items-center
       justify-between
       border-b-2
       border-gray-200
+      lg:flex-row
       dark:border-gray-800;
 
     h1 {
-      @apply text-2xl
-        font-bold;
+      @apply text-xl
+        font-bold
+        lg:text-2xl;
     }
 
     p {

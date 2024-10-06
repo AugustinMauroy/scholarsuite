@@ -8,7 +8,7 @@
     rounded-lg
     border-2
     border-gray-200
-    bg-gray-50
+    bg-white
     object-fill
     p-2
     dark:border-gray-700
@@ -60,16 +60,10 @@
     .content {
       @apply flex-1;
 
-      .firstName {
-        @apply text-lg
-          font-bold
-          leading-3
-          text-gray-800
-          dark:text-gray-300;
-      }
-
-      .lastName {
-        @apply font-semibold
+      .name {
+        @apply text-wrap
+          text-lg
+          font-semibold
           text-gray-800
           dark:text-gray-300;
       }

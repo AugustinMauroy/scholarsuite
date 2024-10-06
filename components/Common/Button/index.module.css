@@ -33,7 +33,9 @@
 
     &:disabled {
       @apply bg-indigo-400
-        text-gray-500;
+          text-gray-500
+          dark:bg-indigo-800
+          dark:text-gray-400;
     }
   }
 
@@ -53,8 +55,8 @@
 
     &:disabled {
       @apply border-gray-500
-        bg-transparent
-        text-gray-500;
+            bg-transparent
+            text-gray-500;
     }
   }
 }

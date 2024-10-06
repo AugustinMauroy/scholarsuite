@@ -329,6 +329,10 @@ if (users.length) {
         firstName: 'Steve',
         lastName: 'Rogers',
       },
+      {
+        firstName: 'Peter',
+        lastName: 'Von Schönberg Von Hohenstein',
+      },
     ],
   });
 

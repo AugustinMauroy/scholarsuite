@@ -55,8 +55,9 @@ const StudentCard: FC<StudentCardProps> = ({
         <div className={styles.info}>
           <StudentAvatar student={student} />
           <div className={styles.content}>
-            <h3 className={styles.firstName}>{student.firstName}</h3>
-            <h3 className={styles.lastName}>{student.lastName}</h3>
+            <h3 className={styles.name}>
+              {student.firstName} {student.lastName}
+            </h3>
             {student.className && (
               <small className={styles.className}>{student.className}</small>
             )}

@@ -6,17 +6,19 @@
 
   .button {
     @apply rounded
-    p-2
+    p-1
     transition-colors
     duration-200
     enabled:hover:bg-gray-200
     disabled:cursor-not-allowed
     disabled:opacity-50
+    lg:p-2
     enabled:dark:hover:bg-gray-800
     dark:disabled:opacity-70;
 
     svg {
-      @apply size-6;
+      @apply size-5
+        lg:size-6;
     }
   }
 
@@ -30,13 +32,15 @@
       items-center
       justify-center
       gap-2
-      text-2xl
-      font-bold
+      text-lg
+      font-semibold
       transition-colors
-      duration-200;
+      duration-200
+      lg:text-2xl;
 
       svg {
-        @apply size-6;
+        @apply size-5
+          lg:size-6;
       }
 
       &:hover:not([aria-expanded='true']) {
