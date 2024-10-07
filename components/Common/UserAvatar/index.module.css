@@ -1,11 +1,11 @@
 .trigger {
   @apply flex
-    size-fit
-    w-full
+    w-fit
     items-center
     justify-start
     gap-2
     rounded-full
+    px-2
     focus:outline-none
     focus:ring-2
     focus:ring-indigo-500;

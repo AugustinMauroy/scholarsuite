@@ -17,11 +17,12 @@
     @apply w-full;
 
     .logo {
-      @apply h-14
-        p-2;
-
       svg {
-        @apply h-10
+        @apply mx-auto
+          mb-6
+          mt-4
+          h-10
+          w-auto
           transition-transform;
 
         &:hover {
@@ -38,9 +39,14 @@
 
       .subLinks {
         h3 {
-          @apply text-sm
+          @apply mx-2
+            mb-1
+            border-b
+            border-gray-300
+            text-xs
             font-semibold
             text-gray-500
+            dark:border-gray-700
             dark:text-gray-400;
         }
 

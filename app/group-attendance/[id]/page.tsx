@@ -152,10 +152,11 @@ const Page: FC<PageProps> = ({ params }) => {
           });
           toast({
             kind: 'success',
+            duration: 1000,
             message: tPage('toast.success'),
           });
         });
-    }, 150);
+    }, 500);
 
     return () => clearTimeout(timeout);
     // eslint-disable-next-line react-hooks/exhaustive-deps

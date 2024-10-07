@@ -1,0 +1,29 @@
+.section {
+  @apply flex
+    flex-row
+    flex-wrap
+    gap-4;
+
+  .search {
+    @apply my-1.5;
+  }
+
+  .card {
+    @apply gap-1.5
+      transition-shadow
+      hover:shadow-md
+      hover:shadow-indigo-700;
+
+    h2 {
+      @apply text-lg
+        font-semibold;
+    }
+
+    .meta {
+      @apply flex
+        flex-row
+        items-center
+        justify-between;
+    }
+  }
+}

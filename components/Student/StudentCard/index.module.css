@@ -1,23 +1,11 @@
-.studentCard {
+.card {
   @apply relative
-    flex
-    size-fit
-    w-80
-    flex-col
-    gap-4
-    rounded-lg
-    border-2
-    border-gray-200
-    bg-white
-    object-fill
-    p-2
-    dark:border-gray-700
-    dark:bg-gray-800;
+    gap-4;
 
   .trigger {
     @apply absolute
-      right-4
-      top-4
+      right-2
+      top-2
       w-fit
       rounded-sm
       border

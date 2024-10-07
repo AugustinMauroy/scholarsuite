@@ -10,9 +10,9 @@ type InputProps = InputHTMLAttributes<HTMLInputElement> & {
 };
 
 const Input = forwardRef<HTMLInputElement, InputProps>(
-  ({ label, inline, type, ...inputProps }, ref) => (
+  ({ label, inline, type, className, ...inputProps }, ref) => (
     <div
-      className={classNames(styles.inputWrapper, {
+      className={classNames(className, styles.inputWrapper, {
         [styles.inline]: inline,
         [styles.checkbox]: type === 'checkbox',
       })}

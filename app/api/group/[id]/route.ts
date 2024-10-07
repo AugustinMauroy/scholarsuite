@@ -92,6 +92,11 @@ export const POST = async (
     },
   });
 
+  // sort students by firstname
+  groupData?.StudentGroup.sort((a, b) =>
+    a.Student.firstName.localeCompare(b.Student.firstName)
+  );
+
   if (!groupData) {
     return Response.json({ error: 'Group not found' }, { status: 404 });
   }

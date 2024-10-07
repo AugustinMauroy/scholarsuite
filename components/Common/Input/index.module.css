@@ -33,6 +33,12 @@
     &:not([type='checkbox']) {
       @apply min-w-40;
     }
+
+    &::placeholder {
+      @apply font-normal
+        text-gray-400
+        dark:text-gray-500;
+    }
   }
 
   &.inline {

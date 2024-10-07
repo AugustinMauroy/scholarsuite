@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { useMemo } from 'react';
 import Button from '@/components/Common/Button';
 import DropDownMenu from '@/components/Common/DropDownMenu';
+import Card from '@/components/Common/Card';
 import StudentAvatar from '../StudentAvatar';
 import styles from './index.module.css';
 import type { Student, Class } from '@prisma/client';
@@ -46,7 +47,7 @@ const StudentCard: FC<StudentCardProps> = ({
 
   return (
     <DropdownMenuPrimitive.Root>
-      <div className={styles.studentCard}>
+      <Card className={styles.card}>
         {withInfo && (
           <DropdownMenuPrimitive.Trigger className={styles.trigger}>
             <EllipsisVerticalIcon />
@@ -70,7 +71,7 @@ const StudentCard: FC<StudentCardProps> = ({
             ))}
           </div>
         )}
-      </div>
+      </Card>
       <DropDownMenu>
         <DropdownMenuPrimitive.Item asChild>
           <Link href={studentUrl}>View Student</Link>

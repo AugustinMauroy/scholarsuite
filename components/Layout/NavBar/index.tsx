@@ -6,7 +6,8 @@ import UserAvatar from '@/components/Common/UserAvatar';
 import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import ContainerNav from './Container';
-import type { FC } from 'react';
+import type { NavItem } from './Container';
+import type { FC, ReactNode } from 'react';
 
 const NavBar: FC = async () => {
   const session = await auth();
@@ -27,12 +28,20 @@ const NavBar: FC = async () => {
       ref: true,
       name: true,
     },
+    orderBy: [
+      {
+        name: 'asc',
+      },
+    ],
   });
 
-  const attendanceGroups = groups.map(group => ({
-    label: group.name || group.ref,
-    href: `/group-attendance/${group.id}`,
-  }));
+  const attendanceGroups = groups.map(
+    group =>
+      ({
+        label: group.name || (group.ref as ReactNode),
+        href: `/group-attendance/${group.id}`,
+      }) as NavItem
+  );
 
   const items = [
     { title: t('attendanceGroup'), items: attendanceGroups },
@@ -42,6 +51,12 @@ const NavBar: FC = async () => {
       icon: <MailIcon />,
     },
   ];
+
+  items[0].items?.push({
+    href: '/group-attendance',
+    label: <span className="italic">More ...</span>,
+    notActive: true,
+  } as NavItem);
 
   switch (session.user.role) {
     case 'ADMIN':

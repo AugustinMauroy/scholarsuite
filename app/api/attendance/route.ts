@@ -734,6 +734,11 @@ export const PATCH = async (req: Request): Promise<Response> => {
     },
   });
 
+  // sort students by firstname
+  groupData?.StudentGroup.sort((a, b) =>
+    a.Student.firstName.localeCompare(b.Student.firstName)
+  );
+
   return Response.json(
     {
       data: groupData,

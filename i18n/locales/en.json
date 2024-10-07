@@ -65,7 +65,7 @@
     },
     "layout": {
       "navbar": {
-        "attendance": "Review",
+        "attendance": "Absences",
         "attendanceGroup": "Attendance",
         "admin": "Administration",
         "about": "About",

@@ -5,10 +5,12 @@ import classNames from 'classnames';
 import styles from './index.module.css';
 import type { FC, ReactNode } from 'react';
 
-type NavItem = {
+export type NavItem = {
   href: string;
   icon: ReactNode;
-  label: string;
+  label: ReactNode;
+  // will not add active class to the link
+  notActive?: boolean;
 };
 
 type NavGroup = {
@@ -48,7 +50,8 @@ const ContainerNav: FC<ContainerNavProps> = ({
                     key={subItem.href}
                     href={subItem.href}
                     className={classNames(styles.subLink, {
-                      [styles.active]: pathname.includes(subItem.href),
+                      [styles.active]:
+                        !subItem.notActive && pathname.includes(subItem.href),
                     })}
                   >
                     {subItem.label}
@@ -60,7 +63,8 @@ const ContainerNav: FC<ContainerNavProps> = ({
                 key={item.href}
                 href={item.href}
                 className={classNames(styles.link, {
-                  [styles.active]: pathname.includes(item.href),
+                  [styles.active]:
+                    !item.notActive && pathname.includes(item.href),
                 })}
               >
                 {item.icon}

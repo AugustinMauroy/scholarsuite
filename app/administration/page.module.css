@@ -4,38 +4,20 @@
     gap-4;
 
   .card {
-    @apply w-52
-      rounded
-      bg-white
-      p-4
-      shadow
-      transition-shadow
-      lg:w-64
-      dark:border
-      dark:border-gray-700
-      dark:bg-gray-800
-      dark:shadow-none;
-
-    &:hover {
-      @apply shadow-lg
-        dark:shadow-none;
-    }
+    @apply gap-1;
 
     h2 {
-      @apply text-xl
-        font-bold;
-
-      svg {
-        @apply mr-2
-          inline
-          size-5;
-      }
+      @apply text-lg
+        font-semibold
+        text-gray-800
+        dark:text-gray-300;
     }
 
     a {
-      @apply block
-        text-indigo-500
-        hover:underline;
+      @apply text-indigo-600
+        hover:text-indigo-800
+        dark:text-indigo-400
+        dark:hover:text-indigo-200;
     }
   }
 }

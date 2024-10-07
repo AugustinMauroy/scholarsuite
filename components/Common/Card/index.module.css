@@ -1,0 +1,12 @@
+.card {
+  @apply flex
+    w-80
+    flex-col
+    rounded-lg
+    border-2
+    border-gray-200
+    bg-white
+    p-2
+    dark:border-gray-700
+    dark:bg-gray-900;
+}

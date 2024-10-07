@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import BaseLayout from '@/components/Layout/Base';
+import Card from '@/components/Common/Card';
 import styles from './page.module.css';
 import type { FC } from 'react';
 
@@ -58,14 +59,14 @@ const Page: FC = async () => (
     title="Administration Dashboard"
   >
     {CARDS.map(({ title, links }) => (
-      <div className={styles.card} key={title}>
+      <Card key={title} className={styles.card}>
         <h2>{title}</h2>
         {links?.map(({ href, text }) => (
           <Link key={href} href={href}>
             {text}
           </Link>
         ))}
-      </div>
+      </Card>
     ))}
   </BaseLayout>
 );
