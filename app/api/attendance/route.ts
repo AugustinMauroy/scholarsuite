@@ -10,10 +10,16 @@ export const PATCH = async (req: Request): Promise<Response> => {
     return Response.json({ error: 'invalid body' }, { status: 400 });
   }
 
-  const { data, timeSlotId, userId, groupId } = body;
+  const { data, groupId } = body;
+  const timeSlotId = Number(body.timeSlotId);
+  const userId = Number(body.userId);
   const date = new Date(body.date);
 
-  if (!data || !timeSlotId || userId === undefined || !date) {
+  if (Number.isNaN(timeSlotId) || Number.isNaN(userId) || !date) {
+    return Response.json({ error: 'invalid body' }, { status: 400 });
+  }
+
+  if (!data || timeSlotId === undefined || userId === undefined || !date) {
     return Response.json({ error: 'missing required fields' }, { status: 400 });
   }
 
@@ -49,7 +55,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
   }
 
   const user = await prisma.user.findUnique({
-    where: { id: Number(userId) },
+    where: { id: userId },
   });
 
   if (!user) {
@@ -91,7 +97,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
     if (currentAttendance) {
       await prisma.attendance.update({
         where: { id: currentAttendance.id },
-        data: { ...item, userId: Number(userId) },
+        data: { ...item, userId: userId },
       });
       await prisma.attendanceAudit.create({
         data: {
@@ -111,7 +117,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
       await prisma.attendance.create({
         data: {
           ...item,
-          userId: Number(userId),
+          userId: userId,
           timeSlotId,
           groupId,
           date: attendanceDate,
@@ -140,81 +146,81 @@ export const PATCH = async (req: Request): Promise<Response> => {
       );
     }
 
-    const [previousAttendance, nextAttendance, currentPeriod] =
-      await Promise.all([
-        /**
-         * Pour trouver la période d'absence actuelle, c'est rechercher la période d'absence pour l'étudiant
-         * de la même année académique dont la première présence est inférieure ou égale à la date de la présence
-         * et la dernière présence est supérieure ou égale à la date de la présence
-         */
-        prisma.attendance.findFirst({
-          where: {
-            date: {
-              // less than
-              lt: attendanceDate,
-            },
-            studentId: item.studentId,
-            academicYearId: academicYear.id,
-          },
-          orderBy: {
-            date: 'desc',
-          },
-        }),
-        /**
-         * Pour trouver la prochaine présence, c'est rechercher la présence pour l'étudiant
-         * de la même année académique dont la date minimum qui est strictement supérieure à la date de la présence
-         */
-        prisma.attendance.findFirst({
-          where: {
-            date: {
-              // greater than
-              gt: attendanceDate,
-            },
-            studentId: item.studentId,
-            academicYearId: academicYear.id,
-          },
-          orderBy: {
-            date: 'asc',
-          },
-        }),
-        /**
-         * Pour trouver la précédente présence, c'est rechercher la présence pour l'étudiant
-         * de la même année académique dont la date est strictement inférieure à la date de la présence
-         * (comparaison y compris date et heure)
-         */
-        prisma.absencePeriod.findFirst({
-          where: {
-            Student: {
-              id: item.studentId,
-            },
-            AcademicYear: {
-              id: academicYear.id,
-            },
-            OR: [
-              {
-                FirstAbsence: {
-                  date: {
-                    // less than or equal to
-                    lte: attendanceDate,
-                  },
-                },
+    /**
+     * Pour trouver la période d'absence actuelle, c'est rechercher la période d'absence pour l'étudiant
+     * de la même année académique dont la première présence est inférieure ou égale à la date de la présence
+     * et la dernière présence est supérieure ou égale à la date de la présence
+     */
+    const previousAttendance = await prisma.attendance.findFirst({
+      where: {
+        date: {
+          // less than
+          lt: attendanceDate,
+        },
+        studentId: item.studentId,
+        academicYearId: academicYear.id,
+      },
+      orderBy: {
+        date: 'desc',
+      },
+    });
+    /**
+     * Pour trouver la prochaine présence, c'est rechercher la présence pour l'étudiant
+     * de la même année académique dont la date minimum qui est strictement supérieure à la date de la présence
+     */
+    const nextAttendance = await prisma.attendance.findFirst({
+      where: {
+        date: {
+          // greater than
+          gt: attendanceDate,
+        },
+        studentId: item.studentId,
+        academicYearId: academicYear.id,
+      },
+      orderBy: {
+        date: 'asc',
+      },
+    });
+    /**
+     * Pour trouver la précédente présence, c'est rechercher la présence pour l'étudiant
+     * de la même année académique dont la date est strictement inférieure à la date de la présence
+     * (comparaison y compris date et heure)
+     */
+    const currentPeriod = await prisma.absencePeriod.findFirst({
+      where: {
+        Student: {
+          id: item.studentId,
+        },
+        AcademicYear: {
+          id: academicYear.id,
+        },
+        OR: [
+          {
+            FirstAbsence: {
+              date: {
+                // less than or equal to
+                lte: attendanceDate,
               },
-              {
-                LastAbsence: {
-                  date: {
-                    // greater than or equal to
-                    gte: attendanceDate,
-                  },
-                },
+            },
+          },
+          {
+            LastAbsence: {
+              id: {
+                gte: previousAttendance?.id,
               },
-            ],
+              date: {
+                // greater than or equal to
+                gte: attendanceDate,
+              },
+            },
           },
-          include: {
-            FirstAbsence: true,
-            LastAbsence: true,
-          },
-        }),
-      ]);
+        ],
+      },
+      include: {
+        FirstAbsence: true,
+        LastAbsence: true,
+      },
+    });
 
     // @DEBUG
     console.log('DEBUG: ');
