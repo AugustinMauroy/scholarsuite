@@ -97,7 +97,6 @@ model AcademicYear {
   updatedAt DateTime @updatedAt
 
   Attendance      Attendance[]
-  GradePeriods    GradePeriodAcademicYear[]
   AttendanceAudit AttendanceAudit[]
   AbsencePeriod   AbsencePeriod[]
 }
@@ -124,8 +123,7 @@ model Subject {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Grades Grade[]
-  Group  Group[]
+  Group Group[]
 }
 
 model User {
@@ -178,28 +176,10 @@ model Student {
   updatedAt DateTime @updatedAt
 
   Class               Class?               @relation(fields: [classId], references: [id])
-  Grades              Grade[]
   DisciplinaryReports DisciplinaryReport[]
   Attendance          Attendance[]
   StudentGroup        StudentGroup[]
   AbsencePeriod       AbsencePeriod[]
-}
-
-model Grade {
-  id            Int     @id @default(autoincrement())
-  value         Float
-  studentId     Int
-  subjectId     Int
-  gradePeriodId Int
-  groupId       Int
-  enabled       Boolean @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Student     Student     @relation(fields: [studentId], references: [id])
-  Subject     Subject     @relation(fields: [subjectId], references: [id])
-  GradePeriod GradePeriod @relation(fields: [gradePeriodId], references: [id])
 }
 
 model TimeSlotGroup {
@@ -243,20 +223,6 @@ model Group {
   UserGroup    UserGroup[]
   SchoolLevel  SchoolLevel?   @relation(fields: [schoolLevelId], references: [id])
   Attendance   Attendance[]
-}
-
-model GradePeriod {
-  id        Int      @id @default(autoincrement())
-  name      String
-  startDate DateTime
-  endDate   DateTime
-  enabled   Boolean  @default(true)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  Grades        Grade[]
-  AcademicYears GradePeriodAcademicYear[]
 }
 
 model Attendance {
@@ -334,16 +300,6 @@ model ApiKey {
   updatedAt DateTime @updatedAt
 
   User User @relation(fields: [userId], references: [id])
-}
-
-// Many to Many relations, between GradePeriod and AcademicYear
-model GradePeriodAcademicYear {
-  id             Int @id @default(autoincrement())
-  gradePeriodId  Int
-  academicYearId Int
-
-  GradePeriod  GradePeriod  @relation(fields: [gradePeriodId], references: [id])
-  AcademicYear AcademicYear @relation(fields: [academicYearId], references: [id])
 }
 
 // Many to Many relations, between User and Class
