@@ -10,6 +10,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "prestart": "node --no-warnings --loader=nodejs-loaders/dev/alias --loader=nodejs-loaders/dev/tsx scripts/preStart.ts",
     "start": "next start",
     "test": "vitest run",
     "test:watch": "vitest",

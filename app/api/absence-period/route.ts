@@ -1,5 +1,6 @@
 import { AbsencePeriodStatus } from '@prisma/client';
 import prisma from '@/lib/prisma';
+import { calculateTimeSlotGroupsInAbsencePeriod } from '@/lib/timeslotUtils';
 
 export const POST = async (req: Request): Promise<Response> => {
   const { groupId, selectedStatus, page } = (await req
@@ -48,7 +49,20 @@ export const POST = async (req: Request): Promise<Response> => {
     take: itemsPerPage,
   });
 
-  return Response.json({ data: absencePeriods });
+  const result = await Promise.all(
+    absencePeriods.map(async absencePeriod => {
+      const count = await calculateTimeSlotGroupsInAbsencePeriod(
+        absencePeriod.id
+      );
+
+      return {
+        ...absencePeriod,
+        count,
+      };
+    })
+  );
+
+  return Response.json({ data: result });
 };
 
 export const PATCH = async (req: Request): Promise<Response> => {

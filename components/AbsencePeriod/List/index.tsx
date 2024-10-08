@@ -24,6 +24,7 @@ type AbsenceWithRelations = AbsencePeriod & {
   FirstAbsence: Attendance;
   LastAbsence: Attendance;
   NextPresence: Attendance | null;
+  count: number;
 };
 
 const AbsencePeriodsList: FC = () => {
@@ -220,6 +221,14 @@ const AbsencePeriodsList: FC = () => {
                 {sortBy === 'status' &&
                   (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
               </th>
+              <th
+                className={styles.cursorPointer}
+                onClick={() => handleSort('count')}
+              >
+                Count{' '}
+                {sortBy === 'count' &&
+                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
+              </th>
               <th>Actions</th>
             </thead>
             <tbody>
@@ -236,6 +245,7 @@ const AbsencePeriodsList: FC = () => {
                   <td>{absencePeriod.LastAbsence.date.toLocaleDateString()}</td>
                   <td>{absencePeriod.AcademicYear.name}</td>
                   <td>{absencePeriod.status}</td>
+                  <td>{absencePeriod.count}</td>
                   <td>
                     <Button
                       onClick={() =>
