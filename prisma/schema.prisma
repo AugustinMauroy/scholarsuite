@@ -37,18 +37,14 @@ enum AbsencePeriodCommentHideReason {
 }
 
 model AbsencePeriod {
-  id                    Int                 @id @default(autoincrement())
-  studentId             Int
-  firstAbsenceId        Int
-  lastAbsenceId         Int
-  nextPresenceId        Int?
-  academicYearId        Int
-  status                AbsencePeriodStatus @default(PENDING)
-  justifyFromDate       DateTime?
-  justifyToDate         DateTime?
-  justifyFromTimeSlotId Int?
-  justifyToTimeSlotId   Int?
-  enabled               Boolean             @default(true)
+  id             Int                 @id @default(autoincrement())
+  studentId      Int
+  firstAbsenceId Int
+  lastAbsenceId  Int
+  nextPresenceId Int?
+  academicYearId Int
+  status         AbsencePeriodStatus @default(PENDING)
+  enabled        Boolean             @default(true)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -234,8 +230,6 @@ model Attendance {
   academicYearId Int
   timeSlotId     Int
   groupId        Int
-  processed      Boolean         @default(false)
-  notified       Boolean         @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
