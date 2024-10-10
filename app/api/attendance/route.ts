@@ -484,27 +484,30 @@ export const PATCH = async (req: Request): Promise<Response> => {
       }
     } else {
       /**
-       * - if Absenceperiode need to be ended => P AAA + P
+       * - case 1: if AbsencePeriode need to be ended => P AAA + P
        *   previous = A && next != A && current != A
        *   Actions:
-       *    - Check if period already exists => preiodeAbsence.lastAttendance.date == presence.date
+       *    - Check if currenTperiod already exists => preiodeAbsence.lastAttendance.date == presence.date
        *    - if exists update
        *    - if not create it and log error
-       * - if Absenceperiode need to be split => P AAA +P AAA P
+       *
+       * - case 2 if AbsencePeriode need to be split => P AAA +P AAA P
        *   previous = A && next = A && current = A
-       * - if Absenceperiode need to be shortened by the beginning => P -A +P AAA P
+       *
+       * - case 3: if AbsencePeriode need to be shortened by the beginning => P -A +P AAA P
        *   previous = (P || L) && next = A && current = A
-       * - if Absenceperiode need to be shortened by the end => P AAA +P -A P
+       *
+       * - case 4 if AbsencePeriode need to be shortened by the end => P AAA +P -A P
        *   previous = A && next = (P || L) && current = A
-       * - if Absenceperiode need to be deleted (soft delete enabled) => P -A +P P
+       *
+       * - case 5: if AbsencePeriode need to be deleted (soft delete enabled) => P -A +P P
        *   previous != A  && next != A && current = A
        */
       if (
         previousAttendance?.state === 'ABSENT' &&
         nextAttendance?.state !== 'ABSENT'
       ) {
-        // end absence period
-        console.log('end absence period');
+        console.log('Case 1: end absence period');
         if (currentAbsPeriod) {
           await prisma.absencePeriod.update({
             where: { id: currentAbsPeriod.id },
@@ -531,7 +534,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
         nextAttendance?.state === 'ABSENT'
       ) {
         // split absence period
-        console.log('split absence period');
+        console.log('Case 2: split absence period');
         if (currentAbsPeriod) {
           await prisma.absencePeriod.update({
             where: { id: currentAbsPeriod.id },
@@ -554,12 +557,11 @@ export const PATCH = async (req: Request): Promise<Response> => {
           );
         }
       } else if (
-        (previousAttendance?.state === 'PRESENT' ||
-          previousAttendance?.state === 'LATE') &&
+        previousAttendance?.state !== 'ABSENT' &&
         nextAttendance?.state === 'ABSENT'
       ) {
         // shorten absence period by the beginning
-        console.log('shorten absence period by the beginning');
+        console.log('Case 3: shorten absence period by the beginning');
         if (currentAbsPeriod) {
           await prisma.absencePeriod.update({
             where: { id: currentAbsPeriod.id },
@@ -587,7 +589,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
           nextAttendance?.state === 'LATE')
       ) {
         // shorten absence period by the end
-        console.log('shorten absence period by the end');
+        console.log('Case 4: shorten absence period by the end');
 
         if (currentAbsPeriod) {
           await prisma.absencePeriod.update({
@@ -616,7 +618,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
         nextAttendance?.state !== 'ABSENT'
       ) {
         // delete absence period
-        console.log('delete absence period');
+        console.log('Case 5: delete absence period');
 
         if (currentAbsPeriod) {
           await prisma.absencePeriod.update({
@@ -626,6 +628,11 @@ export const PATCH = async (req: Request): Promise<Response> => {
             },
           });
         } else {
+          await createAbsencePeriod({
+            currentAttendance,
+            item,
+            academicYear,
+          });
           console.error(
             'Absence period not found\nWhen trying to delete absence period'
           );
