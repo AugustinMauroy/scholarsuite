@@ -1,23 +1,61 @@
+import { createInterface } from 'node:readline/promises';
 import { resolve } from 'node:path';
 import { styleText } from 'node:util';
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient, User, Role } from '@prisma/client';
 import { generateCurrentAcademicYear } from '@/utils/academicYear.ts';
 import { encode } from '@/utils/crypto.ts';
 
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const __dirname = import.meta.dirname;
 const now = new Date();
-
 const prisma = new PrismaClient();
+const rl = createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 let users = await prisma.user.findMany();
 
 if (users.length) {
   console.log(
-    styleText('red', '⨯') + ' There are already entries in the database'
+    `${styleText('red', '⨯')} There are already entries in the database`
   );
   process.exit(0);
 } else {
   console.log(
-    styleText('green', '✓') + ' Starting seeding database for development'
+    `${styleText('green', '✓')} Starting seeding database for development`
   );
+
+  // ask dev for a new user
+  let user = null;
+  const wantNewUser = await rl.question(
+    'Do you want to create a new user? (y/n): '
+  );
+
+  if (wantNewUser === 'y') {
+    user = {} as User;
+    user.firstName = await rl.question('First name: ');
+    user.lastName = await rl.question('Last name: ');
+    do {
+      user.email = await rl.question('Email: ');
+      if (!EMAIL_REGEX.test(user.email)) {
+        console.log(`${styleText('red', '⨯')} Invalid email address`);
+      }
+    } while (!EMAIL_REGEX.test(user.email));
+    user.password = await encode(await rl.question('Password: '));
+
+    do {
+      user.role = (await rl.question(
+        'Role (ADMIN, TEACHER, MANAGER): '
+      )) as Role;
+      if (!['ADMIN', 'TEACHER', 'MANAGER'].includes(user.role)) {
+        console.log(
+          `${styleText('red', '⨯')} Role must be one of the following values: ADMIN, TEACHER, MANAGER`
+        );
+      }
+    } while (!['ADMIN', 'TEACHER', 'MANAGER'].includes(user.role));
+  }
+
+  rl.close();
 
   await prisma.user.createMany({
     data: [
@@ -42,6 +80,7 @@ if (users.length) {
         password: await encode('password'),
         role: 'MANAGER',
       },
+      ...(user ? [user] : []),
     ],
   });
 
@@ -50,7 +89,7 @@ if (users.length) {
 
   if (!admin) {
     console.log(
-      styleText('red', '⨯') + ' Admin user not found in the database'
+      `${styleText('red', '⨯')} Admin user not found in the database`
     );
     process.exit(0);
   }
@@ -93,12 +132,8 @@ if (users.length) {
     const pathToFile = resolve(__dirname, 'prisma/seed-dev.ts');
 
     console.log(
-      styleText('red', '⨯') +
-        ' School levels not found in the database\n' +
-        styleText('red', '⨯') +
-        ' Please check the' +
-        styleText('yellow', pathToFile) +
-        ' file'
+      `${styleText('red', '⨯')} School levels not found in the database
+      ${styleText('red', '⨯')} Please check the${styleText('yellow', pathToFile)} file`
     );
     process.exit(0);
   }
@@ -373,12 +408,8 @@ if (users.length) {
     stack = stack ? stack : pathToFile;
 
     console.log(
-      styleText('red', '⨯') +
-        ' Science subject not found in the database\n' +
-        styleText('red', '⨯') +
-        ' Please check the' +
-        styleText('yellow', stack) +
-        ' file'
+      `${styleText('red', '⨯')} Science subject not found in the database
+      ${styleText('red', '⨯')} Please check the ${styleText('yellow', stack)} file`
     );
     process.exit(0);
   }
@@ -600,17 +631,17 @@ if (users.length) {
 
   if (!academicYear) {
     console.log(
-      styleText('red', '⨯') + ' Academic year not found in the database'
+      `${styleText('red', '⨯')} Academic year not found in the database`
     );
     process.exit(0);
   }
   if (!timeSlots.length) {
     console.log(
-      styleText('red', '⨯') + ' Time slots not found in the database'
+      `${styleText('red', '⨯')} Time slots not found in the database`
     );
     process.exit(0);
   }
 
   await prisma.$disconnect();
-  console.log(styleText('green', '✓') + ' Seeded database for development');
+  console.log(`${styleText('green', '✓')} Seeded database for development`);
 }

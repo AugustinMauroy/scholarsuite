@@ -231,6 +231,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
       previousAttendance?.state === 'ABSENT'
         ? await prisma.absencePeriod.findFirst({
             where: {
+              enabled: true,
               Student: {
                 id: item.studentId,
               },
@@ -254,6 +255,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
      */
     const currentAbsPeriod = await prisma.absencePeriod.findFirst({
       where: {
+        enabled: true,
         Student: {
           id: item.studentId,
         },
@@ -288,6 +290,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
       nextAttendance?.state === 'ABSENT'
         ? await prisma.absencePeriod.findFirst({
             where: {
+              enabled: true,
               Student: {
                 id: item.studentId,
               },
@@ -479,6 +482,8 @@ export const PATCH = async (req: Request): Promise<Response> => {
             'Absence period not found\nWhen trying to merge with the previous Absenceperiode'
           );
         }
+      } else {
+        console.warn('Any case matched');
       }
     } else {
       /**
@@ -506,9 +511,9 @@ export const PATCH = async (req: Request): Promise<Response> => {
         nextAttendance?.state !== 'ABSENT'
       ) {
         console.log('Case 1: end absence period');
-        if (currentAbsPeriod) {
+        if (previousAbsPeriod) {
           await prisma.absencePeriod.update({
-            where: { id: currentAbsPeriod.id },
+            where: { id: previousAbsPeriod.id },
             data: {
               LastAbsence: {
                 connect: {
