@@ -161,8 +161,6 @@ export const PATCH = async (req: Request): Promise<Response> => {
           academicYearId: currentAttendance.academicYearId,
           timeSlotId: currentAttendance.timeSlotId,
           groupId: currentAttendance.groupId,
-          processed: currentAttendance.processed,
-          notified: currentAttendance.notified,
           changedBy: userId,
         },
       });

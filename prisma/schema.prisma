@@ -57,15 +57,6 @@ model AbsencePeriod {
   Comments     AbsencePeriodComment[]
 }
 
-model CacheAbsencePeriodTimeSlotGroups {
-  absencePeriodId Int      @id
-  count           Int
-  cachedAt        DateTime @default(now())
-  expiresAt       DateTime
-
-  @@index([absencePeriodId])
-}
-
 model AbsencePeriodComment {
   id              Int                             @id @default(autoincrement())
   userId          Int
@@ -256,8 +247,6 @@ model AttendanceAudit {
   academicYearId Int
   timeSlotId     Int
   groupId        Int
-  processed      Boolean
-  notified       Boolean
   changedBy      Int
   changedAt      DateTime        @default(now())
 
