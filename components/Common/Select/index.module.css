@@ -44,7 +44,8 @@
       dark:text-white
       dark:focus:border-gray-600
       dark:focus:ring-gray-600
-      dark:data-[highlighted]:bg-indigo-600
+      dark:data-[highlighted]:bg-indigo-800
+      dark:data-[highlighted]:text-white
       dark:data-[placeholder]:text-gray-200;
   }
 
@@ -90,7 +91,8 @@
       data-[highlighted]:text-white
       data-[highlighted]:outline-none
       dark:text-gray-200
-      dark:data-[highlighted]:bg-indigo-600;
+      dark:data-[highlighted]:bg-indigo-800
+      dark:data-[highlighted]:text-white;
   }
 
   .text > span {
@@ -133,8 +135,9 @@
       data-[disabled]:text-gray-600
       data-[highlighted]:text-gray-900
       dark:text-white
-      dark:data-[highlighted]:bg-indigo-600
-      dark:data-[disabled]:text-gray-700;
+      dark:data-[highlighted]:bg-indigo-800
+      dark:data-[disabled]:text-gray-700
+      dark:data-[highlighted]:text-white;
   }
 
   &.dropdown {

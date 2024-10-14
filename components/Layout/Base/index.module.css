@@ -28,7 +28,7 @@
   }
 
   .section {
-    @apply flex-1
-      p-4;
+    @apply m-4
+    flex-1;
   }
 }

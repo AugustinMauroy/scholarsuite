@@ -11,8 +11,7 @@
     ring-inset;
 
   svg {
-    @apply size-4
-      fill-current;
+    @apply size-4;
   }
 }
 

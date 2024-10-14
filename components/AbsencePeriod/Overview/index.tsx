@@ -1,4 +1,4 @@
-import { AbsencePeriodStatus } from '@prisma/client';
+import { CircleDotIcon, CircleDotDashedIcon } from 'lucide-react';
 import Select from '@/components/Common/Select';
 import StudentCard from '@/components/Student/StudentCard';
 import styles from './index.module.css';
@@ -41,9 +41,16 @@ const Overview: FC<OverviewProps> = ({ absence, onStatusChange }) => (
         label="Status"
         defaultValue={absence.status}
         values={[
-          AbsencePeriodStatus.JUSTIFIED,
-          AbsencePeriodStatus.PENDING,
-          AbsencePeriodStatus.UNJUSTIFIED,
+          {
+            label: 'Open',
+            value: 'OPEN',
+            iconImage: <CircleDotIcon className="text-green-500" />,
+          },
+          {
+            label: 'Closed',
+            value: 'CLOSED',
+            iconImage: <CircleDotDashedIcon className="text-red-500" />,
+          },
         ]}
       />
     </div>

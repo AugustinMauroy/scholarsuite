@@ -37,6 +37,18 @@
     "storybook": {
       "cache": false,
       "persistent": true
+    },
+    "test": {
+      "outputs": ["node_modules/.vite/vitest/results.json"],
+      "inputs": [
+        "components/**/*",
+        "hooks/**/*",
+        "providers/**/*",
+        "utils/**/*"
+      ]
+    },
+    "db:format": {
+      "inputs": ["prisma/schema.prisma"]
     }
   }
 }

@@ -47,7 +47,7 @@ const NavBar: FC = async () => {
     { title: t('attendanceGroup'), items: attendanceGroups },
     {
       label: t('disciplinaryReport'),
-      href: '/disciplinary-report',
+      href: '/disciplinary-reports',
       icon: <MailIcon />,
     },
   ];

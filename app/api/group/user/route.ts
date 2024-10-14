@@ -22,6 +22,11 @@ export const POST = async (req: Request) => {
         },
       },
     },
+    orderBy: [
+      {
+        name: 'asc',
+      },
+    ],
   });
 
   return Response.json({ data: groups }, { status: 200 });

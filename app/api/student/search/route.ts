@@ -15,11 +15,13 @@ export const POST = async (req: Request) => {
         {
           firstName: {
             contains: string,
+            mode: 'insensitive',
           },
         },
         {
           lastName: {
             contains: string,
+            mode: 'insensitive',
           },
         },
       ],

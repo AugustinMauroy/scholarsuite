@@ -1,13 +1,11 @@
 .nav {
   @apply flex
-    h-screen
     w-64
     flex-col
-    items-start
     justify-between
     overflow-y-scroll
     border-r
-    border-gray-200
+    border-r-gray-200
     bg-gray-50
     dark:border-r
     dark:border-r-gray-700
@@ -39,8 +37,8 @@
 
       .subLinks {
         h3 {
-          @apply mx-2
-            mb-1
+          @apply mb-1
+            ml-2
             border-b
             border-gray-300
             text-xs

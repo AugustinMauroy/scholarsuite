@@ -9,6 +9,7 @@ export default defineConfig({
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+      // keep this in sync with the `inputs` field in the `.turbo.js` file
       include: [
         'components/**/*',
         'hooks/**/*',

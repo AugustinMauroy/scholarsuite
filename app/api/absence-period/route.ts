@@ -11,7 +11,7 @@ export const POST = async (req: Request): Promise<Response> => {
     page: number;
   };
 
-  const status = selectedStatus ?? AbsencePeriodStatus.PENDING;
+  const status = selectedStatus ?? AbsencePeriodStatus.OPEN;
   const itemsPerPage = 10;
   const skip = (page - 1) * itemsPerPage;
 
@@ -33,6 +33,7 @@ export const POST = async (req: Request): Promise<Response> => {
       studentId: {
         in: studentIds,
       },
+      enabled: true,
     },
     include: {
       Student: {
@@ -41,9 +42,21 @@ export const POST = async (req: Request): Promise<Response> => {
         },
       },
       AcademicYear: true,
-      FirstAbsence: true,
-      LastAbsence: true,
-      NextPresence: true,
+      FirstAbsence: {
+        include: {
+          TimeSlot: true,
+        },
+      },
+      LastAbsence: {
+        include: {
+          TimeSlot: true,
+        },
+      },
+      NextPresence: {
+        include: {
+          TimeSlot: true,
+        },
+      },
     },
     skip: skip,
     take: itemsPerPage,

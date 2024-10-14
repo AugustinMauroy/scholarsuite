@@ -32,7 +32,7 @@ export const Default: Story = {
         ],
       },
       {
-        href: '/disciplinary-report',
+        href: '/disciplinary-reports',
         label: 'Disciplinary Report',
         icon: <MailIcon />,
       },

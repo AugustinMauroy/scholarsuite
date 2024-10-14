@@ -40,7 +40,7 @@ const GroupPage: FC<GroupPageProps> = ({ groups }) => {
           ref={ref}
           placeholder="🔎 Search for a group"
           type="text"
-          className={styles.search}
+          className="mb-1.5"
           aria-label="Search for a group"
           value={search}
           onChange={e => setSearch(e.target.value)}

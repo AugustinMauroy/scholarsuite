@@ -1,12 +1,15 @@
 'use client';
-import { ArrowUp, ArrowDown, Eye } from 'lucide-react';
+import { EyeIcon, CircleDotIcon, CircleDotDashedIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
+import { useFormatter } from 'next-intl';
+import Badge from '@/components/Common/Badge';
 import Button from '@/components/Common/Button';
 import Select from '@/components/Common/Select';
+import Card from '@/components/Common/Card';
 import Pagination from '@/components/Common/Pagination';
-import styles from './index.module.css';
+import BaseLayout from '@/components/Layout/Base';
 import type {
   AbsencePeriod,
   Student,
@@ -15,32 +18,46 @@ import type {
   Class,
   Group,
   AbsencePeriodStatus,
+  TimeSlot,
 } from '@prisma/client';
 import type { FC } from 'react';
+import type { DateTimeFormatOptions } from 'next-intl';
 
 type AbsenceWithRelations = AbsencePeriod & {
   Student: Student & { Class: Class | null };
   AcademicYear: AcademicYear;
-  FirstAbsence: Attendance;
-  LastAbsence: Attendance;
-  NextPresence: Attendance | null;
+  FirstAbsence: Attendance & {
+    TimeSlot: TimeSlot;
+  };
+  LastAbsence: Attendance & {
+    TimeSlot: TimeSlot;
+  };
+  NextPresence:
+    | (Attendance & {
+        TimeSlot: TimeSlot;
+      })
+    | null;
   count: number;
 };
 
 const AbsencePeriodsList: FC = () => {
   const session = useSession();
   const router = useRouter();
+  const format = useFormatter();
   const [absencePeriods, setAbsencePeriods] = useState<
     AbsenceWithRelations[] | null
   >(null);
   const [groups, setGroups] = useState<Group[] | null>(null);
   const [selectedGroup, setSelectedGroup] = useState<number | null>(null);
   const [selectedStatus, setSelectedStatus] =
-    useState<AbsencePeriodStatus>('PENDING');
+    useState<AbsencePeriodStatus>('OPEN');
   const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState<string | null>(null);
-  const [sortOrder, setSortOrder] = useState('asc');
   const itemsPerPage = 10;
+
+  const dateTimeOptions: DateTimeFormatOptions = {
+    month: 'long',
+    day: 'numeric',
+  };
 
   useEffect(() => {
     if (!session.data?.user.id) return;
@@ -95,183 +112,124 @@ const AbsencePeriodsList: FC = () => {
     });
   }, [selectedGroup, selectedStatus, currentPage]);
 
-  const sortedAbsencePeriods = useMemo(() => {
-    if (!absencePeriods) return [];
-
-    return absencePeriods.sort((a, b) => {
-      if (sortBy === 'studentName') {
-        return sortOrder === 'asc'
-          ? `${a.Student.firstName} ${a.Student.lastName}`.localeCompare(
-              `${b.Student.firstName} ${b.Student.lastName}`
-            )
-          : `${b.Student.firstName} ${b.Student.lastName}`.localeCompare(
-              `${a.Student.firstName} ${a.Student.lastName}`
-            );
-      } else if (sortBy === 'firstAbsence') {
-        return sortOrder === 'asc'
-          ? a.FirstAbsence.date.getTime() - b.FirstAbsence.date.getTime()
-          : b.FirstAbsence.date.getTime() - a.FirstAbsence.date.getTime();
-      } else if (sortBy === 'lastAbsence') {
-        return sortOrder === 'asc'
-          ? a.LastAbsence.date.getTime() - b.LastAbsence.date.getTime()
-          : b.LastAbsence.date.getTime() - a.LastAbsence.date.getTime();
-      } else if (sortBy === 'academicYear') {
-        return sortOrder === 'asc'
-          ? a.AcademicYear.name.localeCompare(b.AcademicYear.name)
-          : b.AcademicYear.name.localeCompare(a.AcademicYear.name);
-      } else if (sortBy === 'status') {
-        return sortOrder === 'asc'
-          ? a.status.localeCompare(b.status)
-          : b.status.localeCompare(a.status);
-      }
-
-      return 0;
-    });
-  }, [absencePeriods, sortBy, sortOrder]);
-
-  const totalPages = Math.ceil(sortedAbsencePeriods.length / itemsPerPage);
+  const totalPages =
+    absencePeriods && Math.ceil(absencePeriods.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const currentAbsencePeriods = sortedAbsencePeriods.slice(
-    startIndex,
-    endIndex
-  );
-
-  const handleSort = (field: string) => {
-    if (sortBy === field) {
-      setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
-    } else {
-      setSortBy(field);
-      setSortOrder('asc');
-    }
-  };
+  const currentAbsencePeriods =
+    absencePeriods && absencePeriods.slice(startIndex, endIndex);
 
   const handlePageChange = (page: number) => {
     setCurrentPage(page);
   };
 
   return (
-    <>
-      <div className={styles.filters}>
-        <Select
-          label="Group"
-          values={
-            groups?.map(group => ({
-              label: group.name || group.ref,
-              value: group.id.toString(),
-            })) || []
-          }
-          onChange={v => setSelectedGroup(parseInt(v))}
-          className={styles.groupSelect}
-        />
-        <Select
-          label="Status"
-          defaultValue={selectedStatus}
-          values={
-            [
-              { label: 'Pending', value: 'PENDING' },
-              { label: 'Justified', value: 'JUSTIFIED' },
-              { label: 'Unjustified', value: 'UNJUSTIFIED' },
-            ] as { label: string; value: AbsencePeriodStatus }[]
-          }
-          onChange={v => setSelectedStatus(v as AbsencePeriodStatus)}
-        />
-      </div>
-      {absencePeriods !== null && absencePeriods.length > 0 ? (
-        <div className={styles.table}>
-          <table>
-            <thead>
-              <th
-                className={styles.cursorPointer}
-                onClick={() => handleSort('studentName')}
-              >
-                Student
-                {sortBy === 'studentName' &&
-                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
-              </th>
-              <th
-                className={styles.cursorPointer}
-                onClick={() => handleSort('firstAbsence')}
-              >
-                First Absence
-                {sortBy === 'firstAbsence' &&
-                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
-              </th>
-              <th
-                className={styles.cursorPointer}
-                onClick={() => handleSort('lastAbsence')}
-              >
-                Last Absence
-                {sortBy === 'lastAbsence' &&
-                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
-              </th>
-              <th
-                className={styles.cursorPointer}
-                onClick={() => handleSort('academicYear')}
-              >
-                Academic Year{' '}
-                {sortBy === 'academicYear' &&
-                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
-              </th>
-              <th
-                className={styles.cursorPointer}
-                onClick={() => handleSort('status')}
-              >
-                Status{' '}
-                {sortBy === 'status' &&
-                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
-              </th>
-              <th
-                className={styles.cursorPointer}
-                onClick={() => handleSort('count')}
-              >
-                Count{' '}
-                {sortBy === 'count' &&
-                  (sortOrder === 'asc' ? <ArrowUp /> : <ArrowDown />)}
-              </th>
-              <th>Actions</th>
-            </thead>
-            <tbody>
-              {currentAbsencePeriods.map(absencePeriod => (
-                <tr key={absencePeriod.id}>
-                  <td>
-                    {absencePeriod.Student.firstName}{' '}
-                    {absencePeriod.Student.lastName}
-                    <small> {absencePeriod.Student.Class?.name}</small>
-                  </td>
-                  <td>
-                    {absencePeriod.FirstAbsence.date.toLocaleDateString()}
-                  </td>
-                  <td>{absencePeriod.LastAbsence.date.toLocaleDateString()}</td>
-                  <td>{absencePeriod.AcademicYear.name}</td>
-                  <td>{absencePeriod.status}</td>
-                  <td>{absencePeriod.count}</td>
-                  <td>
-                    <Button
-                      onClick={() =>
-                        router.push(`/attendance/absence/${absencePeriod.id}`)
-                      }
-                    >
-                      <Eye />
-                      View
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {totalPages > 1 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          )}
+    <BaseLayout
+      title="Absence Periods"
+      actions={
+        <div className="mb-4 flex flex-row gap-2">
+          <Select
+            label="Group"
+            inline
+            placeholder="Select a group"
+            values={
+              groups?.map(group => ({
+                label: group.name || group.ref,
+                value: group.id.toString(),
+              })) || []
+            }
+            onChange={v => setSelectedGroup(parseInt(v))}
+          />
+          <Select
+            label="Status"
+            defaultValue={selectedStatus}
+            inline
+            values={[
+              {
+                label: 'Open',
+                value: 'OPEN',
+                iconImage: <CircleDotIcon className="text-green-500" />,
+              },
+              {
+                label: 'Closed',
+                value: 'CLOSED',
+                iconImage: <CircleDotDashedIcon className="text-red-500" />,
+              },
+            ]}
+            onChange={v => setSelectedStatus(v as AbsencePeriodStatus)}
+          />
         </div>
+      }
+    >
+      {absencePeriods !== null &&
+      currentAbsencePeriods &&
+      absencePeriods.length > 0 ? (
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+          {currentAbsencePeriods.map(absencePeriod => (
+            <Card key={absencePeriod.id} className="flex flex-col gap-2.5">
+              <h3 className="text-lg font-semibold">
+                {absencePeriod.Student.firstName}{' '}
+                {absencePeriod.Student.lastName}{' '}
+                {absencePeriod.Student.Class?.name && (
+                  <small className="text-sm font-normal text-gray-600 dark:text-gray-400">
+                    ({absencePeriod.Student.Class.name})
+                  </small>
+                )}
+              </h3>
+              <p>
+                First Absence: {absencePeriod.FirstAbsence.TimeSlot.name}{' '}
+                {format.dateTime(
+                  absencePeriod.FirstAbsence.date,
+                  dateTimeOptions
+                )}{' '}
+                <br />
+                Last Absence: {absencePeriod.LastAbsence.TimeSlot.name}{' '}
+                {absencePeriod.FirstAbsence.date.toDateString() !==
+                  absencePeriod.LastAbsence.date.toDateString() &&
+                  format.dateTime(
+                    absencePeriod.LastAbsence.date,
+                    dateTimeOptions
+                  )}
+              </p>
+              <Badge
+                kind={absencePeriod.status === 'OPEN' ? 'success' : 'error'}
+              >
+                {absencePeriod.status === 'OPEN' ? (
+                  <CircleDotIcon className="mr-2" />
+                ) : (
+                  <CircleDotDashedIcon className="mr-2" />
+                )}
+                {absencePeriod.status}
+              </Badge>
+              <p>Count: {absencePeriod.count}</p>
+              <Button
+                onClick={() =>
+                  router.push(`/attendance/absence/${absencePeriod.id}`)
+                }
+                className="mt-2"
+              >
+                <EyeIcon className="mr-2" />
+                View
+              </Button>
+            </Card>
+          ))}
+        </div>
+      ) : !selectedGroup ? (
+        <p className="text-center">Please select a group</p>
       ) : (
-        <p>No absence periods found</p>
+        <p className="text-center">No absence periods found</p>
       )}
-    </>
+      {absencePeriods &&
+        absencePeriods.length > 0 &&
+        totalPages &&
+        totalPages > 1 && (
+          <Pagination
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        )}
+    </BaseLayout>
   );
 };
 

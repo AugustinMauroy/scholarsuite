@@ -1,15 +1,16 @@
 'use client';
 import { useRef } from 'react';
 import styles from './index.module.css';
-import type { FC, DragEvent } from 'react';
+import type { FC, DragEvent, InputHTMLAttributes } from 'react';
 
 type DropZoneProps = {
   title: string;
   file: File | null;
+  accept?: InputHTMLAttributes<HTMLInputElement>['accept'];
   setFile: (file: File) => void;
 };
 
-const DropZone: FC<DropZoneProps> = ({ file, setFile, title }) => {
+const DropZone: FC<DropZoneProps> = ({ file, setFile, title, accept }) => {
   const hiddenFileInput = useRef<HTMLInputElement>(null);
 
   const handleDrop = (event: DragEvent) => {
@@ -40,7 +41,7 @@ const DropZone: FC<DropZoneProps> = ({ file, setFile, title }) => {
       </div>
       <input
         type="file"
-        accept="image/*"
+        accept={accept}
         ref={hiddenFileInput}
         onChange={handleFileInputChange}
         className={styles.hiddenInput}

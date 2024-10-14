@@ -320,10 +320,11 @@ export const PATCH = async (req: Request): Promise<Response> => {
 
     if (item.state === 'ABSENT') {
       /**
-       * - case 1: if no past Absenceperiode needed to create => P +A || P -P +A P || +A P
+       * - Case 1: if no past Absenceperiode needed to create => P +A || P -P +A P || +A P
        *   (previous = null && next = null) ||
        *   (previous = P && next = null) ||
-       *   (previous = null && next = P)
+       *   (previous = null && next = P) ||
+       *   (previous != a && next != a)
        *   Action:
        *    - Check if period already exists => CurrentAbsencePeriod.first.date <= attendance.date && attendance.date <= CurentAbsencePeriod.last.date
        *    - if exists update it and log the change
@@ -357,7 +358,9 @@ export const PATCH = async (req: Request): Promise<Response> => {
       if (
         (!previousAttendance && !nextAttendance) ||
         (previousAttendance?.state !== 'ABSENT' && !nextAttendance) ||
-        (!previousAttendance && nextAttendance?.state !== 'ABSENT')
+        (!previousAttendance && nextAttendance?.state !== 'ABSENT') ||
+        (previousAttendance?.state !== 'ABSENT' &&
+          nextAttendance?.state !== 'ABSENT')
       ) {
         // Create new absence period
         console.log('case 1: create new absence period');
@@ -538,13 +541,67 @@ export const PATCH = async (req: Request): Promise<Response> => {
       ) {
         // split absence period
         console.log('Case 2: split absence period');
-        if (currentAbsPeriod) {
+        const lastAbsence = await prisma.attendance.findFirst({
+          where: {
+            date: {
+              // less than or equal to
+              lte: attendanceDate,
+            },
+            studentId: item.studentId,
+            academicYearId: academicYear.id,
+            state: 'ABSENT',
+          },
+          orderBy: {
+            date: 'desc',
+          },
+        });
+        const firstAbsence = await prisma.attendance.findFirst({
+          where: {
+            date: {
+              // greater than or equal to
+              gte: attendanceDate,
+            },
+            studentId: item.studentId,
+            academicYearId: academicYear.id,
+            state: 'ABSENT',
+          },
+          orderBy: {
+            date: 'asc',
+          },
+        });
+
+        if (currentAbsPeriod && lastAbsence && firstAbsence) {
           await prisma.absencePeriod.update({
             where: { id: currentAbsPeriod.id },
             data: {
               LastAbsence: {
                 connect: {
-                  id: currentAttendance.id,
+                  id: lastAbsence.id,
+                },
+              },
+            },
+          });
+          // create new absence period
+          await prisma.absencePeriod.create({
+            data: {
+              FirstAbsence: {
+                connect: {
+                  id: firstAbsence.id,
+                },
+              },
+              LastAbsence: {
+                connect: {
+                  id: currentAbsPeriod.LastAbsence.id,
+                },
+              },
+              Student: {
+                connect: {
+                  id: item.studentId,
+                },
+              },
+              AcademicYear: {
+                connect: {
+                  id: academicYear.id,
                 },
               },
             },

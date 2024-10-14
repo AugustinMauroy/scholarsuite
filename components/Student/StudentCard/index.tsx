@@ -36,10 +36,9 @@ const StudentCard: FC<StudentCardProps> = ({
   );
   const disciplinaryReportUrl = useMemo(
     () =>
-      '/disciplinary-report?' +
+      '/disciplinary-reports/create?' +
       new URLSearchParams({
         studentId: student.id.toString(),
-        'tab-key': 'create',
         from: from ? from : '',
       }).toString(),
     [student.id, from]
