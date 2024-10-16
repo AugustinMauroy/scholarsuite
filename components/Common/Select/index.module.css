@@ -132,8 +132,8 @@
   .text {
     @apply text-gray-900
       data-[highlighted]:bg-indigo-500
-      data-[disabled]:text-gray-600
-      data-[highlighted]:text-gray-900
+    data-[disabled]:text-gray-600
+      data-[highlighted]:text-white
       dark:text-white
       dark:data-[highlighted]:bg-indigo-800
       dark:data-[disabled]:text-gray-700

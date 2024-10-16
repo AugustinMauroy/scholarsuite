@@ -31,16 +31,15 @@ const Page: FC = () => {
         <ul className={styles.list}>
           {disciplinaryReports.map(disciplinaryReport => (
             <li key={disciplinaryReport.id}>
-              <h2>{disciplinaryReport.Student.firstName}</h2>
-              <p>
-                <CalendarIcon />
-                {new Date(disciplinaryReport.date).toLocaleDateString()}
-              </p>
-              <p className={styles.createdBy}>
-                Created by: {disciplinaryReport.CreatedBy.firstName}
-              </p>
               <Link href={`/disciplinary-reports/${disciplinaryReport.id}`}>
-                View
+                <h2>{disciplinaryReport.Student.firstName}</h2>
+                <p>
+                  <CalendarIcon />
+                  {new Date(disciplinaryReport.date).toLocaleDateString()}
+                </p>
+                <p className={styles.createdBy}>
+                  Created by: {disciplinaryReport.CreatedBy.firstName}
+                </p>
               </Link>
             </li>
           ))}

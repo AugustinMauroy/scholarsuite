@@ -164,7 +164,7 @@ const AbsencePeriodsList: FC = () => {
       {absencePeriods !== null &&
       currentAbsencePeriods &&
       absencePeriods.length > 0 ? (
-        <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="flex w-full flex-row flex-wrap items-start justify-center gap-4 overflow-y-scroll md:justify-start">
           {currentAbsencePeriods.map(absencePeriod => (
             <Card key={absencePeriod.id} className="flex flex-col gap-2.5">
               <h3 className="text-lg font-semibold">

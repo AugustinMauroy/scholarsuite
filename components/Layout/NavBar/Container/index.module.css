@@ -3,11 +3,9 @@
     w-64
     flex-col
     justify-between
-    overflow-y-scroll
     border-r
     border-r-gray-200
     bg-gray-50
-    dark:border-r
     dark:border-r-gray-700
     dark:bg-gray-800;
 
