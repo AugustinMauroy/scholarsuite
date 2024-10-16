@@ -1,7 +1,12 @@
 'use client';
+import { useState } from 'react';
+import { MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import classNames from 'classnames';
+import UserAvatar from '@/components/Common/UserAvatar';
+import LogoText from '@/components/Common/LogoText';
+import Logo from '@/components/Common/Logo';
 import styles from './index.module.css';
 import type { FC, ReactNode } from 'react';
 
@@ -19,7 +24,6 @@ type NavGroup = {
 };
 
 type ContainerNavProps = {
-  logo: ReactNode;
   items: Array<NavItem | NavGroup>;
   bottomElements?: Array<{
     label: ReactNode;
@@ -27,66 +31,78 @@ type ContainerNavProps = {
   }>;
 };
 
-const ContainerNav: FC<ContainerNavProps> = ({
-  logo,
-  items,
-  bottomElements,
-}) => {
+const ContainerNav: FC<ContainerNavProps> = ({ items, bottomElements }) => {
   const pathname = usePathname();
+  const [open, setOpen] = useState(true);
 
   return (
-    <nav className={styles.nav}>
-      <div className={styles.topLinks}>
-        <Link href="/" className={styles.logo}>
-          {logo}
-        </Link>
-        <div className={styles.links}>
-          {items.map(item =>
-            'title' in item ? (
-              <div key={item.title} className={styles.subLinks}>
-                <h3>{item.title}</h3>
-                {item.items.map(subItem => (
-                  <Link
-                    key={subItem.href}
-                    href={subItem.href}
-                    className={classNames(styles.subLink, {
-                      [styles.active]:
-                        !subItem.notActive && pathname.includes(subItem.href),
-                    })}
-                  >
-                    {subItem.label}
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={classNames(styles.link, {
-                  [styles.active]:
-                    !item.notActive && pathname.includes(item.href),
-                })}
-              >
-                {item.icon}
-                {item.label}
-              </Link>
-            )
-          )}
+    <nav
+      className={classNames(styles.nav, {
+        [styles.open]: open,
+        [styles.closed]: !open,
+      })}
+    >
+      <button
+        className={styles.toggle}
+        onClick={() => setOpen(!open)}
+        aria-label="Toggle navigation"
+      >
+        {open ? <XIcon /> : <MenuIcon />}
+      </button>
+      <section className={styles.navBody}>
+        <div className={styles.topLinks}>
+          <Link href="/" className={styles.logo}>
+            {open ? <LogoText /> : <Logo />}
+          </Link>
+          <div className={styles.links}>
+            {items.map(item =>
+              'title' in item ? (
+                <div key={item.title} className={styles.subLinks}>
+                  <h3>{item.title}</h3>
+                  {item.items.map(subItem => (
+                    <Link
+                      key={subItem.href}
+                      href={subItem.href}
+                      className={classNames(styles.subLink, {
+                        [styles.active]:
+                          !subItem.notActive && pathname.includes(subItem.href),
+                      })}
+                    >
+                      {subItem.label}
+                    </Link>
+                  ))}
+                </div>
+              ) : (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  className={classNames(styles.link, {
+                    [styles.active]:
+                      !item.notActive && pathname.includes(item.href),
+                  })}
+                >
+                  {item.icon}
+                  <span>{item.label}</span>
+                </Link>
+              )
+            )}
+          </div>
         </div>
-      </div>
-      {bottomElements && (
-        <div className={styles.bottomElements}>
-          {bottomElements.map(link =>
-            link.href ? (
-              <a key={link.href} href={link.href}>
-                {link.label}
-              </a>
-            ) : (
-              link.label
-            )
-          )}
-        </div>
-      )}
+        {bottomElements && (
+          <div className={styles.bottomElements}>
+            {bottomElements.map(link =>
+              link.href ? (
+                <a key={link.href} href={link.href}>
+                  {link.label}
+                </a>
+              ) : (
+                link.label
+              )
+            )}
+            <UserAvatar withName={open} />
+          </div>
+        )}
+      </section>
     </nav>
   );
 };

@@ -11,7 +11,11 @@ import { getAcronymFromString } from '@/utils/string';
 import styles from './index.module.css';
 import type { FC } from 'react';
 
-const UserAvatar: FC = () => {
+type UserAvatarProps = {
+  withName?: boolean;
+};
+
+const UserAvatar: FC<UserAvatarProps> = ({ withName = true }) => {
   const sessionData = useSession();
   const t = useTranslations('components.common.userAvatar');
   const alt = getAcronymFromString(sessionData.data?.user.name || '');
@@ -20,9 +24,11 @@ const UserAvatar: FC = () => {
     <DropdownMenuPrimitive.Root>
       <DropdownMenuPrimitive.Trigger className={styles.trigger}>
         <Avatar src={sessionData.data?.user?.image || ''} alt={alt} />
-        <span className={styles.name}>
-          {sessionData.data?.user.firstName} {sessionData.data?.user.lastName}
-        </span>
+        {withName && (
+          <span className={styles.name}>
+            {sessionData.data?.user.firstName} {sessionData.data?.user.lastName}
+          </span>
+        )}
       </DropdownMenuPrimitive.Trigger>
       <DropDownMenu className={styles.content}>
         <DropdownMenuPrimitive.Item asChild>

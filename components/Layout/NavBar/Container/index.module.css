@@ -1,53 +1,108 @@
 .nav {
-  @apply flex
-    w-64
-    flex-col
-    justify-between
+  @apply max-h-screen
     border-r
     border-r-gray-200
     bg-gray-50
     dark:border-r-gray-700
     dark:bg-gray-800;
 
-  .topLinks {
-    @apply w-full;
+  .toggle {
+    @apply flex
+      w-full
+      p-2;
+  }
+
+  &.open {
+    @apply w-60;
+
+    .toggle {
+      @apply justify-end;
+    }
+  }
+
+  &.closed {
+    @apply w-16;
+
+    .toggle {
+      @apply justify-center;
+    }
 
     .logo {
-      svg {
+      @apply py-2;
+    }
+
+    .navBody {
+      @apply items-center;
+
+      .topLinks {
         @apply mx-auto
-          mb-6
-          mt-4
+          w-fit;
+
+        .subLinks {
+          @apply hidden;
+        }
+
+        .link {
+          @apply w-fit;
+
+          span {
+            @apply hidden;
+          }
+        }
+      }
+
+      .bottomElements a {
+        @apply hidden;
+      }
+    }
+  }
+
+  .navBody {
+    @apply flex
+      h-full
+      flex-col
+      justify-between;
+
+    .topLinks {
+      @apply w-full;
+
+      .logo {
+        @apply block
+        py-2;
+
+        svg {
+          @apply mx-auto
           h-10
           w-auto
           transition-transform;
 
-        &:hover {
-          @apply scale-105;
+          &:hover {
+            @apply scale-105;
+          }
         }
       }
-    }
 
-    .links {
-      @apply flex
+      .links {
+        @apply flex
         flex-col
-        gap-2.5
+        space-y-2
         px-2;
 
-      .subLinks {
-        h3 {
-          @apply mb-1
-            ml-2
-            border-b
+        .subLinks {
+          h3 {
+            @apply border-b
             border-gray-300
+            pb-1
+            pl-2
             text-xs
             font-semibold
             text-gray-500
             dark:border-gray-700
             dark:text-gray-400;
-        }
+          }
 
-        .subLink {
-          @apply flex
+          .subLink {
+            @apply flex
             items-center
             gap-2
             truncate
@@ -59,20 +114,20 @@
             transition-colors
             duration-200;
 
-          &:not(.active):hover {
-            @apply bg-gray-200
+            &:not(.active):hover {
+              @apply bg-gray-200
               dark:bg-gray-700;
-          }
+            }
 
-          &.active {
-            @apply text-indigo-500
+            &.active {
+              @apply text-indigo-500
               dark:text-indigo-400;
+            }
           }
         }
-      }
 
-      .link {
-        @apply flex
+        .link {
+          @apply flex
           items-center
           gap-2
           text-wrap
@@ -81,30 +136,30 @@
           transition-colors
           duration-200;
 
-        &:hover {
-          @apply bg-gray-200
+          &:hover {
+            @apply bg-gray-200
             dark:bg-gray-700;
-        }
+          }
 
-        &.active {
-          @apply bg-indigo-500
+          &.active {
+            @apply bg-indigo-500
             text-white
             dark:bg-indigo-400;
+          }
         }
       }
     }
-  }
 
-  .bottomElements {
-    @apply mb-4
+    .bottomElements {
+      @apply mb-4
       flex
       w-full
       flex-col
       gap-2
       px-2;
 
-    a {
-      @apply flex
+      a {
+        @apply flex
         items-center
         gap-2
         rounded
@@ -112,9 +167,10 @@
         transition-colors
         duration-200;
 
-      &:hover {
-        @apply bg-gray-200
+        &:hover {
+          @apply bg-gray-200
           dark:bg-gray-700;
+        }
       }
     }
   }
