@@ -1,8 +1,10 @@
 .nav {
-  @apply max-h-screen
+  @apply flex
+    flex-col
     border-r
     border-r-gray-200
     bg-gray-50
+    transition-all
     dark:border-r-gray-700
     dark:bg-gray-800;
 
@@ -59,7 +61,7 @@
 
   .navBody {
     @apply flex
-      h-full
+      flex-1
       flex-col
       justify-between;
 

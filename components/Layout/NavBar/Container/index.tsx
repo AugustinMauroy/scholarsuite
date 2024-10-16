@@ -4,6 +4,7 @@ import { MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import classNames from 'classnames';
+import useMediaQuery from '@/hooks/useMediaQuery';
 import UserAvatar from '@/components/Common/UserAvatar';
 import LogoText from '@/components/Common/LogoText';
 import Logo from '@/components/Common/Logo';
@@ -33,7 +34,8 @@ type ContainerNavProps = {
 
 const ContainerNav: FC<ContainerNavProps> = ({ items, bottomElements }) => {
   const pathname = usePathname();
-  const [open, setOpen] = useState(true);
+  const isMobileScreen = useMediaQuery('(max-width: 639px)');
+  const [open, setOpen] = useState(!isMobileScreen);
 
   return (
     <nav
