@@ -30,7 +30,7 @@ const UserAvatar: FC<UserAvatarProps> = ({ withName = true }) => {
           </span>
         )}
       </DropdownMenuPrimitive.Trigger>
-      <DropDownMenu className={styles.content}>
+      <DropDownMenu className={styles.content} withPortal>
         <DropdownMenuPrimitive.Item asChild>
           <Link href="/profile">
             <Settings />
