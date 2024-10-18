@@ -1,7 +1,8 @@
 .body {
   @apply flex
-    min-h-screen
-    flex-row;
+    max-h-screen
+    flex-row
+    overflow-hidden;
 
   .wrapper {
     @apply h-screen

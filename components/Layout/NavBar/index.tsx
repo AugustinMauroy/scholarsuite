@@ -1,8 +1,5 @@
 import { MailIcon, UsersIcon, DatabaseIcon } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
-import Environment from '@/components/Common/Environement';
-import LogoText from '@/components/Common/LogoText';
-import UserAvatar from '@/components/Common/UserAvatar';
 import { auth } from '@/lib/auth';
 import prisma from '@/lib/prisma';
 import ContainerNav from './Container';
@@ -75,13 +72,8 @@ const NavBar: FC = async () => {
 
   return (
     <ContainerNav
-      logo={<LogoText />}
       items={items}
-      bottomElements={[
-        { label: t('about'), href: '/about' },
-        { label: <UserAvatar key="userAvatar" /> },
-        { label: <Environment key="env" /> },
-      ]}
+      bottomElements={[{ label: t('about'), href: '/about' }]}
     />
   );
 };

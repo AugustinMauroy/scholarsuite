@@ -1,5 +1,4 @@
 import { MailIcon, UsersIcon, DatabaseIcon } from 'lucide-react';
-import Logo from '@/components/Common/Logo';
 import ContainerNav from '.';
 import type { Meta as MetaObj, StoryObj } from '@storybook/react';
 
@@ -15,7 +14,6 @@ export const Default: Story = {
     },
   },
   args: {
-    logo: <Logo />,
     items: [
       {
         title: 'Attendance',
