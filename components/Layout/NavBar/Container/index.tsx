@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { MenuIcon, XIcon } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -34,8 +34,12 @@ type ContainerNavProps = {
 
 const ContainerNav: FC<ContainerNavProps> = ({ items, bottomElements }) => {
   const pathname = usePathname();
-  const isMobileScreen = useMediaQuery('(max-width: 639px)');
-  const [open, setOpen] = useState(!isMobileScreen);
+  const isMobile = useMediaQuery('(max-width: 600px)');
+  const [open, setOpen] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    setOpen(!isMobile);
+  }, [isMobile]);
 
   return (
     <nav
@@ -101,7 +105,7 @@ const ContainerNav: FC<ContainerNavProps> = ({ items, bottomElements }) => {
                 link.label
               )
             )}
-            <UserAvatar withName={open} />
+            <UserAvatar withName={open ?? false} />
           </div>
         )}
       </section>
