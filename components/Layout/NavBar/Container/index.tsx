@@ -35,7 +35,7 @@ type ContainerNavProps = {
 const ContainerNav: FC<ContainerNavProps> = ({ items, bottomElements }) => {
   const pathname = usePathname();
   const isMobile = useMediaQuery('(max-width: 600px)');
-  const [open, setOpen] = useState<boolean | null>(null);
+  const [open, setOpen] = useState<boolean>(true);
 
   useEffect(() => {
     setOpen(!isMobile);
@@ -105,7 +105,7 @@ const ContainerNav: FC<ContainerNavProps> = ({ items, bottomElements }) => {
                 link.label
               )
             )}
-            <UserAvatar withName={open ?? false} />
+            <UserAvatar withName={open} />
           </div>
         )}
       </section>
