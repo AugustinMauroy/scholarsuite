@@ -1,9 +1,6 @@
 .about {
   @apply flex
-    h-full
     flex-col
-    items-start
-    justify-center
     gap-4;
 
   h2 {

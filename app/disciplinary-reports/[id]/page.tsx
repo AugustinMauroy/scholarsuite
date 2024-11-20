@@ -7,6 +7,7 @@ import prisma from '@/lib/prisma';
 import StudentCard from '@/components/Student/StudentCard';
 import BaseLayout from '@/components/Layout/Base';
 import type { FC } from 'react';
+import type { Student } from '@prisma/client';
 
 type PageProps = {
   params: { id: string };
@@ -19,7 +20,11 @@ const Page: FC<PageProps> = async ({ params }) => {
     where: { id: Number(params.id) },
     include: {
       CreatedBy: true,
-      Student: true,
+      Student: {
+        include: {
+          Class: true,
+        },
+      },
     },
   });
 
@@ -27,7 +32,7 @@ const Page: FC<PageProps> = async ({ params }) => {
 
   return (
     <BaseLayout title="Disciplinary Report">
-      <StudentCard student={disciplinaryReports.Student} />
+      <StudentCard student={disciplinaryReports.Student as Student} />
       <p>{disciplinaryReports.description}</p>
       <p>{new Date(disciplinaryReports.date).toLocaleDateString()}</p>
       <p>Created by: {disciplinaryReports.CreatedBy.firstName}</p>

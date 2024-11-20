@@ -1,19 +1,20 @@
 'use client';
-import { EyeIcon, CircleDotIcon, CircleDotDashedIcon } from 'lucide-react';
-import { useRouter } from 'next/navigation';
+import {
+  CircleDotIcon,
+  CircleDotDashedIcon,
+  NotepadTextIcon,
+} from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import { useFormatter } from 'next-intl';
 import Badge from '@/components/Common/Badge';
 import Button from '@/components/Common/Button';
 import Select from '@/components/Common/Select';
-import Card from '@/components/Common/Card';
 import Pagination from '@/components/Common/Pagination';
 import BaseLayout from '@/components/Layout/Base';
 import type {
   AbsencePeriod,
   Student,
-  AcademicYear,
   Attendance,
   Class,
   Group,
@@ -25,24 +26,17 @@ import type { DateTimeFormatOptions } from 'next-intl';
 
 type AbsenceWithRelations = AbsencePeriod & {
   Student: Student & { Class: Class | null };
-  AcademicYear: AcademicYear;
   FirstAbsence: Attendance & {
     TimeSlot: TimeSlot;
   };
   LastAbsence: Attendance & {
     TimeSlot: TimeSlot;
   };
-  NextPresence:
-    | (Attendance & {
-        TimeSlot: TimeSlot;
-      })
-    | null;
   count: number;
 };
 
 const AbsencePeriodsList: FC = () => {
   const session = useSession();
-  const router = useRouter();
   const format = useFormatter();
   const [absencePeriods, setAbsencePeriods] = useState<
     AbsenceWithRelations[] | null
@@ -98,12 +92,6 @@ const AbsencePeriodsList: FC = () => {
                 ...absencePeriod.LastAbsence,
                 date: new Date(absencePeriod.LastAbsence.date),
               },
-              NextPresence: absencePeriod.NextPresence
-                ? {
-                    ...absencePeriod.NextPresence,
-                    date: new Date(absencePeriod.NextPresence.date),
-                  }
-                : null,
             })
           );
           setAbsencePeriods(absencePeriods);
@@ -164,56 +152,74 @@ const AbsencePeriodsList: FC = () => {
       {absencePeriods !== null &&
       currentAbsencePeriods &&
       absencePeriods.length > 0 ? (
-        <div className="flex w-full flex-row flex-wrap items-start justify-center gap-4 overflow-y-scroll md:justify-start">
-          {currentAbsencePeriods.map(absencePeriod => (
-            <Card key={absencePeriod.id} className="flex flex-col gap-2.5">
-              <h3 className="text-lg font-semibold">
-                {absencePeriod.Student.firstName}{' '}
-                {absencePeriod.Student.lastName}{' '}
-                {absencePeriod.Student.Class?.name && (
-                  <small className="text-sm font-normal text-gray-600 dark:text-gray-400">
-                    ({absencePeriod.Student.Class.name})
+        <table className="w-full">
+          <thead className="border-b-2 border-gray-200 dark:border-gray-800">
+            <tr>
+              <th className="text-left">Student</th>
+              <th className="text-left">First Absence</th>
+              <th className="text-left">Last Absence</th>
+              <th className="text-left">Justify Overview</th>
+              <th className="text-left">Status</th>
+              <th className="text-left">Actions</th>
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-gray-200 dark:divide-gray-800">
+            {currentAbsencePeriods.map(absencePeriod => (
+              <tr
+                key={absencePeriod.id}
+                className="odd:bg-white even:bg-gray-50 odd:dark:bg-gray-900 even:dark:bg-gray-800"
+              >
+                <td className="flex justify-between pr-2">
+                  {absencePeriod.Student.firstName}{' '}
+                  {absencePeriod.Student.lastName}
+                  <small className="text-gray-500 dark:text-gray-400">
+                    {' '}
+                    ({absencePeriod.Student.Class?.name})
                   </small>
-                )}
-              </h3>
-              <p>
-                First Absence: {absencePeriod.FirstAbsence.TimeSlot.name}{' '}
-                {format.dateTime(
-                  absencePeriod.FirstAbsence.date,
-                  dateTimeOptions
-                )}{' '}
-                <br />
-                Last Absence: {absencePeriod.LastAbsence.TimeSlot.name}{' '}
-                {absencePeriod.FirstAbsence.date.toDateString() !==
-                  absencePeriod.LastAbsence.date.toDateString() &&
-                  format.dateTime(
+                </td>
+                <td>
+                  {format.dateTime(
+                    absencePeriod.FirstAbsence.date,
+                    dateTimeOptions
+                  )}
+                  <br />
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {absencePeriod.FirstAbsence.TimeSlot.name}
+                  </span>
+                </td>
+                <td>
+                  {format.dateTime(
                     absencePeriod.LastAbsence.date,
                     dateTimeOptions
                   )}
-              </p>
-              <Badge
-                kind={absencePeriod.status === 'OPEN' ? 'success' : 'error'}
-              >
-                {absencePeriod.status === 'OPEN' ? (
-                  <CircleDotIcon className="mr-2" />
-                ) : (
-                  <CircleDotDashedIcon className="mr-2" />
-                )}
-                {absencePeriod.status}
-              </Badge>
-              <p>Count: {absencePeriod.count}</p>
-              <Button
-                onClick={() =>
-                  router.push(`/attendance/absence/${absencePeriod.id}`)
-                }
-                className="mt-2"
-              >
-                <EyeIcon className="mr-2" />
-                View
-              </Button>
-            </Card>
-          ))}
-        </div>
+                  <br />
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    {absencePeriod.LastAbsence.TimeSlot.name}
+                  </span>
+                </td>
+                <td>NOT IMPLEMENTED</td>
+                <td>
+                  <Badge
+                    kind={absencePeriod.status === 'OPEN' ? 'success' : 'error'}
+                  >
+                    {absencePeriod.status === 'OPEN' ? (
+                      <CircleDotIcon className="text-green-500" />
+                    ) : (
+                      <CircleDotDashedIcon className="text-red-500" />
+                    )}
+                    {absencePeriod.status}
+                  </Badge>
+                </td>
+                <td>
+                  <Button onClick={() => alert('Not implemented yet')}>
+                    Justify
+                    <NotepadTextIcon />
+                  </Button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : !selectedGroup ? (
         <p className="text-center">Please select a group</p>
       ) : (

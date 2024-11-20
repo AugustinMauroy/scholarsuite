@@ -42,14 +42,16 @@ enum DisciplinaryReportStatus {
 }
 
 model AbsencePeriod {
-  id             Int                 @id @default(autoincrement())
-  studentId      Int
-  firstAbsenceId Int
-  lastAbsenceId  Int
-  nextPresenceId Int?
-  academicYearId Int
-  status         AbsencePeriodStatus @default(OPEN)
-  enabled        Boolean             @default(true)
+  id                            Int                 @id @default(autoincrement())
+  studentId                     Int
+  firstAbsenceId                Int
+  lastAbsenceId                 Int
+  academicYearId                Int
+  status                        AbsencePeriodStatus @default(OPEN) // still need ?
+  enabled                       Boolean             @default(true) // soft delete
+  unjustifiedTimeslotGroupCount Int?
+  justifiedTimeslotGroupCount   Int?
+  totalTimeslotGroupCount       Int?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -58,12 +60,14 @@ model AbsencePeriod {
   AcademicYear AcademicYear           @relation(fields: [academicYearId], references: [id])
   FirstAbsence Attendance             @relation(fields: [firstAbsenceId], references: [id], name: "FirstAbsence")
   LastAbsence  Attendance             @relation(fields: [lastAbsenceId], references: [id], name: "LastAbsence")
-  NextPresence Attendance?            @relation(fields: [nextPresenceId], references: [id], name: "NextPresence")
   Comments     AbsencePeriodComment[]
 
   @@index([studentId, academicYearId, firstAbsenceId, lastAbsenceId])
 }
 
+// @deprecated feature is still present on
+// curent codebase but isn't usefull for
+// the absence period workflow
 model AbsencePeriodComment {
   id              Int                             @id @default(autoincrement())
   userId          Int
@@ -71,13 +75,32 @@ model AbsencePeriodComment {
   comment         String
   hideReason      AbsencePeriodCommentHideReason?
   hidden          Boolean                         @default(false)
-  enabled         Boolean                         @default(true)
+  enabled         Boolean                         @default(true) // soft delete
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   User          User          @relation(fields: [userId], references: [id])
   AbsencePeriod AbsencePeriod @relation(fields: [absencePeriodId], references: [id])
+
+  @@index([userId, absencePeriodId])
+}
+
+model JustificationPeriod {
+  id             Int      @id @default(autoincrement())
+  studentId      Int
+  academicYearId Int
+  startDate      DateTime
+  endDate        DateTime
+  enabled        Boolean  @default(true)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Student      Student      @relation(fields: [studentId], references: [id])
+  AcademicYear AcademicYear @relation(fields: [academicYearId], references: [id])
+
+  @@index([studentId, academicYearId])
 }
 
 model AcademicYear {
@@ -91,9 +114,10 @@ model AcademicYear {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Attendance      Attendance[]
-  AttendanceAudit AttendanceAudit[]
-  AbsencePeriod   AbsencePeriod[]
+  Attendance          Attendance[]
+  AttendanceAudit     AttendanceAudit[]
+  AbsencePeriod       AbsencePeriod[]
+  JustificationPeriod JustificationPeriod[]
 }
 
 model SchoolLevel {
@@ -171,11 +195,12 @@ model Student {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  Class               Class?               @relation(fields: [classId], references: [id])
+  Class               Class?                @relation(fields: [classId], references: [id])
   DisciplinaryReports DisciplinaryReport[]
   Attendance          Attendance[]
   StudentGroup        StudentGroup[]
   AbsencePeriod       AbsencePeriod[]
+  JustificationPeriod JustificationPeriod[]
 }
 
 model TimeSlotGroup {
@@ -245,7 +270,6 @@ model Attendance {
   AttendanceAudit AttendanceAudit[]
   FirstAbsence    AbsencePeriod[]   @relation(name: "FirstAbsence")
   LastAbsence     AbsencePeriod[]   @relation(name: "LastAbsence")
-  NextPresence    AbsencePeriod[]   @relation(name: "NextPresence")
 
   @@index([studentId, date, timeSlotId])
 }

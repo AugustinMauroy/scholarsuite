@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { getValue } from '@/utils/timeslot';
+import { getGroup } from '@/lib/queries/group';
 import type { Attendance, AcademicYear, TimeSlot } from '@prisma/client';
 import type { PatchBody } from '@/types/attendance';
 
@@ -132,7 +133,10 @@ export const PATCH = async (req: Request): Promise<Response> => {
       );
     }
 
-    let currentAttendance = await getCurrentAttendance({
+    /**
+     * Valeur de l'attendace avant tous proccess
+     */
+    const existingAttendance = await getCurrentAttendance({
       item,
       currentTimeSlot,
       date,
@@ -147,20 +151,20 @@ export const PATCH = async (req: Request): Promise<Response> => {
     );
 
     // attendance proccess + audit
-    if (currentAttendance) {
+    if (existingAttendance) {
       await prisma.attendance.update({
-        where: { id: currentAttendance.id },
+        where: { id: existingAttendance.id },
         data: { ...item, userId: userId },
       });
       await prisma.attendanceAudit.create({
         data: {
-          attendanceId: currentAttendance.id,
-          state: currentAttendance.state,
-          date: currentAttendance.date,
-          userId: currentAttendance.userId,
-          academicYearId: currentAttendance.academicYearId,
-          timeSlotId: currentAttendance.timeSlotId,
-          groupId: currentAttendance.groupId,
+          attendanceId: existingAttendance.id,
+          state: existingAttendance.state,
+          date: existingAttendance.date,
+          userId: existingAttendance.userId,
+          academicYearId: existingAttendance.academicYearId,
+          timeSlotId: existingAttendance.timeSlotId,
+          groupId: existingAttendance.groupId,
           changedBy: userId,
         },
       });
@@ -179,7 +183,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
     }
 
     // Proccess absence period
-    currentAttendance = await getCurrentAttendance({
+    const currentAttendance = await getCurrentAttendance({
       item,
       currentTimeSlot,
       date,
@@ -194,8 +198,8 @@ export const PATCH = async (req: Request): Promise<Response> => {
 
     /**
      * Pour trouver la période d'absence actuelle, c'est rechercher la période d'absence pour l'étudiant
-     * de la même année académique dont la première présence est inférieure ou égale à la date de la présence
-     * et la dernière présence est supérieure ou égale à la date de la présence
+     * de la même année académique dont la première Attendance est inférieure ou égale à la date de la Attendance
+     * et la dernière Attendance est supérieure ou égale à la date de la Attendance
      */
     const previousAttendance = await prisma.attendance.findFirst({
       where: {
@@ -211,8 +215,8 @@ export const PATCH = async (req: Request): Promise<Response> => {
       },
     });
     /**
-     * Pour trouver la prochaine présence, c'est rechercher la présence pour l'étudiant
-     * de la même année académique dont la date minimum qui est strictement supérieure à la date de la présence
+     * Pour trouver la prochaine Attendance, c'est rechercher la Attendance pour l'étudiant
+     * de la même année académique dont la date minimum qui est strictement supérieure à la date de la Attendance
      */
     const nextAttendance = await prisma.attendance.findFirst({
       where: {
@@ -227,6 +231,9 @@ export const PATCH = async (req: Request): Promise<Response> => {
         date: 'asc',
       },
     });
+    /**
+     * La période d'absence précédente est étendable si l'Attendance précédente est une Absence
+     */
     const previousAbsPeriod =
       previousAttendance?.state === 'ABSENT'
         ? await prisma.absencePeriod.findFirst({
@@ -317,53 +324,49 @@ export const PATCH = async (req: Request): Promise<Response> => {
     console.log('previousAbsPeriod: ', previousAbsPeriod);
     console.log('currentAbsPeriod: ', currentAbsPeriod);
     console.log('nextAbsencePeriod: ', nextAbsencePeriod);
+    console.log('existingAttendance: ', existingAttendance);
 
     if (item.state === 'ABSENT') {
       /**
-       * - Case 1: if no past Absenceperiode needed to create => P +A || P -P +A P || +A P
-       *   (previous = null && next = null) ||
-       *   (previous = P && next = null) ||
-       *   (previous = null && next = P) ||
-       *   (previous != a && next != a)
+       * Quand on met une absence :
+       * - Case 1: if no previous Absenceperiod : create it => +A || P +A || P -P +A P || +A P
+       *   (previous != A && next != A)
        *   Action:
-       *    - Check if period already exists => CurrentAbsencePeriod.first.date <= attendance.date && attendance.date <= CurentAbsencePeriod.last.date
-       *    - if exists update it and log the change
+       *    - Check if period already exists : update it and log the error
        *    - if not create it
        *
-       * - case 2: if to extend by begin => P +A A
-       *   previous = P && next = A && current = A
+       * - case 2: extend by begin => P +A A
+       *   previous != A && next = A
        *   Action:
        *    - Check if nextPeriod already exists
        *    - if not found create it and log error
-       *    - if found update
+       *    - if found update it
        *
        * - case 3: if to extend by the end => A + A +P
-       *   previous = A && next != A && current = A
+       *   previous = A && next != A
        *   Action:
        *    - Check if previousPeriod already exists
        *    - if not found create it and log error
        *    - if found update
        *
        * - case 4: If need to merge with the previous Absenceperiode, delete next absPeroid => A -P +A A
-       *   previous = A && next = A && current = A
+       *   previous = A && next = A && existingAttendance = L||P
        *   Action:
-       *    - if previous doesn't exist create it (log)
+       *    - if previous doesn't exist create it and log error
        *    - else update previous
-       *    - if next doesn't (log)
+       *    - if next doesn't exist and log the error
        *    - else soft delete the next period
        *
+       * A REDISCUTER
        * Dans les actions, on ne peut PAS étendre par le début, étendre par la fin ou merger des périodes d’absence déjà justifiées (positivement ou injustifié).
        * Dans ce cas, il faut juste créer une nouvelle période d’absence.
        */
       if (
-        (!previousAttendance && !nextAttendance) ||
-        (previousAttendance?.state !== 'ABSENT' && !nextAttendance) ||
-        (!previousAttendance && nextAttendance?.state !== 'ABSENT') ||
-        (previousAttendance?.state !== 'ABSENT' &&
-          nextAttendance?.state !== 'ABSENT')
+        previousAttendance?.state !== 'ABSENT' &&
+        nextAttendance?.state !== 'ABSENT'
       ) {
-        // Create new absence period
-        console.log('case 1: create new absence period');
+        // Case 1: create new absence period
+        console.log('Case 1: create new absence period');
         if (currentAbsPeriod) {
           await prisma.absencePeriod.update({
             where: { id: currentAbsPeriod.id },
@@ -395,7 +398,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
         previousAttendance?.state !== 'ABSENT' &&
         nextAttendance?.state === 'ABSENT'
       ) {
-        console.log('case 2: extend by the beginning');
+        console.log('Case 2: extend by the beginning');
         if (nextAbsencePeriod) {
           await prisma.absencePeriod.update({
             where: { id: nextAbsencePeriod.id },
@@ -421,8 +424,8 @@ export const PATCH = async (req: Request): Promise<Response> => {
         previousAttendance?.state === 'ABSENT' &&
         nextAttendance?.state !== 'ABSENT'
       ) {
-        // extend by the end
-        console.log('case 3: extend by the end');
+        // Case 3: extend by the end
+        console.log('Case 3: extend by the end');
         if (previousAbsPeriod) {
           await prisma.absencePeriod.update({
             where: { id: previousAbsPeriod.id },
@@ -446,10 +449,12 @@ export const PATCH = async (req: Request): Promise<Response> => {
         }
       } else if (
         previousAttendance?.state === 'ABSENT' &&
-        nextAttendance?.state === 'ABSENT'
+        nextAttendance?.state === 'ABSENT' &&
+        existingAttendance !== null &&
+        existingAttendance.state !== 'ABSENT'
       ) {
         console.log(
-          'case 4: merge with the previous Absenceperiode, delete next absPeroid'
+          'Case 4: If need to merge with the previous Absenceperiode, delete next absPeroid'
         );
         if (!previousAbsPeriod) {
           await createAbsencePeriod({
@@ -490,57 +495,26 @@ export const PATCH = async (req: Request): Promise<Response> => {
       }
     } else {
       /**
-       * - case 1: if AbsencePeriode need to be ended => P AAA + P
-       *   previous = A && next != A && current != A
-       *   Actions:
-       *    - Check if currenTperiod already exists => preiodeAbsence.lastAttendance.date == presence.date
-       *    - if exists update
-       *    - if not create it and log error
+       * Quand on met attendance autre que absence (présence ou retard):
+       * - case 5 if AbsencePeriod need to be split => P AAA +P AAA P
+       *   previous = A && next = A
        *
-       * - case 2 if AbsencePeriode need to be split => P AAA +P AAA P
-       *   previous = A && next = A && current = A
+       * - case 6: if AbsencePeriod need to be shortened by the beginning => (P) -A +P AAA P
+       *   previous != A && next = A
        *
-       * - case 3: if AbsencePeriode need to be shortened by the beginning => P -A +P AAA P
-       *   previous = (P || L) && next = A && current = A
+       * - case 7 if AbsencePeriod need to be shortened by the end => P AAA +P -A (P)
+       *   previous = A && next != A
        *
-       * - case 4 if AbsencePeriode need to be shortened by the end => P AAA +P -A P
-       *   previous = A && next = (P || L) && current = A
-       *
-       * - case 5: if AbsencePeriode need to be deleted (soft delete enabled) => P -A +P P
-       *   previous != A  && next != A && current = A
+       * - case 8: if AbsencePeriode need to be deleted (soft delete enabled) => P -A +P P
+       *   previous != A && next != A
        */
       if (
         previousAttendance?.state === 'ABSENT' &&
-        nextAttendance?.state !== 'ABSENT'
-      ) {
-        console.log('Case 1: end absence period');
-        if (previousAbsPeriod) {
-          await prisma.absencePeriod.update({
-            where: { id: previousAbsPeriod.id },
-            data: {
-              LastAbsence: {
-                connect: {
-                  id: currentAttendance.id,
-                },
-              },
-            },
-          });
-        } else {
-          await createAbsencePeriod({
-            currentAttendance,
-            item,
-            academicYear,
-          });
-          console.error(
-            'Absence period not found\nWhen trying to end absence period'
-          );
-        }
-      } else if (
-        previousAttendance?.state === 'ABSENT' &&
         nextAttendance?.state === 'ABSENT'
       ) {
-        // split absence period
-        console.log('Case 2: split absence period');
+        // case 5 if AbsencePeriod need to be split
+        console.log('case 5 if AbsencePeriod need to be split');
+
         const lastAbsence = await prisma.attendance.findFirst({
           where: {
             date: {
@@ -581,7 +555,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
               },
             },
           });
-          // create new absence period
+          // create the second part of the absence period
           await prisma.absencePeriod.create({
             data: {
               FirstAbsence: {
@@ -620,15 +594,14 @@ export const PATCH = async (req: Request): Promise<Response> => {
         previousAttendance?.state !== 'ABSENT' &&
         nextAttendance?.state === 'ABSENT'
       ) {
-        // shorten absence period by the beginning
-        console.log('Case 3: shorten absence period by the beginning');
+        console.log('Case 6: shorten absence period by the beginning');
         if (currentAbsPeriod) {
           await prisma.absencePeriod.update({
             where: { id: currentAbsPeriod.id },
             data: {
               FirstAbsence: {
                 connect: {
-                  id: currentAttendance.id,
+                  id: nextAttendance.id,
                 },
               },
             },
@@ -645,11 +618,11 @@ export const PATCH = async (req: Request): Promise<Response> => {
         }
       } else if (
         previousAttendance?.state === 'ABSENT' &&
-        (nextAttendance?.state === 'PRESENT' ||
-          nextAttendance?.state === 'LATE')
+        existingAttendance?.state === 'ABSENT' &&
+        (nextAbsencePeriod === null || nextAttendance?.state !== 'ABSENT')
       ) {
-        // shorten absence period by the end
-        console.log('Case 4: shorten absence period by the end');
+        // Case 7: shorten absence period by the end
+        console.log('Case 7: shorten absence period by the end');
 
         if (currentAbsPeriod) {
           await prisma.absencePeriod.update({
@@ -657,7 +630,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             data: {
               LastAbsence: {
                 connect: {
-                  id: currentAttendance.id,
+                  id: previousAttendance.id,
                 },
               },
             },
@@ -677,8 +650,8 @@ export const PATCH = async (req: Request): Promise<Response> => {
         previousAttendance?.state !== 'ABSENT' &&
         nextAttendance?.state !== 'ABSENT'
       ) {
-        // delete absence period
-        console.log('Case 5: delete absence period');
+        // Case 8: delete absence period
+        console.log('Case 8: delete absence period');
 
         if (currentAbsPeriod) {
           await prisma.absencePeriod.update({
@@ -703,49 +676,12 @@ export const PATCH = async (req: Request): Promise<Response> => {
     }
   }
 
-  // @TODO: refracto to unsure there are no duplicate code
-  // Don't send result back to client
-  // But send fresh data to client
-  // it's same as GET /api/group/[id]
-  const now = new Date();
-  const groupData = await prisma.group.findUnique({
-    where: {
-      id: groupId,
-    },
-    include: {
-      StudentGroup: {
-        include: {
-          Student: {
-            include: {
-              Class: true,
-              Attendance: {
-                where: {
-                  date: {
-                    gte: new Date(
-                      now.getFullYear(),
-                      now.getMonth(),
-                      now.getDate()
-                    ),
-                    lt: new Date(
-                      now.getFullYear(),
-                      now.getMonth(),
-                      now.getDate() + 1
-                    ),
-                  },
-                  timeSlotId,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
+  // @TODO: add correct data
+  const groupData = await getGroup({
+    groupId,
+    timeSlotId,
+    date,
   });
-
-  // sort students by firstname
-  groupData?.StudentGroup.sort((a, b) =>
-    a.Student.firstName.localeCompare(b.Student.firstName)
-  );
 
   return Response.json(
     {

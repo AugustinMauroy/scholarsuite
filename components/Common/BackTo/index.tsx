@@ -1,5 +1,5 @@
 'use client';
-import { ArrowRightIcon } from 'lucide-react';
+import { ArrowLeftIcon } from 'lucide-react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Button from '@/components/Common/Button';
 import type { FC } from 'react';
@@ -13,7 +13,7 @@ const BackTo: FC = () => {
 
   return (
     <Button onClick={() => router.push(from)}>
-      <ArrowRightIcon />
+      <ArrowLeftIcon />
       Back
     </Button>
   );

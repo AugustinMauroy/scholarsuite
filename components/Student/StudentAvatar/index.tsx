@@ -6,13 +6,7 @@ import type { Student, Class } from '@prisma/client';
 import type { FC } from 'react';
 
 type StudentAvatarProps = {
-  student: {
-    id: Student['id'];
-    firstName: Student['firstName'];
-    lastName: Student['lastName'];
-    className?: Class['name'];
-    image?: Student['image'];
-  };
+  student: Student & { Class?: Class };
 };
 
 const StudentAvatar: FC<StudentAvatarProps> = ({ student }) => {

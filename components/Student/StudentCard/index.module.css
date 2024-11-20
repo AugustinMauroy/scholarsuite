@@ -56,12 +56,19 @@
           dark:text-gray-300;
       }
 
-      small {
-        @apply mt-2
+      .info {
+        @apply flex
+          flex-col
+          justify-center
+          gap-0;
+
+        small {
+          @apply my-0
           text-xs
           font-normal
           text-gray-800
           dark:text-gray-300;
+        }
       }
     }
   }

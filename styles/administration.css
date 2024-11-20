@@ -1,0 +1,41 @@
+table {
+  @apply w-full
+      border-collapse
+      rounded
+      border
+      border-gray-200
+      dark:bg-gray-800;
+
+  th {
+    @apply border
+        border-gray-200
+        bg-gray-100
+        p-2
+        font-bold
+        dark:bg-gray-700;
+
+    svg {
+      @apply inline
+        size-4
+        align-middle;
+    }
+  }
+
+  td {
+    @apply border
+        border-gray-200
+        p-2
+        dark:bg-gray-700;
+  }
+
+  tr {
+    @apply border
+        border-gray-200
+        dark:border-gray-700;
+  }
+
+  tr:nth-child(even) {
+    @apply bg-gray-100
+        dark:bg-gray-700;
+  }
+}

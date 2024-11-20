@@ -46,6 +46,9 @@ const Page: FC<PageProps> = async ({ params }) => {
             <Link href={`/disciplinary-reports/${report.id}`}>View</Link>
           </Card>
         ))}
+        {disciplinaryReports.length === 0 && (
+          <p>Student has no disciplinary reports</p>
+        )}
       </div>
     </BaseLayout>
   );

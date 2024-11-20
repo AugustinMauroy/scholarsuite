@@ -29,13 +29,7 @@ type OverviewProps = {
 const Overview: FC<OverviewProps> = ({ absence, onStatusChange }) => (
   <>
     <div className={styles.header}>
-      <StudentCard
-        withInfo
-        student={{
-          ...absence.Student,
-          className: absence.Student.Class?.name,
-        }}
-      />
+      <StudentCard withMore student={absence.Student} />
       <Select
         onChange={onStatusChange}
         label="Status"

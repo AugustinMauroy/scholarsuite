@@ -37,11 +37,6 @@ export const POST = async (
           TimeSlot: true,
         },
       },
-      NextPresence: {
-        include: {
-          TimeSlot: true,
-        },
-      },
       Comments: {
         include: {
           User: true,

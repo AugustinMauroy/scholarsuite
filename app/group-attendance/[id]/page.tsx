@@ -229,13 +229,10 @@ const Page: FC<PageProps> = ({ params }) => {
       {groupData.StudentGroup.length > 0 &&
         groupData.StudentGroup.map(studentGroup => (
           <StudentCard
-            withInfo
+            withMore
             from={`/group-attendance/${params.id}`}
             key={studentGroup.Student.id}
-            student={{
-              className: studentGroup.Student.Class?.name,
-              ...studentGroup.Student,
-            }}
+            student={studentGroup.Student as Student}
             actions={[
               {
                 kind:

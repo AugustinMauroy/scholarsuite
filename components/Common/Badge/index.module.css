@@ -2,6 +2,7 @@
   @apply inline-flex
     items-center
     justify-center
+    gap-1
     rounded-md
     px-2
     py-1

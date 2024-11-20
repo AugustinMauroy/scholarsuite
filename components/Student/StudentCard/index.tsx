@@ -11,21 +11,18 @@ import type { Student, Class } from '@prisma/client';
 import type { FC, ComponentProps } from 'react';
 
 type StudentCardProps = {
-  student: {
-    id: Student['id'];
-    firstName: Student['firstName'];
-    lastName: Student['lastName'];
-    className?: Class['name'];
-  };
+  student: Student & { Class?: Class };
   actions?: ComponentProps<typeof Button>[];
-  withInfo?: boolean;
+  withMore?: boolean;
+  withDateOfBirth?: boolean;
   from?: string;
 };
 
 const StudentCard: FC<StudentCardProps> = ({
   student,
   actions,
-  withInfo,
+  withMore,
+  withDateOfBirth,
   from,
 }) => {
   const studentUrl = useMemo(
@@ -47,7 +44,7 @@ const StudentCard: FC<StudentCardProps> = ({
   return (
     <DropdownMenuPrimitive.Root>
       <Card className={styles.card}>
-        {withInfo && (
+        {withMore && (
           <DropdownMenuPrimitive.Trigger className={styles.trigger}>
             <EllipsisVerticalIcon />
           </DropdownMenuPrimitive.Trigger>
@@ -58,9 +55,14 @@ const StudentCard: FC<StudentCardProps> = ({
             <h3 className={styles.name}>
               {student.firstName} {student.lastName}
             </h3>
-            {student.className && (
-              <small className={styles.className}>{student.className}</small>
-            )}
+            <span className={styles.info}>
+              {student.Class && <small>{student.Class.name}</small>}
+              {withDateOfBirth && student.dateOfBirth && (
+                <small>
+                  {new Date(student.dateOfBirth).toLocaleDateString()}
+                </small>
+              )}
+            </span>
           </div>
         </div>
         {actions && (

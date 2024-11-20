@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma';
+import { getGroup } from '@/lib/queries/group';
 import type { TimeSlot } from '@prisma/client';
 
 type Params = {
@@ -58,44 +59,11 @@ export const POST = async (
       return now >= startSlot && now <= endSlot;
     });
 
-  const groupData = await prisma.group.findUnique({
-    where: {
-      id: id,
-    },
-    include: {
-      StudentGroup: {
-        include: {
-          Student: {
-            include: {
-              Class: true,
-              Attendance: {
-                where: {
-                  date: {
-                    gte: new Date(
-                      now.getFullYear(),
-                      now.getMonth(),
-                      now.getDate()
-                    ),
-                    lt: new Date(
-                      now.getFullYear(),
-                      now.getMonth(),
-                      now.getDate() + 1
-                    ),
-                  },
-                  timeSlotId: currentTimeslot.id,
-                },
-              },
-            },
-          },
-        },
-      },
-    },
+  const groupData = await getGroup({
+    groupId: id,
+    timeSlotId: currentTimeslot.id,
+    date: now,
   });
-
-  // sort students by firstname
-  groupData?.StudentGroup.sort((a, b) =>
-    a.Student.firstName.localeCompare(b.Student.firstName)
-  );
 
   if (!groupData) {
     return Response.json({ error: 'Group not found' }, { status: 404 });

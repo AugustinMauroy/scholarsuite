@@ -1,17 +1,8 @@
-.avatar {
-  @apply flex
-    size-12
-    items-center
-    justify-center
-    rounded-md
-    bg-gray-200
-    text-lg
-    font-semibold
-    lg:size-16
-    dark:bg-gray-700;
-}
+.page {
+  @apply flex flex-wrap gap-6;
 
-.groups {
-  @apply ml-4
-    list-disc;
+  .groups {
+    @apply ml-4
+      list-disc;
+  }
 }

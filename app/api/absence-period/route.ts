@@ -41,18 +41,12 @@ export const POST = async (req: Request): Promise<Response> => {
           Class: true,
         },
       },
-      AcademicYear: true,
       FirstAbsence: {
         include: {
           TimeSlot: true,
         },
       },
       LastAbsence: {
-        include: {
-          TimeSlot: true,
-        },
-      },
-      NextPresence: {
         include: {
           TimeSlot: true,
         },
