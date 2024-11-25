@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-import { getGroup } from '@/lib/queries/group';
+import { getGroupWithStudentsAndAttendance } from '@/lib/queries/group';
 import type { TimeSlot } from '@prisma/client';
 
 type Params = {
@@ -59,7 +59,7 @@ export const POST = async (
       return now >= startSlot && now <= endSlot;
     });
 
-  const groupData = await getGroup({
+  const groupData = await getGroupWithStudentsAndAttendance({
     groupId: id,
     timeSlotId: currentTimeslot.id,
     date: now,

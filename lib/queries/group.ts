@@ -1,17 +1,21 @@
 import prisma from '@/lib/prisma';
 
-type GetGroupProps = {
+type GetGroupWithStudentsAndAttendanceProps = {
   groupId: number;
   timeSlotId: number;
   date?: Date;
 };
 
-export const getGroup = async ({
+/**
+ * Get a group with students and attendance for a specific date and timeSlot
+ * Used to send data for `group-attendance` page
+ */
+export const getGroupWithStudentsAndAttendance = async ({
   groupId,
   timeSlotId,
   date = new Date(),
-}: GetGroupProps) => {
-  const groupData = await prisma.group.findUnique({
+}: GetGroupWithStudentsAndAttendanceProps) =>
+  prisma.group.findUnique({
     where: {
       id: groupId,
     },
@@ -41,14 +45,11 @@ export const getGroup = async ({
             },
           },
         },
+        orderBy: {
+          Student: {
+            firstName: 'asc',
+          },
+        },
       },
     },
   });
-
-  // sort students by firstname
-  groupData?.StudentGroup.sort((a, b) =>
-    a.Student.firstName.localeCompare(b.Student.firstName)
-  );
-
-  return groupData;
-};

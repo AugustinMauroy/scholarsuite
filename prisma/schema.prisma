@@ -89,10 +89,11 @@ model AbsencePeriodComment {
 model JustificationPeriod {
   id             Int      @id @default(autoincrement())
   studentId      Int
-  academicYearId Int
+  academicYearId Int // is it necessary ?
+  // for datetime range we didn't care about timeslot
   startDate      DateTime
   endDate        DateTime
-  enabled        Boolean  @default(true)
+  enabled        Boolean  @default(true) // idk why i put this here
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -118,6 +119,8 @@ model AcademicYear {
   AttendanceAudit     AttendanceAudit[]
   AbsencePeriod       AbsencePeriod[]
   JustificationPeriod JustificationPeriod[]
+
+  @@index([id])
 }
 
 model SchoolLevel {

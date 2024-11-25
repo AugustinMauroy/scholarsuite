@@ -1,97 +1,34 @@
 import prisma from '@/lib/prisma';
 import { getValue } from '@/utils/timeslot';
-import { getGroup } from '@/lib/queries/group';
-import type { Attendance, AcademicYear, TimeSlot } from '@prisma/client';
+import { getGroupWithStudentsAndAttendance } from '@/lib/queries/group';
+import { createAbsencePeriod } from '@/lib/queries/absencePeriod';
+import { getCurrentAttendance } from '@/lib/queries/attendance';
 import type { PatchBody } from '@/types/attendance';
-
-type createAbsencePeriodProps = {
-  item: PatchBody['data'][0];
-  currentAttendance: Attendance;
-  academicYear: AcademicYear;
-};
-
-function createAbsencePeriod({
-  currentAttendance,
-  item,
-  academicYear,
-}: createAbsencePeriodProps) {
-  return prisma.absencePeriod.create({
-    data: {
-      FirstAbsence: {
-        connect: {
-          id: currentAttendance.id,
-        },
-      },
-      LastAbsence: {
-        connect: {
-          id: currentAttendance.id,
-        },
-      },
-      Student: {
-        connect: {
-          id: item.studentId,
-        },
-      },
-      AcademicYear: {
-        connect: {
-          id: academicYear.id,
-        },
-      },
-    },
-  });
-}
-
-type GetAttendanceProps = {
-  item: PatchBody['data'][0];
-  currentTimeSlot: TimeSlot;
-  date: Date;
-};
-
-function getCurrentAttendance({
-  item,
-  currentTimeSlot,
-  date,
-}: GetAttendanceProps) {
-  return prisma.attendance.findFirst({
-    where: {
-      date: {
-        gte: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
-        lt: new Date(date.getFullYear(), date.getMonth(), date.getDate() + 1),
-      },
-      timeSlotId: currentTimeSlot.id,
-      studentId: item.studentId,
-    },
-  });
-}
 
 // API where we process attendance from `/group-attendance/[id]`
 export const PATCH = async (req: Request): Promise<Response> => {
   const body: PatchBody = await req.json().catch(() => null);
 
-  if (!body) {
-    return Response.json({ error: 'invalid body' }, { status: 400 });
-  }
+  if (!body) return Response.json({ error: 'invalid body' }, { status: 400 });
 
   const { data, groupId } = body;
   const timeSlotId = Number(body.timeSlotId);
   const userId = Number(body.userId);
   const date = new Date(body.date);
 
-  if (Number.isNaN(timeSlotId) || Number.isNaN(userId) || !date) {
+  if (Number.isNaN(timeSlotId) || Number.isNaN(userId) || !date)
     return Response.json({ error: 'invalid body' }, { status: 400 });
-  }
 
-  if (!data || timeSlotId === undefined || userId === undefined || !date) {
+  if (!data || timeSlotId === undefined || userId === undefined || !date)
     return Response.json({ error: 'missing required fields' }, { status: 400 });
-  }
 
   const currentTimeSlot = await prisma.timeSlot.findUnique({
     where: { id: timeSlotId },
   });
 
-  if (!currentTimeSlot) {
+  if (!currentTimeSlot)
     return Response.json({ error: 'timeslot not found' }, { status: 404 });
-  }
+
   const { hour: timeSlotHour, minute: timeSlotMinute } = getValue(
     currentTimeSlot.startTime
   );
@@ -102,24 +39,20 @@ export const PATCH = async (req: Request): Promise<Response> => {
     },
   });
 
-  if (!academicYear) {
+  if (!academicYear)
     return Response.json({ error: 'no academic year found' }, { status: 404 });
-  }
 
-  if (date < academicYear.startDate || date > academicYear.endDate) {
+  if (date < academicYear.startDate || date > academicYear.endDate)
     return Response.json(
       { error: 'date not within current academic year' },
       { status: 400 }
     );
-  }
 
   const user = await prisma.user.findUnique({
     where: { id: userId },
   });
 
-  if (!user) {
-    return Response.json({ error: 'user not found' }, { status: 404 });
-  }
+  if (!user) return Response.json({ error: 'user not found' }, { status: 404 });
 
   for (const item of data) {
     const student = await prisma.student.findUnique({
@@ -676,8 +609,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
     }
   }
 
-  // @TODO: add correct data
-  const groupData = await getGroup({
+  const groupData = await getGroupWithStudentsAndAttendance({
     groupId,
     timeSlotId,
     date,
