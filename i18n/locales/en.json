@@ -10,7 +10,7 @@
   },
   "app": {
     "metadata": {
-      "title": "SchoolarSuite",
+      "title": "ScholarSuite",
       "description": "ScholarSuite is a grade management application for schools. It allows to manage students, classes, school levels, subjects and grades."
     },
     "landing": {

@@ -206,11 +206,17 @@ model Student {
   JustificationPeriod JustificationPeriod[]
 }
 
+// A model representing a segment of a day
 model TimeSlotGroup {
   id   Int    @id @default(autoincrement())
-  name String
+  name String // ex: Morning, Afternoon, Evening
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   TimeSlot TimeSlot[]
+
+  @@index([id])
 }
 
 model TimeSlot {

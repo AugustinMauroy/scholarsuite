@@ -4,6 +4,8 @@ import type { PatchBody } from '@/types/attendance';
 
 /**
  * A function that count the number of timeslotPeriods covered by an absencePeriod
+ *
+ * @todo: Implement this function
  */
 export const countTimeslotPeriodsCoveredByAbsencePeriod = async (
   absencePeriodId: number
@@ -50,8 +52,12 @@ export const countTimeslotPeriodsCoveredByAbsencePeriod = async (
     const timeSlotGroup = attendance[i].TimeSlot.TimeSlotGroup;
 
     if (
+      count.length === 0 ||
       count[count.length - 1][0] !== timeSlotGroup.id ||
-      count[count.length - 1][1] !== attendance[i].date
+      count[count.length - 1][1].getDate() !== attendance[i].date.getDate() ||
+      count[count.length - 1][1].getMonth() !== attendance[i].date.getMonth() ||
+      count[count.length - 1][1].getFullYear() !==
+        attendance[i].date.getFullYear()
     )
       count.push([timeSlotGroup.id, attendance[i].date]);
   }
