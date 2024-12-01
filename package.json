@@ -45,7 +45,7 @@
     "lucide-react": "~0.460.0",
     "next": "~14.2.13",
     "next-auth": "~5.0.0-beta.22",
-    "next-intl": "~3.21.1",
+    "next-intl": "~3.25.3",
     "nodejs-loaders": "~1.1.0",
     "prisma": "~5.20.0",
     "react": "~18.3.1",
