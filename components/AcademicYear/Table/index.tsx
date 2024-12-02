@@ -31,7 +31,7 @@ const Table: FC = () => {
         const res = await fetch('/api/academicYear');
         const { data } = await res.json();
         setAcademicYears(data);
-      } catch (error) {
+      } catch {
         toast({
           kind: 'error',
           message: (

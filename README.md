@@ -30,9 +30,9 @@ npm ci
 4. Instantiate the database
 
 ```bash
-npm run db:generate
-npm run db:push
-npm run db:seed-prod
+node --run db:generate
+node --run db:push
+node --run db:seed-prod
 ```
 
 5. Build the application. Using [Turbo](https://turbo.build) for caching.

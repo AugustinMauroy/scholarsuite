@@ -34,7 +34,7 @@ const Page: FC = () => {
     const formData = new FormData();
     formData.append('firstName', firstName);
     formData.append('lastName', lastName);
-    file && formData.append('file', file);
+    if (file) formData.append('file', file);
     formData.append('email', email);
 
     try {

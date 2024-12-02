@@ -2,7 +2,7 @@
 npx lint-staged
 
 # verify typescript staged files
-npm run type-check
+node --run type-check
 
 # verify that the project can be built
 npx turbo build

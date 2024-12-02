@@ -3,13 +3,14 @@ import { join } from 'node:path';
 import { uploadProfilePicture } from '@/utils/contentApi';
 
 type Params = {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 };
 
 export const GET = async (req: Request, { params }: Params) => {
+  const { slug } = await params;
   const directory = join(process.cwd(), 'content', 'profile-picture');
   const files = await readdir(directory).catch(() => []);
-  const file = files.find(file => file.startsWith(params.slug));
+  const file = files.find(file => file.startsWith(slug));
 
   if (!file) {
     return new Response('Not Found', { status: 404 });
@@ -32,6 +33,7 @@ export const GET = async (req: Request, { params }: Params) => {
 
 export const POST = async (req: Request, { params }: Params) => {
   const contentType = req.headers.get('Content-Type');
+  const { slug } = await params;
 
   if (!contentType || !contentType.startsWith('image/')) {
     return new Response('Bad Request', { status: 400 });
@@ -39,5 +41,5 @@ export const POST = async (req: Request, { params }: Params) => {
 
   const file = await req.blob();
 
-  return uploadProfilePicture({ contentType, slug: params.slug, file });
+  return uploadProfilePicture({ contentType, slug: slug, file });
 };

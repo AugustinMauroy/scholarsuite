@@ -2,11 +2,11 @@ import prisma from '@/lib/prisma';
 import { uploadStudentPicture } from '@/utils/contentApi';
 
 type Params = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export const PATCH = async (req: Request, { params }: Params) => {
-  const { id } = params;
+  const { id } = await params;
   const formData = await req.formData();
   const firstName = formData.get('firstName') as string;
   const lastName = formData.get('lastName') as string;

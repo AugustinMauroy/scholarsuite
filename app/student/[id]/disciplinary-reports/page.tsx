@@ -6,15 +6,16 @@ import BaseLayout from '@/components/Layout/Base';
 import type { FC } from 'react';
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 const Page: FC<PageProps> = async ({ params }) => {
-  if (Number.isNaN(Number(params.id))) notFound();
+  const { id } = await params;
+  if (Number.isNaN(Number(id))) notFound();
 
   const disciplinaryReports = await prisma.disciplinaryReport.findMany({
     where: {
-      studentId: Number(params.id),
+      studentId: Number(id),
     },
     include: {
       CreatedBy: true,
@@ -22,7 +23,7 @@ const Page: FC<PageProps> = async ({ params }) => {
     },
   });
   const student = await prisma.student.findUnique({
-    where: { id: Number(params.id) },
+    where: { id: Number(id) },
     include: {
       Class: true,
       StudentGroup: {

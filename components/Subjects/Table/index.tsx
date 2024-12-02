@@ -29,7 +29,7 @@ const Table: FC = () => {
         const res = await fetch('/api/subject');
         const { data } = await res.json();
         setSubjects(data);
-      } catch (error) {
+      } catch {
         toast({
           kind: 'error',
           message: (

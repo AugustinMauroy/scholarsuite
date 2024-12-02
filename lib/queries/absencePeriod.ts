@@ -24,6 +24,7 @@ export const countTimeslotPeriodsCoveredByAbsencePeriod = async (
   const attendance = await prisma.attendance.findMany({
     where: {
       state: 'ABSENT',
+      studentId: absencePeriod.studentId,
       date: {
         // FirstAbsence.date >= date >= LastAbsence.date
         gte: absencePeriod.FirstAbsence.date,

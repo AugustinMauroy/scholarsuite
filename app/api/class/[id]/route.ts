@@ -1,16 +1,16 @@
 import prisma from '@/lib/prisma';
 
 type Params = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export const PATCH = async (
   req: Request,
   { params }: Params
 ): Promise<Response> => {
-  const { id } = params;
+  const { id } = await params;
   const { name } = await req.json();
 
   const updatedClass = await prisma.class.update({

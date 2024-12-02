@@ -86,12 +86,12 @@ const Table: FC<TableProps> = ({ students, possibleClasses }) => {
       const formData = new FormData();
       formData.append('firstName', selectedStudent.firstName);
       formData.append('lastName', selectedStudent.lastName);
-      selectedStudent.classId &&
+      if (selectedStudent.classId)
         formData.append('classId', selectedStudent.classId.toString());
-      selectedStudent.contactEmail &&
+      if (selectedStudent.contactEmail)
         formData.append('contactEmail', selectedStudent.contactEmail);
       formData.append('enabled', selectedStudent.enabled.toString());
-      file && formData.append('file', file);
+      if (file) formData.append('file', file);
 
       const response = await fetch(`/api/student/${selectedStudent.id}`, {
         method: 'PATCH',

@@ -1,8 +1,12 @@
 import classNames from 'classnames';
-import { getLocale, getMessages, getTranslations } from 'next-intl/server';
+import {
+  getLocale,
+  getMessages,
+  getTimeZone,
+  getTranslations,
+} from 'next-intl/server';
 import NavBar from '@/components/Layout/NavBar';
 import { auth } from '@/lib/auth';
-import { getTimeZone } from '@/lib/i18n';
 import AuthProvider from '@/providers/auth';
 import LocaleProvider from '@/providers/locale';
 import { ToastProvider } from '@/providers/toastProvider';
@@ -25,7 +29,7 @@ const generateMetadata = async (): Promise<Metadata> => {
 const RootLayout: FC<PropsWithChildren> = async ({ children }) => {
   const locale = await getLocale();
   const messages = await getMessages();
-  const timeZone = getTimeZone();
+  const timeZone = await getTimeZone();
   const sessionData = await auth();
 
   return (

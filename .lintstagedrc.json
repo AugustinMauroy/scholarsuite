@@ -1,4 +1,4 @@
 {
-  "**/*.{js,jsx,ts,tsx,json,css,md}": ["npm run format"],
-  "./prisma/schema.prisma": ["npm run db:format"]
+  "**/*.{js,jsx,ts,tsx,json,css,md}": ["node --run format"],
+  "./prisma/schema.prisma": ["node --run db:format"]
 }

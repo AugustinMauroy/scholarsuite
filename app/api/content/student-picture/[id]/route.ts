@@ -3,14 +3,15 @@ import { join } from 'node:path';
 import prisma from '@/lib/prisma';
 
 type Params = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 export const GET = async (req: Request, { params }: Params) => {
-  if (!params.id || parseInt(params.id) < 1)
+  const { id } = await params;
+  if (!id || parseInt(id) < 1)
     return new Response('Bad Request', { status: 400 });
   const student = await prisma.student.findUnique({
-    where: { id: parseInt(params.id) },
+    where: { id: parseInt(id) },
   });
 
   if (!student) {
@@ -21,7 +22,7 @@ export const GET = async (req: Request, { params }: Params) => {
 
   const files = await readdir(directory).catch(() => []);
 
-  const file = files.find(file => file.startsWith(params.id));
+  const file = files.find(file => file.startsWith(id));
 
   if (!file) {
     return new Response('Not Found', { status: 404 });

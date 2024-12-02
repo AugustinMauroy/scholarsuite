@@ -7,5 +7,6 @@
   "[prisma]": {
     "editor.defaultFormatter": "Prisma.prisma"
   },
-  "cSpell.words": ["heroicons", "Timeslot"]
+  // use nextjs typescript plugin
+  "typescript.tsdk": "node_modules/typescript/lib"
 }

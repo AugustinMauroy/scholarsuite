@@ -1,16 +1,17 @@
 import prisma from '@/lib/prisma';
 
 type Params = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export const POST = async (
   req: Request,
-  { params: { id } }: Params
+  { params }: Params
 ): Promise<Response> => {
   const {} = await req.json().catch(() => ({}));
+  const { id } = await params;
 
   if (!id || isNaN(Number(id)))
     return Response.json({ error: 'Invalid ID' }, { status: 400 });

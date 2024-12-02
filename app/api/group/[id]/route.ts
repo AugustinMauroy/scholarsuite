@@ -3,16 +3,16 @@ import { getGroupWithStudentsAndAttendance } from '@/lib/queries/group';
 import type { TimeSlot } from '@prisma/client';
 
 type Params = {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 };
 
 export const POST = async (
   req: Request,
   { params }: Params
 ): Promise<Response> => {
-  const id = parseInt(params.id, 10);
+  const id = parseInt((await params).id, 10);
 
   const data = await req.json();
 

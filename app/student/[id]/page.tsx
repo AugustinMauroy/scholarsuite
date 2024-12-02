@@ -10,14 +10,15 @@ import type { FC } from 'react';
 import type { Student } from '@prisma/client';
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 const Page: FC<PageProps> = async ({ params }) => {
-  if (Number.isNaN(Number(params.id))) notFound();
+  const { id } = await params;
+  if (Number.isNaN(Number(id))) notFound();
 
   const student = await prisma.student.findUnique({
-    where: { id: Number(params.id) },
+    where: { id: Number(id) },
     include: {
       Class: true,
       StudentGroup: {
@@ -38,7 +39,7 @@ const Page: FC<PageProps> = async ({ params }) => {
     currentAcademicYear &&
     (await prisma.attendance.count({
       where: {
-        studentId: Number(params.id),
+        studentId: Number(id),
         state: 'ABSENT',
         academicYearId: currentAcademicYear.id,
       },
@@ -47,7 +48,7 @@ const Page: FC<PageProps> = async ({ params }) => {
     currentAcademicYear &&
     (await prisma.attendance.count({
       where: {
-        studentId: Number(params.id),
+        studentId: Number(id),
         state: 'LATE',
         academicYearId: currentAcademicYear.id,
       },

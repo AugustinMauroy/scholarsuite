@@ -30,8 +30,8 @@ git checkout -b <BRANCH_NAME>
 ```bash
 npm install
 cp .env.example .env
-npm run db:generate
-npm run db:seed-dev
+node --run db:generate
+node --run db:seed-dev
 npx turbo dev # or turbo dev if you have Turbo installed globally
 ```
 

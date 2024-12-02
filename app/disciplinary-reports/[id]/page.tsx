@@ -10,14 +10,18 @@ import type { FC } from 'react';
 import type { Student } from '@prisma/client';
 
 type PageProps = {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 };
 
 const Page: FC<PageProps> = async ({ params }) => {
-  if (Number.isNaN(Number(params.id))) notFound();
+  const { id } = await params;
+
+  if (Number.isNaN(Number(id))) notFound();
 
   const disciplinaryReports = await prisma.disciplinaryReport.findUnique({
-    where: { id: Number(params.id) },
+    where: {
+      id: Number(id),
+    },
     include: {
       CreatedBy: true,
       Student: {

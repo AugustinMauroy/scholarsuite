@@ -15,7 +15,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             groupId: id,
           },
         });
-      } catch (error) {
+      } catch {
         return Response.json({ error: 'Error connecting Groups' });
       }
     } else if (opp === 'remove') {
@@ -26,7 +26,7 @@ export const PATCH = async (req: Request): Promise<Response> => {
             groupId: id,
           },
         });
-      } catch (error) {
+      } catch {
         return Response.json({ error: 'Error disconnecting Groups' });
       }
     } else {

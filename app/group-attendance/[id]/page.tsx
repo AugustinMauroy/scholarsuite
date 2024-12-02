@@ -3,6 +3,7 @@ import { ThumbsUpIcon, UserXIcon, HourglassIcon } from 'lucide-react';
 import { useSession } from 'next-auth/react';
 import { useTranslations } from 'next-intl';
 import { useState, useEffect } from 'react';
+import { useParams } from 'next/navigation';
 import BaseLayout from '@/components/Layout/Base';
 import StudentCard from '@/components/Student/StudentCard';
 import Selector from '@/components/TimeSlot/Selector';
@@ -19,10 +20,6 @@ import type {
 } from '@prisma/client';
 import type { FC } from 'react';
 
-type PageProps = {
-  params: { id: string };
-};
-
 type StudentWithAttendance = Student & {
   Attendance: Attendance[];
   Class: Class | null;
@@ -34,7 +31,8 @@ type GroupWithStudents = Group & {
   }[];
 };
 
-const Page: FC<PageProps> = ({ params }) => {
+const Page: FC = () => {
+  const id = Number(useParams().id);
   const tPage = useTranslations('app.groupAttendance');
   const tShared = useTranslations('shared');
   const session = useSession();
@@ -47,7 +45,7 @@ const Page: FC<PageProps> = ({ params }) => {
     data: [],
     timeSlotId: -1,
     userId: -1,
-    groupId: Number(params.id),
+    groupId: Number(id),
     date: currentDate,
   });
 
@@ -115,7 +113,7 @@ const Page: FC<PageProps> = ({ params }) => {
       timeSlotId: currentTimeslot?.id ?? -1,
     });
 
-    fetch(`/api/group/${params.id}`, {
+    fetch(`/api/group/${id}`, {
       body: JSON.stringify({
         currentTimeslot,
         date: currentDate,
@@ -171,9 +169,8 @@ const Page: FC<PageProps> = ({ params }) => {
       slot => slot.id === currentTimeslot.id
     );
 
-    kind === 'prev'
-      ? setCurrentTimeslot(timeSlot[currentIndex - 1])
-      : setCurrentTimeslot(timeSlot[currentIndex + 1]);
+    if (kind === 'prev') setCurrentTimeslot(timeSlot[currentIndex - 1]);
+    else setCurrentTimeslot(timeSlot[currentIndex + 1]);
   };
 
   const handleStudentClick = (
@@ -230,7 +227,7 @@ const Page: FC<PageProps> = ({ params }) => {
         groupData.StudentGroup.map(studentGroup => (
           <StudentCard
             withMore
-            from={`/group-attendance/${params.id}`}
+            from={`/group-attendance/${id}`}
             key={studentGroup.Student.id}
             student={studentGroup.Student as Student}
             actions={[

@@ -15,7 +15,7 @@ export const PATCH = async (req: Request) => {
             classId: id,
           },
         });
-      } catch (error) {
+      } catch {
         return Response.json({ error: 'Error connecting classes' });
       }
     } else if (opp === 'remove') {
@@ -26,7 +26,7 @@ export const PATCH = async (req: Request) => {
             classId: id,
           },
         });
-      } catch (error) {
+      } catch {
         return Response.json({ error: 'Error disconnecting classes' });
       }
     } else {

@@ -9,7 +9,7 @@ import DropZone from '@/components/Common/DropZone';
 import Select from '@/components/Common/Select';
 import { useToast } from '@/hooks/useToast';
 import { getAcronymFromString } from '@/utils/string';
-import { availableLocales } from '@/lib/i18nClients';
+import { availableLocales } from '@/lib/i18n/config';
 import EditModal from '@/components/Common/EditModal';
 import styles from './page.module.css';
 import type { FC } from 'react';

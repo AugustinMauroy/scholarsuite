@@ -1,6 +1,6 @@
 'use client';
 import { AbsencePeriodStatus } from '@prisma/client';
-import { notFound } from 'next/navigation';
+import { notFound, useParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { useState, useEffect } from 'react';
 import Button from '@/components/Common/Button';
@@ -20,10 +20,6 @@ import type {
 } from '@prisma/client';
 import type { FC } from 'react';
 
-type PageProps = {
-  params: { id: string };
-};
-
 type AbsencePeriodWithRelations = AbsencePeriod & {
   Student: Student & { Class: Class };
   FirstAbsence: { Group: Group; TimeSlot: TimeSlot };
@@ -32,15 +28,15 @@ type AbsencePeriodWithRelations = AbsencePeriod & {
   Comments: Array<AbsencePeriodComment & { User: User }>;
 };
 
-const Page: FC<PageProps> = ({ params }) => {
-  const id = Number(params.id);
-  if (isNaN(id)) notFound();
-
+const Page: FC = () => {
   const session = useSession();
   const [absence, setAbsence] = useState<
     AbsencePeriodWithRelations | null | undefined
   >(undefined);
   const [message, setMessage] = useState<string>('');
+  const id = Number(useParams().id);
+
+  if (isNaN(id)) notFound();
 
   useEffect(() => {
     fetch(`/api/absence-period/${id}`, {
