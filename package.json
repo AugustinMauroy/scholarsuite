@@ -39,7 +39,7 @@
     "@radix-ui/react-popover": "~1.1.2",
     "@radix-ui/react-scroll-area": "~1.2.1",
     "@radix-ui/react-select": "~2.1.2",
-    "@radix-ui/react-tabs": "~1.1.1",
+    "@radix-ui/react-tabs": "~1.1.2",
     "@radix-ui/react-toast": "~1.2.2",
     "classnames": "~2.5.1",
     "lucide-react": "~0.462.0",
