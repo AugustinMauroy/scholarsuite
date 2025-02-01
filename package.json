@@ -48,8 +48,8 @@
     "next-intl": "~3.25.3",
     "nodejs-loaders": "~1.1.0",
     "prisma": "~6.0.1",
-    "react": "~18.3.1",
-    "react-dom": "~18.3.1"
+    "react": "~19.0.0",
+    "react-dom": "~19.0.0"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "~8.4.6",
@@ -61,8 +61,8 @@
     "@storybook/react": "~8.4.6",
     "@testing-library/react": "~16.0.1",
     "@types/node": "~22.10.2",
-    "@types/react": "~18.3.12",
-    "@types/react-dom": "~18.3.1",
+    "@types/react": "~19.0.8",
+    "@types/react-dom": "~19.0.3",
     "@vitejs/plugin-react": "~4.3.4",
     "@vitest/coverage-v8": "~2.1.8",
     "autoprefixer": "~10.4.20",
