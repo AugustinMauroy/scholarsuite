@@ -43,7 +43,7 @@
     "@radix-ui/react-toast": "~1.2.2",
     "classnames": "~2.5.1",
     "lucide-react": "~0.462.0",
-    "next": "~15.0.3",
+    "next": "~15.1.6",
     "next-auth": "~5.0.0-beta.25",
     "next-intl": "~3.25.3",
     "nodejs-loaders": "~1.1.0",
