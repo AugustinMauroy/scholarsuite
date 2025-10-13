@@ -8,9 +8,7 @@
 ScholarSuite is a grade management application for schools. It allows to manage students, classes, school levels, subjects and grades.
 
 > [!IMPORTANT]
-> This application is only at the design stage. It is not yet developed. But contributions are welcome 😁.
->
-> **Current state:** we are working on the technical design of the application. And in parallel, we are working on the design of the application.
+> This project was coded without even making the spec a reboot. It can be found on the repo [`scholarsuite/scholarsuite`](https://github.com/scholarsuite/scholarsuite).
 
 ## Having your instance of ✨ ScholarSuite ✨
 
